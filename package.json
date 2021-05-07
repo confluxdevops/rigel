@@ -11,7 +11,7 @@
     "react-dom": "^17.0.2",
     "react-i18next": "^11.8.13",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "4.0.0",
     "react-use": "^17.2.3",
     "swr": "^0.5.5",
     "web-vitals": "^1.0.1",
@@ -25,9 +25,13 @@
     "autoprefixer": "^9",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.5",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-testing-library": "^4.0.0",
     "husky": "4.3.0",
     "lint-staged": "^10.5.4",
     "postcss": "^7",
@@ -41,31 +45,28 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --ignore-path .gitignore packages",
+    "lint:fix": "yarn run lint --fix"
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "ignorePatterns": [
-      "node_modules"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Edge versions"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
       "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
     }
+  },
+  "prettier": {
+    "semi": false,
+    "bracketSpacing": false,
+    "proseWrap": "never",
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -84,6 +85,21 @@
     "extends": [
       "stylelint-config-standard",
       "stylelint-config-prettier"
-    ]
+    ],
+    "rules": {
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "tailwind",
+            "apply",
+            "layer",
+            "variants",
+            "responsive",
+            "screen"
+          ]
+        }
+      ]
+    }
   }
 }
