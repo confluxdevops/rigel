@@ -17,6 +17,5 @@ export default function useTheme() {
     root.classList.add(theme)
     localStorage.setItem('theme', theme)
   }, [theme])
-  console.log(theme)
   return [theme, setTheme]
 }
