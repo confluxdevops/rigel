@@ -1,4 +1,3 @@
-import React from 'react'
 import {IS_DEV} from './../utils'
 import {ReactComponent as BscIcon} from './../assets/images/chain-bsc-logo.svg'
 import {ReactComponent as BtcIcon} from './../assets/images/chain-btc-logo.svg'
