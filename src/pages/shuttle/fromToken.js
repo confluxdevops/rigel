@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import imgArrow from './../../assets/images/arrow-right.svg'
-import TokenIcon from './../components/TokenIcon'
+import TokenNameAndIcon from './../components/TokenNameAndIcon'
 function FromToken({token, onClick}) {
   return (
     <div
@@ -8,7 +8,7 @@ function FromToken({token, onClick}) {
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
     >
-      <TokenIcon token={token}></TokenIcon>
+      <TokenNameAndIcon token={token}></TokenNameAndIcon>
       <span className="text-black text-sm font-normal ml-1">
         {token && token.symbol}
       </span>
