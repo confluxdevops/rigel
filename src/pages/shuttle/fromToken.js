@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import imgArrow from './../../assets/images/arrow-right.svg'
 import TokenIcon from './../components/TokenIcon'

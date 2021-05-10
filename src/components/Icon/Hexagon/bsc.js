@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import {HEXAGON_ICON_WIDTH, HEXAGON_ICON_HEIGHT} from './../../../constants'
 function Logo({width, height}) {
