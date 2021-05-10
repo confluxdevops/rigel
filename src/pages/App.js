@@ -1,7 +1,10 @@
 import React from 'react'
-import logo from '../logo.svg'
+import {ReactComponent as Logo} from '../logo.svg'
+import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import FromToken from './shuttle/fromToken'
+import Button from '../components/Button'
+
 function App() {
   //Data for test
   const token = {
@@ -13,10 +16,9 @@ function App() {
     symbol: 'cEth',
   }
   return (
-    <div className="App">
+    <div className="container mx-auto h-full flex justify-center items-center">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        <p className="text-black">
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
@@ -30,6 +32,11 @@ function App() {
         <div>
           <FromToken token={token}></FromToken>
         </div>
+        <img src={logoUrl} alt="logo" />
+        <Logo className="text-primary" />
+        <Button startIcon={<Logo className="w-4 h-4 text-black" />}>
+          Work Hard
+        </Button>
       </header>
     </div>
   )
