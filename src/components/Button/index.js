@@ -20,6 +20,7 @@ function Button({
     }
     return ''
   }
+
   const getColorStyle = () => {
     if (disabled) return ''
     if (variant === 'text') {
@@ -34,22 +35,26 @@ function Button({
     }
     return ''
   }
+
   const getSizeStyle = () => {
     if (size === 'large') return 'text-base h-15'
     if (size === 'medium') return 'text-sm h-12'
     if (size === 'small') return 'text-xs h-9'
     return ''
   }
+
   const getIconColor = () => {
     if (disabled) return 'text-gray-40'
     if (variant === 'contained') return 'text-white'
     return 'text-primary hover:text-primary-dark'
   }
+
   const getIconSize = () => {
     if (size === 'large') return 'w-6 h-6'
     if (size === 'medium') return 'w-5 h-5'
     if (size === 'small') return 'w-4 h-4'
   }
+
   return (
     <button
       onClick={e => onClick && onClick(e)}
