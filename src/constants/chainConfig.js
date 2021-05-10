@@ -1,22 +1,60 @@
+import React from 'react'
 import {IS_DEV} from './../utils'
-import BscHexagonIcon from './../components/Icon/Hexagon/bsc'
-import BtcHexagonIcon from './../components/Icon/Hexagon/btc'
-import EthHexagonIcon from './../components/Icon/Hexagon/eth'
-import CfxHexagonIcon from './../components/Icon/Hexagon/cfx'
+import {ReactComponent as BscIcon} from './../assets/images/chain-bsc-logo.svg'
+import {ReactComponent as BtcIcon} from './../assets/images/chain-btc-logo.svg'
+import {ReactComponent as EthIcon} from './../assets/images/chain-eth-logo.svg'
+import {ReactComponent as CfxIcon} from './../assets/images/chain-cfx-logo.svg'
+export const ChainShortNameEth = 'eth'
+export const ScanUrlEth = IS_DEV
+  ? 'https://rinkeby.etherscan.io/'
+  : 'https://etherscan.io'
+export const ChainShortNameBsc = 'bsc'
+export const ScanUrlBsc = IS_DEV
+  ? 'https://testnet.bscscan.com/'
+  : 'https://bscscan.com/'
+export const ChainShortNameCfx = 'cfx'
+export const ScanUrlCfx = IS_DEV
+  ? 'https://testnet.confluxscan.io/'
+  : 'https://confluxscan.io/'
+export const ChainShortNameBtc = 'btc'
+export const ScanUrlBtc = IS_DEV
+  ? 'https://blockstream.info/testnet'
+  : 'https://blockstream.info'
+const defaultIconClassName = 'w-12 h-12'
+export function Icon({chain, className}) {
+  let comp = <></>
+  const finalClass = className || defaultIconClassName
+  switch (chain) {
+    case ChainShortNameEth:
+      comp = <EthIcon className={finalClass} />
+      break
+    case ChainShortNameBsc:
+      comp = <BscIcon className={finalClass} />
+      break
+    case ChainShortNameCfx:
+      comp = <CfxIcon className={finalClass} />
+      break
+    case ChainShortNameBtc:
+      comp = <BtcIcon className={finalClass} />
+      break
+  }
+  return comp
+}
 const config = {
-  eth: {
-    icon: '',
-    hexagonIcon: EthHexagonIcon,
+  [ChainShortNameEth]: {
+    icon(className) {
+      return <Icon className={className} chain={ChainShortNameEth} />
+    },
     fullName: 'Ethereum',
-    shortName: 'eth',
+    shortName: ChainShortNameEth,
     tokenName: 'ETH',
     checkAddress() {
       //TODO:
       return true
     },
-    scanUrl: IS_DEV ? 'https://rinkeby.etherscan.io/' : 'https://etherscan.io',
-    scanTxUrl: config.scanUrl + '/tx/',
-    scanTokenUrl: config.scanUrl + '/token/',
+    scanUrl: ScanUrlEth,
+    scanTxUrl: ScanUrlEth + '/tx/',
+    scanTokenUrl: ScanUrlEth + '/token/',
     getTokenList() {
       //TODO:
       return {}
@@ -27,18 +65,20 @@ const config = {
     },
     commonTokens: ['ETH', 'USDT', 'eCFX'],
   },
-  bsc: {
-    icon: '',
-    hexagonIcon: BscHexagonIcon,
+  [ChainShortNameBsc]: {
+    icon(className) {
+      return <Icon className={className} chain={ChainShortNameBsc} />
+    },
     fullName: 'Binance Smart Contract',
-    shortName: 'bsc',
+    shortName: ChainShortNameBsc,
+    tokenName: 'BNB',
     checkAddress() {
       //TODO:
       return true
     },
-    scanUrl: IS_DEV ? 'https://testnet.bscscan.com/' : 'https://bscscan.com/',
-    scanTxUrl: config.scanUrl + '/tx/',
-    scanTokenUrl: config.scanUrl + '/token/',
+    scanUrl: ScanUrlBsc,
+    scanTxUrl: ScanUrlBsc + '/tx/',
+    scanTokenUrl: ScanUrlBsc + '/token/',
     getTokenList() {
       //TODO:
       return {}
@@ -49,20 +89,20 @@ const config = {
     },
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
   },
-  cfx: {
-    icon: '',
-    hexagonIcon: CfxHexagonIcon,
+  [ChainShortNameCfx]: {
+    icon(className) {
+      return <Icon className={className} chain={ChainShortNameCfx} />
+    },
     fullName: 'Conflux',
-    shortName: 'cfx',
+    shortName: ChainShortNameCfx,
+    tokenName: 'CFX',
     checkAddress() {
       //TODO:
       return true
     },
-    scanUrl: IS_DEV
-      ? 'https://testnet.confluxscan.io/'
-      : 'https://confluxscan.io/',
-    scanTxUrl: config.scanUrl + '/transaction/',
-    scanTokenUrl: config.scanUrl + '/address/',
+    scanUrl: ScanUrlCfx,
+    scanTxUrl: ScanUrlCfx + '/transaction/',
+    scanTokenUrl: ScanUrlCfx + '/address/',
     getTokenList() {
       //TODO:
       return {}
@@ -73,20 +113,21 @@ const config = {
     },
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
   },
-  btc: {
-    icon: '',
-    hexagonIcon: BtcHexagonIcon,
+  [ChainShortNameBtc]: {
+    icon(className) {
+      return <Icon className={className} chain={ChainShortNameBtc} />
+    },
     fullName: 'Bitcoin',
-    shortName: 'btc',
+    shortName: ChainShortNameBtc,
+    tokenName: 'BTC',
     checkAddress() {
       //TODO:
       return true
     },
-    scanUrl: IS_DEV
-      ? 'https://blockstream.info/testnet'
-      : 'https://blockstream.info',
-    scanTxUrl: config.scanUrl + '/tx/',
+    scanUrl: ScanUrlBtc,
+    scanTxUrl: ScanUrlBtc + '/tx/',
     commonTokens: [],
   },
 }
 export default config
+export const supportedChains = Object.keys(config)
