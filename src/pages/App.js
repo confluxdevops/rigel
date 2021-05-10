@@ -1,6 +1,6 @@
 import React from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
-import {ReactComponent as NewLogo} from '../assets/images/logo.svg'
+import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import Button from '../components/Button'
 
@@ -11,7 +11,7 @@ function App() {
         <p className="text-black">
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <NewLogo />
+        <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
         <Button startIcon={<Logo className="w-4 h-4 text-black" />}>
           Work Hard
