@@ -19,6 +19,7 @@ function Tag({
     }
     return ''
   }
+
   const getColorStyle = () => {
     if (disabled) return ''
     if (color === 'primary') {
@@ -28,20 +29,24 @@ function Tag({
     }
     return ''
   }
+
   const getSizeStyle = () => {
     if (size === 'medium') return 'text-xs h-6 px-2'
     if (size === 'small') return 'text-2xs h-4 px-1'
     return ''
   }
+
   const getIconColor = () => {
     if (disabled) return 'text-gray-40'
     if (color === 'primary') return 'text-primary'
     if (color === 'error') return 'text-error'
   }
+
   const getIconSize = () => {
     if (size === 'medium') return 'w-3 h-3'
     if (size === 'small') return 'w-2 h-2'
   }
+
   return (
     <button
       disabled={disabled}

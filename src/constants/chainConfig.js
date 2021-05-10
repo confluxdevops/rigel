@@ -4,22 +4,27 @@ import {ReactComponent as BscIcon} from './../assets/images/chain-bsc-logo.svg'
 import {ReactComponent as BtcIcon} from './../assets/images/chain-btc-logo.svg'
 import {ReactComponent as EthIcon} from './../assets/images/chain-eth-logo.svg'
 import {ReactComponent as CfxIcon} from './../assets/images/chain-cfx-logo.svg'
+
 export const ChainShortNameEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io/'
   : 'https://etherscan.io'
+
 export const ChainShortNameBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
   ? 'https://testnet.bscscan.com/'
   : 'https://bscscan.com/'
+
 export const ChainShortNameCfx = 'cfx'
 export const ScanUrlCfx = IS_DEV
   ? 'https://testnet.confluxscan.io/'
   : 'https://confluxscan.io/'
+
 export const ChainShortNameBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
+
 const defaultIconClassName = 'w-12 h-12'
 export function Icon({chain, className}) {
   let comp = <></>
@@ -40,6 +45,7 @@ export function Icon({chain, className}) {
   }
   return comp
 }
+
 const config = {
   [ChainShortNameEth]: {
     icon(className) {
@@ -129,5 +135,6 @@ const config = {
     commonTokens: [],
   },
 }
+
 export default config
 export const supportedChains = Object.keys(config)
