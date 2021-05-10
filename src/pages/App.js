@@ -1,9 +1,9 @@
-import React from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import FromToken from './shuttle/fromToken'
 import Button from '../components/Button'
+import Tag from '../components/Tag'
 
 function App() {
   //Data for test
@@ -34,9 +34,12 @@ function App() {
         </div>
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
-        <Button startIcon={<Logo className="w-4 h-4 text-black" />}>
+        <Button startIcon={<Logo className=" text-white" />} className="mb-2">
           Work Hard
         </Button>
+        <Tag closable color="error">
+          Max
+        </Tag>
       </header>
     </div>
   )
