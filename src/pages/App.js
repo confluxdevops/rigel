@@ -1,21 +1,21 @@
-import React from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import Button from '../components/Button'
+import Tag from '../components/Tag'
 
 function App() {
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <header className="App-header">
-        <p className="text-black">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
-        <Button startIcon={<Logo className="w-4 h-4 text-black" />}>
+        <Button startIcon={<Logo className=" text-white" />} className="mb-2">
           Work Hard
         </Button>
+        <Tag closable color="error">
+          Max
+        </Tag>
       </header>
     </div>
   )

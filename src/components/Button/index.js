@@ -40,22 +40,41 @@ function Button({
     if (size === 'small') return 'text-xs h-9'
     return ''
   }
+  const getIconColor = () => {
+    if (disabled) return 'text-gray-40'
+    if (variant === 'contained') return 'text-white'
+    return 'text-primary hover:text-primary-dark'
+  }
+  const getIconSize = () => {
+    if (size === 'large') return 'w-6 h-6'
+    if (size === 'medium') return 'w-5 h-5'
+    if (size === 'small') return 'w-4 h-4'
+  }
   return (
     <button
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
-      flex justify-center items-center focus:outline-none rounded 
-      ${getDisabledStyle()} 
-      ${getColorStyle()} 
-      ${getSizeStyle()} 
-      ${fullWidth ? 'w-full' : 'px-4'} 
-      ${className}`}
+      flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${
+        fullWidth ? 'w-full' : 'px-4'
+      } ${className}`}
       {...props}
     >
-      {startIcon && <span className="inline-block mr-2">{startIcon}</span>}
+      {startIcon && (
+        <span
+          className={`flex items-center mr-2 ${getIconColor()} ${getIconSize()}`}
+        >
+          {startIcon}
+        </span>
+      )}
       {children}
-      {endIcon && <span className="inline-block ml-2">{endIcon}</span>}
+      {endIcon && (
+        <span
+          className={`flex items-center ml-2 ${getIconColor()} ${getIconSize()}`}
+        >
+          {endIcon}
+        </span>
+      )}
     </button>
   )
 }
