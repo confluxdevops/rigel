@@ -12,6 +12,9 @@ module.exports = {
       '2xl': ['32px', '40px'],
     },
     extend: {
+      spacing: {
+        15: '3.75rem',
+      },
       colors: {
         white: '#fff',
         black: '#000',
@@ -34,6 +37,7 @@ module.exports = {
         'gray-0': 'var(--color-gray-0)',
         'gray-4': 'var(--color-gray-4)',
         'gray-10': 'var(--color-gray-10)',
+        'gray-20': 'var(--color-gray-20)',
         'gray-40': 'var(--color-gray-40)',
         'gray-60': 'var(--color-gray-60)',
         'gray-80': 'var(--color-gray-80)',
