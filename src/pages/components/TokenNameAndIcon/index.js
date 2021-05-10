@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import config, {Icon} from '../../../constants/chainConfig'
-const defaultHexagonIconLength = 8
-function TokenIcon({token}) {
+function TokenNameAndIcon({token}) {
   const [subscriptShown, setSubscriptShown] = useState(false)
   const origin = token.origin
   useEffect(() => {
@@ -21,18 +20,14 @@ function TokenIcon({token}) {
       <img src={token && token.icon} alt="token icon" className="" />
       {subscriptShown && (
         <span className="absolute right-0 bottom-0">
-          <Icon
-            chain={token.origin}
-            width={defaultHexagonIconLength}
-            height={defaultHexagonIconLength}
-          ></Icon>
+          <Icon chain={token.origin} className="w-2 h-2"></Icon>
         </span>
       )}
     </div>
   )
 }
-TokenIcon.propTypes = {
+TokenNameAndIcon.propTypes = {
   token: PropTypes.object.isRequired,
   hexagonIconLength: PropTypes.number,
 }
-export default TokenIcon
+export default TokenNameAndIcon

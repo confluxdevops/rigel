@@ -1,9 +1,9 @@
 import React from 'react'
 import {IS_DEV} from './../utils'
-import BscIcon from './../components/Icon/Chain/bsc'
-import BtcIcon from './../components/Icon/Chain/btc'
-import EthIcon from './../components/Icon/Chain/eth'
-import CfxIcon from './../components/Icon/Chain/cfx'
+import {ReactComponent as BscIcon} from './../assets/images/chain-bsc-logo.svg'
+import {ReactComponent as BtcIcon} from './../assets/images/chain-btc-logo.svg'
+import {ReactComponent as EthIcon} from './../assets/images/chain-eth-logo.svg'
+import {ReactComponent as CfxIcon} from './../assets/images/chain-cfx-logo.svg'
 export const ChainNameEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io/'
@@ -20,28 +20,30 @@ export const ChainNameBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
-export function Icon({chain, width, height}) {
+const defaultIconClassName = 'w-12 h-12'
+export function Icon({chain, className}) {
   let comp = <></>
+  const finalClass = className || defaultIconClassName
   switch (chain) {
     case ChainNameEth:
-      comp = <EthIcon width={width} height={height} />
+      comp = <EthIcon className={finalClass} />
       break
     case ChainNameBsc:
-      comp = <BscIcon width={width} height={height} />
+      comp = <BscIcon className={finalClass} />
       break
     case ChainNameCfx:
-      comp = <CfxIcon width={width} height={height} />
+      comp = <CfxIcon className={finalClass} />
       break
     case ChainNameBtc:
-      comp = <BtcIcon width={width} height={height} />
+      comp = <BtcIcon className={finalClass} />
       break
   }
   return comp
 }
 const config = {
   [ChainNameEth]: {
-    icon(width, height) {
-      return <Icon width={width} height={height} chain={ChainNameEth} />
+    icon(className) {
+      return <Icon className={className} chain={ChainNameEth} />
     },
     fullName: 'Ethereum',
     shortName: 'eth',
@@ -64,8 +66,8 @@ const config = {
     commonTokens: ['ETH', 'USDT', 'eCFX'],
   },
   [ChainNameBsc]: {
-    icon(width, height) {
-      return <Icon width={width} height={height} chain={ChainNameBsc} />
+    icon(className) {
+      return <Icon className={className} chain={ChainNameBsc} />
     },
     fullName: 'Binance Smart Contract',
     shortName: 'bsc',
@@ -88,8 +90,8 @@ const config = {
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
   },
   [ChainNameCfx]: {
-    icon(width, height) {
-      return <Icon width={width} height={height} chain={ChainNameCfx} />
+    icon(className) {
+      return <Icon className={className} chain={ChainNameCfx} />
     },
     fullName: 'Conflux',
     shortName: 'cfx',
@@ -112,8 +114,8 @@ const config = {
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
   },
   [ChainNameBtc]: {
-    icon(width, height) {
-      return <Icon width={width} height={height} chain={ChainNameBtc} />
+    icon(className) {
+      return <Icon className={className} chain={ChainNameBtc} />
     },
     fullName: 'Bitcoin',
     shortName: 'btc',
