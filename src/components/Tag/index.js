@@ -58,12 +58,13 @@ function Tag({
       )}
       {children}
       {closable && (
-        <button
+        <span
+          aria-hidden="true"
           onClick={() => !disabled && onClose && onClose()}
           className={`flex items-center focus:outline-none ml-1 ${getIconColor()} ${getIconSize()}`}
         >
           {closeIcon ? closeIcon : <Close />}
-        </button>
+        </span>
       )}
     </button>
   )

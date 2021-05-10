@@ -13,7 +13,9 @@ function App() {
         <Button startIcon={<Logo className=" text-white" />} className="mb-2">
           Work Hard
         </Button>
-        <Tag closable>Max</Tag>
+        <Tag closable color="error">
+          Max
+        </Tag>
       </header>
     </div>
   )
