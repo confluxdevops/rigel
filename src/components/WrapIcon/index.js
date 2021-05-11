@@ -2,12 +2,7 @@ import PropTypes from 'prop-types'
 import circle from '../../assets/images/circle.svg'
 import square from '../../assets/images/square.svg'
 
-function WrapIcon({
-  type = 'circle',
-  size = 'w-6 h-6',
-  children,
-  className = '',
-}) {
+function WrapIcon({type, size = 'w-6 h-6', children, className = ''}) {
   return (
     <div
       className={`${size} relative flex justify-center items-center ${className}`}
@@ -26,7 +21,7 @@ function WrapIcon({
 export default WrapIcon
 
 WrapIcon.propTypes = {
-  type: PropTypes.oneOf(['circle', 'square']),
+  type: PropTypes.oneOf(['circle', 'square']).isRequired,
   size: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

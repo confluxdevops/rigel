@@ -24,7 +24,7 @@ function TokenType({token, onClick, type}) {
         {token && token.symbol}
       </span>
       {type === 'from' && (
-        <WrapIcon className="ml-1" size="w-4 h-4">
+        <WrapIcon type="circle" className="ml-1" size="w-4 h-4">
           <ArrowRight />
         </WrapIcon>
       )}
