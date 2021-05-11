@@ -1,20 +1,20 @@
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
-// import TokenType from './shuttle/TokenType'
+import TokenType from './Shuttle/TokenType'
 import Button from '../components/Button'
 import Tag from '../components/Tag'
 
 function App() {
   //Data for test
-  // const token = {
-  //   icon:
-  //     'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
-  //   name: 'ETH',
-  //   origin: 'eth',
-  //   reference_name: 'ETH',
-  //   symbol: 'cEth',
-  // }
+  const token = {
+    icon:
+      'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
+    name: 'ETH',
+    origin: 'eth',
+    reference_name: 'ETH',
+    symbol: 'cEth',
+  }
 
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
@@ -38,12 +38,12 @@ function App() {
         <Tag closable color="error">
           Max
         </Tag>
-        {/* <div>
+        <div>
           <TokenType token={token} type="from"></TokenType>
         </div>
         <div>
           <TokenType token={token} type="to"></TokenType>
-        </div> */}
+        </div>
       </header>
     </div>
   )
