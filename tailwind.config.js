@@ -17,9 +17,6 @@ module.exports = {
         70: '17.5rem',
         110: '27.5rem',
       },
-      inset: {
-        '1/8': '6.25%',
-      },
       boxShadow: {
         common: '0px 8px 24px 8px rgba(0, 0, 0, 0.06)',
       },

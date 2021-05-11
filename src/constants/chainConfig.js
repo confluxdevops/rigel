@@ -139,6 +139,7 @@ const config = {
 
 export default config
 export const supportedChains = Object.keys(config)
+
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(supportedChains).isRequired,
   className: PropTypes.string,
