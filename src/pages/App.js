@@ -1,7 +1,7 @@
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
-import FromToken from './shuttle/fromToken'
+import TokenType from './shuttle/tokenType'
 import Button from '../components/Button'
 import Tag from '../components/Tag'
 
@@ -29,9 +29,6 @@ function App() {
         >
           Learn React
         </a>
-        <div>
-          <FromToken token={token}></FromToken>
-        </div>
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
         <Button startIcon={<Logo className=" text-white" />} className="mb-2">
@@ -40,6 +37,12 @@ function App() {
         <Tag closable color="error">
           Max
         </Tag>
+        <div>
+          <TokenType token={token} type="from"></TokenType>
+        </div>
+        <div>
+          <TokenType token={token} type="to"></TokenType>
+        </div>
       </header>
     </div>
   )
