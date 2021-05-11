@@ -6,8 +6,6 @@ import btcIcon from '../assets/images/chain-btc-logo.svg'
 import ethIcon from '../assets/images/chain-eth-logo.svg'
 import cfxIcon from '../assets/images/chain-cfx-logo.svg'
 
-export const DefaultChainIconSize = 'w-10 h-10'
-
 export const ChainShortNameEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io/'
@@ -27,8 +25,10 @@ export const ChainShortNameBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
+
+export const DefaultChainIconClassName = 'w-10 h-10'
 export function ChainIcon({chain, className}) {
-  const finalClass = className || DefaultChainIconSize
+  const finalClass = className || DefaultChainIconClassName
   let imgSrc = ''
   switch (chain) {
     case ChainShortNameEth:
