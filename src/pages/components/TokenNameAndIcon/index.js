@@ -28,6 +28,5 @@ function TokenNameAndIcon({token}) {
 }
 TokenNameAndIcon.propTypes = {
   token: PropTypes.object.isRequired,
-  hexagonIconLength: PropTypes.number,
 }
 export default TokenNameAndIcon
