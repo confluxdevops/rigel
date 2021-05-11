@@ -35,7 +35,7 @@ function TokenType({token, onClick, type}) {
 TokenType.propTypes = {
   token: PropTypes.object.isRequired,
   onClick: PropTypes.func,
-  type: PropTypes.oneOf(['from', 'to']),
+  type: PropTypes.oneOf(['from', 'to']).isRequired,
 }
 
 export default TokenType
