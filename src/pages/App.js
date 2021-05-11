@@ -1,8 +1,9 @@
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
-// import FromToken from './shuttle/FromToken'
-import {Button, Tag} from '../components'
+// import TokenType from './shuttle/TokenType'
+import Button from '../components/Button'
+import Tag from '../components/Tag'
 
 function App() {
   //Data for test
@@ -14,6 +15,7 @@ function App() {
   //   reference_name: 'ETH',
   //   symbol: 'cEth',
   // }
+
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <header className="App-header">
@@ -28,9 +30,6 @@ function App() {
         >
           Learn React
         </a>
-        {/* <div>
-          <FromToken token={token}></FromToken>
-        </div> */}
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
         <Button startIcon={<Logo className=" text-white" />} className="mb-2">
@@ -39,6 +38,12 @@ function App() {
         <Tag closable color="error">
           Max
         </Tag>
+        {/* <div>
+          <TokenType token={token} type="from"></TokenType>
+        </div>
+        <div>
+          <TokenType token={token} type="to"></TokenType>
+        </div> */}
       </header>
     </div>
   )
