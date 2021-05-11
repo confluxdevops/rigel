@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
-import config, {Icon} from '../../../constants/chainConfig'
+import config from '../../../constants/chainConfig'
+import {ChainIcon} from '../../components'
 function TokenNameAndIcon({token}) {
   const [subscriptShown, setSubscriptShown] = useState(false)
   const origin = token.origin
@@ -20,7 +21,7 @@ function TokenNameAndIcon({token}) {
       <img src={token && token.icon} alt="token icon" className="" />
       {subscriptShown && (
         <span className="absolute right-0 bottom-0">
-          <Icon chain={token.origin} className="w-2 h-2"></Icon>
+          <ChainIcon chain={token.origin} className="w-2 h-2"></ChainIcon>
         </span>
       )}
     </div>

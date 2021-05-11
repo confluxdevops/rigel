@@ -1,55 +1,19 @@
-import {IS_DEV} from './../utils'
-import {ReactComponent as BscIcon} from './../assets/images/chain-bsc-logo.svg'
-import {ReactComponent as BtcIcon} from './../assets/images/chain-btc-logo.svg'
-import {ReactComponent as EthIcon} from './../assets/images/chain-eth-logo.svg'
-import {ReactComponent as CfxIcon} from './../assets/images/chain-cfx-logo.svg'
-
-export const ChainShortNameEth = 'eth'
-export const ScanUrlEth = IS_DEV
-  ? 'https://rinkeby.etherscan.io/'
-  : 'https://etherscan.io'
-
-export const ChainShortNameBsc = 'bsc'
-export const ScanUrlBsc = IS_DEV
-  ? 'https://testnet.bscscan.com/'
-  : 'https://bscscan.com/'
-
-export const ChainShortNameCfx = 'cfx'
-export const ScanUrlCfx = IS_DEV
-  ? 'https://testnet.confluxscan.io/'
-  : 'https://confluxscan.io/'
-
-export const ChainShortNameBtc = 'btc'
-export const ScanUrlBtc = IS_DEV
-  ? 'https://blockstream.info/testnet'
-  : 'https://blockstream.info'
-
-const defaultIconClassName = 'w-10 h-10'
-
-export function Icon({chain, className}) {
-  let comp = <></>
-  const finalClass = className || defaultIconClassName
-  switch (chain) {
-    case ChainShortNameEth:
-      comp = <EthIcon className={finalClass} />
-      break
-    case ChainShortNameBsc:
-      comp = <BscIcon className={finalClass} />
-      break
-    case ChainShortNameCfx:
-      comp = <CfxIcon className={finalClass} />
-      break
-    case ChainShortNameBtc:
-      comp = <BtcIcon className={finalClass} />
-      break
-  }
-  return comp
-}
+import {
+  ChainShortNameEth,
+  ChainShortNameBtc,
+  ChainShortNameCfx,
+  ChainShortNameBsc,
+  ScanUrlEth,
+  ScanUrlBsc,
+  ScanUrlCfx,
+  ScanUrlBtc,
+} from '../constants'
+import {ChainIcon} from '../pages/components'
 
 const config = {
   [ChainShortNameEth]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameEth} />
+      return <ChainIcon className={className} chain={ChainShortNameEth} />
     },
     fullName: 'Ethereum',
     shortName: ChainShortNameEth,
@@ -73,7 +37,7 @@ const config = {
   },
   [ChainShortNameBsc]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameBsc} />
+      return <ChainIcon className={className} chain={ChainShortNameBsc} />
     },
     fullName: 'Binance Smart Contract',
     shortName: ChainShortNameBsc,
@@ -97,7 +61,7 @@ const config = {
   },
   [ChainShortNameCfx]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameCfx} />
+      return <ChainIcon className={className} chain={ChainShortNameCfx} />
     },
     fullName: 'Conflux',
     shortName: ChainShortNameCfx,
@@ -121,7 +85,7 @@ const config = {
   },
   [ChainShortNameBtc]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameBtc} />
+      return <ChainIcon className={className} chain={ChainShortNameBtc} />
     },
     fullName: 'Bitcoin',
     shortName: ChainShortNameBtc,

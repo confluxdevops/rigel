@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import {ReactComponent as ArrowRight} from './../../assets/images/arrow-right.svg'
-import TokenNameAndIcon from './../components/TokenNameAndIcon'
+import {ArrowRight} from '../../assets/svg'
+import {WrapIcon} from '../../components'
+import {TokenNameAndIcon} from '../components'
 
 function TokenType({token, onClick, type}) {
   let className = ''
@@ -23,14 +24,16 @@ function TokenType({token, onClick, type}) {
         {token && token.symbol}
       </span>
       {type === 'from' && (
-        <ArrowRight className="w-3.5 h-3.5 ml-1 text-gray-60" />
+        <WrapIcon className="ml-1" size="w-4 h-4">
+          <ArrowRight />
+        </WrapIcon>
       )}
     </div>
   )
 }
 
 TokenType.propTypes = {
-  token: PropTypes.object,
+  token: PropTypes.object.isRequired,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['from', 'to']),
 }
