@@ -1,7 +1,7 @@
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
-import TokenType from './shuttle/TokenType'
+import TokenType from './Shuttle/TokenType'
 import Button from '../components/Button'
 import Tag from '../components/Tag'
 
@@ -15,6 +15,7 @@ function App() {
     reference_name: 'ETH',
     symbol: 'cEth',
   }
+
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <header className="App-header">

@@ -1,8 +1,10 @@
-import {IS_DEV} from './../utils'
-import {ReactComponent as BscIcon} from './../assets/images/chain-bsc-logo.svg'
-import {ReactComponent as BtcIcon} from './../assets/images/chain-btc-logo.svg'
-import {ReactComponent as EthIcon} from './../assets/images/chain-eth-logo.svg'
-import {ReactComponent as CfxIcon} from './../assets/images/chain-cfx-logo.svg'
+// chain config constants
+import {IS_DEV} from '../utils'
+import PropTypes from 'prop-types'
+import bscIcon from '../assets/images/chain-bsc-logo.svg'
+import btcIcon from '../assets/images/chain-btc-logo.svg'
+import ethIcon from '../assets/images/chain-eth-logo.svg'
+import cfxIcon from '../assets/images/chain-cfx-logo.svg'
 
 export const ChainShortNameEth = 'eth'
 export const ScanUrlEth = IS_DEV
@@ -24,32 +26,31 @@ export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
 
-const defaultIconClassName = 'w-10 h-10'
-
-export function Icon({chain, className}) {
-  let comp = <></>
-  const finalClass = className || defaultIconClassName
+export const DefaultChainIconClassName = 'w-10 h-10'
+export function ChainIcon({chain, className}) {
+  const finalClass = className || DefaultChainIconClassName
+  let imgSrc = ''
   switch (chain) {
     case ChainShortNameEth:
-      comp = <EthIcon className={finalClass} />
+      imgSrc = ethIcon
       break
     case ChainShortNameBsc:
-      comp = <BscIcon className={finalClass} />
+      imgSrc = bscIcon
       break
     case ChainShortNameCfx:
-      comp = <CfxIcon className={finalClass} />
+      imgSrc = cfxIcon
       break
     case ChainShortNameBtc:
-      comp = <BtcIcon className={finalClass} />
+      imgSrc = btcIcon
       break
   }
-  return comp
+  return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
 const config = {
   [ChainShortNameEth]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameEth} />
+      return <ChainIcon className={className} chain={ChainShortNameEth} />
     },
     fullName: 'Ethereum',
     shortName: ChainShortNameEth,
@@ -73,7 +74,7 @@ const config = {
   },
   [ChainShortNameBsc]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameBsc} />
+      return <ChainIcon className={className} chain={ChainShortNameBsc} />
     },
     fullName: 'Binance Smart Contract',
     shortName: ChainShortNameBsc,
@@ -97,7 +98,7 @@ const config = {
   },
   [ChainShortNameCfx]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameCfx} />
+      return <ChainIcon className={className} chain={ChainShortNameCfx} />
     },
     fullName: 'Conflux',
     shortName: ChainShortNameCfx,
@@ -121,7 +122,7 @@ const config = {
   },
   [ChainShortNameBtc]: {
     icon(className) {
-      return <Icon className={className} chain={ChainShortNameBtc} />
+      return <ChainIcon className={className} chain={ChainShortNameBtc} />
     },
     fullName: 'Bitcoin',
     shortName: ChainShortNameBtc,
@@ -138,3 +139,8 @@ const config = {
 
 export default config
 export const supportedChains = Object.keys(config)
+
+ChainIcon.propTypes = {
+  chain: PropTypes.oneOf(supportedChains).isRequired,
+  className: PropTypes.string,
+}
