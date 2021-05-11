@@ -1,20 +1,19 @@
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
-import FromToken from './shuttle/fromToken'
-import Button from '../components/Button'
-import Tag from '../components/Tag'
+// import FromToken from './shuttle/FromToken'
+import {Button, Tag} from '../components'
 
 function App() {
   //Data for test
-  const token = {
-    icon:
-      'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
-    name: 'ETH',
-    origin: 'eth',
-    reference_name: 'ETH',
-    symbol: 'cEth',
-  }
+  // const token = {
+  //   icon:
+  //     'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
+  //   name: 'ETH',
+  //   origin: 'eth',
+  //   reference_name: 'ETH',
+  //   symbol: 'cEth',
+  // }
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <header className="App-header">
@@ -29,9 +28,9 @@ function App() {
         >
           Learn React
         </a>
-        <div>
+        {/* <div>
           <FromToken token={token}></FromToken>
-        </div>
+        </div> */}
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
         <Button startIcon={<Logo className=" text-white" />} className="mb-2">
