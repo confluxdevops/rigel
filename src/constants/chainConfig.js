@@ -27,13 +27,6 @@ export const ChainShortNameBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
-
-export const Chains = [
-  ChainShortNameEth,
-  ChainShortNameCfx,
-  ChainShortNameBtc,
-  ChainShortNameBsc,
-]
 export function ChainIcon({chain, className}) {
   const finalClass = className || DefaultChainIconSize
   let imgSrc = ''
@@ -52,11 +45,6 @@ export function ChainIcon({chain, className}) {
       break
   }
   return <img src={imgSrc} className={finalClass} alt={chain} />
-}
-
-ChainIcon.propTypes = {
-  chain: PropTypes.oneOf(Chains).isRequired,
-  className: PropTypes.string,
 }
 
 const config = {
@@ -151,3 +139,7 @@ const config = {
 
 export default config
 export const supportedChains = Object.keys(config)
+ChainIcon.propTypes = {
+  chain: PropTypes.oneOf(supportedChains).isRequired,
+  className: PropTypes.string,
+}
