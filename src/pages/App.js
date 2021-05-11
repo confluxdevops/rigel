@@ -1,7 +1,7 @@
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
-import TokenType from './shuttle/tokenType'
+import TokenType from './shuttle/TokenType'
 import Button from '../components/Button'
 import Tag from '../components/Tag'
 

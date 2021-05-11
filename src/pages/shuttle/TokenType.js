@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import imgArrow from './../../assets/images/arrow-right.svg'
+import {ReactComponent as ArrowRight} from './../../assets/images/arrow-right.svg'
 import TokenNameAndIcon from './../components/TokenNameAndIcon'
+
 function TokenType({token, onClick, type}) {
   let className = ''
   switch (type) {
@@ -22,14 +23,16 @@ function TokenType({token, onClick, type}) {
         {token && token.symbol}
       </span>
       {type === 'from' && (
-        <img src={imgArrow} alt="arraw" className="w-3.5 h-3.5 ml-1" />
+        <ArrowRight className="w-3.5 h-3.5 ml-1 text-gray-60" />
       )}
     </div>
   )
 }
+
 TokenType.propTypes = {
   token: PropTypes.object,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['from', 'to']),
 }
+
 export default TokenType
