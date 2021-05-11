@@ -24,7 +24,7 @@ export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
 
-const defaultIconClassName = 'w-12 h-12'
+const defaultIconClassName = 'w-10 h-10'
 
 export function Icon({chain, className}) {
   let comp = <></>
