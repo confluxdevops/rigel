@@ -1,11 +1,12 @@
+import React, {useState} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import TokenType from './Shuttle/TokenType'
-import Button from '../components/Button'
-import Tag from '../components/Tag'
+import {Button, Tag, Modal, Notification} from '../components'
 
 function App() {
+  const [open, setOpen] = useState(false)
   //Data for test
   const token = {
     icon:
@@ -14,6 +15,18 @@ function App() {
     origin: 'eth',
     reference_name: 'ETH',
     symbol: 'cEth',
+  }
+
+  const openNotification = () => {
+    Notification.success({
+      title: 'Notification Title',
+      content:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      onClick: () => {
+        console.log('Notification Clicked!')
+      },
+      duration: 3,
+    })
   }
 
   return (
@@ -32,7 +45,11 @@ function App() {
         </a>
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
-        <Button startIcon={<Logo className=" text-white" />} className="mb-2">
+        <Button
+          onClick={openNotification}
+          startIcon={<Logo className=" text-white" />}
+          className="mb-2"
+        >
           Work Hard
         </Button>
         <Tag closable color="error">
@@ -44,6 +61,17 @@ function App() {
         <div>
           <TokenType token={token} type="to"></TokenType>
         </div>
+        <Modal
+          open={open}
+          title="Tips"
+          onClose={() => setOpen(false)}
+          content="Get incoming transactions Third party APIs are used to show your incoming transactions in the history. Turn off if you don’t want us to pull data from those services."
+          actions={
+            <Button fullWidth onClick={() => setOpen(false)}>
+              Get
+            </Button>
+          }
+        />
       </header>
     </div>
   )

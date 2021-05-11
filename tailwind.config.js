@@ -15,6 +15,7 @@ module.exports = {
       spacing: {
         15: '3.75rem',
         70: '17.5rem',
+        100: '25rem',
         110: '27.5rem',
       },
       boxShadow: {
@@ -60,6 +61,19 @@ module.exports = {
           'Arial',
           'sans-serif',
         ],
+      },
+      keyframes: {
+        move: {
+          '0%': {
+            transform: 'translateX(100%)',
+          },
+          '100%': {
+            transform: 'translateX(0)',
+          },
+        },
+      },
+      animation: {
+        move: 'move 0.2s ease-in-out 1',
       },
     },
   },
