@@ -1,14 +1,63 @@
-import {
+// chain config constants
+import {IS_DEV} from '../utils'
+import PropTypes from 'prop-types'
+import bscIcon from '../assets/images/chain-bsc-logo.svg'
+import btcIcon from '../assets/images/chain-btc-logo.svg'
+import ethIcon from '../assets/images/chain-eth-logo.svg'
+import cfxIcon from '../assets/images/chain-cfx-logo.svg'
+
+export const DefaultChainIconSize = 'w-10 h-10'
+
+export const ChainShortNameEth = 'eth'
+export const ScanUrlEth = IS_DEV
+  ? 'https://rinkeby.etherscan.io/'
+  : 'https://etherscan.io'
+
+export const ChainShortNameBsc = 'bsc'
+export const ScanUrlBsc = IS_DEV
+  ? 'https://testnet.bscscan.com/'
+  : 'https://bscscan.com/'
+
+export const ChainShortNameCfx = 'cfx'
+export const ScanUrlCfx = IS_DEV
+  ? 'https://testnet.confluxscan.io/'
+  : 'https://confluxscan.io/'
+
+export const ChainShortNameBtc = 'btc'
+export const ScanUrlBtc = IS_DEV
+  ? 'https://blockstream.info/testnet'
+  : 'https://blockstream.info'
+
+export const Chains = [
   ChainShortNameEth,
-  ChainShortNameBtc,
   ChainShortNameCfx,
+  ChainShortNameBtc,
   ChainShortNameBsc,
-  ScanUrlEth,
-  ScanUrlBsc,
-  ScanUrlCfx,
-  ScanUrlBtc,
-} from '../constants'
-import {ChainIcon} from '../pages/components'
+]
+export function ChainIcon({chain, className}) {
+  const finalClass = className || DefaultChainIconSize
+  let imgSrc = ''
+  switch (chain) {
+    case ChainShortNameEth:
+      imgSrc = ethIcon
+      break
+    case ChainShortNameBsc:
+      imgSrc = bscIcon
+      break
+    case ChainShortNameCfx:
+      imgSrc = cfxIcon
+      break
+    case ChainShortNameBtc:
+      imgSrc = btcIcon
+      break
+  }
+  return <img src={imgSrc} className={finalClass} alt={chain} />
+}
+
+ChainIcon.propTypes = {
+  chain: PropTypes.oneOf(Chains).isRequired,
+  className: PropTypes.string,
+}
 
 const config = {
   [ChainShortNameEth]: {

@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
-import config from '../../../constants/chainConfig'
-import {ChainIcon} from '../../components'
+import config, {ChainIcon} from '../../../constants/chainConfig'
 function TokenNameAndIcon({token}) {
   const [subscriptShown, setSubscriptShown] = useState(false)
   const origin = token.origin
