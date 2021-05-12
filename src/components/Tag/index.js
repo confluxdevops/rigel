@@ -3,6 +3,7 @@ import {Close} from '../../assets/svg'
 
 function Tag({
   onClose,
+  onClick,
   className = '',
   children,
   size = 'medium',
@@ -47,8 +48,14 @@ function Tag({
     if (size === 'small') return 'w-2 h-2'
   }
 
+  const onCloseClick = e => {
+    e.stopPropagation()
+    !disabled && onClose && onClose(e)
+  }
+
   return (
     <button
+      onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
       flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
@@ -65,7 +72,7 @@ function Tag({
       {closable && (
         <span
           aria-hidden="true"
-          onClick={() => !disabled && onClose && onClose()}
+          onClick={e => onCloseClick(e)}
           className={`flex items-center focus:outline-none ml-1 ${getIconColor()} ${getIconSize()}`}
         >
           {closeIcon ? closeIcon : <Close />}
@@ -82,6 +89,7 @@ Tag.propTypes = {
   disabled: PropTypes.bool,
   closable: PropTypes.bool,
   onClose: PropTypes.func,
+  onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

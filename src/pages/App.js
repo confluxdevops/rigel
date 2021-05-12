@@ -25,7 +25,7 @@ function App() {
       onClick: () => {
         console.log('Notification Clicked!')
       },
-      duration: 3,
+      duration: 1,
     })
   }
 

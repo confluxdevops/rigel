@@ -101,7 +101,7 @@ function getNotificationInstance(args, callback) {
   const cacheInstance = notificationInstance[cacheKey]
   if (cacheInstance) {
     Promise.resolve(cacheInstance).then(instance => {
-      callback({prefixCls: `${prefixCls}-notice`, instance})
+      callback({instance})
     })
 
     return
@@ -115,7 +115,7 @@ function getNotificationInstance(args, callback) {
     Notification.newInstance(
       {
         prefixCls,
-        className: `${prefixCls}-${placement} absolute`,
+        className: `absolute`,
         style: getPlacementStyle(placement, top, bottom),
         getContainer,
         closeIcon: closeIconToRender,
@@ -123,7 +123,6 @@ function getNotificationInstance(args, callback) {
       notification => {
         resolve(notification)
         callback({
-          prefixCls: `${prefixCls}-notice`,
           instance: notification,
         })
       },
@@ -184,8 +183,8 @@ function getRCNoticeProps(args) {
 }
 
 function notice(args) {
-  getNotificationInstance(args, ({prefixCls, instance}) => {
-    instance.notice(getRCNoticeProps(args, prefixCls))
+  getNotificationInstance(args, ({instance}) => {
+    instance.notice(getRCNoticeProps(args))
   })
 }
 
@@ -209,9 +208,7 @@ const api = {
   },
 }
 
-const typeArr = ['success', 'info', 'warning', 'error']
-
-typeArr.forEach(type => {
+IconTypes.forEach(type => {
   api[type] = args =>
     api.open({
       ...args,
