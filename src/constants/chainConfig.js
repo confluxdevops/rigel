@@ -47,7 +47,7 @@ export function ChainIcon({chain, className}) {
   return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
-const config = {
+const Config = {
   [ChainShortNameEth]: {
     icon(className) {
       return <ChainIcon className={className} chain={ChainShortNameEth} />
@@ -137,10 +137,10 @@ const config = {
   },
 }
 
-export default config
-export const supportedChains = Object.keys(config)
+export default Config
+export const SupportedChains = Object.keys(Config)
 
 ChainIcon.propTypes = {
-  chain: PropTypes.oneOf(supportedChains).isRequired,
+  chain: PropTypes.oneOf(SupportedChains).isRequired,
   className: PropTypes.string,
 }

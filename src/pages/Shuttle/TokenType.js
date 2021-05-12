@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import {ArrowRight} from '../../assets/svg'
 import {WrapIcon} from '../../components'
 import {TokenNameAndIcon} from '../components'
+import {SupportedChains} from '../../constants/chainConfig'
 
-function TokenType({token, onClick, type}) {
+function TokenType({token, onClick, type, chain}) {
   let className = ''
   switch (type) {
     case 'from':
@@ -19,7 +20,7 @@ function TokenType({token, onClick, type}) {
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
     >
-      <TokenNameAndIcon token={token}></TokenNameAndIcon>
+      <TokenNameAndIcon token={token} chain={chain}></TokenNameAndIcon>
       <span className={`text-sm font-normal ml-1 ${className}`}>
         {token && token.symbol}
       </span>
@@ -36,6 +37,7 @@ TokenType.propTypes = {
   token: PropTypes.object.isRequired,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['from', 'to']).isRequired,
+  chain: PropTypes.oneOf(SupportedChains).isRequired,
 }
 
 export default TokenType
