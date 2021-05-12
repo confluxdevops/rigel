@@ -3,7 +3,7 @@ import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import TokenType from './Shuttle/TokenType'
-import {Button, Tag, Modal, Notification} from '../components'
+import {Button, Tag, Modal, Notification, Loading} from '../components'
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -25,7 +25,7 @@ function App() {
       onClick: () => {
         console.log('Notification Clicked!')
       },
-      duration: 1,
+      duration: 0,
     })
   }
 
@@ -45,6 +45,7 @@ function App() {
         </a>
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
+        <Loading />
         <Button
           onClick={openNotification}
           startIcon={<Logo className=" text-white" />}
