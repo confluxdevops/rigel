@@ -25,12 +25,12 @@ function App() {
       onClick: () => {
         console.log('Notification Clicked!')
       },
-      duration: 0,
+      duration: 1,
     })
   }
 
   const info = () => {
-    Message.loading({content: 'this is a message', duration: 0})
+    Message.info({content: 'this is a message'})
   }
 
   return (

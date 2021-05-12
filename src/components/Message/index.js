@@ -13,7 +13,7 @@ let messageInstance
 let defaultDuration = 3
 let defaultTop = 20
 let key = 1
-let defaultTransitionName = 'move-up'
+let defaultTransitionName = 'animation-move-up'
 let defaultGetContainer
 let defaultMaxCount
 
@@ -117,7 +117,7 @@ function getRCNoticeProps(args) {
     key,
     duration,
     style,
-    className: `${className} w-100 p-3 relative ${typeClassName} mb-4`,
+    className: `${className} w-100 p-3 relative ${typeClassName} mb-4 animate-move-down`,
     content: (
       <div className={`text-sm flex items-center`}>
         {icon || IconComponent || null}

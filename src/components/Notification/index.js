@@ -179,7 +179,7 @@ function getRCNoticeProps(args) {
     onClick,
     key,
     style: style || {},
-    className: `${className} p-6 shadow-common rounded w-100 mb-4 relative mr-4 animate-move`,
+    className: `${className} p-6 shadow-common rounded w-100 mb-4 relative mr-4 animate-move-left`,
   }
 }
 
@@ -216,7 +216,5 @@ IconTypes.forEach(type => {
       type,
     })
 })
-
-// api.useNotification = createUseNotification(getNotificationInstance, getRCNoticeProps);
 
 export default api

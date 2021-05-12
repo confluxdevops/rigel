@@ -63,7 +63,7 @@ module.exports = {
         ],
       },
       keyframes: {
-        move: {
+        'move-left': {
           '0%': {
             transform: 'translateX(100%)',
           },
@@ -71,9 +71,27 @@ module.exports = {
             transform: 'translateX(0)',
           },
         },
+        'move-down': {
+          '0%': {
+            transform: 'translateY(-100%)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        },
+        'move-up': {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(100%)',
+          },
+        },
       },
       animation: {
-        move: 'move 0.2s ease-in-out 1',
+        'move-left': 'move-left 0.2s ease-in-out 1',
+        'move-down': 'move-down 0.2s ease-in-out 1',
+        'move-up': 'move-up 0.2s ease-in-out 1',
       },
     },
   },
