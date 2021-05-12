@@ -5,7 +5,6 @@ import error from '../../assets/images/error.svg'
 import success from '../../assets/images/success.svg'
 import warning from '../../assets/images/warning.svg'
 import info from '../../assets/images/info.svg'
-import './index.css'
 
 export const NotificationPlacement = [
   'topLeft',
@@ -31,7 +30,7 @@ function setNotificationConfig(options) {
   }
   if (placement !== undefined) {
     defaultPlacement = placement
-  } else if (options.rtl) {
+  } else {
     defaultPlacement = 'topLeft'
   }
   if (bottom !== undefined) {
@@ -108,7 +107,9 @@ function getNotificationInstance(args, callback) {
   }
 
   const closeIconToRender = (
-    <span className="text-gray-60">{closeIcon || <Close />}</span>
+    <span className="text-gray-60 flex items-center absolute w-4 h-4 top-6 right-6">
+      {closeIcon || <Close />}
+    </span>
   )
 
   notificationInstance[cacheKey] = new Promise(resolve => {
@@ -148,7 +149,7 @@ function getRCNoticeProps(args) {
     onClose,
     onClick,
     key,
-    style,
+    style = {},
     className = '',
   } = args
 

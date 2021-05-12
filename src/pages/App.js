@@ -3,7 +3,7 @@ import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import TokenType from './Shuttle/TokenType'
-import {Button, Tag, Modal, Notification, Loading} from '../components'
+import {Button, Tag, Modal, Loading, Notification, Message} from '../components'
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -18,7 +18,7 @@ function App() {
   }
 
   const openNotification = () => {
-    Notification.success({
+    Notification.open({
       title: 'Notification Title',
       content:
         'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
@@ -27,6 +27,10 @@ function App() {
       },
       duration: 0,
     })
+  }
+
+  const info = () => {
+    Message.loading({content: 'this is a message', duration: 0})
   }
 
   return (
@@ -46,12 +50,13 @@ function App() {
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
         <Loading />
+        <Button onClick={info}>Message</Button>
         <Button
           onClick={openNotification}
           startIcon={<Logo className=" text-white" />}
           className="mb-2"
         >
-          Work Hard
+          Notification
         </Button>
         <Tag closable color="error">
           Max
