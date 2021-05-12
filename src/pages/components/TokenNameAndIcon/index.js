@@ -5,10 +5,10 @@ import {ChainIcon, SupportedChains} from '../../../constants/chainConfig'
 function TokenNameAndIcon({chain, token}) {
   const [subscriptShown, setSubscriptShown] = useState(false)
   useEffect(() => {
-    if (token && token.origin === chain) {
-      setSubscriptShown(false)
-    } else {
+    if (token && token.origin !== chain) {
       setSubscriptShown(true)
+    } else {
+      setSubscriptShown(false)
     }
   }, [chain, token])
   return (
