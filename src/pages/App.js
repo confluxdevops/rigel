@@ -39,10 +39,10 @@ function App() {
           Max
         </Tag>
         <div>
-          <TokenType token={token} type="from"></TokenType>
+          <TokenType token={token} type="from" chain="eth"></TokenType>
         </div>
         <div>
-          <TokenType token={token} type="to"></TokenType>
+          <TokenType token={token} type="to" chain="cfx"></TokenType>
         </div>
       </header>
     </div>
