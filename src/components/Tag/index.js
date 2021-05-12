@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {ReactComponent as Close} from '../../assets/images/close.svg'
+import {Close} from '../../assets/svg'
 
 function Tag({
   onClose,
