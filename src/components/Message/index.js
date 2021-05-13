@@ -5,7 +5,6 @@ import error from '../../assets/images/error.svg'
 import success from '../../assets/images/success.svg'
 import warning from '../../assets/images/warning.svg'
 import info from '../../assets/images/info.svg'
-// import createUseMessage from './hooks/useMessage';
 
 const IconTypes = ['info', 'success', 'error', 'warning', 'loading']
 
@@ -24,7 +23,8 @@ export function getKeyThenIncreaseKey() {
 function setMessageConfig(options) {
   if (options.top !== undefined) {
     defaultTop = options.top
-    messageInstance = null // delete messageInstance for new defaultTop
+    // delete messageInstance for new defaultTop
+    messageInstance = null
   }
   if (options.duration !== undefined) {
     defaultDuration = options.duration
@@ -34,7 +34,8 @@ function setMessageConfig(options) {
   }
   if (options.transitionName !== undefined) {
     defaultTransitionName = options.transitionName
-    messageInstance = null // delete messageInstance for new transitionName
+    // delete messageInstance for new transitionName
+    messageInstance = null
   }
   if (options.maxCount !== undefined) {
     defaultMaxCount = options.maxCount
@@ -58,7 +59,7 @@ function getRCNotificationInstance(args, callback) {
   const instanceConfig = {
     prefixCls,
     transitionName,
-    style: {top: defaultTop}, // 覆盖原来的样式
+    style: {top: defaultTop},
     getContainer,
     maxCount,
     className: 'absolute w-full flex justify-center',
@@ -179,7 +180,5 @@ IconTypes.forEach(type => {
       type,
     })
 })
-
-// api.useMessage = createUseMessage(getRCNotificationInstance, getRCNoticeProps);
 
 export default api

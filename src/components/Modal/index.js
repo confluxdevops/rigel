@@ -1,7 +1,7 @@
 import React, {useRef} from 'react'
+import PropTypes from 'prop-types'
 import {useClickAway} from 'react-use'
 import {Close} from '../../assets/svg'
-import PropTypes from 'prop-types'
 
 function Modal({
   className = '',
