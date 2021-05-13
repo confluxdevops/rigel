@@ -50,7 +50,9 @@ function App() {
         <img src={logoUrl} alt="logo" />
         <Logo className="text-primary" />
         <Loading />
-        <Button onClick={info}>Message</Button>
+        <Button disabled onClick={info}>
+          Message
+        </Button>
         <Button
           onClick={openNotification}
           startIcon={<Logo className=" text-white" />}

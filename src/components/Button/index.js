@@ -86,7 +86,7 @@ function Button({
 
 Button.propTypes = {
   className: PropTypes.string,
-  size: PropTypes.string,
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   color: PropTypes.string,
   variant: PropTypes.string,
   disabled: PropTypes.bool,
