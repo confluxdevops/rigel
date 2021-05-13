@@ -3,7 +3,15 @@ import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
 import TokenType from './Shuttle/TokenType'
-import {Button, Tag, Modal, Loading, Notification, Message} from '../components'
+import {
+  Button,
+  Tag,
+  Modal,
+  Loading,
+  Notification,
+  Message,
+  Dropdown,
+} from '../components'
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -32,6 +40,39 @@ function App() {
   const info = () => {
     Message.info({content: 'this is a message'})
   }
+
+  const menu = (
+    <div>
+      <div>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          1st menu item
+        </a>
+      </div>
+      <div>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.aliyun.com"
+        >
+          2nd menu item
+        </a>
+      </div>
+      <div>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.luohanacademy.com"
+        >
+          3rd menu item
+        </a>
+      </div>
+      <div>a danger item</div>
+    </div>
+  )
 
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
@@ -81,6 +122,9 @@ function App() {
           }
         />
       </header>
+      <Dropdown overlay={menu} placement="bottomRight">
+        <Button onClick={e => e.preventDefault()}>Hover me</Button>
+      </Dropdown>
     </div>
   )
 }
