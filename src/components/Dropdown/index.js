@@ -7,16 +7,13 @@ import {ArrowDown} from '../../assets/svg'
 
 function Dropdown({
   overlay,
-  arrow,
   trigger,
   mouseEnterDelay = 0.15,
   mouseLeaveDelay = 0.1,
   transitionName,
-  overlayClassName,
   disabled,
   placement,
   children,
-  getPopupContainer,
   ...props
 }) {
   const getTransitionName = () => {
@@ -93,10 +90,7 @@ function Dropdown({
   }
   return (
     <RcDropdown
-      arrow={arrow}
       alignPoint={alignPoint}
-      overlayClassName={overlayClassName}
-      getPopupContainer={getPopupContainer || undefined}
       // transitionName={getTransitionName()}
       trigger={triggerActions}
       overlay={() => renderOverlay()}
