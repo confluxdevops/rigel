@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import logoUrl from '../assets/images/logo.svg'
 import './App.css'
@@ -11,6 +11,7 @@ import {
   Notification,
   Message,
   Dropdown,
+  Input,
 } from '../components'
 
 function App() {
@@ -101,6 +102,7 @@ function App() {
         >
           Notification
         </Button>
+        <Input />
         <Tag closable color="error">
           Max
         </Tag>

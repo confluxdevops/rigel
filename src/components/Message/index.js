@@ -1,4 +1,3 @@
-import React from 'react'
 import Notification from 'rc-notification'
 import {Loading} from '../../components'
 import error from '../../assets/images/error.svg'
