@@ -15,6 +15,7 @@ module.exports = {
       spacing: {
         15: '3.75rem',
         70: '17.5rem',
+        100: '25rem',
         110: '27.5rem',
       },
       boxShadow: {
@@ -23,15 +24,15 @@ module.exports = {
       colors: {
         white: '#fff',
         black: '#000',
-        primary: '#44D7B6',
-        error: '#E15C56',
-        success: '#7CD77B',
-        warning: '#FFCA4F',
+        primary: '#44d7B6',
+        error: '#e15c56',
+        success: '#7cd77b',
+        warning: '#ffca4f',
         background: '#373739',
-        'primary-dark': '#16BD98',
-        'error-dark': '#B83C36',
-        'success-dark': '#52B067',
-        'warning-dark': '#EC7910',
+        'primary-dark': '#16bd98',
+        'error-dark': '#b83c36',
+        'success-dark': '#52b067',
+        'warning-dark': '#ec7910',
         'primary-10': 'var(--color-primary-10)',
         'primary-90': 'var(--color-primary-90)',
         'error-10': 'var(--color-error-10)',
@@ -60,6 +61,37 @@ module.exports = {
           'Arial',
           'sans-serif',
         ],
+      },
+      keyframes: {
+        'move-left': {
+          '0%': {
+            transform: 'translateX(100%)',
+          },
+          '100%': {
+            transform: 'translateX(0)',
+          },
+        },
+        'move-down': {
+          '0%': {
+            transform: 'translateY(-100%)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        },
+        'move-up': {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(100%)',
+          },
+        },
+      },
+      animation: {
+        'move-left': 'move-left 0.2s ease-in-out 1',
+        'move-down': 'move-down 0.2s ease-in-out 1',
+        'move-up': 'move-up 0.2s ease-in-out 1',
       },
     },
   },
