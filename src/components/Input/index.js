@@ -38,7 +38,7 @@ function Input({
       >
         {prefix && (
           <div
-            aria-hidden
+            aria-hidden="true"
             onClick={() => setFocused(true)}
             className="pl-3 -mr-2"
           >
@@ -55,7 +55,7 @@ function Input({
         />
         {suffix && (
           <div
-            aria-hidden
+            aria-hidden="true"
             onClick={() => setFocused(true)}
             className="pr-3 -ml-2"
           >
