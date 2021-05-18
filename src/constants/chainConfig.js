@@ -6,27 +6,55 @@ import btcIcon from '../assets/images/chain-btc-logo.svg'
 import ethIcon from '../assets/images/chain-eth-logo.svg'
 import cfxIcon from '../assets/images/chain-cfx-logo.svg'
 
+/**
+ * ethereum config
+ */
 export const ChainShortNameEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io/'
   : 'https://etherscan.io'
+export const ChainIdEth = {
+  MAINNET: 1,
+  ROPSTEN: 3,
+  RINKEBY: 4,
+  GÖRLI: 5,
+  KOVAN: 42,
+}
 
+/**
+ * bsc config
+ */
 export const ChainShortNameBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
   ? 'https://testnet.bscscan.com/'
   : 'https://bscscan.com/'
+export const ChainIdBsc = {
+  MAINNET: 56,
+  TESTNET: 97,
+}
 
+/**
+ * conflux config
+ */
 export const ChainShortNameCfx = 'cfx'
 export const ScanUrlCfx = IS_DEV
   ? 'https://testnet.confluxscan.io/'
   : 'https://confluxscan.io/'
+export const ChainIdCfx = {
+  MAINNET: 1029,
+  TESTNET: 1,
+}
 
+/**
+ * bitcoin config
+ */
 export const ChainShortNameBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
 
 export const DefaultChainIconClassName = 'w-10 h-10'
+
 export function ChainIcon({chain, className}) {
   const finalClass = className || DefaultChainIconClassName
   let imgSrc = ''
@@ -47,6 +75,9 @@ export function ChainIcon({chain, className}) {
   return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
+/**
+ * main config
+ */
 const Config = {
   [ChainShortNameEth]: {
     icon(className) {
@@ -71,6 +102,7 @@ const Config = {
       return {}
     },
     commonTokens: ['ETH', 'USDT', 'eCFX'],
+    supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
   },
   [ChainShortNameBsc]: {
     icon(className) {
@@ -95,6 +127,7 @@ const Config = {
       return {}
     },
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
+    supportedChainIds: Object.values(ChainIdBsc),
   },
   [ChainShortNameCfx]: {
     icon(className) {
@@ -119,6 +152,7 @@ const Config = {
       return {}
     },
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
+    supportedChainIds: Object.values(ChainIdCfx),
   },
   [ChainShortNameBtc]: {
     icon(className) {
