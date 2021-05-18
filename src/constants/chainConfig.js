@@ -127,7 +127,7 @@ const Config = {
       return {}
     },
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
-    supportedChainIds: Object.keys(ChainIdBsc),
+    supportedChainIds: Object.values(ChainIdBsc),
   },
   [ChainShortNameCfx]: {
     icon(className) {
@@ -152,7 +152,7 @@ const Config = {
       return {}
     },
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
-    supportedChainIds: Object.keys(ChainIdCfx),
+    supportedChainIds: Object.values(ChainIdCfx),
   },
   [ChainShortNameBtc]: {
     icon(className) {
