@@ -9,7 +9,6 @@ import cfxIcon from '../assets/images/chain-cfx-logo.svg'
 /**
  * ethereum config
  */
-
 export const ChainShortNameEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io/'
@@ -21,10 +20,10 @@ export const ChainIdEth = {
   GÖRLI: 5,
   KOVAN: 42,
 }
+
 /**
  * bsc config
  */
-
 export const ChainShortNameBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
   ? 'https://testnet.bscscan.com/'
@@ -33,6 +32,7 @@ export const ChainIdBsc = {
   MAINNET: 56,
   TESTNET: 97,
 }
+
 /**
  * conflux config
  */
@@ -44,6 +44,7 @@ export const ChainIdCfx = {
   MAINNET: 1029,
   TESTNET: 1,
 }
+
 /**
  * bitcoin config
  */
@@ -74,6 +75,9 @@ export function ChainIcon({chain, className}) {
   return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
+/**
+ * main config
+ */
 const Config = {
   [ChainShortNameEth]: {
     icon(className) {
