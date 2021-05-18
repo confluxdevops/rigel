@@ -84,7 +84,7 @@ function Tag({
 
 Tag.propTypes = {
   className: PropTypes.string,
-  size: PropTypes.string,
+  size: PropTypes.oneOf(['small', 'medium']),
   color: PropTypes.string,
   disabled: PropTypes.bool,
   closable: PropTypes.bool,

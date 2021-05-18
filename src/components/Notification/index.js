@@ -1,4 +1,3 @@
-import React from 'react'
 import Notification from 'rc-notification'
 import {Close} from '../../assets/svg'
 import error from '../../assets/images/error.svg'
