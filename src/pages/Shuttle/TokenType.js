@@ -21,9 +21,7 @@ function TokenType({token, onClick, type, chain}) {
       aria-hidden="true"
     >
       <TokenNameAndIcon token={token} chain={chain}></TokenNameAndIcon>
-      <span className={`text-sm font-normal ml-1 ${className}`}>
-        {token && token.symbol}
-      </span>
+      <span className={`ml-1 ${className}`}>{token && token.symbol}</span>
       {type === 'from' && (
         <WrapIcon type="circle" className="ml-1" size="w-4 h-4">
           <ArrowRight />
