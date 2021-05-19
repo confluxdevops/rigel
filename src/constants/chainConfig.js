@@ -75,6 +75,9 @@ export function ChainIcon({chain, className}) {
   return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
+export const WalletMetaMask = 'MetaMask'
+export const WalletPortal = 'ConfluxPortal'
+
 /**
  * main config
  */
@@ -103,6 +106,7 @@ const Config = {
     },
     commonTokens: ['ETH', 'USDT', 'eCFX'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
+    wallet: WalletMetaMask,
   },
   [ChainShortNameBsc]: {
     icon(className) {
@@ -128,6 +132,7 @@ const Config = {
     },
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
+    wallet: WalletMetaMask,
   },
   [ChainShortNameCfx]: {
     icon(className) {
@@ -153,6 +158,7 @@ const Config = {
     },
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
+    wallet: WalletPortal,
   },
   [ChainShortNameBtc]: {
     icon(className) {
