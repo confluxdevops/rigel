@@ -116,11 +116,12 @@ function App() {
             <TokenType token={token} type="to" chain="cfx"></TokenType>
           </div>
           <TransactionReceiptionModal
-            type="error"
+            type="success"
             open={false}
             fromChain="cfx"
             toChain="eth"
-            tokenName="KNC"
+            fromToken={{symbol: 'CFX'}}
+            toToken={{symbol: 'eCFX'}}
             value="23.68"
           />
           <Modal

@@ -1,0 +1,10 @@
+{
+  "waiting": "等待确认",
+  "shuttleInfo": "跨 <1>{{value}}</1> {{token}} 去 {{chain}}",
+  "confirm": "在 {{wallet}} 确认这笔交易",
+  "submitted": "交易已发出",
+  "viewOnScan": "去 Scan 上查看",
+  "addTokenToMetaMask": "添加 {{token}} 去 MetaMask",
+  "addedTokenToMetaMask": "已添加 {{token}}",
+  "rejected": "交易被拒绝"
+}

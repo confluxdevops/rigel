@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
+import {useTranslation, Trans} from 'react-i18next'
 import {Modal, Loading, Button} from '../../../components'
 import Config, {
   SupportedChains,
   WalletMetaMask,
 } from '../../../constants/chainConfig'
-import {errorOutlind, successOutlind} from '../../../assets/images'
+import {errorOutlind, successOutlind, metamask} from '../../../assets/images'
+import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 
 function TransactionReceiptionModal({
   open,
@@ -12,20 +14,30 @@ function TransactionReceiptionModal({
   toChain,
   fromChain,
   value,
-  fromTokenName,
-  toTokenName,
+  fromToken,
+  toToken,
   txHash,
 }) {
+  const {t} = useTranslation()
+  const {addToken, success} = useAddTokenToMetamask(toToken)
   let content
-  if (type === 'going') {
+  if (type === 'ongoing') {
+    const token = fromToken.symbol
+    const chain = Config[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
         <span>
-          Shuttle <span>{value}</span> {fromTokenName} to{' '}
-          {Config[toChain].fullName}
+          <Trans
+            i18nKey="shuttleInfo"
+            value={value}
+            token={token}
+            chain={chain}
+          >
+            Shuttle <strong>{{value}}</strong> {{token}} to {{chain}}
+          </Trans>
         </span>
         <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
-          confirm this transaction in {Config[fromChain].wallet}
+          {t('confirm', {wallet: Config[fromChain].wallet})}
         </div>
       </div>
     )
@@ -33,7 +45,7 @@ function TransactionReceiptionModal({
       <Modal
         open={open}
         icon={<Loading />}
-        title="Waiting for confirmation"
+        title={t('waiting')}
         content={content}
       />
     )
@@ -46,11 +58,20 @@ function TransactionReceiptionModal({
           target="_blank"
           rel="noreferrer"
         >
-          View on Scan
+          {t('viewOnScan')}
         </a>
         {Config[toChain].wallet === WalletMetaMask && (
-          <Button variant="outlined" fullWidth className="mt-4">
-            Add {toTokenName} to {Config[toChain].wallet}
+          <Button
+            variant="outlined"
+            fullWidth
+            className="mt-4"
+            endIcon={!success ? <img src={metamask} alt="metamask" /> : null}
+            // TODO: deal with metamask is not installed
+            onClick={addToken}
+          >
+            {success
+              ? t('addedTokenToMetaMask', {token: toToken.symbol})
+              : t('addTokenToMetaMask', {token: toToken.symbol})}
           </Button>
         )}
       </div>
@@ -58,7 +79,7 @@ function TransactionReceiptionModal({
     return (
       <Modal
         open={open}
-        title="Transaction Submitted"
+        title={t('submitted')}
         icon={<img src={successOutlind} alt="success" className="w-12 h-12" />}
         content={content}
       />
@@ -66,7 +87,7 @@ function TransactionReceiptionModal({
   } else if (type === 'error') {
     content = (
       <div className="text-base font-medium text-error flex justify-center">
-        Transaction Rejected
+        {t('rejected')}
       </div>
     )
     return (
@@ -82,12 +103,12 @@ function TransactionReceiptionModal({
 
 TransactionReceiptionModal.propTypes = {
   open: PropTypes.bool,
-  type: PropTypes.oneOf(['going', 'success', 'error']).isRequired,
+  type: PropTypes.oneOf(['ongoing', 'success', 'error']).isRequired,
   toChain: PropTypes.oneOf(SupportedChains),
   fromChain: PropTypes.oneOf(SupportedChains),
   value: PropTypes.string,
-  fromTokenName: PropTypes.string,
-  toTokenName: PropTypes.string,
+  fromToken: PropTypes.object,
+  toToken: PropTypes.object,
   txHash: PropTypes.string,
 }
 
