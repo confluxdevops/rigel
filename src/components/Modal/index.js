@@ -86,6 +86,6 @@ Modal.propTypes = {
     PropTypes.node,
   ]),
   content: PropTypes.node.isRequired,
-  icon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  icon: PropTypes.PropTypes.node,
   closeIcon: PropTypes.node,
 }
