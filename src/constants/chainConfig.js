@@ -1,10 +1,7 @@
 // chain config constants
 import {IS_DEV} from '../utils'
 import PropTypes from 'prop-types'
-import bscIcon from '../assets/images/chain-bsc-logo.svg'
-import btcIcon from '../assets/images/chain-btc-logo.svg'
-import ethIcon from '../assets/images/chain-eth-logo.svg'
-import cfxIcon from '../assets/images/chain-cfx-logo.svg'
+import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
 
 /**
  * ethereum config
@@ -75,6 +72,9 @@ export function ChainIcon({chain, className}) {
   return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
+export const WalletMetaMask = 'MetaMask'
+export const WalletPortal = 'ConfluxPortal'
+
 /**
  * main config
  */
@@ -103,6 +103,7 @@ const Config = {
     },
     commonTokens: ['ETH', 'USDT', 'eCFX'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
+    wallet: WalletMetaMask,
   },
   [ChainShortNameBsc]: {
     icon(className) {
@@ -128,6 +129,7 @@ const Config = {
     },
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
+    wallet: WalletMetaMask,
   },
   [ChainShortNameCfx]: {
     icon(className) {
@@ -153,6 +155,7 @@ const Config = {
     },
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
+    wallet: WalletPortal,
   },
   [ChainShortNameBtc]: {
     icon(className) {

@@ -37,9 +37,9 @@ function Button({
   }
 
   const getSizeStyle = () => {
-    if (size === 'large') return 'text-base h-15'
-    if (size === 'medium') return 'text-sm h-12'
-    if (size === 'small') return 'text-xs h-9'
+    if (size === 'large') return 'text-base h-12'
+    if (size === 'medium') return 'text-sm h-10'
+    if (size === 'small') return 'text-xs h-8'
     return ''
   }
 

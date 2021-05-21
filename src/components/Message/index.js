@@ -1,9 +1,11 @@
 import Notification from 'rc-notification'
 import {Loading} from '../../components'
-import error from '../../assets/images/error.svg'
-import success from '../../assets/images/success.svg'
-import warning from '../../assets/images/warning.svg'
-import info from '../../assets/images/info.svg'
+import {
+  errorFilled,
+  successFilled,
+  warningFilled,
+  infoFilled,
+} from '../../assets/images'
 
 const IconTypes = ['info', 'success', 'error', 'warning', 'loading']
 
@@ -76,10 +78,10 @@ function getRCNotificationInstance(args, callback) {
 }
 
 const typeToIcon = {
-  success: <img className="w-4 h-4 mr-2" src={success} alt="success" />,
-  info: <img className="w-4 h-4 mr-2" src={info} alt="info" />,
-  error: <img className="w-4 h-4 mr-2" src={error} alt="error" />,
-  warning: <img className="w-4 h-4 mr-2" src={warning} alt="warning" />,
+  success: <img className="w-4 h-4 mr-2" src={successFilled} alt="success" />,
+  info: <img className="w-4 h-4 mr-2" src={infoFilled} alt="info" />,
+  error: <img className="w-4 h-4 mr-2" src={errorFilled} alt="error" />,
+  warning: <img className="w-4 h-4 mr-2" src={warningFilled} alt="warning" />,
 }
 
 function getRCNoticeProps(args) {
@@ -119,7 +121,7 @@ function getRCNoticeProps(args) {
     style,
     className: `${className} w-100 p-3 relative ${typeClassName} mb-4 animate-move-down`,
     content: (
-      <div className={`text-sm flex items-center`}>
+      <div className={`flex items-center`}>
         {icon || IconComponent || null}
         <span>{content}</span>
       </div>
