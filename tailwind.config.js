@@ -19,7 +19,7 @@ module.exports = {
         110: '27.5rem',
       },
       boxShadow: {
-        common: '0px 8px 24px 8px rgba(0, 0, 0, 0.06)',
+        common: '0px 8px 24px 8px rgba(0, 0, 0, 0.04)',
       },
       colors: {
         white: '#fff',

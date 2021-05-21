@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types'
-import circle from '../../assets/images/circle.svg'
-import square from '../../assets/images/square.svg'
+import {circleBg, squareBg} from '../../assets/images'
 
 function WrapIcon({type, size = 'w-6 h-6', children, className = ''}) {
   return (
     <div
       className={`${size} relative flex justify-center items-center ${className}`}
     >
-      {type === 'circle' && <img src={circle} alt="circle" className={size} />}
-      {type === 'square' && <img src={square} alt="square" className={size} />}
+      {type === 'circle' && (
+        <img src={circleBg} alt="circle" className={size} />
+      )}
+      {type === 'square' && (
+        <img src={squareBg} alt="square" className={size} />
+      )}
       <div
         className={`${size} absolute inset-0 flex justify-center items-center text-gray-40`}
       >

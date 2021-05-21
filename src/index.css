@@ -63,6 +63,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   @apply font-body;
   @apply text-sm;
+  @apply font-normal;
 }
 
 #root {

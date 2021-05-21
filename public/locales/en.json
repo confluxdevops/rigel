@@ -1,0 +1,10 @@
+{
+  "waiting": "Waiting for confirmation",
+  "shuttleInfo": "Shuttle <1>{{value}}</1> {{token}} to {{chain}}",
+  "confirm": "Confirm this transaction in {{wallet}}",
+  "submitted": "Transaction Submitted",
+  "viewOnScan": "View on Scan",
+  "addTokenToMetaMask": "Add {{token}} to MetaMask",
+  "addedTokenToMetaMask": "Added {{token}}",
+  "rejected": "Transaction Rejected"
+}
