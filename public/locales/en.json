@@ -6,5 +6,12 @@
   "viewOnScan": "View on Scan",
   "addTokenToMetaMask": "Add {{token}} to MetaMask",
   "addedTokenToMetaMask": "Added {{token}}",
-  "rejected": "Transaction Rejected"
+  "rejected": "Transaction Rejected",
+  "installWallet": "Install {{walletName}} Wallet",
+  "installTipOne": " You will need to install {{walletName}} to continue.",
+  "installTipTwo": "Once you have installed, go ahead and refresh the page.",
+  "connectWallet": "Connect Wallet",
+  "loginAndAuth": "Please login and authorize access to your {{walletName}} accounts to continue.",
+  "errorConnecting": "Error Connecting",
+  "tryAgain": "Try Again"
 }

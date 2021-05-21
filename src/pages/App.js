@@ -142,7 +142,7 @@ function App() {
         </Dropdown>
         <div>
           <ConnectWalletModal
-            open={true}
+            open={false}
             chain="eth"
             type="error"
           ></ConnectWalletModal>
