@@ -5,7 +5,11 @@ import Config, {
   SupportedChains,
   WalletMetaMask,
 } from '../../../constants/chainConfig'
-import {errorOutlind, successOutlind, metamask} from '../../../assets/images'
+import {
+  errorOutlind,
+  successOutlind,
+  metamaskLogo,
+} from '../../../assets/images'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 
 function TransactionReceiptionModal({
@@ -22,7 +26,7 @@ function TransactionReceiptionModal({
   const {addToken, success} = useAddTokenToMetamask(toToken)
   let content
   if (type === 'ongoing') {
-    const token = fromToken.symbol
+    const token = fromToken && fromToken.symbol
     const chain = Config[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
@@ -65,13 +69,15 @@ function TransactionReceiptionModal({
             variant="outlined"
             fullWidth
             className="mt-4"
-            endIcon={!success ? <img src={metamask} alt="metamask" /> : null}
+            endIcon={
+              !success ? <img src={metamaskLogo} alt="metamaskLogo" /> : null
+            }
             // TODO: deal with metamask is not installed
             onClick={addToken}
           >
             {success
-              ? t('addedTokenToMetaMask', {token: toToken.symbol})
-              : t('addTokenToMetaMask', {token: toToken.symbol})}
+              ? t('addedTokenToMetaMask', {token: toToken && toToken.symbol})
+              : t('addTokenToMetaMask', {token: toToken && toToken.symbol})}
           </Button>
         )}
       </div>
