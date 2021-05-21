@@ -75,8 +75,14 @@ export function ChainIcon({chain, className}) {
   return <img src={imgSrc} className={finalClass} alt={chain} />
 }
 
-export const WalletMetaMask = 'MetaMask'
-export const WalletPortal = 'ConfluxPortal'
+export const WalletMetaMask = {
+  name: 'MetaMask',
+  website: 'https://metamask.io',
+}
+export const WalletPortal = {
+  name: 'ConfluxPortal',
+  website: 'https://portal.conflux-chain.org',
+}
 
 /**
  * main config

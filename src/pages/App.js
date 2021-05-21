@@ -13,7 +13,7 @@ import {
   Dropdown,
   Input,
 } from '../components'
-
+import ConnectWalletModal from '../pages/components/ConnectWalletModal'
 function App() {
   const [open, setOpen] = useState(false)
   //Data for test
@@ -128,6 +128,13 @@ function App() {
         <Dropdown overlay={menu} placement="bottomRight">
           <Button onClick={e => e.preventDefault()}>Hover me</Button>
         </Dropdown>
+        <div>
+          <ConnectWalletModal
+            open={true}
+            chain="eth"
+            type="error"
+          ></ConnectWalletModal>
+        </div>
       </div>
     </Suspense>
   )
