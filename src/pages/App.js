@@ -137,7 +137,7 @@ function App() {
             }
           />
         </header>
-        <Dropdown overlay={menu} placement="bottomRight">
+        <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
           <Button onClick={e => e.preventDefault()}>Hover me</Button>
         </Dropdown>
       </div>
