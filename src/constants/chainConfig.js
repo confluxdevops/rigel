@@ -1,10 +1,7 @@
 // chain config constants
 import {IS_DEV} from '../utils'
 import PropTypes from 'prop-types'
-import bscIcon from '../assets/images/chain-bsc-logo.svg'
-import btcIcon from '../assets/images/chain-btc-logo.svg'
-import ethIcon from '../assets/images/chain-eth-logo.svg'
-import cfxIcon from '../assets/images/chain-cfx-logo.svg'
+import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
 
 /**
  * ethereum config

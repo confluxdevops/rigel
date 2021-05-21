@@ -1,6 +1,6 @@
 import {useState, Suspense} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
-import logoUrl from '../assets/images/logo.svg'
+import {logo} from '../assets/images'
 import './App.css'
 import TokenType from './Shuttle/TokenType'
 import {
@@ -14,6 +14,8 @@ import {
   Input,
 } from '../components'
 import ConnectWalletModal from '../pages/components/ConnectWalletModal'
+import {TransactionReceiptionModal} from './components'
+
 function App() {
   const [open, setOpen] = useState(false)
   //Data for test
@@ -29,6 +31,7 @@ function App() {
   const openNotification = () => {
     Notification.open({
       title: 'Notification Title',
+      type: 'warning',
       content:
         'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
       onClick: () => {
@@ -90,7 +93,7 @@ function App() {
           >
             Learn React
           </a>
-          <img src={logoUrl} alt="logo" />
+          <img src={logo} alt="logo" />
           <Logo className="text-primary" />
           <Loading />
           <Button disabled onClick={info}>
@@ -113,6 +116,15 @@ function App() {
           <div>
             <TokenType token={token} type="to" chain="cfx"></TokenType>
           </div>
+          <TransactionReceiptionModal
+            type="success"
+            open={false}
+            fromChain="cfx"
+            toChain="eth"
+            fromToken={{symbol: 'CFX'}}
+            toToken={{symbol: 'eCFX'}}
+            value="23.68"
+          />
           <Modal
             open={open}
             title="Tips"
