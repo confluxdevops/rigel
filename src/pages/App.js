@@ -12,6 +12,7 @@ import {
   Message,
   Dropdown,
   Input,
+  MenuItem,
 } from '../components'
 import {TransactionReceiptionModal} from './components'
 
@@ -46,7 +47,7 @@ function App() {
 
   const menu = (
     <div>
-      <div>
+      <MenuItem key="antgroup" selected>
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -54,8 +55,8 @@ function App() {
         >
           1st menu item
         </a>
-      </div>
-      <div>
+      </MenuItem>
+      <MenuItem key="aliyun">
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -63,8 +64,8 @@ function App() {
         >
           2nd menu item
         </a>
-      </div>
-      <div>
+      </MenuItem>
+      <MenuItem key="luohanacademy">
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -72,8 +73,8 @@ function App() {
         >
           3rd menu item
         </a>
-      </div>
-      <div>a danger item</div>
+      </MenuItem>
+      <MenuItem key="danger">a danger item</MenuItem>
     </div>
   )
 

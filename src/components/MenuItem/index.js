@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import defaultSelectedIcon from '../../assets/images/selected-filled-circle.svg'
+import {selectedIcon as defaultSelectedIcon} from '../../assets/images'
 
 function MenuItem({children, key, selected, selectedIcon, icon, onClick}) {
   return (
@@ -11,13 +11,17 @@ function MenuItem({children, key, selected, selectedIcon, icon, onClick}) {
         icon ? 'px-4' : 'pl-12 pr-4'
       } flex items-center bg-gray-0 text-gray-100 hover:bg-gray-10 hover:text-primary`}
     >
-      <div className="flex items-center">
+      <div className="flex items-center flex-1">
         {icon && <span className="flex items-center mr-2 w-6 h-6">{icon}</span>}
         {children}
       </div>
       {selected && (
         <span className="flex items-center w-4 h-4">
-          {selectedIcon ? selectedIcon : defaultSelectedIcon}
+          {selectedIcon ? (
+            selectedIcon
+          ) : (
+            <img src={defaultSelectedIcon} alt="selected" />
+          )}
         </span>
       )}
     </div>
@@ -29,7 +33,7 @@ MenuItem.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  key: PropTypes.string,
+  key: PropTypes.string.isRequired,
   selected: PropTypes.bool,
   selectedIcon: PropTypes.node,
   icon: PropTypes.node,
