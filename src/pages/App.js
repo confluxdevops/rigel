@@ -12,6 +12,7 @@ import {
   Message,
   Dropdown,
   Input,
+  MenuItem,
 } from '../components'
 import {TransactionReceiptionModal} from './components'
 
@@ -44,37 +45,25 @@ function App() {
     Message.info({content: 'this is a message'})
   }
 
+  const clickHandler = key => {
+    console.log(key)
+  }
+
   const menu = (
-    <div>
-      <div>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          1st menu item
-        </a>
-      </div>
-      <div>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          2nd menu item
-        </a>
-      </div>
-      <div>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          3rd menu item
-        </a>
-      </div>
-      <div>a danger item</div>
-    </div>
+    <>
+      <MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
+        1st menu item
+      </MenuItem>
+      <MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
+        2nd menu item
+      </MenuItem>
+      <MenuItem itemKey="luohanacademy" onClick={clickHandler} selected={true}>
+        3rd menu item
+      </MenuItem>
+      <MenuItem itemKey="danger" onClick={clickHandler} selected={false}>
+        a danger item
+      </MenuItem>
+    </>
   )
 
   return (
@@ -136,7 +125,12 @@ function App() {
             }
           />
         </header>
-        <Dropdown overlay={menu} placement="bottomRight">
+        <Dropdown
+          overlay={menu}
+          placement="bottomLeft"
+          trigger={['click']}
+          arrow
+        >
           <Button onClick={e => e.preventDefault()}>Hover me</Button>
         </Dropdown>
       </div>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import RcDropdown from 'rc-dropdown'
 import 'rc-dropdown/assets/index.css'
 import {ArrowDown} from '../../assets/svg'
-
+import './index.css'
 function Dropdown({
   overlay,
   trigger,
