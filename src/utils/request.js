@@ -9,7 +9,7 @@ import {ProxyUrlPrefix} from './../constants'
  * @returns
  */
 export default function jsonRpc(url, method, params) {
-  const data = {id: 1, jsonrpc: '2.0', method, ...params}
+  const data = {id: 1, jsonrpc: '2.0', method, params}
   return fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
