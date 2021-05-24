@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import {selectedIcon as defaultSelectedIcon} from '../../assets/images'
 
-function MenuItem({children, key, selected, selectedIcon, icon, onClick}) {
+function MenuItem({children, itemKey, selected, selectedIcon, icon, onClick}) {
   return (
     <div
-      key={key}
+      key={itemKey}
       aria-hidden="true"
-      onClick={() => onClick(key)}
+      onClick={() => onClick && onClick(itemKey)}
       className={`w-50 h-12 ${
         icon ? 'px-4' : 'pl-12 pr-4'
       } flex items-center bg-gray-0 text-gray-100 hover:bg-gray-10 hover:text-primary`}
@@ -33,7 +33,7 @@ MenuItem.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  key: PropTypes.string.isRequired,
+  itemKey: PropTypes.string.isRequired,
   selected: PropTypes.bool,
   selectedIcon: PropTypes.node,
   icon: PropTypes.node,

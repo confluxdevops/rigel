@@ -45,37 +45,25 @@ function App() {
     Message.info({content: 'this is a message'})
   }
 
+  const clickHandler = key => {
+    console.log(key)
+  }
+
   const menu = (
-    <div>
-      <MenuItem key="antgroup" selected>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          1st menu item
-        </a>
+    <>
+      <MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
+        1st menu item
       </MenuItem>
-      <MenuItem key="aliyun">
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          2nd menu item
-        </a>
+      <MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
+        2nd menu item
       </MenuItem>
-      <MenuItem key="luohanacademy">
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          3rd menu item
-        </a>
+      <MenuItem itemKey="luohanacademy" onClick={clickHandler} selected={true}>
+        3rd menu item
       </MenuItem>
-      <MenuItem key="danger">a danger item</MenuItem>
-    </div>
+      <MenuItem itemKey="danger" onClick={clickHandler} selected={false}>
+        a danger item
+      </MenuItem>
+    </>
   )
 
   return (
@@ -137,7 +125,12 @@ function App() {
             }
           />
         </header>
-        <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+        <Dropdown
+          overlay={menu}
+          placement="bottomLeft"
+          trigger={['click']}
+          arrow
+        >
           <Button onClick={e => e.preventDefault()}>Hover me</Button>
         </Dropdown>
       </div>
