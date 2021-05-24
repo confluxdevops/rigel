@@ -6,7 +6,7 @@ function MenuItem({children, key, selected, selectedIcon, icon, onClick}) {
     <div
       key={key}
       aria-hidden="true"
-      onClick={() => onClick(key)}
+      onClick={() => onClick && onClick(key)}
       className={`w-50 h-12 ${
         icon ? 'px-4' : 'pl-12 pr-4'
       } flex items-center bg-gray-0 text-gray-100 hover:bg-gray-10 hover:text-primary`}
