@@ -1,5 +1,5 @@
 const timeout = 6000
-import {ProxyUrlPrefix} from './../constants'
+import {ProxyUrlPrefix} from '../constants'
 
 /**
  * request the remote api
@@ -21,14 +21,15 @@ export default function jsonRpc(url, method, params) {
   })
     .then(response => {
       if (!response.ok) {
-        const error = new Error()
+        const error = new Error('An error occurred while fetching the data.')
+        error.info = response.json()
         error.status = response.status
-        return Promise.reject(error)
+        throw error
       }
       return response.json()
     })
-    .then(json => {
-      return json.result
+    .then(data => {
+      return data.result
     })
 }
 
