@@ -4,6 +4,8 @@
   "homepage": ".",
   "private": true,
   "dependencies": {
+    "@cfxjs/account": "^0.0.2",
+    "@cfxjs/base32-address": "^0.0.4",
     "@craco/craco": "^6.1.1",
     "@ethersproject/providers": "^5.1.2",
     "@web3-react/core": "^6.1.9",
