@@ -15,9 +15,12 @@ import {
   MenuItem,
 } from '../components'
 import {TransactionReceiptionModal} from './components'
-
+import {requestSponsor} from './../utils/request'
 function App() {
   const [open, setOpen] = useState(false)
+  requestSponsor('getTokenList', ['eth']).then(res => {
+    console.log(res)
+  })
   //Data for test
   const token = {
     icon: 'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
