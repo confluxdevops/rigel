@@ -20,8 +20,7 @@ function App() {
   const [open, setOpen] = useState(false)
   //Data for test
   const token = {
-    icon:
-      'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
+    icon: 'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
     name: 'ETH',
     origin: 'eth',
     reference_name: 'ETH',
@@ -51,7 +50,12 @@ function App() {
 
   const menu = (
     <>
-      <MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
+      <MenuItem
+        itemKey="antgroup"
+        onClick={clickHandler}
+        selected={false}
+        disabled
+      >
         1st menu item
       </MenuItem>
       <MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
