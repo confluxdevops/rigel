@@ -3,6 +3,7 @@ import {getAllTokenList, searchToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
 import Config, {ChainShortNameCfx} from '../constants/chainConfig'
 
+// get all token list from backend
 export function useAllTokenList() {
   const {data} = useSWR(ProxyUrlPrefix.shuttleflow, getAllTokenList, {
     refreshInterval: 60000,
@@ -10,6 +11,7 @@ export function useAllTokenList() {
   return data
 }
 
+// chain token list
 export function useTokenList(chain) {
   const allTokenList = useAllTokenList()
   return allTokenList
@@ -17,54 +19,74 @@ export function useTokenList(chain) {
     .filter(Config[chain].displayFilter)
 }
 
-export function useSearchTokenFromBackend(fromChain, toChain, lowerSearch) {
+// search token address from backend
+function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
+  const searchTokens = useSearchAddressFromsList(chain, search)
   const {data} = useSWR(
-    [ProxyUrlPrefix.shuttleflow, fromChain, toChain, lowerSearch],
+    [
+      Config[chain].checkAddress(search) && searchTokens.length === 0
+        ? ProxyUrlPrefix.shuttleflow
+        : null,
+      fromChain,
+      toChain,
+      search,
+    ],
     searchToken,
   )
   return data ? [data] : []
 }
 
-export function useTokenListBySearch(chain, search, fromChain, toChain) {
+// search token adddress from current list
+function useSearchAddressFromsList(chain, search) {
   const tokenList = useTokenList(chain)
-  const lowerSearch = search.toLowerCase()
-  let filterResult
-  if (search) {
-    if (Config[chain].checkAddress(search)) {
-      // search token addresss
-      filterResult = tokenList.filter(obj => {
-        if (chain === ChainShortNameCfx) {
-          return obj?.ctoken.toLowerCase() === lowerSearch
-        } else {
-          return obj?.reference.toLowerCase() === lowerSearch
-        }
-      })
-      if (filterResult.length === 1) {
-        return filterResult
+
+  if (Config[chain].checkAddress(search)) {
+    return tokenList.filter(obj => {
+      if (chain === ChainShortNameCfx) {
+        return obj?.ctoken.toLowerCase() === search
       } else {
-        // search token address from backend
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        return useSearchTokenFromBackend(fromChain, toChain, lowerSearch)
+        return obj?.reference.toLowerCase() === search
       }
-    } else {
-      // search symnol or name
-      filterResult = tokenList.filter(obj => {
-        if (chain === ChainShortNameCfx) {
-          return (
-            obj?.symbol.toLowerCase().indexOf(lowerSearch) > -1 ||
-            obj?.name.toLowerCase().indexOf(lowerSearch) > -1
-          )
-        } else {
-          return (
-            obj?.reference_symbol.toLowerCase().indexOf(lowerSearch) > -1 ||
-            obj?.reference_name.toLowerCase().indexOf(lowerSearch) > -1
-          )
-        }
-      })
-      if (filterResult.length === 1) return filterResult
-    }
-    return []
+    })
   }
+
+  return []
+}
+
+// serach token name from current list
+function useSearchNameFromList(chain, search) {
+  const tokenList = useTokenList(chain)
+
+  return tokenList.filter(obj => {
+    if (chain === ChainShortNameCfx) {
+      return (
+        obj?.symbol.toLowerCase().indexOf(search) > -1 ||
+        obj?.name.toLowerCase().indexOf(search) > -1
+      )
+    } else {
+      return (
+        obj?.reference_symbol.toLowerCase().indexOf(search) > -1 ||
+        obj?.reference_name.toLowerCase().indexOf(search) > -1
+      )
+    }
+  })
+}
+
+export function useTokenListBySearch(chain, search, fromChain, toChain) {
+  const lowerSearch = search.toLowerCase()
+  const searchAddressFromList = useSearchAddressFromsList(chain, lowerSearch)
+  const searchAddressFromBackend = useSearchAddressFromBackend(
+    chain,
+    lowerSearch,
+    fromChain,
+    toChain,
+  )
+  const searchNameFromList = useSearchNameFromList(chain, lowerSearch)
+
+  if (searchAddressFromList.length === 1) return searchAddressFromList
+  if (searchAddressFromBackend.length === 1) return searchAddressFromBackend
+  if (searchNameFromList.length === 1) return searchNameFromList
+  return []
 }
 
 export function useCommonTokens(chain) {
