@@ -1,3 +1,10 @@
+const TestServerUrl = 'https://test.shuttleflow.confluxnetwork.org'
+const ProxyConfig = {
+  target: TestServerUrl,
+  // target: 'https://shuttleflow.io',
+  changeOrigin: true,
+}
+
 module.exports = {
   style: {
     postcss: {
@@ -11,25 +18,10 @@ module.exports = {
       'Access-Control-Allow-Headers':
         'Origin, X-Requested-With, Content-Type, Accept',
     },
-    liveReload: false,
     host: 'localhost',
     proxy: {
-      '/rpcshuttleflow': {
-        target: 'https://test.shuttleflow.confluxnetwork.org/rpcshuttleflow',
-        // target: 'https://shuttleflow.io/rpcshuttleflow',
-        changeOrigin: true,
-        pathRewrite: {
-          '/rpcshuttleflow': '',
-        },
-      },
-      '/rpcsponsor': {
-        target: 'https://test.shuttleflow.confluxnetwork.org/rpcsponsor',
-        // target: 'https://shuttleflow.io/rpcsponsor',
-        changeOrigin: true,
-        pathRewrite: {
-          '/rpcsponsor': '',
-        },
-      },
+      '/rpcshuttleflow': ProxyConfig,
+      '/rpcsponsor': ProxyConfig,
     },
   },
 }
