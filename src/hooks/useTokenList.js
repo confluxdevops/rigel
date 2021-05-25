@@ -17,6 +17,14 @@ export function useTokenList(chain) {
     .filter(Config[chain].displayFilter)
 }
 
+export function useSearchTokenFromBackend(fromChain, toChain, lowerSearch) {
+  const {data} = useSWR(
+    [ProxyUrlPrefix.shuttleflow, fromChain, toChain, lowerSearch],
+    searchToken,
+  )
+  return data ? [data] : []
+}
+
 export function useTokenListBySearch(chain, search, fromChain, toChain) {
   const tokenList = useTokenList(chain)
   const lowerSearch = search.toLowerCase()
@@ -35,9 +43,8 @@ export function useTokenListBySearch(chain, search, fromChain, toChain) {
         return filterResult
       } else {
         // search token address from backend
-        return searchToken(fromChain, toChain, lowerSearch).then(result =>
-          result ? [result] : [],
-        )
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        return useSearchTokenFromBackend(fromChain, toChain, lowerSearch)
       }
     } else {
       // search symnol or name
