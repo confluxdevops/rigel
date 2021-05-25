@@ -27,8 +27,8 @@ export default function jsonRpc(url, method, params) {
       }
       return response.json()
     })
-    .then(json => {
-      return json.result
+    .then(data => {
+      return data.result
     })
 }
 
