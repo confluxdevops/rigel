@@ -1,3 +1,10 @@
+const TestServerUrl = 'https://test.shuttleflow.confluxnetwork.org'
+const ProxyConfig = {
+  target: TestServerUrl,
+  // target: 'https://shuttleflow.io',
+  changeOrigin: true,
+}
+
 module.exports = {
   style: {
     postcss: {
@@ -5,17 +12,10 @@ module.exports = {
     },
   },
   devServer: {
+    historyApiFallback: true,
     proxy: {
-      '/rpcshuttleflow': {
-        target: 'https://test.shuttleflow.confluxnetwork.org',
-        // target: 'https://shuttleflow.io',
-        changeOrigin: true,
-      },
-      '/rpcsponsor': {
-        target: 'https://test.shuttleflow.confluxnetwork.org',
-        // target: 'https://shuttleflow.io',
-        changeOrigin: true,
-      },
+      '/rpcshuttleflow': ProxyConfig,
+      '/rpcsponsor': ProxyConfig,
     },
   },
 }
