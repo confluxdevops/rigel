@@ -2,6 +2,7 @@ import {useState} from 'react'
 
 import ChainSelect from '../components/ChainSelect'
 import {DefaultFromChain, DefaultToChain} from '../../constants/chainConfig'
+
 function Shuttle() {
   const [fromChain, setFromChain] = useState(DefaultFromChain)
   const [toChain, setToChain] = useState(DefaultToChain)
@@ -22,25 +23,27 @@ function Shuttle() {
 
   return (
     <>
-      <div className="flex">
-        <div className="mr-4 ml-4 w-24">
+      <div className="flex flex-col mt-12">
+        <div className="flex">
+          <div className="mr-4 ml-4 w-24">
+            <ChainSelect
+              chain={fromChain}
+              type="from"
+              onClick={fromChainClickHandler}
+            ></ChainSelect>
+          </div>
+          <div>
+            <span>test2</span>
+          </div>
+        </div>
+        <div className="mr-4 ml-4 mt-24 w-24">
           <ChainSelect
-            chain={fromChain}
-            type="from"
-            onClick={fromChainClickHandler}
+            chain={toChain}
+            type="to"
+            onClick={toChainClickHandler}
+            fromChain={fromChain}
           ></ChainSelect>
         </div>
-        <div>
-          <span>test2</span>
-        </div>
-      </div>
-      <div className="mr-4 ml-4 mt-24 w-24">
-        <ChainSelect
-          chain={toChain}
-          type="to"
-          onClick={toChainClickHandler}
-          fromChain={fromChain}
-        ></ChainSelect>
       </div>
     </>
   )
