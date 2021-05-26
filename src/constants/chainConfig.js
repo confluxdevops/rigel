@@ -1,5 +1,5 @@
 // chain config constants
-import {IS_DEV} from '../utils'
+import {IS_DEV, checkHexAddress, checkCfxTokenAddress} from '../utils'
 import PropTypes from 'prop-types'
 import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
 
@@ -75,6 +75,10 @@ export function ChainIcon({chain, className}) {
 export const WalletMetaMask = 'MetaMask'
 export const WalletPortal = 'ConfluxPortal'
 
+export const displayFilter = obj => {
+  return obj?.supported === 1 && obj?.in_token_list === 1
+}
+
 /**
  * main config
  */
@@ -86,21 +90,12 @@ const Config = {
     fullName: 'Ethereum',
     shortName: ChainShortNameEth,
     tokenName: 'ETH',
-    checkAddress() {
-      //TODO:
-      return true
-    },
+    checkAddress: checkHexAddress,
+    displayFilter,
     scanUrl: ScanUrlEth,
     scanTxUrl: ScanUrlEth + '/tx/',
     scanTokenUrl: ScanUrlEth + '/token/',
-    getTokenList() {
-      //TODO:
-      return {}
-    },
-    getToken() {
-      //TODO:
-      return {}
-    },
+    // TODO
     commonTokens: ['ETH', 'USDT', 'eCFX'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: WalletMetaMask,
@@ -112,21 +107,12 @@ const Config = {
     fullName: 'Binance Smart Contract',
     shortName: ChainShortNameBsc,
     tokenName: 'BNB',
-    checkAddress() {
-      //TODO:
-      return true
-    },
+    checkAddress: checkHexAddress,
+    displayFilter,
     scanUrl: ScanUrlBsc,
     scanTxUrl: ScanUrlBsc + '/tx/',
     scanTokenUrl: ScanUrlBsc + '/token/',
-    getTokenList() {
-      //TODO:
-      return {}
-    },
-    getToken() {
-      //TODO:
-      return {}
-    },
+    // TODO
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: WalletMetaMask,
@@ -138,21 +124,12 @@ const Config = {
     fullName: 'Conflux',
     shortName: ChainShortNameCfx,
     tokenName: 'CFX',
-    checkAddress() {
-      //TODO:
-      return true
-    },
+    checkAddress: checkCfxTokenAddress,
+    displayFilter,
     scanUrl: ScanUrlCfx,
     scanTxUrl: ScanUrlCfx + '/transaction/',
     scanTokenUrl: ScanUrlCfx + '/address/',
-    getTokenList() {
-      //TODO:
-      return {}
-    },
-    getToken() {
-      //TODO:
-      return {}
-    },
+    // TODO
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
     wallet: WalletPortal,
@@ -166,6 +143,9 @@ const Config = {
     tokenName: 'BTC',
     checkAddress() {
       //TODO:
+      return true
+    },
+    displayFilter() {
       return true
     },
     scanUrl: ScanUrlBtc,
