@@ -1,6 +1,7 @@
 import {Suspense} from 'react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Shuttle from '../pages/Shuttle'
+import History from '../pages/History'
 import TokenList from '../pages/Shuttle/TokenList'
 import Example from './Example'
 
@@ -20,6 +21,9 @@ function App() {
             {/* TODO: Remove */}
             <Route path="/example">
               <Example />
+            </Route>
+            <Route path="/history">
+              <History />
             </Route>
             <Route path="/">
               <Shuttle />
