@@ -1,17 +1,17 @@
 import useSWR from 'swr'
-import {getAllTokenList, searchToken} from '../utils/api'
+import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
 import Config, {ChainShortNameCfx} from '../constants/chainConfig'
 
 // get all token list from backend
 export function useAllTokenList() {
-  const {data} = useSWR(ProxyUrlPrefix.shuttleflow, getAllTokenList, {
+  const {data} = useSWR(ProxyUrlPrefix.shuttleflow, requestAllTokenList, {
     refreshInterval: 60000,
   })
   return data
 }
 
-// chain token list
+// token list of one chain
 export function useTokenList(chain) {
   const allTokenList = useAllTokenList()
   return allTokenList
@@ -21,7 +21,7 @@ export function useTokenList(chain) {
 
 // search token address from backend
 function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
-  const searchTokens = useSearchAddressFromsList(chain, search)
+  const searchTokens = useSearchAddressFromList(chain, search)
   const {data} = useSWR(
     [
       Config[chain].checkAddress(search) && searchTokens.length === 0
@@ -31,13 +31,13 @@ function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
       toChain,
       search,
     ],
-    searchToken,
+    requestToken,
   )
   return data ? [data] : []
 }
 
 // search token adddress from current list
-function useSearchAddressFromsList(chain, search) {
+function useSearchAddressFromList(chain, search) {
   const tokenList = useTokenList(chain)
 
   if (Config[chain].checkAddress(search)) {
@@ -74,7 +74,7 @@ function useSearchNameFromList(chain, search) {
 
 export function useTokenListBySearch(chain, search, fromChain, toChain) {
   const lowerSearch = search.toLowerCase()
-  const searchAddressFromList = useSearchAddressFromsList(chain, lowerSearch)
+  const searchAddressFromList = useSearchAddressFromList(chain, lowerSearch)
   const searchAddressFromBackend = useSearchAddressFromBackend(
     chain,
     lowerSearch,
@@ -85,7 +85,7 @@ export function useTokenListBySearch(chain, search, fromChain, toChain) {
 
   if (searchAddressFromList.length === 1) return searchAddressFromList
   if (searchAddressFromBackend.length === 1) return searchAddressFromBackend
-  if (searchNameFromList.length === 1) return searchNameFromList
+  if (searchNameFromList.length > 0) return searchNameFromList
   return []
 }
 

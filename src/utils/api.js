@@ -1,13 +1,13 @@
 import jsonRpc from './request'
 
-export function getAllTokenList(url) {
+export function requestAllTokenList(url) {
   return jsonRpc(url, 'getTokenList', {})
 }
 
-export function searchToken(url, fromChain, toChian, address) {
+export function requestToken(url, fromChain, toChain, address) {
   return jsonRpc(url, 'searchToken', {
     from_chain: fromChain,
-    to_chain: toChian,
+    to_chain: toChain,
     token_address: address,
   })
 }
