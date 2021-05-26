@@ -83,9 +83,10 @@ const Config = {
     icon(className) {
       return <ChainIcon className={className} chain={ChainShortNameEth} />
     },
-    fullName: 'Ethereum',
-    shortName: ChainShortNameEth,
-    tokenName: 'ETH',
+    fullName: 'Ethereum', //full name of the chain
+    shortOfFullName: 'Ethereum', // another short name of full name, the special name: Binance Smart Contract - BSC
+    shortName: ChainShortNameEth, // short name of chain, usually used for fetching api
+    tokenName: 'ETH', //the name of native token for this chain
     checkAddress() {
       //TODO:
       return true
@@ -110,6 +111,7 @@ const Config = {
       return <ChainIcon className={className} chain={ChainShortNameBsc} />
     },
     fullName: 'Binance Smart Contract',
+    shortOfFullName: 'BSC',
     shortName: ChainShortNameBsc,
     tokenName: 'BNB',
     checkAddress() {
@@ -136,6 +138,7 @@ const Config = {
       return <ChainIcon className={className} chain={ChainShortNameCfx} />
     },
     fullName: 'Conflux',
+    shortOfFullName: 'Conflux',
     shortName: ChainShortNameCfx,
     tokenName: 'CFX',
     checkAddress() {
@@ -162,6 +165,7 @@ const Config = {
       return <ChainIcon className={className} chain={ChainShortNameBtc} />
     },
     fullName: 'Bitcoin',
+    shortOfFullName: 'Bitcoin',
     shortName: ChainShortNameBtc,
     tokenName: 'BTC',
     checkAddress() {
@@ -175,7 +179,12 @@ const Config = {
 }
 
 export default Config
+
 export const SupportedChains = Object.keys(Config)
+
+// set default chain to FromChain and ToChain when shuttle
+export const DefaultFromChain = ChainShortNameEth
+export const DefaultToChain = ChainShortNameCfx
 
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,

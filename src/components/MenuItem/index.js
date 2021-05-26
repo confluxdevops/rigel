@@ -3,7 +3,6 @@ import {
   selectedIcon as defaultSelectedIcon,
   disabledIcon,
 } from '../../assets/images'
-
 function MenuItem({
   children,
   itemKey,
@@ -22,7 +21,7 @@ function MenuItem({
     <div
       key={itemKey}
       aria-hidden="true"
-      onClick={() => onClick && onClick(itemKey)}
+      onClick={() => !disabled && onClick && onClick(itemKey)}
       className={`w-50 h-12 ${
         icon ? 'px-4' : 'pl-12 pr-4'
       } flex items-center ${getStyle()}`}
