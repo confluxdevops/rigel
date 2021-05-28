@@ -1,25 +1,34 @@
-import {useState} from 'react'
-
+import {useState, useEffect} from 'react'
+import {usePrevious} from 'react-use'
 import ChainSelect from '../components/ChainSelect'
-import {DefaultFromChain, DefaultToChain} from '../../constants/chainConfig'
+import {
+  DefaultFromChain,
+  DefaultToChain,
+  ChainShortNameCfx,
+} from '../../constants/chainConfig'
 
 function Shuttle() {
   const [fromChain, setFromChain] = useState(DefaultFromChain)
+  const prevFromChain = usePrevious(fromChain)
   const [toChain, setToChain] = useState(DefaultToChain)
-  console.log('fromChain', fromChain)
-  console.log('toChain', toChain)
+  const prevToChain = usePrevious(toChain)
   const fromChainClickHandler = chain => {
     setFromChain(chain)
   }
   const toChainClickHandler = chain => {
     setToChain(chain)
   }
-  // useEffect(()=>{
-  //   if(fromChain==toChain){
-  //     setFromChain(toChain)
-  //     setToChain(fromChain)
-  //   }
-  // },[fromChain,toChain])
+  useEffect(() => {
+    if (fromChain === toChain) {
+      setFromChain(prevToChain)
+      setToChain(prevFromChain)
+    } else {
+      if (fromChain !== ChainShortNameCfx) {
+        setToChain(DefaultToChain)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromChain, toChain])
 
   return (
     <>
