@@ -2,10 +2,8 @@
  * Choose the chain on Shuttle page
  */
 import PropTypes from 'prop-types'
-import Config, {
-  SupportedChains,
-  ChainShortNameCfx,
-} from '../../../constants/chainConfig'
+import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+
 import {MenuItem, Dropdown} from '../../../components'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
@@ -16,8 +14,8 @@ function ChainSelect({type, chain, fromChain, onClick}) {
   }
   const menu = chainsData.map(item => (
     <MenuItem
-      itemKey={item.shortName}
-      key={item.shortName}
+      itemKey={item.key}
+      key={item.key}
       onClick={clickHandler}
       selected={item.selected}
       disabled={item.disabled}
@@ -38,7 +36,7 @@ function ChainSelect({type, chain, fromChain, onClick}) {
         trigger={['click']}
         arrow
       >
-        <span aria-hidden="true">{chainConfig.shortOfFullName}</span>
+        <span aria-hidden="true">{chainConfig.shortName}</span>
       </Dropdown>
     </div>
   )
@@ -66,8 +64,8 @@ function getChainsData(type, chain, fromChain) {
       SupportedChains.forEach(chainName => {
         const ChainConfig = Config[chainName]
         let item = {}
-        item.name = ChainConfig.shortOfFullName
-        item.shortName = ChainConfig.shortName
+        item.key = ChainConfig.key
+        item.name = ChainConfig.fullName
         item.icon = ChainConfig.icon('h-6 w-6')
         item.disabled = false
         if (chainName === chain) {
@@ -82,17 +80,17 @@ function getChainsData(type, chain, fromChain) {
       SupportedChains.forEach(chainName => {
         const ChainConfig = Config[chainName]
         let item = {}
-        item.name = ChainConfig.shortOfFullName
-        item.shortName = ChainConfig.shortName
+        item.key = ChainConfig.key
+        item.name = ChainConfig.fullName
         item.icon = ChainConfig.icon('h-6 w-6')
-        if (fromChain !== ChainShortNameCfx) {
-          if (chainName !== ChainShortNameCfx) {
+        if (fromChain !== KeyOfCfx) {
+          if (chainName !== KeyOfCfx) {
             item.disabled = true
           } else {
             item.disabled = false
           }
         } else {
-          if (chainName === ChainShortNameCfx) {
+          if (chainName === KeyOfCfx) {
             item.disabled = true
           } else {
             item.disabled = false

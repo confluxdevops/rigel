@@ -4,7 +4,7 @@ import ChainSelect from '../components/ChainSelect'
 import {
   DefaultFromChain,
   DefaultToChain,
-  ChainShortNameCfx,
+  KeyOfCfx,
 } from '../../constants/chainConfig'
 
 function Shuttle() {
@@ -23,7 +23,7 @@ function Shuttle() {
       setFromChain(prevToChain)
       setToChain(prevFromChain)
     } else {
-      if (fromChain !== ChainShortNameCfx) {
+      if (fromChain !== KeyOfCfx) {
         setToChain(DefaultToChain)
       }
     }
