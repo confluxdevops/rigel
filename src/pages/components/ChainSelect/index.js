@@ -2,7 +2,6 @@
  * Choose the chain on Shuttle page
  */
 import PropTypes from 'prop-types'
-// import {useState} from 'react'
 import Config, {
   SupportedChains,
   ChainShortNameCfx,
