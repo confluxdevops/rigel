@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
-import Config, {ChainShortNameCfx} from '../constants/chainConfig'
+import Config, {KeyOfCfx} from '../constants/chainConfig'
 
 // get all token list from backend
 export function useAllTokenList() {
@@ -42,7 +42,7 @@ function useSearchAddressFromList(chain, search) {
 
   if (Config[chain].checkAddress(search)) {
     return tokenList.filter(obj => {
-      if (chain === ChainShortNameCfx) {
+      if (chain === KeyOfCfx) {
         return obj?.ctoken.toLowerCase() === search
       } else {
         return obj?.reference.toLowerCase() === search
@@ -58,7 +58,7 @@ function useSearchNameFromList(chain, search) {
   const tokenList = useTokenList(chain)
 
   return tokenList.filter(obj => {
-    if (chain === ChainShortNameCfx) {
+    if (chain === KeyOfCfx) {
       return (
         obj?.symbol.toLowerCase().indexOf(search) > -1 ||
         obj?.name.toLowerCase().indexOf(search) > -1
@@ -95,8 +95,8 @@ export function useCommonTokens(chain) {
   return commonTokens.map(address => {
     return tokenList.filter(
       obj =>
-        (chain === ChainShortNameCfx && address === obj?.cToken) ||
-        (chain !== ChainShortNameCfx && address === obj.reference),
+        (chain === KeyOfCfx && address === obj?.cToken) ||
+        (chain !== KeyOfCfx && address === obj.reference),
     )[0]
   })
 }

@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types'
 import _ from 'underscore'
 import {useTranslation} from 'react-i18next'
-import {
-  SupportedChains,
-  ChainShortNameCfx,
-} from '../../../constants/chainConfig'
+import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
 import {useCommonTokens} from '../../../hooks/useTokenList'
 
 function CommonToken({chain, token, selectedToken, onClick}) {
@@ -16,7 +13,7 @@ function CommonToken({chain, token, selectedToken, onClick}) {
   }
   const getSymbol = () => {
     const {symbol, reference_symbol} = token
-    if (chain === ChainShortNameCfx) return symbol
+    if (chain === KeyOfCfx) return symbol
     return reference_symbol.toUpperCase()
   }
   return (

@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types'
 import _ from 'underscore'
-import {
-  SupportedChains,
-  ChainShortNameCfx,
-} from '../../../constants/chainConfig'
+import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
 import {TokenNameAndIcon} from '../../components'
 import {WrapIcon} from '../../../components'
 import {PlusWithBg} from '../../../assets/svg'
@@ -15,7 +12,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
   const {symbol, name, reference_symbol, reference_name, ctoken, reference} =
     token
   const tokenAddress =
-    chain === ChainShortNameCfx
+    chain === KeyOfCfx
       ? shortenCfxAddress(ctoken)
       : shortenEthAddress(reference)
 
@@ -41,12 +38,10 @@ function TokenItem({chain, token, selectedToken, onClick}) {
         <TokenNameAndIcon size="large" chain={chain} token={token} />
         <div className="flex flex-col ml-2">
           <span className="text-gray-100">
-            {chain === ChainShortNameCfx
-              ? symbol
-              : reference_symbol.toUpperCase()}
+            {chain === KeyOfCfx ? symbol : reference_symbol.toUpperCase()}
           </span>
           <span className="text-gray-40 text-xs">
-            {chain === ChainShortNameCfx ? name : reference_name}
+            {chain === KeyOfCfx ? name : reference_name}
           </span>
         </div>
       </div>
@@ -54,7 +49,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
         {tokenAddress && (
           <span className="text-xs text-primary">{tokenAddress}</span>
         )}
-        {chain !== ChainShortNameCfx && (
+        {chain !== KeyOfCfx && (
           <WrapIcon
             type="circle"
             className="ml-1 cursor-pointer"
