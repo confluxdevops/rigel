@@ -2,12 +2,13 @@
  * Choose the chain on Shuttle page
  */
 import PropTypes from 'prop-types'
-import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import {useState, useEffect} from 'react'
 
+import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
 import {MenuItem, Dropdown} from '../../../components'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
-  const chainsData = getChainsData(type, chain, fromChain)
+  const chainsData = useChainsData(type, chain, fromChain)
   const chainConfig = Config[chain]
   const clickHandler = key => {
     onClick && onClick(key)
@@ -57,53 +58,57 @@ export default ChainSelect
  * @param {*} chain
  * @param {*} fromChain
  */
-function getChainsData(type, chain, fromChain) {
-  let chains = []
-  switch (type) {
-    case 'from':
-      SupportedChains.forEach(chainName => {
-        const ChainConfig = Config[chainName]
-        let item = {}
-        item.key = ChainConfig.key
-        item.name = ChainConfig.fullName
-        item.icon = ChainConfig.icon('h-6 w-6')
-        item.disabled = false
-        if (chainName === chain) {
-          item.selected = true
-        } else {
-          item.selected = false
-        }
-        chains.push(item)
-      })
-      break
-    case 'to':
-      SupportedChains.forEach(chainName => {
-        const ChainConfig = Config[chainName]
-        let item = {}
-        item.key = ChainConfig.key
-        item.name = ChainConfig.fullName
-        item.icon = ChainConfig.icon('h-6 w-6')
-        if (fromChain !== KeyOfCfx) {
-          if (chainName !== KeyOfCfx) {
-            item.disabled = true
+function useChainsData(type, chain, fromChain) {
+  const [chains, setChains] = useState([])
+  useEffect(() => {
+    let chainArr = []
+    switch (type) {
+      case 'from':
+        SupportedChains.forEach(chainName => {
+          const ChainConfig = Config[chainName]
+          let item = {}
+          item.key = ChainConfig.key
+          item.name = ChainConfig.fullName
+          item.icon = ChainConfig.icon('h-6 w-6')
+          item.disabled = false
+          if (chainName === chain) {
+            item.selected = true
           } else {
-            item.disabled = false
+            item.selected = false
           }
-        } else {
-          if (chainName === KeyOfCfx) {
-            item.disabled = true
+          chainArr.push(item)
+        })
+        break
+      case 'to':
+        SupportedChains.forEach(chainName => {
+          const ChainConfig = Config[chainName]
+          let item = {}
+          item.key = ChainConfig.key
+          item.name = ChainConfig.fullName
+          item.icon = ChainConfig.icon('h-6 w-6')
+          if (fromChain !== KeyOfCfx) {
+            if (chainName !== KeyOfCfx) {
+              item.disabled = true
+            } else {
+              item.disabled = false
+            }
           } else {
-            item.disabled = false
+            if (chainName === KeyOfCfx) {
+              item.disabled = true
+            } else {
+              item.disabled = false
+            }
           }
-        }
-        if (chainName === chain) {
-          item.selected = true
-        } else {
-          item.selected = false
-        }
-        chains.push(item)
-      })
-      break
-  }
+          if (chainName === chain) {
+            item.selected = true
+          } else {
+            item.selected = false
+          }
+          chainArr.push(item)
+        })
+        break
+    }
+    setChains(chainArr)
+  }, [type, chain, fromChain])
   return chains
 }

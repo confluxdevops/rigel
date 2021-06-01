@@ -1,6 +1,7 @@
 // chain config constants
-import {IS_DEV, checkHexAddress, checkCfxTokenAddress} from '../utils'
 import PropTypes from 'prop-types'
+
+import {IS_DEV, checkHexAddress, checkCfxTokenAddress} from '../utils'
 import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
 
 /**

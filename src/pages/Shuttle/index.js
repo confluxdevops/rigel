@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import {usePrevious} from 'react-use'
+
 import ChainSelect from '../components/ChainSelect'
 import {
   DefaultFromChain,
@@ -27,8 +28,7 @@ function Shuttle() {
         setToChain(DefaultToChain)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromChain, toChain])
+  }, [fromChain, toChain, prevFromChain, prevToChain])
 
   return (
     <>
