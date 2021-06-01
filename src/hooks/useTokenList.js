@@ -96,7 +96,7 @@ export function useCommonTokens(chain) {
     return tokenList.filter(
       obj =>
         (chain === KeyOfCfx && address === obj?.cToken) ||
-        (chain !== KeyOfCfx && address === obj.reference),
+        (chain !== KeyOfCfx && address === obj?.reference),
     )[0]
   })
 }
