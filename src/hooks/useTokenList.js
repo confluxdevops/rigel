@@ -4,25 +4,6 @@ import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
 import Config, {KeyOfCfx} from '../constants/chainConfig'
 
-function mapToken(token, isCfxChain) {
-  if (!token) return {}
-  const {
-    ctoken,
-    symbol,
-    name,
-    reference,
-    reference_symbol,
-    reference_name,
-    ...others
-  } = token
-  return {
-    symbol: isCfxChain ? symbol : reference_symbol?.toUpperCase(),
-    name: isCfxChain ? name : reference_name,
-    address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
-    ...others,
-  }
-}
-
 export function useIsCfxChain(chain) {
   const isCfxChain = useMemo(() => chain === KeyOfCfx, [chain])
   return isCfxChain
@@ -33,7 +14,22 @@ export function useMapTokenList(chain) {
   const tokenList = useTokenList(chain)
   const isCfxChain = useIsCfxChain(chain)
   return tokenList.map(token => {
-    return mapToken(token, isCfxChain)
+    if (!token) return {}
+    const {
+      ctoken,
+      symbol,
+      name,
+      reference,
+      reference_symbol,
+      reference_name,
+      ...others
+    } = token
+    return {
+      symbol: isCfxChain ? symbol : reference_symbol?.toUpperCase(),
+      name: isCfxChain ? name : reference_name,
+      address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+      ...others,
+    }
   })
 }
 
