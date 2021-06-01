@@ -5,10 +5,10 @@ import Config, {ChainShortNameCfx} from '../constants/chainConfig'
 
 // get all token list from backend
 export function useAllTokenList() {
-  const {data} = useSWR(ProxyUrlPrefix.shuttleflow, requestAllTokenList, {
+  const {data} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
     refreshInterval: 60000,
   })
-  return data
+  return data ? data : []
 }
 
 // token list of one chain
@@ -92,12 +92,12 @@ export function useTokenListBySearch(chain, search, fromChain, toChain) {
 export function useCommonTokens(chain) {
   const tokenList = useTokenList(chain)
   const commonTokens = Config[chain].commonTokens
-  return tokenList.filter(obj => {
-    if (chain === ChainShortNameCfx) {
-      return commonTokens.filter(token => token === obj?.ctoken)
-    } else {
-      return commonTokens.filter(token => token === obj?.reference)
-    }
+  return commonTokens.map(address => {
+    return tokenList.filter(
+      obj =>
+        (chain === ChainShortNameCfx && address === obj?.cToken) ||
+        (chain !== ChainShortNameCfx && address === obj.reference),
+    )[0]
   })
 }
 

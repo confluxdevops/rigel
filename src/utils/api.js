@@ -1,7 +1,7 @@
 import jsonRpc from './request'
 
 export function requestAllTokenList(url) {
-  return jsonRpc(url, 'getTokenList', {})
+  return jsonRpc(url, 'getTokenList', [null])
 }
 
 export function requestToken(url, fromChain, toChain, address) {

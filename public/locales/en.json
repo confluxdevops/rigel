@@ -6,5 +6,9 @@
   "viewOnScan": "View on Scan",
   "addTokenToMetaMask": "Add {{token}} to MetaMask",
   "addedTokenToMetaMask": "Added {{token}}",
-  "rejected": "Transaction Rejected"
+  "rejected": "Transaction Rejected",
+  "searchTokenPlaceholder": "Search token name or contract address",
+  "selectToken": "Select Token",
+  "commonTokens": "Common Tokens",
+  "tokenList": "Token List"
 }

@@ -32,7 +32,7 @@ function Input({
   }
 
   return (
-    <div>
+    <div className={`${width}`}>
       <div
         className={`flex justify-between items-center rounded ${width} ${getDisabledStyle()} ${getSizeStyle()} ${getBorderStyle()} ${className}`}
       >
