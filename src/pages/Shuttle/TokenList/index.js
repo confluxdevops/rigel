@@ -35,7 +35,6 @@ const selectedToken = {
 function TokenList({chain}) {
   const {t} = useTranslation()
   const tokenList = useTokenList(chain)
-  console.log(tokenList)
   return (
     <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl p-6">
       <div className="flex justify-center items-center relative w-full mb-4">
@@ -43,7 +42,7 @@ function TokenList({chain}) {
         <span className="text-base text-gray-100">{t('selectToken')}</span>
       </div>
       <TokenSearch value="" />
-      <CommonTokens chain="eth" selectedToken={selectedToken}></CommonTokens>
+      <CommonTokens chain={chain} selectedToken={selectedToken}></CommonTokens>
       <div className="flex flex-col w-full">
         <span className="text-gray-40 inline-block mb-1">{t('tokenList')}</span>
         <div className="flex flex-col flex-1 overflow-auto -mx-6">
@@ -51,7 +50,7 @@ function TokenList({chain}) {
             <TokenItem
               key={index}
               token={token}
-              chain="eth"
+              chain={chain}
               selectedToken={selectedToken}
             />
           ))}
