@@ -4,17 +4,17 @@ import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
 import {TokenNameAndIcon} from '../../components'
 import {WrapIcon} from '../../../components'
 import {PlusWithBg} from '../../../assets/svg'
-import {shortenEthAddress, shortenCfxAddress} from '../../../utils'
+import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 
 function TokenItem({chain, token, selectedToken, onClick}) {
   const {addToken} = useAddTokenToMetamask(token)
   const {symbol, name, reference_symbol, reference_name, ctoken, reference} =
     token
-  const tokenAddress =
-    chain === KeyOfCfx
-      ? shortenCfxAddress(ctoken)
-      : shortenEthAddress(reference)
+  const tokenAddress = shortenAddress(
+    chain,
+    chain === KeyOfCfx ? ctoken : reference,
+  )
 
   const getSelectedStyle = () => {
     if (_.isEqual(token, selectedToken)) {
