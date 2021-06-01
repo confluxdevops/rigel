@@ -2,13 +2,11 @@ import {useState, useEffect} from 'react'
 import {usePrevious} from 'react-use'
 
 import ChainSelect from '../components/ChainSelect'
-import {
-  DefaultFromChain,
-  DefaultToChain,
-  KeyOfCfx,
-} from '../../constants/chainConfig'
+import {DefaultFromChain, DefaultToChain} from '../../constants/chainConfig'
+import {useIsCfxChain} from '../../hooks/useTokenList'
 
 function Shuttle() {
+  const isFromCfxChain = useIsCfxChain(fromChain)
   const [fromChain, setFromChain] = useState(DefaultFromChain)
   const prevFromChain = usePrevious(fromChain)
   const [toChain, setToChain] = useState(DefaultToChain)
@@ -24,11 +22,11 @@ function Shuttle() {
       setFromChain(prevToChain)
       setToChain(prevFromChain)
     } else {
-      if (fromChain !== KeyOfCfx) {
+      if (!isFromCfxChain) {
         setToChain(DefaultToChain)
       }
     }
-  }, [fromChain, toChain, prevFromChain, prevToChain])
+  }, [fromChain, toChain, prevFromChain, prevToChain, isFromCfxChain])
 
   return (
     <>

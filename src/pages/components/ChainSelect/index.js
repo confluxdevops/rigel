@@ -46,7 +46,7 @@ function ChainSelect({type, chain, fromChain, onClick}) {
 ChainSelect.propTypes = {
   type: PropTypes.oneOf(['from', 'to']).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromChain: PropTypes.oneOf(SupportedChains),
+  fromChain: PropTypes.oneOf(SupportedChains), // only type === to need the value
   onClick: PropTypes.func,
 }
 

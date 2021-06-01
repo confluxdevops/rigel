@@ -1,34 +1,30 @@
 import PropTypes from 'prop-types'
 import _ from 'underscore'
 import {useTranslation} from 'react-i18next'
-import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import {SupportedChains} from '../../../constants/chainConfig'
 import {useCommonTokens} from '../../../hooks/useTokenList'
 
-function CommonToken({chain, token, selectedToken, onClick}) {
+function CommonToken({token, selectedToken, onClick}) {
   const getSelectedStyle = () => {
+    console.log(token, selectedToken)
     if (_.isEqual(token, selectedToken)) {
       return 'bg-primary border border-primary text-white'
     }
     return 'bg-gray-0 border border-gray-20 text-gray-80'
   }
-  const getSymbol = () => {
-    const {symbol, reference_symbol} = token
-    if (chain === KeyOfCfx) return symbol
-    return reference_symbol.toUpperCase()
-  }
+  const {symbol} = token
   return (
     <div
       className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer ${getSelectedStyle()}`}
       onClick={onClick && onClick(token)}
       aria-hidden="true"
     >
-      {getSymbol()}
+      {symbol}
     </div>
   )
 }
 
 CommonToken.propTypes = {
-  chain: PropTypes.oneOf(SupportedChains).isRequired,
   selectedToken: PropTypes.object.isRequired,
   token: PropTypes.object.isRequired,
   onClick: PropTypes.func,
@@ -47,7 +43,6 @@ function CommonTokens({chain, selectedToken, onSelect}) {
               <CommonToken
                 key={index}
                 onClick={onSelect && onSelect(token)}
-                chain={chain}
                 token={token}
                 selectedToken={selectedToken}
               />

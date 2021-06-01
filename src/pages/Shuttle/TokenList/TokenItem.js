@@ -1,20 +1,18 @@
 import PropTypes from 'prop-types'
 import _ from 'underscore'
-import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenNameAndIcon} from '../../components'
 import {WrapIcon} from '../../../components'
 import {PlusWithBg} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
+import {useIsCfxChain} from '../../../hooks/useTokenList'
 
 function TokenItem({chain, token, selectedToken, onClick}) {
   const {addToken} = useAddTokenToMetamask(token)
-  const {symbol, name, reference_symbol, reference_name, ctoken, reference} =
-    token
-  const tokenAddress = shortenAddress(
-    chain,
-    chain === KeyOfCfx ? ctoken : reference,
-  )
+  const {symbol, name, address} = token
+  const isCfxChain = useIsCfxChain(chain)
+  const tokenAddress = shortenAddress(chain, address)
 
   const getSelectedStyle = () => {
     if (_.isEqual(token, selectedToken)) {
@@ -37,19 +35,15 @@ function TokenItem({chain, token, selectedToken, onClick}) {
       <div className="flex items-center">
         <TokenNameAndIcon size="large" chain={chain} token={token} />
         <div className="flex flex-col ml-2">
-          <span className="text-gray-100">
-            {chain === KeyOfCfx ? symbol : reference_symbol.toUpperCase()}
-          </span>
-          <span className="text-gray-40 text-xs">
-            {chain === KeyOfCfx ? name : reference_name}
-          </span>
+          <span className="text-gray-100">{symbol}</span>
+          <span className="text-gray-40 text-xs">{name}</span>
         </div>
       </div>
       <div className="flex">
         {tokenAddress && (
           <span className="text-xs text-primary">{tokenAddress}</span>
         )}
-        {chain !== KeyOfCfx && (
+        {!isCfxChain && (
           <WrapIcon
             type="circle"
             className="ml-1 cursor-pointer"
