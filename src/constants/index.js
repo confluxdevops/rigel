@@ -4,3 +4,7 @@ export const TypeConnectWallet = {
   loading: 'loading',
   error: 'error',
 }
+export const ProxyUrlPrefix = {
+  shuttleflow: '/rpcshuttleflow',
+  sponsor: '/rpcsponsor',
+}
