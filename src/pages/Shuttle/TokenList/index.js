@@ -41,7 +41,7 @@ function TokenList({chain}) {
         <ArrowLeft className="text-gray-40 absolute left-0" />
         <span className="text-base text-gray-100">{t('selectToken')}</span>
       </div>
-      <TokenSearch value="" />
+      <TokenSearch />
       <CommonTokens chain={chain} selectedToken={selectedToken}></CommonTokens>
       <div className="flex flex-col w-full">
         <span className="text-gray-40 inline-block mb-1">{t('tokenList')}</span>

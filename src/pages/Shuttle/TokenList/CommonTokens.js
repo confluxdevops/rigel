@@ -6,7 +6,6 @@ import {useCommonTokens} from '../../../hooks/useTokenList'
 
 function CommonToken({token, selectedToken, onClick}) {
   const getSelectedStyle = () => {
-    console.log(token, selectedToken)
     if (_.isEqual(token, selectedToken)) {
       return 'bg-primary border border-primary text-white'
     }

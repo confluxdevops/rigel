@@ -7,7 +7,7 @@ function TokenSearch({value, onChange}) {
   return (
     <Input
       width="w-full"
-      value={value}
+      value={value || ''}
       onChange={e => onChange && onChange(e.target.value)}
       placeholder={t('searchTokenPlaceholder')}
     />
@@ -15,7 +15,7 @@ function TokenSearch({value, onChange}) {
 }
 
 TokenSearch.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   onChange: PropTypes.func,
 }
 
