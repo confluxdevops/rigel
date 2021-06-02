@@ -12,7 +12,7 @@ import {
   Message,
   Dropdown,
   Input,
-  MenuItem,
+  Menu,
 } from '../components'
 import {TransactionReceiptionModal} from '../pages/components'
 import {requestSponsor} from '../utils/request'
@@ -53,20 +53,20 @@ function Example() {
   }
 
   const menu = (
-    <>
-      <MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
+    <Menu>
+      <Menu.Item itemKey="antgroup" onClick={clickHandler} selected={false}>
         1st menu item
-      </MenuItem>
-      <MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
+      </Menu.Item>
+      <Menu.Item itemKey="aliyun" onClick={clickHandler} selected={false}>
         2nd menu item
-      </MenuItem>
-      <MenuItem itemKey="luohanacademy" onClick={clickHandler} selected={true}>
+      </Menu.Item>
+      <Menu.Item itemKey="luohanacademy" onClick={clickHandler} selected={true}>
         3rd menu item
-      </MenuItem>
-      <MenuItem itemKey="danger" onClick={clickHandler} selected={false}>
+      </Menu.Item>
+      <Menu.Item itemKey="danger" onClick={clickHandler} selected={false}>
         a danger item
-      </MenuItem>
-    </>
+      </Menu.Item>
+    </Menu>
   )
 
   return (

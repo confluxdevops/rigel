@@ -5,48 +5,55 @@ import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
 
 import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
-import {MenuItem, Dropdown} from '../../../components'
+import {Menu, Dropdown} from '../../../components'
+import {ArrowDownFilled} from '../../../assets/svg'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
   const chainsData = useChainsData(type, chain, fromChain)
   const chainConfig = Config[chain]
-  const clickHandler = key => {
-    onClick && onClick(key)
+  const onClickHandler = key => {
+    onClick && onClick(key, type)
   }
-  const menu = chainsData.map(item => (
-    <MenuItem
-      itemKey={item.key}
-      key={item.key}
-      onClick={clickHandler}
-      selected={item.selected}
-      disabled={item.disabled}
-      icon={item.icon}
-    >
-      {item.name}
-    </MenuItem>
-  ))
+  const menu = (
+    <Menu>
+      {chainsData.map(item => (
+        <Menu.Item
+          itemKey={item.key}
+          key={item.key}
+          onClick={onClickHandler}
+          selected={item.selected}
+          disabled={item.disabled}
+          icon={item.icon}
+        >
+          {item.name}
+        </Menu.Item>
+      ))}
+    </Menu>
+  )
+
   const getIcon = chain => {
-    return Config[chain].icon('w-12 h-12')
+    return Config[chain].icon()
   }
   return (
-    <div>
-      {getIcon(chain)}
-      <Dropdown
-        overlay={<>{menu}</>}
-        placement="bottomLeft"
-        trigger={['click']}
-        arrow
+    <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+      <div
+        className="w-26.5 h-24.5 rounded bg-gray-10 p-3 flex flex-col cursor-pointer"
+        aria-hidden="true"
       >
-        <span aria-hidden="true">{chainConfig.shortName}</span>
-      </Dropdown>
-    </div>
+        {getIcon(chain)}
+        <div className="mt-2 flex justify-between items-center w-full">
+          <span className="text-xs text-gray-80">{chainConfig.shortName}</span>
+          <ArrowDownFilled className="w-4 h-4 text-gray-40" />
+        </div>
+      </div>
+    </Dropdown>
   )
 }
 
 ChainSelect.propTypes = {
   type: PropTypes.oneOf(['from', 'to']).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromChain: PropTypes.oneOf(SupportedChains), // only type === to need the value
+  fromChain: PropTypes.oneOf(SupportedChains), // only when type === to need the value
   onClick: PropTypes.func,
 }
 

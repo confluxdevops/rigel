@@ -22,7 +22,7 @@ const selectedToken = {
   origin: 'eth',
   address: '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5',
   name: 'USD Tether',
-  symbol: 'USDT',
+  symbol: 'usdt',
   sponsor: 'cfxtest:aajbjw3xb9u581j4hn0n15ys7t6f61kr1628kf304y',
   sponsor_value: '2999860445361000000',
   supported: 1,
@@ -36,16 +36,20 @@ function TokenList({chain}) {
   const {t} = useTranslation()
   const tokenList = useMapTokenList(chain)
   return (
-    <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl p-6">
-      <div className="flex justify-center items-center relative w-full mb-4">
-        <ArrowLeft className="text-gray-40 absolute left-0" />
+    <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl py-6 shadow-common">
+      <div className="flex justify-center items-center relative w-full mb-4 px-6">
+        <ArrowLeft className="text-gray-40 absolute left-6" />
         <span className="text-base text-gray-100">{t('selectToken')}</span>
       </div>
-      <TokenSearch />
+      <div className="px-6 w-full">
+        <TokenSearch />
+      </div>
       <CommonTokens chain={chain} selectedToken={selectedToken}></CommonTokens>
-      <div className="flex flex-col w-full">
-        <span className="text-gray-40 inline-block mb-1">{t('tokenList')}</span>
-        <div className="flex flex-col flex-1 overflow-auto -mx-6">
+      <div className="flex flex-col w-full overflow-y-hidden">
+        <span className="text-gray-40 inline-block mb-1 px-6">
+          {t('tokenList')}
+        </span>
+        <div className="flex flex-col overflow-auto">
           {tokenList.map((token, index) => (
             <TokenItem
               key={index}

@@ -3,8 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import RcDropdown from 'rc-dropdown'
 import 'rc-dropdown/assets/index.css'
-import {ArrowDown} from '../../assets/svg'
-import './index.css'
+import {ArrowDownOutlined} from '../../assets/svg'
 function Dropdown({
   overlay,
   trigger,
@@ -16,15 +15,16 @@ function Dropdown({
   children,
   ...props
 }) {
-  const getTransitionName = () => {
-    if (transitionName !== undefined) {
-      return transitionName
-    }
-    if (placement && placement.indexOf('top') >= 0) {
-      return 'slide-down'
-    }
-    return 'slide-up'
-  }
+  // custom animation name
+  // const getTransitionName = () => {
+  //   if (transitionName !== undefined) {
+  //     return transitionName
+  //   }
+  //   if (placement && placement.indexOf('top') >= 0) {
+  //     return 'slide-down'
+  //   }
+  //   return 'slide-up'
+  // }
 
   const renderOverlay = () => {
     // rc-dropdown already can process the function of overlay, but we have check logic here.
@@ -53,7 +53,7 @@ function Dropdown({
       typeof expandIcon !== 'undefined' && React.isValidElement(expandIcon) ? (
         expandIcon
       ) : (
-        <ArrowDown className="w-4 h-4 text-gry-40" />
+        <ArrowDownOutlined className="w-4 h-4 text-gry-40" />
       )
 
     const fixedModeOverlay =
@@ -61,6 +61,7 @@ function Dropdown({
         ? overlayNode
         : React.cloneElement(overlayNode, {
             mode: 'vertical',
+            className: 'shadow-common py-2 my-0.5 bg-gray-0 relative',
             selectable,
             focusable,
             expandIcon: overlayNodeExpandIcon,
@@ -88,10 +89,12 @@ function Dropdown({
   if (triggerActions && triggerActions.indexOf('contextMenu') !== -1) {
     alignPoint = true
   }
+
   return (
     <RcDropdown
       alignPoint={alignPoint}
       // transitionName={getTransitionName()}
+      animation="slide-up"
       trigger={triggerActions}
       overlay={() => renderOverlay()}
       placement={getPlacement()}

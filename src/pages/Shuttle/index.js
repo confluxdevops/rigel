@@ -1,32 +1,63 @@
-import {useState, useEffect} from 'react'
-import {usePrevious} from 'react-use'
+import {useEffect} from 'react'
+import queryString from 'query-string'
+import {useHistory, useLocation} from 'react-router-dom'
 
 import ChainSelect from '../components/ChainSelect'
-import {DefaultFromChain, DefaultToChain} from '../../constants/chainConfig'
-import {useIsCfxChain} from '../../hooks/useTokenList'
+import {
+  DefaultFromChain,
+  DefaultToChain,
+  KeyOfCfx,
+} from '../../constants/chainConfig'
 
 function Shuttle() {
-  const isFromCfxChain = useIsCfxChain(fromChain)
-  const [fromChain, setFromChain] = useState(DefaultFromChain)
-  const prevFromChain = usePrevious(fromChain)
-  const [toChain, setToChain] = useState(DefaultToChain)
-  const prevToChain = usePrevious(toChain)
-  const fromChainClickHandler = chain => {
-    setFromChain(chain)
-  }
-  const toChainClickHandler = chain => {
-    setToChain(chain)
-  }
-  useEffect(() => {
-    if (fromChain === toChain) {
-      setFromChain(prevToChain)
-      setToChain(prevFromChain)
-    } else {
-      if (!isFromCfxChain) {
-        setToChain(DefaultToChain)
-      }
+  const location = useLocation()
+  const history = useHistory()
+  const {fromChain, toChain, ...others} = queryString.parse(location.search)
+
+  const onChainChange = (chain, type) => {
+    if (type === 'from' && chain === toChain) {
+      invertChain()
+      return
     }
-  }, [fromChain, toChain, prevFromChain, prevToChain, isFromCfxChain])
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain: type === 'from' ? chain : fromChain,
+        toChain:
+          type === 'to' ? chain : chain !== KeyOfCfx ? KeyOfCfx : toChain,
+      },
+    })
+    history.push(pathWithQuery)
+  }
+
+  const invertChain = () => {
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain: toChain,
+        toChain: fromChain,
+      },
+    })
+    history.push(pathWithQuery)
+  }
+
+  useEffect(() => {
+    if (!fromChain || !toChain) {
+      const nFromChain = fromChain || DefaultFromChain
+      const nToChain = toChain || DefaultToChain
+      const pathWithQuery = queryString.stringifyUrl({
+        url: location.pathname,
+        query: {
+          ...others,
+          fromChain: nFromChain,
+          toChain: nToChain,
+        },
+      })
+      history.push(pathWithQuery)
+    }
+  }, [fromChain, toChain, history, location.pathname, others])
 
   return (
     <>
@@ -34,9 +65,9 @@ function Shuttle() {
         <div className="flex">
           <div className="mr-4 ml-4 w-24">
             <ChainSelect
-              chain={fromChain}
+              chain={fromChain || DefaultFromChain}
               type="from"
-              onClick={fromChainClickHandler}
+              onClick={onChainChange}
             ></ChainSelect>
           </div>
           <div>
@@ -45,10 +76,10 @@ function Shuttle() {
         </div>
         <div className="mr-4 ml-4 mt-24 w-24">
           <ChainSelect
-            chain={toChain}
+            chain={toChain || DefaultToChain}
             type="to"
-            onClick={toChainClickHandler}
-            fromChain={fromChain}
+            onClick={onChainChange}
+            fromChain={fromChain || DefaultFromChain}
           ></ChainSelect>
         </div>
       </div>
