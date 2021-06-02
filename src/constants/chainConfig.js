@@ -1,12 +1,14 @@
 // chain config constants
-import {IS_DEV, checkHexAddress, checkCfxTokenAddress} from '../utils'
 import PropTypes from 'prop-types'
+
+import {IS_DEV} from '../utils'
+import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
 import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
 
 /**
  * ethereum config
  */
-export const ChainShortNameEth = 'eth'
+export const KeyOfEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io/'
   : 'https://etherscan.io'
@@ -21,7 +23,7 @@ export const ChainIdEth = {
 /**
  * bsc config
  */
-export const ChainShortNameBsc = 'bsc'
+export const KeyOfBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
   ? 'https://testnet.bscscan.com/'
   : 'https://bscscan.com/'
@@ -33,7 +35,7 @@ export const ChainIdBsc = {
 /**
  * conflux config
  */
-export const ChainShortNameCfx = 'cfx'
+export const KeyOfCfx = 'cfx'
 export const ScanUrlCfx = IS_DEV
   ? 'https://testnet.confluxscan.io/'
   : 'https://confluxscan.io/'
@@ -45,7 +47,7 @@ export const ChainIdCfx = {
 /**
  * bitcoin config
  */
-export const ChainShortNameBtc = 'btc'
+export const KeyOfBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
@@ -56,16 +58,16 @@ export function ChainIcon({chain, className}) {
   const finalClass = className || DefaultChainIconClassName
   let imgSrc = ''
   switch (chain) {
-    case ChainShortNameEth:
+    case KeyOfEth:
       imgSrc = ethIcon
       break
-    case ChainShortNameBsc:
+    case KeyOfBsc:
       imgSrc = bscIcon
       break
-    case ChainShortNameCfx:
+    case KeyOfCfx:
       imgSrc = cfxIcon
       break
-    case ChainShortNameBtc:
+    case KeyOfBtc:
       imgSrc = btcIcon
       break
   }
@@ -89,29 +91,32 @@ export const displayFilter = obj => {
  * main config
  */
 const Config = {
-  [ChainShortNameEth]: {
+  [KeyOfEth]: {
+    key: KeyOfEth,
     icon(className) {
-      return <ChainIcon className={className} chain={ChainShortNameEth} />
+      return <ChainIcon className={className} chain={KeyOfEth} />
     },
-    fullName: 'Ethereum',
-    shortName: ChainShortNameEth,
-    tokenName: 'ETH',
+    fullName: 'Ethereum', //full name of the chain
+    shortName: 'Ethereum', // short name of chain, usually used for fetching api
+    tokenName: 'ETH', //the name of native token for this chain
     checkAddress: checkHexAddress,
     displayFilter,
     scanUrl: ScanUrlEth,
     scanTxUrl: ScanUrlEth + '/tx/',
     scanTokenUrl: ScanUrlEth + '/token/',
     // TODO
-    commonTokens: ['ETH', 'USDT', 'eCFX'],
+    // commonTokens: ['ETH', 'USDT', 'eCFX'],
+    commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: WalletMetaMask,
   },
-  [ChainShortNameBsc]: {
+  [KeyOfBsc]: {
+    key: KeyOfBsc,
     icon(className) {
-      return <ChainIcon className={className} chain={ChainShortNameBsc} />
+      return <ChainIcon className={className} chain={KeyOfBsc} />
     },
     fullName: 'Binance Smart Contract',
-    shortName: ChainShortNameBsc,
+    shortName: 'BSC',
     tokenName: 'BNB',
     checkAddress: checkHexAddress,
     displayFilter,
@@ -123,12 +128,13 @@ const Config = {
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: WalletMetaMask,
   },
-  [ChainShortNameCfx]: {
+  [KeyOfCfx]: {
+    key: KeyOfCfx,
     icon(className) {
-      return <ChainIcon className={className} chain={ChainShortNameCfx} />
+      return <ChainIcon className={className} chain={KeyOfCfx} />
     },
     fullName: 'Conflux',
-    shortName: ChainShortNameCfx,
+    shortName: 'Conflux',
     tokenName: 'CFX',
     checkAddress: checkCfxTokenAddress,
     displayFilter,
@@ -140,12 +146,13 @@ const Config = {
     supportedChainIds: Object.values(ChainIdCfx),
     wallet: WalletPortal,
   },
-  [ChainShortNameBtc]: {
+  [KeyOfBtc]: {
+    key: KeyOfBtc,
     icon(className) {
-      return <ChainIcon className={className} chain={ChainShortNameBtc} />
+      return <ChainIcon className={className} chain={KeyOfBtc} />
     },
     fullName: 'Bitcoin',
-    shortName: ChainShortNameBtc,
+    shortName: 'Bitcoin',
     tokenName: 'BTC',
     checkAddress() {
       //TODO:
@@ -161,7 +168,12 @@ const Config = {
 }
 
 export default Config
+
 export const SupportedChains = Object.keys(Config)
+
+// set default chain to FromChain and ToChain when shuttle
+export const DefaultFromChain = KeyOfEth
+export const DefaultToChain = KeyOfCfx
 
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,

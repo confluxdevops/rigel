@@ -9,14 +9,14 @@ function App() {
   return (
     <Suspense fallback={null}>
       <Router>
-        <div className="container mx-auto h-full flex justify-center items-center">
+        <div className="container mx-auto h-full flex justify-center pb-6">
           <Switch>
             <Route path="/shuttle">
               <Shuttle />
             </Route>
             {/* TODO: Remove */}
             <Route path="/tokenlist">
-              <TokenList />
+              <TokenList chain="eth" />
             </Route>
             {/* TODO: Remove */}
             <Route path="/example">

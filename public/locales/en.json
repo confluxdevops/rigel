@@ -13,5 +13,9 @@
   "connectWallet": "Connect Wallet",
   "loginAndAuth": "Please login and authorize access to your {{walletName}} accounts to continue.",
   "errorConnecting": "Error Connecting",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+  "searchTokenPlaceholder": "Search token name or contract address",
+  "selectToken": "Select Token",
+  "commonTokens": "Common Tokens",
+  "tokenList": "Token List"
 }

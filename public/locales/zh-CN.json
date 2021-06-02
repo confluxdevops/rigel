@@ -13,5 +13,9 @@
   "connectWallet": "Connect Wallet",
   "loginAndAuth": "Please login and authorize access to your {{walletName}} accounts to continue.",
   "errorConnecting": "Error Connecting",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+  "searchTokenPlaceholder": "搜索代币名称或者合约地址",
+  "selectToken": "选择代币",
+  "commonTokens": "常用代币",
+  "tokenList": "代币列表"
 }
