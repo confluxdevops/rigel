@@ -19,6 +19,9 @@ module.exports = {
         100: '25rem',
         110: '27.5rem',
       },
+      borderRadius: {
+        '2.5xl': '1.25rem',
+      },
       boxShadow: {
         common: '0px 8px 24px 8px rgba(0, 0, 0, 0.04)',
       },

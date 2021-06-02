@@ -6,5 +6,9 @@
   "viewOnScan": "去 Scan 上查看",
   "addTokenToMetaMask": "添加 {{token}} 去 MetaMask",
   "addedTokenToMetaMask": "已添加 {{token}}",
-  "rejected": "交易被拒绝"
+  "rejected": "交易被拒绝",
+  "searchTokenPlaceholder": "搜索代币名称或者合约地址",
+  "selectToken": "选择代币",
+  "commonTokens": "常用代币",
+  "tokenList": "代币列表"
 }

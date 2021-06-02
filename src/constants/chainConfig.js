@@ -1,7 +1,8 @@
 // chain config constants
 import PropTypes from 'prop-types'
 
-import {IS_DEV, checkHexAddress, checkCfxTokenAddress} from '../utils'
+import {IS_DEV} from '../utils'
+import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
 import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
 
 /**
@@ -98,7 +99,8 @@ const Config = {
     scanTxUrl: ScanUrlEth + '/tx/',
     scanTokenUrl: ScanUrlEth + '/token/',
     // TODO
-    commonTokens: ['ETH', 'USDT', 'eCFX'],
+    // commonTokens: ['ETH', 'USDT', 'eCFX'],
+    commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: WalletMetaMask,
   },

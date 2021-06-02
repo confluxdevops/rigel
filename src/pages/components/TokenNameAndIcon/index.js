@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {ChainIcon, SupportedChains} from '../../../constants/chainConfig'
 
-function TokenNameAndIcon({chain, token}) {
+function TokenNameAndIcon({chain, token, size = 'medium'}) {
   const [subscriptShown, setSubscriptShown] = useState(false)
   useEffect(() => {
     if (token && token.origin !== chain) {
@@ -12,13 +12,13 @@ function TokenNameAndIcon({chain, token}) {
     }
   }, [chain, token])
   return (
-    <div className="w-4 h-4 relative">
+    <div className={`${size === 'large' ? 'w-7 h-7' : 'w-4 h-4'} relative`}>
       <img src={token && token.icon} alt="token icon" className="" />
       {subscriptShown && (
         <span className="absolute right-0 bottom-0">
           <ChainIcon
             chain={token && token.origin}
-            className="w-2 h-2"
+            className={`${size === 'large' ? 'w-3 h-3' : 'w-2 h-2'}`}
           ></ChainIcon>
         </span>
       )}
@@ -29,6 +29,7 @@ function TokenNameAndIcon({chain, token}) {
 TokenNameAndIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   token: PropTypes.object.isRequired,
+  size: PropTypes.oneOf(['medium', 'large']),
 }
 
 export default TokenNameAndIcon

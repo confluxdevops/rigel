@@ -1,14 +1,45 @@
+import {useMemo} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
 import Config, {KeyOfCfx} from '../constants/chainConfig'
 
+export function useIsCfxChain(chain) {
+  const isCfxChain = useMemo(() => chain === KeyOfCfx, [chain])
+  return isCfxChain
+}
+
+// only use for display
+export function useMapTokenList(chain) {
+  const tokenList = useTokenList(chain)
+  console.log(tokenList)
+  const isCfxChain = useIsCfxChain(chain)
+  return tokenList.map(token => {
+    if (!token) return {}
+    const {
+      ctoken,
+      symbol,
+      name,
+      reference,
+      reference_symbol,
+      reference_name,
+      ...others
+    } = token
+    return {
+      symbol: isCfxChain ? symbol : reference_symbol,
+      name: isCfxChain ? name : reference_name,
+      address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+      ...others,
+    }
+  })
+}
+
 // get all token list from backend
 export function useAllTokenList() {
-  const {data} = useSWR(ProxyUrlPrefix.shuttleflow, requestAllTokenList, {
+  const {data} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
     refreshInterval: 60000,
   })
-  return data
+  return data ? data : []
 }
 
 // token list of one chain
@@ -38,15 +69,11 @@ function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
 
 // search token adddress from current list
 function useSearchAddressFromList(chain, search) {
-  const tokenList = useTokenList(chain)
+  const tokenList = useMapTokenList(chain)
 
   if (Config[chain].checkAddress(search)) {
     return tokenList.filter(obj => {
-      if (chain === KeyOfCfx) {
-        return obj?.ctoken.toLowerCase() === search
-      } else {
-        return obj?.reference.toLowerCase() === search
-      }
+      return obj?.address?.toLowerCase() === search
     })
   }
 
@@ -55,25 +82,18 @@ function useSearchAddressFromList(chain, search) {
 
 // serach token name from current list
 function useSearchNameFromList(chain, search) {
-  const tokenList = useTokenList(chain)
+  const tokenList = useMapTokenList(chain)
 
   return tokenList.filter(obj => {
-    if (chain === KeyOfCfx) {
-      return (
-        obj?.symbol.toLowerCase().indexOf(search) > -1 ||
-        obj?.name.toLowerCase().indexOf(search) > -1
-      )
-    } else {
-      return (
-        obj?.reference_symbol.toLowerCase().indexOf(search) > -1 ||
-        obj?.reference_name.toLowerCase().indexOf(search) > -1
-      )
-    }
+    return (
+      obj?.symbol?.toLowerCase().indexOf(search) > -1 ||
+      obj?.name?.toLowerCase().indexOf(search) > -1
+    )
   })
 }
 
 export function useTokenListBySearch(chain, search, fromChain, toChain) {
-  const lowerSearch = search.toLowerCase()
+  const lowerSearch = search?.toLowerCase()
   const searchAddressFromList = useSearchAddressFromList(chain, lowerSearch)
   const searchAddressFromBackend = useSearchAddressFromBackend(
     chain,
@@ -90,14 +110,10 @@ export function useTokenListBySearch(chain, search, fromChain, toChain) {
 }
 
 export function useCommonTokens(chain) {
-  const tokenList = useTokenList(chain)
+  const tokenList = useMapTokenList(chain)
   const commonTokens = Config[chain].commonTokens
-  return tokenList.filter(obj => {
-    if (chain === KeyOfCfx) {
-      return commonTokens.filter(token => token === obj?.ctoken)
-    } else {
-      return commonTokens.filter(token => token === obj?.reference)
-    }
+  return commonTokens.map(address => {
+    return tokenList.filter(obj => address === obj?.address)[0]
   })
 }
 
