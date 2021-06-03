@@ -61,7 +61,7 @@ function Dropdown({
         ? overlayNode
         : React.cloneElement(overlayNode, {
             mode: 'vertical',
-            className: 'shadow-common py-2 my-0.5 bg-gray-0 relative',
+            className: 'shadow-2 py-2 my-0.5 bg-gray-0 relative',
             selectable,
             focusable,
             expandIcon: overlayNodeExpandIcon,
