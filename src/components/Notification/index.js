@@ -180,7 +180,7 @@ function getRCNoticeProps(args) {
     onClick,
     key,
     style: style || {},
-    className: `${className} p-6 shadow-common rounded w-100 mb-4 relative mr-4 animate-move-left`,
+    className: `${className} p-6 shadow-2 rounded w-100 mb-4 relative mr-4 animate-move-left`,
   }
 }
 
