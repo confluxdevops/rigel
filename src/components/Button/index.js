@@ -8,6 +8,7 @@ function Button({
   variant = 'contained',
   disabled = false,
   fullWidth = false,
+  danger = false,
   startIcon,
   endIcon,
   ...props
@@ -24,12 +25,16 @@ function Button({
   const getColorStyle = () => {
     if (disabled) return ''
     if (variant === 'text') {
+      if (danger) return 'text error bg-transparent hover:bg-error-10'
       if (color === 'primary')
-        return 'text-primary bg-transparent hover:text-primary-dark'
+        return 'text-gray-80 bg-transparent hover:bg-gray-4'
     } else if (variant === 'outlined') {
+      if (danger)
+        return 'border border-error text-error bg-white hover:border-error-dark hover:text-error-dark'
       if (color === 'primary')
         return 'border border-primary text-primary bg-white hover:border-primary-dark hover:text-primary-dark'
     } else if (variant === 'contained') {
+      if (danger) return 'text-white bg-error hover:bg-error-dark'
       if (color === 'primary')
         return 'text-white bg-primary hover:bg-primary-dark'
     }
@@ -91,6 +96,7 @@ Button.propTypes = {
   variant: PropTypes.string,
   disabled: PropTypes.bool,
   fullWidth: PropTypes.bool,
+  danger: PropTypes.bool,
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
