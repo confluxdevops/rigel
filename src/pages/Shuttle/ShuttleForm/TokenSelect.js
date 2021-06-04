@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import {ArrowRightWithBg} from '../../../../assets/svg'
-import {WrapIcon} from '../../../../components'
-import {TokenIcon} from '../../../components'
-import {SupportedChains} from '../../../../constants/chainConfig'
+import {ArrowRightWithBg} from '../../../assets/svg'
+import {WrapIcon} from '../../../components'
+import {TokenIcon} from '../../components'
+import {SupportedChains} from '../../../constants/chainConfig'
 
 function TokenSelect({token, onClick, type, chain}) {
   let className = ''

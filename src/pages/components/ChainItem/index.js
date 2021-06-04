@@ -8,7 +8,7 @@ function ChainItem({chain}) {
   }
   return (
     <div className="flex flex-col">
-      {getIcon(chain)}
+      {getIcon()}
       <span className="text-xs text-gray-80 mt-2">{chainConfig.shortName}</span>
     </div>
   )

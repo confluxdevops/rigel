@@ -2,7 +2,7 @@
 import {useState} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import {logo} from '../assets/images'
-import {TokenSelect} from '../pages/Shuttle/components'
+import TokenSelect from '../pages/Shuttle/ShuttleForm/TokenSelect'
 import {
   Button,
   Tag,

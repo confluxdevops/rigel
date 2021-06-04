@@ -15,7 +15,7 @@ function Dropdown({
   children,
   ...props
 }) {
-  // custom animation name
+  // TODO: custom animation name
   // const getTransitionName = () => {
   //   if (transitionName !== undefined) {
   //     return transitionName

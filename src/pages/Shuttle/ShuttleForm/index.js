@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import {useTranslation} from 'react-i18next'
 import {useHistory, useLocation} from 'react-router-dom'
 
-import {ChainSelect} from '../components'
+import ChainSelect from './ChainSelect'
 import {WrapIcon, Button} from '../../../components'
 import {
   DefaultFromChain,

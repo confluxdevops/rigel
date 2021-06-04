@@ -4,13 +4,10 @@
 import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
 
-import Config, {
-  SupportedChains,
-  KeyOfCfx,
-} from '../../../../constants/chainConfig'
-import {Menu, Dropdown} from '../../../../components'
-import {ArrowDownFilled} from '../../../../assets/svg'
-import {ChainItem} from '../../../components'
+import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import {Menu, Dropdown} from '../../../components'
+import {ArrowDownFilled} from '../../../assets/svg'
+import {ChainItem} from '../../components'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
   const chainsData = useChainsData(type, chain, fromChain)
