@@ -4,13 +4,16 @@
 import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
 
-import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
-import {Menu, Dropdown} from '../../../components'
-import {ArrowDownFilled} from '../../../assets/svg'
+import Config, {
+  SupportedChains,
+  KeyOfCfx,
+} from '../../../../constants/chainConfig'
+import {Menu, Dropdown} from '../../../../components'
+import {ArrowDownFilled} from '../../../../assets/svg'
+import {ChainItem} from '../../../components'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
   const chainsData = useChainsData(type, chain, fromChain)
-  const chainConfig = Config[chain]
   const onClickHandler = key => {
     onClick && onClick(key, type)
   }
@@ -31,20 +34,14 @@ function ChainSelect({type, chain, fromChain, onClick}) {
     </Menu>
   )
 
-  const getIcon = chain => {
-    return Config[chain].icon()
-  }
   return (
     <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
       <div
-        className="w-26.5 h-24.5 rounded bg-gray-10 p-3 flex flex-col cursor-pointer"
+        className="w-26.5 h-24.5 rounded bg-gray-10 p-3 mr-3 flex items-end justify-between cursor-pointer"
         aria-hidden="true"
       >
-        {getIcon(chain)}
-        <div className="mt-2 flex justify-between items-center w-full">
-          <span className="text-xs text-gray-80">{chainConfig.shortName}</span>
-          <ArrowDownFilled className="w-4 h-4 text-gray-40" />
-        </div>
+        <ChainItem chain={chain} />
+        <ArrowDownFilled className="w-4 h-4 text-gray-40" />
       </div>
     </Dropdown>
   )
