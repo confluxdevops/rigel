@@ -4,12 +4,16 @@
 import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
 
-import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import {
+  ChainConfig,
+  SupportedChains,
+  KeyOfCfx,
+} from '../../../constants/chainConfig'
 import {MenuItem, Dropdown} from '../../../components'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
   const chainsData = useChainsData(type, chain, fromChain)
-  const chainConfig = Config[chain]
+  const chainConfig = ChainConfig[chain]
   const clickHandler = key => {
     onClick && onClick(key)
   }
@@ -26,7 +30,7 @@ function ChainSelect({type, chain, fromChain, onClick}) {
     </MenuItem>
   ))
   const getIcon = chain => {
-    return Config[chain].icon('w-12 h-12')
+    return ChainConfig[chain].icon('w-12 h-12')
   }
   return (
     <div>
@@ -65,7 +69,7 @@ function useChainsData(type, chain, fromChain) {
     switch (type) {
       case 'from':
         SupportedChains.forEach(chainName => {
-          const ChainConfig = Config[chainName]
+          const ChainConfig = ChainConfig[chainName]
           let item = {}
           item.key = ChainConfig.key
           item.name = ChainConfig.fullName
@@ -81,7 +85,7 @@ function useChainsData(type, chain, fromChain) {
         break
       case 'to':
         SupportedChains.forEach(chainName => {
-          const ChainConfig = Config[chainName]
+          const ChainConfig = ChainConfig[chainName]
           let item = {}
           item.key = ChainConfig.key
           item.name = ChainConfig.fullName

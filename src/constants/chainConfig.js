@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 
 import {IS_DEV} from '../utils'
 import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
-import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
+import {
+  bscIcon,
+  btcIcon,
+  ethIcon,
+  cfxIcon,
+  metamaskLogo,
+  portalLogo,
+} from '../assets/images'
 
 /**
  * ethereum config
@@ -52,10 +59,8 @@ export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
 
-export const DefaultChainIconClassName = 'w-10 h-10'
-
-export function ChainIcon({chain, className}) {
-  const finalClass = className || DefaultChainIconClassName
+const DefaultChainIconSize = 'w-10 h-10'
+export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
   let imgSrc = ''
   switch (chain) {
     case KeyOfEth:
@@ -71,24 +76,57 @@ export function ChainIcon({chain, className}) {
       imgSrc = btcIcon
       break
   }
-  return <img src={imgSrc} className={finalClass} alt={chain} />
+  return <img src={imgSrc} className={`${size} ${className}`} alt={chain} />
 }
 
-export const WalletMetaMask = 'MetaMask'
-export const WalletPortal = 'ConfluxPortal'
+export const KeyOfPortal = 'portal'
+export const KeyOfMetaMask = 'metamask'
+const DefaultWalletIconSize = 'w-4 h-4'
+export const WalletConfig = {
+  [KeyOfPortal]: {
+    key: KeyOfPortal,
+    name: 'ConfluxPortal',
+    website: 'https://portal.confluxnetwork.org',
+    icon(className, size) {
+      return <WalletIcon className={className} size={size} type={KeyOfPortal} />
+    },
+  },
+  [KeyOfMetaMask]: {
+    key: KeyOfMetaMask,
+    name: 'MetaMask',
+    website: 'https://metamask.io',
+    icon(className, size) {
+      return (
+        <WalletIcon className={className} size={size} type={KeyOfMetaMask} />
+      )
+    },
+  },
+}
+export function WalletIcon({type, size = DefaultWalletIconSize, className}) {
+  let imgSrc = ''
+  switch (type) {
+    case KeyOfPortal:
+      imgSrc = portalLogo
+      break
+    case KeyOfMetaMask:
+      imgSrc = metamaskLogo
+      break
+  }
+  return <img src={imgSrc} className={`${size} ${className}`} alt={type} />
+}
 
 export const displayFilter = obj => {
   return obj?.supported === 1 && obj?.in_token_list === 1
 }
 
 /**
- * main config
+ * chain config
  */
-const Config = {
+export const ChainConfig = {
   [KeyOfEth]: {
     key: KeyOfEth,
-    icon(className) {
-      return <ChainIcon className={className} chain={KeyOfEth} />
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfEth} />
     },
     fullName: 'Ethereum', //full name of the chain
     shortName: 'Ethereum', // short name of chain, usually used for fetching api
@@ -102,12 +140,12 @@ const Config = {
     // commonTokens: ['ETH', 'USDT', 'eCFX'],
     commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
-    wallet: WalletMetaMask,
+    wallet: KeyOfMetaMask,
   },
   [KeyOfBsc]: {
     key: KeyOfBsc,
-    icon(className) {
-      return <ChainIcon className={className} chain={KeyOfBsc} />
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfBsc} />
     },
     fullName: 'Binance Smart Contract',
     shortName: 'BSC',
@@ -120,12 +158,12 @@ const Config = {
     // TODO
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
-    wallet: WalletMetaMask,
+    wallet: KeyOfMetaMask,
   },
   [KeyOfCfx]: {
     key: KeyOfCfx,
-    icon(className) {
-      return <ChainIcon className={className} chain={KeyOfCfx} />
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfCfx} />
     },
     fullName: 'Conflux',
     shortName: 'Conflux',
@@ -138,7 +176,7 @@ const Config = {
     // TODO
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
-    wallet: WalletPortal,
+    wallet: KeyOfPortal,
   },
   [KeyOfBtc]: {
     key: KeyOfBtc,
@@ -161,9 +199,9 @@ const Config = {
   },
 }
 
-export default Config
+export const SupportedChains = Object.keys(ChainConfig)
 
-export const SupportedChains = Object.keys(Config)
+export const SupportedWallets = Object.keys(WalletConfig)
 
 // set default chain to FromChain and ToChain when shuttle
 export const DefaultFromChain = KeyOfEth
@@ -171,5 +209,12 @@ export const DefaultToChain = KeyOfCfx
 
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
+  size: PropTypes.string,
+  className: PropTypes.string,
+}
+
+WalletIcon.propTypes = {
+  type: PropTypes.oneOf(SupportedWallets).isRequired,
+  size: PropTypes.string,
   className: PropTypes.string,
 }

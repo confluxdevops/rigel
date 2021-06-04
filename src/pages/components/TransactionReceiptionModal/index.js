@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import {Modal, Loading, Button} from '../../../components'
-import Config, {
+import {
   SupportedChains,
-  WalletMetaMask,
+  ChainConfig,
+  WalletConfig,
+  KeyOfMetaMask,
 } from '../../../constants/chainConfig'
 import {
   errorOutlind,
@@ -27,7 +29,7 @@ function TransactionReceiptionModal({
   let content
   if (type === 'ongoing') {
     const token = fromToken && fromToken.symbol
-    const chain = Config[toChain].fullName
+    const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
         <span>
@@ -41,7 +43,9 @@ function TransactionReceiptionModal({
           </Trans>
         </span>
         <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
-          {t('confirm', {wallet: Config[fromChain].wallet})}
+          {t('confirm', {
+            wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
+          })}
         </div>
       </div>
     )
@@ -58,13 +62,13 @@ function TransactionReceiptionModal({
       <div className="flex flex-1 flex-col items-center">
         <a
           className="text-primary text-xs font-medium no-underline"
-          href={Config[fromChain].scanTxUrl + txHash}
+          href={ChainConfig[fromChain].scanTxUrl + txHash}
           target="_blank"
           rel="noreferrer"
         >
           {t('viewOnScan')}
         </a>
-        {Config[toChain].wallet === WalletMetaMask && (
+        {ChainConfig[toChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
             fullWidth

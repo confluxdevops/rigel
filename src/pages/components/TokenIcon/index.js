@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {ChainIcon, SupportedChains} from '../../../constants/chainConfig'
 
-function TokenNameAndIcon({chain, token, size = 'medium'}) {
+function TokenIcon({chain, token, size = 'medium'}) {
   const [subscriptShown, setSubscriptShown] = useState(false)
   useEffect(() => {
     if (token && token.origin !== chain) {
@@ -26,10 +26,10 @@ function TokenNameAndIcon({chain, token, size = 'medium'}) {
   )
 }
 
-TokenNameAndIcon.propTypes = {
+TokenIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   token: PropTypes.object.isRequired,
   size: PropTypes.oneOf(['medium', 'large']),
 }
 
-export default TokenNameAndIcon
+export default TokenIcon
