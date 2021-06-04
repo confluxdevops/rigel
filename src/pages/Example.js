@@ -15,6 +15,7 @@ import {
   Input,
   MenuItem,
   Alert,
+  Link,
 } from '../components'
 import {TransactionReceiptionModal} from '../pages/components'
 // import {requestSponsor} from '../utils/request'
@@ -105,6 +106,9 @@ function Example() {
           />
         </div>
         <Input />
+        <Link to="https://baidu.com" target="_blank">
+          Baidu
+        </Link>
         <Tag closable color="error">
           Max
         </Tag>
