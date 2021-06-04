@@ -46,9 +46,7 @@ function TokenList({chain}) {
       </div>
       <CommonTokens chain={chain} selectedToken={selectedToken}></CommonTokens>
       <div className="flex flex-col w-full overflow-y-hidden">
-        <span className="text-gray-40 inline-block mb-1 px-6">
-          {t('tokenList')}
-        </span>
+        <span className="text-gray-40 mb-1 px-6">{t('tokenList')}</span>
         <div className="flex flex-col overflow-auto">
           {tokenList.map((token, index) => (
             <TokenItem

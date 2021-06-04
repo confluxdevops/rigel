@@ -2,7 +2,7 @@
 import {useState} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import {logo} from '../assets/images'
-import TokenType from '../pages/Shuttle/TokenType'
+import {TokenSelect} from '../pages/Shuttle/components'
 import {
   Button,
   Tag,
@@ -90,10 +90,10 @@ function Example() {
           Max
         </Tag>
         <div>
-          <TokenType token={token} type="from" chain="eth"></TokenType>
+          <TokenSelect token={token} type="from" chain="eth" />
         </div>
         <div>
-          <TokenType token={token} type="to" chain="cfx"></TokenType>
+          <TokenSelect token={token} type="to" chain="cfx" />
         </div>
         <TransactionReceiptionModal
           type="success"

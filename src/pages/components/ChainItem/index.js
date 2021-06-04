@@ -9,9 +9,7 @@ function ChainItem({chain}) {
   return (
     <div className="flex flex-col">
       {getIcon(chain)}
-      <span className="text-xs text-gray-80 inline-block mt-2">
-        {chainConfig.shortName}
-      </span>
+      <span className="text-xs text-gray-80 mt-2">{chainConfig.shortName}</span>
     </div>
   )
 }
