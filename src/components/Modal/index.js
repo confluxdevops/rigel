@@ -40,7 +40,7 @@ function Modal({
       <div
         className={`relative overflow-auto flex flex-col items-center z-20 ${
           width ? width : size === 'medium' ? 'w-110' : 'w-70'
-        } rounded bg-white shadow-common p-6 ${className}`}
+        } rounded bg-white shadow-3 p-6 ${className}`}
         {...props}
       >
         {closable && (

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 //TODO: Remove
 import {useState} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
@@ -13,15 +14,17 @@ import {
   Dropdown,
   Input,
   Menu,
+  Alert,
+  Link,
 } from '../components'
 import {TransactionReceiptionModal} from '../pages/components'
-import {requestSponsor} from '../utils/request'
+// import {requestSponsor} from '../utils/request'
 
 function Example() {
   const [open, setOpen] = useState(false)
-  requestSponsor('getTokenList', ['eth']).then(res => {
-    console.log(res)
-  })
+  // requestSponsor('getTokenList', ['eth']).then(res => {
+  //   console.log(res)
+  // })
   //Data for test
   const token = {
     icon: 'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
@@ -79,13 +82,33 @@ function Example() {
           Message
         </Button>
         <Button
-          onClick={openNotification}
+          onClick={() => setOpen(true)}
           startIcon={<Logo className=" text-white" />}
           className="mb-2"
         >
           Notification
         </Button>
+        <div className="flex">
+          <Alert
+            open={open}
+            onClose={() => setOpen(false)}
+            closable
+            type="error"
+            content="This is a alert"
+            bordered
+          />
+          <Alert
+            open={open}
+            onClose={() => setOpen(false)}
+            closable
+            type="error"
+            content="This is a alert"
+          />
+        </div>
         <Input />
+        <Link to="https://baidu.com" target="_blank">
+          Baidu
+        </Link>
         <Tag closable color="error">
           Max
         </Tag>
@@ -105,7 +128,7 @@ function Example() {
           value="23.68"
         />
         <Modal
-          open={open}
+          open={false}
           title="Tips"
           onClose={() => setOpen(false)}
           content="Get incoming transactions Third party APIs are used to show your incoming transactions in the history. Turn off if you don’t want us to pull data from those services."
