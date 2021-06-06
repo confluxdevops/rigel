@@ -14,7 +14,10 @@ import {
   Input,
   MenuItem,
 } from '../components'
-import {TransactionReceiptionModal} from '../pages/components'
+import {
+  TransactionReceiptionModal,
+  ConnectWalletModal,
+} from '../pages/components'
 import {requestSponsor} from '../utils/request'
 
 function Example() {
@@ -86,9 +89,7 @@ function Example() {
           Notification
         </Button>
         <Input />
-        <Tag closable color="error">
-          Max
-        </Tag>
+        <Tag>Max</Tag>
         <div>
           <TokenType token={token} type="from" chain="eth"></TokenType>
         </div>
@@ -119,6 +120,11 @@ function Example() {
       <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']} arrow>
         <Button onClick={e => e.preventDefault()}>Hover me</Button>
       </Dropdown>
+      <ConnectWalletModal
+        type="uninstalled"
+        chain="eth"
+        open={false}
+      ></ConnectWalletModal>
     </div>
   )
 }

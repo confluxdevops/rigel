@@ -5,16 +5,19 @@ import {Modal, Loading, Button} from '../../../components'
 import Config, {SupportedChains} from '../../../constants/chainConfig'
 import {TypeConnectWallet} from '../../../constants'
 import {errorOutlind} from '../../../assets/images'
+import {useWallet} from '../../../hooks/useWallet'
 
-function ConnectWalletModal({open = false, type, chain}) {
+function ConnectWalletModal({open = false, type, chain, onClose}) {
   const {t} = useTranslation()
+  const {tryActivate} = useWallet(chain)
   const walletConfig = Config[chain].wallet
   const walletName = walletConfig.name
   const onInstall = () => {
     window.open(walletConfig.website, '_blank')
   }
-  //TODO: try to connect
-  const onTry = () => {}
+  const onTry = () => {
+    tryActivate()
+  }
   let content
   if (type === TypeConnectWallet.uninstalled) {
     content = (
@@ -32,7 +35,7 @@ function ConnectWalletModal({open = false, type, chain}) {
       <Modal
         content={content}
         open={open}
-        closable
+        onClose={onClose}
         actions={
           <Button
             fullWidth
@@ -56,7 +59,7 @@ function ConnectWalletModal({open = false, type, chain}) {
         </div>
       </div>
     )
-    return <Modal content={content} open={open} closable />
+    return <Modal content={content} open={open} onClose={onClose} />
   } else if (type === TypeConnectWallet.error) {
     content = (
       <div className="flex flex-col items-center">
@@ -71,9 +74,9 @@ function ConnectWalletModal({open = false, type, chain}) {
     )
     return (
       <Modal
-        content={content}
+        content={content || null}
         open={open}
-        closable
+        onClose={onClose}
         actions={
           <Button
             fullWidth
@@ -85,6 +88,8 @@ function ConnectWalletModal({open = false, type, chain}) {
         }
       />
     )
+  } else {
+    return null
   }
 }
 
@@ -92,6 +97,7 @@ ConnectWalletModal.propTypes = {
   open: PropTypes.bool,
   type: PropTypes.oneOf(Object.values(TypeConnectWallet)).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
+  onClose: PropTypes.func,
 }
 
 export default ConnectWalletModal

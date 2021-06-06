@@ -4,12 +4,14 @@ import {usePrevious} from 'react-use'
 import ChainSelect from '../components/ChainSelect'
 import {DefaultFromChain, DefaultToChain} from '../../constants/chainConfig'
 import {useIsCfxChain} from '../../hooks/useTokenList'
+// import {useConnectWalletType} from '../../hooks/useWallet'
+import {AccountStatus} from '../components'
 
 function Shuttle() {
-  const isFromCfxChain = useIsCfxChain(fromChain)
   const [fromChain, setFromChain] = useState(DefaultFromChain)
-  const prevFromChain = usePrevious(fromChain)
+  const isFromCfxChain = useIsCfxChain(fromChain)
   const [toChain, setToChain] = useState(DefaultToChain)
+  const prevFromChain = usePrevious(fromChain)
   const prevToChain = usePrevious(toChain)
   const fromChainClickHandler = chain => {
     setFromChain(chain)
@@ -51,6 +53,10 @@ function Shuttle() {
             fromChain={fromChain}
           ></ChainSelect>
         </div>
+      </div>
+      <div>
+        <AccountStatus chain="eth" size="big"></AccountStatus>
+        <AccountStatus chain="cfx" size="big"></AccountStatus>
       </div>
     </>
   )
