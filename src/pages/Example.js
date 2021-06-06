@@ -3,7 +3,7 @@
 import {useState} from 'react'
 import {ReactComponent as Logo} from '../logo.svg'
 import {logo} from '../assets/images'
-import TokenType from '../pages/Shuttle/TokenType'
+import TokenSelect from '../pages/Shuttle/ShuttleForm/TokenSelect'
 import {
   Button,
   Tag,
@@ -13,7 +13,7 @@ import {
   Message,
   Dropdown,
   Input,
-  MenuItem,
+  Menu,
   Alert,
   Link,
 } from '../components'
@@ -56,20 +56,20 @@ function Example() {
   }
 
   const menu = (
-    <>
-      <MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
+    <Menu>
+      <Menu.Item itemKey="antgroup" onClick={clickHandler} selected={false}>
         1st menu item
-      </MenuItem>
-      <MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
+      </Menu.Item>
+      <Menu.Item itemKey="aliyun" onClick={clickHandler} selected={false}>
         2nd menu item
-      </MenuItem>
-      <MenuItem itemKey="luohanacademy" onClick={clickHandler} selected={true}>
+      </Menu.Item>
+      <Menu.Item itemKey="luohanacademy" onClick={clickHandler} selected={true}>
         3rd menu item
-      </MenuItem>
-      <MenuItem itemKey="danger" onClick={clickHandler} selected={false}>
+      </Menu.Item>
+      <Menu.Item itemKey="danger" onClick={clickHandler} selected={false}>
         a danger item
-      </MenuItem>
-    </>
+      </Menu.Item>
+    </Menu>
   )
 
   return (
@@ -113,10 +113,10 @@ function Example() {
           Max
         </Tag>
         <div>
-          <TokenType token={token} type="from" chain="eth"></TokenType>
+          <TokenSelect token={token} type="from" chain="eth" />
         </div>
         <div>
-          <TokenType token={token} type="to" chain="cfx"></TokenType>
+          <TokenSelect token={token} type="to" chain="cfx" />
         </div>
         <TransactionReceiptionModal
           type="success"

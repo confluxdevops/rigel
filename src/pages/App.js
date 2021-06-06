@@ -26,6 +26,7 @@ function App() {
               <History />
             </Route>
             <Route path="/">
+              {/* TODO home page */}
               <Shuttle />
             </Route>
           </Switch>
