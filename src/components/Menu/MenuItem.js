@@ -13,9 +13,9 @@ function MenuItem({
   disabled,
 }) {
   const getStyle = () => {
-    if (disabled)
-      return 'bg-gray-20 text-gray-40 cursor-pointer cursor-not-allowed'
-    return 'bg-gray-0 text-gray-100 cursor-poiniter hover:bg-gray-4 hover:text-primary'
+    if (disabled) return 'bg-gray-20 text-gray-40 cursor-not-allowed'
+    if (selected) return 'bg-gray-0 text-primary cursor-poiniter'
+    return 'bg-gray-0 text-gray-100 cursor-poiniter hover:bg-gray-10 hover:text-primary'
   }
   return (
     <div

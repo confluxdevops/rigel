@@ -6,8 +6,8 @@ import Config, {
   WalletMetaMask,
 } from '../../../constants/chainConfig'
 import {
-  errorOutlind,
-  successOutlind,
+  errorOutlined,
+  successOutlined,
   metamaskLogo,
 } from '../../../assets/images'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
@@ -86,7 +86,7 @@ function TransactionReceiptionModal({
       <Modal
         open={open}
         title={t('submitted')}
-        icon={<img src={successOutlind} alt="success" className="w-12 h-12" />}
+        icon={<img src={successOutlined} alt="success" className="w-12 h-12" />}
         content={content}
       />
     )
@@ -99,7 +99,7 @@ function TransactionReceiptionModal({
     return (
       <Modal
         open={open}
-        icon={<img src={errorOutlind} alt="error" className="w-12 h-12" />}
+        icon={<img src={errorOutlined} alt="error" className="w-12 h-12" />}
         content={content}
       />
     )

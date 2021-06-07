@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next'
 import {Modal, Loading, Button} from '../../../components'
 import Config, {SupportedChains} from '../../../constants/chainConfig'
 import {TypeConnectWallet} from '../../../constants'
-import {errorOutlind} from '../../../assets/images'
+import {errorOutlined} from '../../../assets/images'
 import {useWallet} from '../../../hooks/useWallet'
 
 function ConnectWalletModal({open = false, type, chain, onClose}) {
@@ -63,7 +63,7 @@ function ConnectWalletModal({open = false, type, chain, onClose}) {
   } else if (type === TypeConnectWallet.error) {
     content = (
       <div className="flex flex-col items-center">
-        <img src={errorOutlind} alt="error" className="w-12 h-12" />
+        <img src={errorOutlined} alt="error" className="w-12 h-12" />
         <div className="text-error text-base font-bold leading-6 mb-2 mt-2">
           {t('errorConnecting')}
         </div>

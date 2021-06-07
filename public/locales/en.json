@@ -17,5 +17,6 @@
   "searchTokenPlaceholder": "Search token name or contract address",
   "selectToken": "Select Token",
   "commonTokens": "Common Tokens",
-  "tokenList": "Token List"
+  "tokenList": "Token List",
+  "next": "Next"
 }

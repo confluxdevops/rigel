@@ -9,10 +9,9 @@ import Example from './Example'
 function App() {
   return (
     <Suspense fallback={null}>
-      
       <Router>
         <div className="container mx-auto h-full flex justify-center pb-6">
-        {/* <Web3ReactManager> */}
+          {/* <Web3ReactManager> */}
           <Switch>
             <Route path="/shuttle">
               <Shuttle />
@@ -29,13 +28,13 @@ function App() {
               <History />
             </Route>
             <Route path="/">
+              {/* TODO home page */}
               <Shuttle />
             </Route>
           </Switch>
           {/* </Web3ReactManager> */}
         </div>
       </Router>
-
     </Suspense>
   )
 }

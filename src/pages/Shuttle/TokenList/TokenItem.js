@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import _ from 'underscore'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {TokenNameAndIcon} from '../../components'
+import {TokenIcon} from '../../components'
 import {WrapIcon} from '../../../components'
 import {PlusWithBg} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
@@ -33,7 +33,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
       className={`px-6 flex justify-between items-center w-full h-14 flex-shrink-0 cursor-pointer ${getSelectedStyle()}`}
     >
       <div className="flex items-center">
-        <TokenNameAndIcon size="large" chain={chain} token={token} />
+        <TokenIcon size="large" chain={chain} token={token} />
         <div className="flex flex-col ml-2">
           <span className="text-gray-100">{symbol}</span>
           <span className="text-gray-40 text-xs">{name}</span>
