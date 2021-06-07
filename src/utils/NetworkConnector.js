@@ -130,9 +130,6 @@ class MiniRpcProvider {
 }
 
 export class NetworkConnector extends AbstractConnector {
-  providers
-  currentChainId
-
   constructor({urls, defaultChainId}) {
     invariant(
       defaultChainId || Object.keys(urls).length === 1,
