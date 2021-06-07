@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
 import TokenList from '../pages/Shuttle/TokenList'
+// import Web3ReactManager from '../pages/components/Web3ReactManager'
 import Example from './Example'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <Suspense fallback={null}>
       <Router>
         <div className="container mx-auto h-full flex justify-center pb-6">
+          {/* <Web3ReactManager> */}
           <Switch>
             <Route path="/shuttle">
               <Shuttle />
@@ -30,6 +32,7 @@ function App() {
               <Shuttle />
             </Route>
           </Switch>
+          {/* </Web3ReactManager> */}
         </div>
       </Router>
     </Suspense>

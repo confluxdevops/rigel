@@ -60,31 +60,8 @@ export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
 
-const DefaultChainIconSize = 'w-10 h-10'
-export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
-  let icon
-  switch (chain) {
-    case KeyOfEth:
-      icon = <EthIcon />
-      break
-    case KeyOfBsc:
-      icon = <BscIcon />
-      break
-    case KeyOfCfx:
-      icon = <CfxIcon />
-      break
-    case KeyOfBtc:
-      icon = <BtcIcon />
-      break
-  }
-  return React.cloneElement(icon, {
-    className: `${size} ${className}`,
-  })
-}
-
 export const KeyOfPortal = 'portal'
 export const KeyOfMetaMask = 'metamask'
-const DefaultWalletIconSize = 'w-4 h-4'
 export const WalletConfig = {
   [KeyOfPortal]: {
     key: KeyOfPortal,
@@ -104,20 +81,6 @@ export const WalletConfig = {
       )
     },
   },
-}
-export function WalletIcon({type, size = DefaultWalletIconSize, className}) {
-  let icon
-  switch (type) {
-    case KeyOfPortal:
-      icon = <PortalLogo />
-      break
-    case KeyOfMetaMask:
-      icon = <MetamaskLogo />
-      break
-  }
-  return React.cloneElement(icon, {
-    className: `${size} ${className}`,
-  })
 }
 
 export const displayFilter = obj => {
@@ -211,6 +174,48 @@ export const SupportedWallets = Object.keys(WalletConfig)
 // set default chain to FromChain and ToChain when shuttle
 export const DefaultFromChain = KeyOfEth
 export const DefaultToChain = KeyOfCfx
+export const SupportedChainIdsWeb3 = [
+  ...ChainConfig[KeyOfEth].supportedChainIds,
+  ...ChainConfig[KeyOfBsc].supportedChainIds,
+]
+
+const DefaultChainIconSize = 'w-10 h-10'
+export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
+  let icon
+  switch (chain) {
+    case KeyOfEth:
+      icon = <EthIcon />
+      break
+    case KeyOfBsc:
+      icon = <BscIcon />
+      break
+    case KeyOfCfx:
+      icon = <CfxIcon />
+      break
+    case KeyOfBtc:
+      icon = <BtcIcon />
+      break
+  }
+  return React.cloneElement(icon, {
+    className: `${size} ${className}`,
+  })
+}
+
+const DefaultWalletIconSize = 'w-4 h-4'
+export function WalletIcon({type, size = DefaultWalletIconSize, className}) {
+  let icon
+  switch (type) {
+    case KeyOfPortal:
+      icon = <PortalLogo />
+      break
+    case KeyOfMetaMask:
+      icon = <MetamaskLogo />
+      break
+  }
+  return React.cloneElement(icon, {
+    className: `${size} ${className}`,
+  })
+}
 
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
