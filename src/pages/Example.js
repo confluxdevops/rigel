@@ -22,6 +22,7 @@ import {
   ConnectWalletModal,
 } from '../pages/components'
 import {requestSponsor} from '../utils/request'
+import {AccountStatus} from '../pages/components'
 
 function Example() {
   const [open, setOpen] = useState(false)
@@ -151,6 +152,7 @@ function Example() {
         chain="eth"
         open={false}
       ></ConnectWalletModal>
+      <AccountStatus chain="eth" size="big"></AccountStatus>
     </div>
   )
 }
