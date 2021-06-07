@@ -7,6 +7,7 @@ import App from './pages/App'
 import reportWebVitals from './reportWebVitals'
 import {NetworkContextName} from './constants'
 import getLibrary from './utils/getLibrary'
+
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 ReactDOM.render(

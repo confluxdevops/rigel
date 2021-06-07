@@ -17,8 +17,11 @@ import {
   Alert,
   Link,
 } from '../components'
-import {TransactionReceiptionModal} from '../pages/components'
-// import {requestSponsor} from '../utils/request'
+import {
+  TransactionReceiptionModal,
+  ConnectWalletModal,
+} from '../pages/components'
+import {requestSponsor} from '../utils/request'
 
 function Example() {
   const [open, setOpen] = useState(false)
@@ -106,6 +109,7 @@ function Example() {
           />
         </div>
         <Input />
+        <Tag>Max</Tag>
         <Link to="https://baidu.com" target="_blank">
           Baidu
         </Link>
@@ -142,6 +146,11 @@ function Example() {
       <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']} arrow>
         <Button onClick={e => e.preventDefault()}>Hover me</Button>
       </Dropdown>
+      <ConnectWalletModal
+        type="uninstalled"
+        chain="eth"
+        open={false}
+      ></ConnectWalletModal>
     </div>
   )
 }

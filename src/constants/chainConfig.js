@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 
 import {IS_DEV} from '../utils'
 import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
-import {bscIcon, btcIcon, ethIcon, cfxIcon} from '../assets/images'
+import {
+  bscIcon,
+  btcIcon,
+  ethIcon,
+  cfxIcon,
+  portalLogo,
+  metamaskLogo,
+} from '../assets/images'
 
 /**
  * ethereum config
@@ -54,28 +61,16 @@ export const ScanUrlBtc = IS_DEV
 
 export const DefaultChainIconClassName = 'w-10 h-10'
 
-export function ChainIcon({chain, className}) {
-  const finalClass = className || DefaultChainIconClassName
-  let imgSrc = ''
-  switch (chain) {
-    case KeyOfEth:
-      imgSrc = ethIcon
-      break
-    case KeyOfBsc:
-      imgSrc = bscIcon
-      break
-    case KeyOfCfx:
-      imgSrc = cfxIcon
-      break
-    case KeyOfBtc:
-      imgSrc = btcIcon
-      break
-  }
-  return <img src={imgSrc} className={finalClass} alt={chain} />
+export const WalletMetaMask = {
+  name: 'MetaMask',
+  website: 'https://metamask.io',
+  logo: metamaskLogo,
 }
-
-export const WalletMetaMask = 'MetaMask'
-export const WalletPortal = 'ConfluxPortal'
+export const WalletPortal = {
+  name: 'ConfluxPortal',
+  website: 'https://portal.conflux-chain.org',
+  logo: portalLogo,
+}
 
 export const displayFilter = obj => {
   return obj?.supported === 1 && obj?.in_token_list === 1
@@ -168,6 +163,30 @@ export const SupportedChains = Object.keys(Config)
 // set default chain to FromChain and ToChain when shuttle
 export const DefaultFromChain = KeyOfEth
 export const DefaultToChain = KeyOfCfx
+export const SupportedChainIdsWeb3 = [
+  ...Config[KeyOfEth].supportedChainIds,
+  ...Config[KeyOfBsc].supportedChainIds,
+]
+
+export function ChainIcon({chain, className}) {
+  const finalClass = className || DefaultChainIconClassName
+  let imgSrc = ''
+  switch (chain) {
+    case KeyOfEth:
+      imgSrc = ethIcon
+      break
+    case KeyOfBsc:
+      imgSrc = bscIcon
+      break
+    case KeyOfCfx:
+      imgSrc = cfxIcon
+      break
+    case KeyOfBtc:
+      imgSrc = btcIcon
+      break
+  }
+  return <img src={imgSrc} className={finalClass} alt={chain} />
+}
 
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,

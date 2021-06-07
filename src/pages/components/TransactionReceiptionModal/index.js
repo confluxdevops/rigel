@@ -41,7 +41,7 @@ function TransactionReceiptionModal({
           </Trans>
         </span>
         <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
-          {t('confirm', {wallet: Config[fromChain].wallet})}
+          {t('confirm', {wallet: Config[fromChain].wallet.name})}
         </div>
       </div>
     )
@@ -64,7 +64,7 @@ function TransactionReceiptionModal({
         >
           {t('viewOnScan')}
         </a>
-        {Config[toChain].wallet === WalletMetaMask && (
+        {Config[toChain].wallet.name === WalletMetaMask.name && (
           <Button
             variant="outlined"
             fullWidth
