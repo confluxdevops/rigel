@@ -1,16 +1,17 @@
 // chain config constants
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import {IS_DEV} from '../utils'
 import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
 import {
-  bscIcon,
-  btcIcon,
-  ethIcon,
-  cfxIcon,
-  metamaskLogo,
-  portalLogo,
-} from '../assets/images'
+  BscIcon,
+  BtcIcon,
+  EthIcon,
+  CfxIcon,
+  MetamaskLogo,
+  PortalLogo,
+} from '../assets/svg'
 
 /**
  * ethereum config
@@ -61,22 +62,24 @@ export const ScanUrlBtc = IS_DEV
 
 const DefaultChainIconSize = 'w-10 h-10'
 export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
-  let imgSrc = ''
+  let icon
   switch (chain) {
     case KeyOfEth:
-      imgSrc = ethIcon
+      icon = <EthIcon />
       break
     case KeyOfBsc:
-      imgSrc = bscIcon
+      icon = <BscIcon />
       break
     case KeyOfCfx:
-      imgSrc = cfxIcon
+      icon = <CfxIcon />
       break
     case KeyOfBtc:
-      imgSrc = btcIcon
+      icon = <BtcIcon />
       break
   }
-  return <img src={imgSrc} className={`${size} ${className}`} alt={chain} />
+  return React.cloneElement(icon, {
+    className: `${size} ${className}`,
+  })
 }
 
 export const KeyOfPortal = 'portal'
@@ -103,16 +106,18 @@ export const WalletConfig = {
   },
 }
 export function WalletIcon({type, size = DefaultWalletIconSize, className}) {
-  let imgSrc = ''
+  let icon
   switch (type) {
     case KeyOfPortal:
-      imgSrc = portalLogo
+      icon = <PortalLogo />
       break
     case KeyOfMetaMask:
-      imgSrc = metamaskLogo
+      icon = <MetamaskLogo />
       break
   }
-  return <img src={imgSrc} className={`${size} ${className}`} alt={type} />
+  return React.cloneElement(icon, {
+    className: `${size} ${className}`,
+  })
 }
 
 export const displayFilter = obj => {

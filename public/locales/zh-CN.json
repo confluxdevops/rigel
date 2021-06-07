@@ -12,5 +12,8 @@
   "commonTokens": "常用代币",
   "tokenList": "代币列表",
   "connectWallet": "连接钱包",
-  "next": "下一步"
+  "next": "下一步",
+  "accounts": "账户",
+  "shuttleRecord": "跨链历史",
+  "all": "全部"
 }

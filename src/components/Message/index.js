@@ -1,11 +1,11 @@
 import Notification from 'rc-notification'
 import {Loading} from '../../components'
 import {
-  errorFilled,
-  successFilled,
-  warningFilled,
-  infoFilled,
-} from '../../assets/images'
+  ErrorFilled,
+  SuccessFilled,
+  WarningFilled,
+  InfoFilled,
+} from '../../assets/svg'
 
 const IconTypes = ['info', 'success', 'error', 'warning', 'loading']
 
@@ -78,10 +78,10 @@ function getRCNotificationInstance(args, callback) {
 }
 
 const typeToIcon = {
-  success: <img className="w-5 h-5 mr-2" src={successFilled} alt="success" />,
-  info: <img className="w-5 h-5 mr-2" src={infoFilled} alt="info" />,
-  error: <img className="w-5 h-5 mr-2" src={errorFilled} alt="error" />,
-  warning: <img className="w-5 h-5 mr-2" src={warningFilled} alt="warning" />,
+  success: <SuccessFilled className="w-5 h-5 mr-2" />,
+  info: <InfoFilled className="w-5 h-5 mr-2" />,
+  error: <ErrorFilled className="w-5 h-5 mr-2" />,
+  warning: <WarningFilled className="w-5 h-5 mr-2" />,
 }
 
 function getRCNoticeProps(args) {

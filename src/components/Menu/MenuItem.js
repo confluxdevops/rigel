@@ -1,8 +1,5 @@
 import PropTypes from 'prop-types'
-import {
-  selectedIcon as defaultSelectedIcon,
-  disabledIcon,
-} from '../../assets/images'
+import {SuccessFilled, Disabled} from '../../assets/svg'
 function MenuItem({
   children,
   itemKey,
@@ -32,16 +29,12 @@ function MenuItem({
       </div>
       {!disabled && selected && (
         <span className="flex items-center w-4 h-4">
-          {selectedIcon ? (
-            selectedIcon
-          ) : (
-            <img src={defaultSelectedIcon} alt="selected" />
-          )}
+          {selectedIcon ? selectedIcon : <SuccessFilled className="w-4 h-4" />}
         </span>
       )}
       {disabled && (
         <span className="flex items-center w-4 h-4">
-          <img src={disabledIcon} alt="disabled" />
+          <Disabled className="text-gray-40 w-4 h-4" />
         </span>
       )}
     </div>

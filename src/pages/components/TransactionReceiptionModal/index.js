@@ -7,11 +7,7 @@ import {
   WalletConfig,
   KeyOfMetaMask,
 } from '../../../constants/chainConfig'
-import {
-  errorOutlined,
-  successOutlined,
-  metamaskLogo,
-} from '../../../assets/images'
+import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 
 function TransactionReceiptionModal({
@@ -73,9 +69,7 @@ function TransactionReceiptionModal({
             variant="outlined"
             fullWidth
             className="mt-4"
-            endIcon={
-              !success ? <img src={metamaskLogo} alt="metamaskLogo" /> : null
-            }
+            endIcon={!success ? <MetamaskLogo alt="metamaskLogo" /> : null}
             // TODO: deal with metamask is not installed
             onClick={addToken}
           >
@@ -90,7 +84,7 @@ function TransactionReceiptionModal({
       <Modal
         open={open}
         title={t('submitted')}
-        icon={<img src={successOutlined} alt="success" className="w-12 h-12" />}
+        icon={<SuccessOutlined className="w-12 h-12" />}
         content={content}
       />
     )
@@ -103,7 +97,7 @@ function TransactionReceiptionModal({
     return (
       <Modal
         open={open}
-        icon={<img src={errorOutlined} alt="error" className="w-12 h-12" />}
+        icon={<ErrorOutlined className="w-12 h-12" />}
         content={content}
       />
     )
