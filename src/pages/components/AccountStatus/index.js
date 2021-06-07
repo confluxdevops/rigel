@@ -33,6 +33,6 @@ function AccountStatus({chain, className, size = 'small'}) {
 AccountStatus.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   className: PropTypes.string,
-  size: PropTypes.oneOf('small', 'big'),
+  size: PropTypes.oneOf(['small', 'big']),
 }
 export default AccountStatus

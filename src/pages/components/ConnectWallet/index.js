@@ -68,7 +68,7 @@ function ConnectWallet({size, chain, className = ''}) {
   )
 }
 ConnectWallet.propTypes = {
-  size: PropTypes.oneOf('small', 'big').isRequired,
+  size: PropTypes.oneOf(['small', 'big']).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   className: PropTypes.string,
 }

@@ -56,7 +56,6 @@ function Shuttle() {
       </div>
       <div>
         <AccountStatus chain="eth" size="big"></AccountStatus>
-        <AccountStatus chain="cfx" size="big"></AccountStatus>
       </div>
     </>
   )
