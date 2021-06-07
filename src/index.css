@@ -61,7 +61,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f7f8fa;
+  background-color: #fff;
   @apply font-body;
   @apply text-sm;
   @apply font-normal;
@@ -82,6 +82,8 @@ html {
   --color-success-90: #252e25;
   --color-warning-10: #fff7ed;
   --color-warning-90: #2b2820;
+  --color-info-10: #f4f7ff;
+  --color-info-90: #0d1032;
   --color-gray-0: #fff;
   --color-gray-4: #f7f8fa;
   --color-gray-10: #f7f8fa;
@@ -103,6 +105,8 @@ html {
   --color-success-90: #edf9ec;
   --color-warning-10: #2b2820;
   --color-warning-90: #fff7ed;
+  --color-info-10: #0d1032;
+  --color-info-90: #f4f7ff;
   --color-gray-0: #000;
   --color-gray-4: #1b1b1c;
   --color-gray-10: #2a2c33;

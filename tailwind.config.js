@@ -14,6 +14,8 @@ module.exports = {
     extend: {
       spacing: {
         15: '3.75rem',
+        24.5: '6.125rem',
+        26.5: '6.625rem',
         50: '12.5rem',
         70: '17.5rem',
         100: '25rem',
@@ -23,7 +25,10 @@ module.exports = {
         '2.5xl': '1.25rem',
       },
       boxShadow: {
-        common: '0px 8px 24px 8px rgba(0, 0, 0, 0.04)',
+        1: '0px 4px 6px rgba(0, 0, 0, 0.12)',
+        2: '0px 6px 16px rgba(0, 0, 0, 0.08)',
+        3: '0px 8px 36px rgba(0, 0, 0, 0.06)',
+        common: '2px 8px 44px #E3EDFF',
       },
       colors: {
         white: '#fff',
@@ -32,11 +37,12 @@ module.exports = {
         error: '#e15c56',
         success: '#7cd77b',
         warning: '#ffca4f',
-        background: '#373739',
+        info: '#4c65e9',
         'primary-dark': '#16bd98',
         'error-dark': '#b83c36',
         'success-dark': '#52b067',
         'warning-dark': '#ec7910',
+        'info-dark': '#2330c0',
         'primary-10': 'var(--color-primary-10)',
         'primary-90': 'var(--color-primary-90)',
         'error-10': 'var(--color-error-10)',
@@ -45,6 +51,8 @@ module.exports = {
         'success-90': 'var(--color-success-90)',
         'warning-10': 'var(--color-warning-10)',
         'warning-90': 'var(--color-warning-90)',
+        'info-10': 'var(--color-info-10)',
+        'info-90': 'var(--color-info-90)',
         'gray-0': 'var(--color-gray-0)',
         'gray-4': 'var(--color-gray-4)',
         'gray-10': 'var(--color-gray-10)',

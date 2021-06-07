@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
-import {Dropdown, WrapIcon, MenuItem} from '../../../components'
+import {Dropdown, WrapIcon, Menu} from '../../../components'
 import {notConnected, connected} from '../../../assets/images'
 import {WalletConfig} from '../../../constants/chainConfig'
 import {shortenAddress} from '../../../utils/address'
@@ -22,20 +22,24 @@ function WalletHub({connectData, history = []}) {
     console.log(key)
   }
   const menu = (
-    <>
-      <MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
+    <Menu>
+      <Menu.MenuItem itemKey="antgroup" onClick={clickHandler} selected={false}>
         1st menu item
-      </MenuItem>
-      <MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
+      </Menu.MenuItem>
+      <Menu.MenuItem itemKey="aliyun" onClick={clickHandler} selected={false}>
         2nd menu item
-      </MenuItem>
-      <MenuItem itemKey="luohanacademy" onClick={clickHandler} selected={true}>
+      </Menu.MenuItem>
+      <Menu.MenuItem
+        itemKey="luohanacademy"
+        onClick={clickHandler}
+        selected={true}
+      >
         3rd menu item
-      </MenuItem>
-      <MenuItem itemKey="danger" onClick={clickHandler} selected={false}>
+      </Menu.MenuItem>
+      <Menu.MenuItem itemKey="danger" onClick={clickHandler} selected={false}>
         a danger item
-      </MenuItem>
-    </>
+      </Menu.MenuItem>
+    </Menu>
   )
   const {t} = useTranslation()
   const connectedData = connectData.filter(data => !!data.address)

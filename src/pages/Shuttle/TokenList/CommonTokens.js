@@ -33,7 +33,7 @@ function CommonTokens({chain, selectedToken, onSelect}) {
   const {t} = useTranslation()
   const commonTokens = useCommonTokens(chain)
   return (
-    <div className="flex flex-col pt-3 pb-4 w-full">
+    <div className="flex flex-col px-6 pt-3 pb-4 w-full">
       <span className="text-gray-40">{t('commonTokens')}</span>
       <div className="flex mt-3">
         {commonTokens.map((token, index) => {

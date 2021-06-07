@@ -1,44 +1,26 @@
 import PropTypes from 'prop-types'
-function Button({
+import {Link} from 'react-router-dom'
+
+function CustomLink({
   onClick,
   className = '',
   children,
   size = 'medium',
-  color = 'primary',
-  variant = 'contained',
   disabled = false,
-  fullWidth = false,
-  danger = false,
   startIcon,
   endIcon,
   ...props
 }) {
   const getDisabledStyle = () => {
     if (disabled) {
-      if (variant === 'text')
-        return 'bg-transparent text-gray-40 cursor-not-allowed'
-      else return 'bg-gray-20 text-gray-40 cursor-not-allowed'
+      return 'bg-transparent text-gray-40 cursor-not-allowed'
     }
     return ''
   }
 
   const getColorStyle = () => {
     if (disabled) return ''
-    if (variant === 'text') {
-      if (danger) return 'text error bg-transparent hover:bg-error-10'
-      if (color === 'primary')
-        return 'text-gray-80 bg-transparent hover:bg-gray-4'
-    } else if (variant === 'outlined') {
-      if (danger)
-        return 'border border-error text-error bg-white hover:border-error-dark hover:text-error-dark'
-      if (color === 'primary')
-        return 'border border-primary text-primary bg-white hover:border-primary-dark hover:text-primary-dark'
-    } else if (variant === 'contained') {
-      if (danger) return 'text-white bg-error hover:bg-error-dark'
-      if (color === 'primary')
-        return 'text-white bg-primary hover:bg-primary-dark'
-    }
-    return ''
+    return 'text-primary bg-transparent hover:text-primary-dark hover:underline'
   }
 
   const getSizeStyle = () => {
@@ -50,7 +32,6 @@ function Button({
 
   const getIconColor = () => {
     if (disabled) return 'text-gray-40'
-    if (variant === 'contained') return 'text-white'
     return 'text-primary hover:text-primary-dark'
   }
 
@@ -61,13 +42,11 @@ function Button({
   }
 
   return (
-    <button
+    <Link
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
-      flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${
-        fullWidth ? 'w-full' : 'px-4'
-      } ${className}`}
+      flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
       {...props}
     >
       {startIcon && (
@@ -85,18 +64,14 @@ function Button({
           {endIcon}
         </span>
       )}
-    </button>
+    </Link>
   )
 }
 
-Button.propTypes = {
+CustomLink.propTypes = {
   className: PropTypes.string,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
-  color: PropTypes.string,
-  variant: PropTypes.string,
   disabled: PropTypes.bool,
-  fullWidth: PropTypes.bool,
-  danger: PropTypes.bool,
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -106,4 +81,4 @@ Button.propTypes = {
   endIcon: PropTypes.node,
 }
 
-export default Button
+export default CustomLink

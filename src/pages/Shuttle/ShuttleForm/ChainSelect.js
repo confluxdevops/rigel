@@ -5,52 +5,53 @@ import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
 
 import {
-  ChainConfig,
   SupportedChains,
   KeyOfCfx,
+  ChainConfig,
 } from '../../../constants/chainConfig'
-import {MenuItem, Dropdown} from '../../../components'
+import {Menu, Dropdown} from '../../../components'
+import {ArrowDownFilled} from '../../../assets/svg'
+import {ChainItem} from '../../components'
 
 function ChainSelect({type, chain, fromChain, onClick}) {
   const chainsData = useChainsData(type, chain, fromChain)
-  const chainConfig = ChainConfig[chain]
-  const clickHandler = key => {
-    onClick && onClick(key)
+  const onClickHandler = key => {
+    onClick && onClick(key, type)
   }
-  const menu = chainsData.map(item => (
-    <MenuItem
-      itemKey={item.key}
-      key={item.key}
-      onClick={clickHandler}
-      selected={item.selected}
-      disabled={item.disabled}
-      icon={item.icon}
-    >
-      {item.name}
-    </MenuItem>
-  ))
-  const getIcon = chain => {
-    return ChainConfig[chain].icon('w-12 h-12')
-  }
+  const menu = (
+    <Menu>
+      {chainsData.map(item => (
+        <Menu.Item
+          itemKey={item.key}
+          key={item.key}
+          onClick={onClickHandler}
+          selected={item.selected}
+          disabled={item.disabled}
+          icon={item.icon}
+        >
+          {item.name}
+        </Menu.Item>
+      ))}
+    </Menu>
+  )
+
   return (
-    <div>
-      {getIcon(chain)}
-      <Dropdown
-        overlay={<>{menu}</>}
-        placement="bottomLeft"
-        trigger={['click']}
-        arrow
+    <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+      <div
+        className="w-26.5 h-24.5 rounded bg-gray-10 p-3 mr-3 flex items-end justify-between cursor-pointer"
+        aria-hidden="true"
       >
-        <span aria-hidden="true">{chainConfig.shortName}</span>
-      </Dropdown>
-    </div>
+        <ChainItem chain={chain} />
+        <ArrowDownFilled className="w-4 h-4 text-gray-40" />
+      </div>
+    </Dropdown>
   )
 }
 
 ChainSelect.propTypes = {
   type: PropTypes.oneOf(['from', 'to']).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromChain: PropTypes.oneOf(SupportedChains), // only type === to need the value
+  fromChain: PropTypes.oneOf(SupportedChains), // only when type === to need the value
   onClick: PropTypes.func,
 }
 
@@ -69,11 +70,11 @@ function useChainsData(type, chain, fromChain) {
     switch (type) {
       case 'from':
         SupportedChains.forEach(chainName => {
-          const ChainConfig = ChainConfig[chainName]
+          const chain = ChainConfig[chainName]
           let item = {}
-          item.key = ChainConfig.key
-          item.name = ChainConfig.fullName
-          item.icon = ChainConfig.icon('h-6 w-6')
+          item.key = chain.key
+          item.name = chain.fullName
+          item.icon = chain.icon('h-6 w-6')
           item.disabled = false
           if (chainName === chain) {
             item.selected = true
@@ -85,11 +86,11 @@ function useChainsData(type, chain, fromChain) {
         break
       case 'to':
         SupportedChains.forEach(chainName => {
-          const ChainConfig = ChainConfig[chainName]
+          const chain = ChainConfig[chainName]
           let item = {}
-          item.key = ChainConfig.key
-          item.name = ChainConfig.fullName
-          item.icon = ChainConfig.icon('h-6 w-6')
+          item.key = chain.key
+          item.name = chain.fullName
+          item.icon = chain.icon('h-6 w-6')
           if (fromChain !== KeyOfCfx) {
             if (chainName !== KeyOfCfx) {
               item.disabled = true

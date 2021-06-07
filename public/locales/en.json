@@ -11,5 +11,6 @@
   "selectToken": "Select Token",
   "commonTokens": "Common Tokens",
   "tokenList": "Token List",
-  "connectWallet": "Connect Wallet"
+  "connectWallet": "Connect Wallet",
+  "next": "Next"
 }

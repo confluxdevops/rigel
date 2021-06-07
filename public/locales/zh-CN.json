@@ -11,5 +11,6 @@
   "selectToken": "选择代币",
   "commonTokens": "常用代币",
   "tokenList": "代币列表",
-  "connectWallet": "连接钱包"
+  "connectWallet": "连接钱包",
+  "next": "下一步"
 }

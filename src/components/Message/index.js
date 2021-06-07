@@ -78,10 +78,10 @@ function getRCNotificationInstance(args, callback) {
 }
 
 const typeToIcon = {
-  success: <img className="w-4 h-4 mr-2" src={successFilled} alt="success" />,
-  info: <img className="w-4 h-4 mr-2" src={infoFilled} alt="info" />,
-  error: <img className="w-4 h-4 mr-2" src={errorFilled} alt="error" />,
-  warning: <img className="w-4 h-4 mr-2" src={warningFilled} alt="warning" />,
+  success: <img className="w-5 h-5 mr-2" src={successFilled} alt="success" />,
+  info: <img className="w-5 h-5 mr-2" src={infoFilled} alt="info" />,
+  error: <img className="w-5 h-5 mr-2" src={errorFilled} alt="error" />,
+  warning: <img className="w-5 h-5 mr-2" src={warningFilled} alt="warning" />,
 }
 
 function getRCNoticeProps(args) {
@@ -101,27 +101,18 @@ function getRCNoticeProps(args) {
 
   const IconComponent =
     type === 'loading' ? (
-      <Loading size="w-4 h-4" className="mr-2" />
+      <Loading size="w-5 h-5" className="mr-2" />
     ) : (
       typeToIcon[type]
     )
-
-  let typeClassName = 'text-white bg-primary'
-  if (type === 'loading' || type === 'info') {
-    typeClassName = 'text-black bg-white shadow-common'
-  } else if (type === 'error') {
-    typeClassName = 'text-error-dark bg-error'
-  } else if (type === 'warning') {
-    typeClassName = 'text-warning-dark bg-warning'
-  }
 
   return {
     key,
     duration,
     style,
-    className: `${className} w-100 p-3 relative ${typeClassName} mb-4 animate-move-down`,
+    className: `${className} px-4 py-3 text-gray-80 bg-gray-0 shadow-1 relative mb-4 animate-move-down`,
     content: (
-      <div className={`flex items-center`}>
+      <div className="flex items-center">
         {icon || IconComponent || null}
         <span>{content}</span>
       </div>
