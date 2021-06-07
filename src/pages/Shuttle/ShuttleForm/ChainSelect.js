@@ -4,7 +4,11 @@
 import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
 
-import Config, {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import {
+  SupportedChains,
+  KeyOfCfx,
+  ChainConfig,
+} from '../../../constants/chainConfig'
 import {Menu, Dropdown} from '../../../components'
 import {ArrowDownFilled} from '../../../assets/svg'
 import {ChainItem} from '../../components'
@@ -66,11 +70,11 @@ function useChainsData(type, chain, fromChain) {
     switch (type) {
       case 'from':
         SupportedChains.forEach(chainName => {
-          const ChainConfig = Config[chainName]
+          const chain = ChainConfig[chainName]
           let item = {}
-          item.key = ChainConfig.key
-          item.name = ChainConfig.fullName
-          item.icon = ChainConfig.icon('h-6 w-6')
+          item.key = chain.key
+          item.name = chain.fullName
+          item.icon = chain.icon('h-6 w-6')
           item.disabled = false
           if (chainName === chain) {
             item.selected = true
@@ -82,11 +86,11 @@ function useChainsData(type, chain, fromChain) {
         break
       case 'to':
         SupportedChains.forEach(chainName => {
-          const ChainConfig = Config[chainName]
+          const chain = ChainConfig[chainName]
           let item = {}
-          item.key = ChainConfig.key
-          item.name = ChainConfig.fullName
-          item.icon = ChainConfig.icon('h-6 w-6')
+          item.key = chain.key
+          item.name = chain.fullName
+          item.icon = chain.icon('h-6 w-6')
           if (fromChain !== KeyOfCfx) {
             if (chainName !== KeyOfCfx) {
               item.disabled = true

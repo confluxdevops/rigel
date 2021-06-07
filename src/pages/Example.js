@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 //TODO: Remove
 import {useState} from 'react'
-import {ReactComponent as Logo} from '../logo.svg'
-import {logo} from '../assets/images'
+import {Logo} from '../assets/svg'
 import TokenSelect from '../pages/Shuttle/ShuttleForm/TokenSelect'
 import {
   Button,
@@ -78,7 +77,7 @@ function Example() {
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <div className="App-header">
-        <img src={logo} alt="logo" />
+        <Logo />
         <Logo className="text-primary" />
         <Loading />
         <Button disabled onClick={info}>

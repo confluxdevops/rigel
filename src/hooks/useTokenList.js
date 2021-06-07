@@ -2,7 +2,7 @@ import {useMemo} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
-import Config, {KeyOfCfx} from '../constants/chainConfig'
+import {KeyOfCfx, ChainConfig} from '../constants/chainConfig'
 
 export function useIsCfxChain(chain) {
   const isCfxChain = useMemo(() => chain === KeyOfCfx, [chain])
@@ -47,7 +47,7 @@ export function useTokenList(chain) {
   const allTokenList = useAllTokenList()
   return allTokenList
     .filter(obj => obj?.origin === chain || obj?.to_chain === chain)
-    .filter(Config[chain].displayFilter)
+    .filter(ChainConfig[chain].displayFilter)
 }
 
 // search token address from backend
@@ -55,7 +55,7 @@ function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
   const searchTokens = useSearchAddressFromList(chain, search)
   const {data} = useSWR(
     [
-      Config[chain].checkAddress(search) && searchTokens.length === 0
+      ChainConfig[chain].checkAddress(search) && searchTokens.length === 0
         ? ProxyUrlPrefix.shuttleflow
         : null,
       fromChain,
@@ -71,7 +71,7 @@ function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
 function useSearchAddressFromList(chain, search) {
   const tokenList = useMapTokenList(chain)
 
-  if (Config[chain].checkAddress(search)) {
+  if (ChainConfig[chain].checkAddress(search)) {
     return tokenList.filter(obj => {
       return obj?.address?.toLowerCase() === search
     })
@@ -111,7 +111,7 @@ export function useTokenListBySearch(chain, search, fromChain, toChain) {
 
 export function useCommonTokens(chain) {
   const tokenList = useMapTokenList(chain)
-  const commonTokens = Config[chain].commonTokens
+  const commonTokens = ChainConfig[chain].commonTokens
   return commonTokens.map(address => {
     return tokenList.filter(obj => address === obj?.address)[0]
   })

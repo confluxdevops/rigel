@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import {Modal, Loading, Button} from '../../../components'
-import Config, {
-  SupportedChains,
-  WalletMetaMask,
-} from '../../../constants/chainConfig'
 import {
-  errorOutlined,
-  successOutlined,
-  metamaskLogo,
-} from '../../../assets/images'
+  SupportedChains,
+  ChainConfig,
+  WalletConfig,
+  KeyOfMetaMask,
+} from '../../../constants/chainConfig'
+import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 
 function TransactionReceiptionModal({
@@ -27,7 +25,7 @@ function TransactionReceiptionModal({
   let content
   if (type === 'ongoing') {
     const token = fromToken && fromToken.symbol
-    const chain = Config[toChain].fullName
+    const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
         <span>
@@ -41,7 +39,9 @@ function TransactionReceiptionModal({
           </Trans>
         </span>
         <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
-          {t('confirm', {wallet: Config[fromChain].wallet.name})}
+          {t('confirm', {
+            wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
+          })}
         </div>
       </div>
     )
@@ -58,20 +58,18 @@ function TransactionReceiptionModal({
       <div className="flex flex-1 flex-col items-center">
         <a
           className="text-primary text-xs font-medium no-underline"
-          href={Config[fromChain].scanTxUrl + txHash}
+          href={ChainConfig[fromChain].scanTxUrl + txHash}
           target="_blank"
           rel="noreferrer"
         >
           {t('viewOnScan')}
         </a>
-        {Config[toChain].wallet.name === WalletMetaMask.name && (
+        {ChainConfig[toChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
             fullWidth
             className="mt-4"
-            endIcon={
-              !success ? <img src={metamaskLogo} alt="metamaskLogo" /> : null
-            }
+            endIcon={!success ? <MetamaskLogo alt="metamaskLogo" /> : null}
             // TODO: deal with metamask is not installed
             onClick={addToken}
           >
@@ -86,7 +84,7 @@ function TransactionReceiptionModal({
       <Modal
         open={open}
         title={t('submitted')}
-        icon={<img src={successOutlined} alt="success" className="w-12 h-12" />}
+        icon={<SuccessOutlined className="w-12 h-12" />}
         content={content}
       />
     )
@@ -99,7 +97,7 @@ function TransactionReceiptionModal({
     return (
       <Modal
         open={open}
-        icon={<img src={errorOutlined} alt="error" className="w-12 h-12" />}
+        icon={<ErrorOutlined className="w-12 h-12" />}
         content={content}
       />
     )
