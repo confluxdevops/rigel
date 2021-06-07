@@ -152,7 +152,7 @@ function Example() {
         chain="eth"
         open={false}
       ></ConnectWalletModal>
-      <AccountStatus chain="eth" size="big"></AccountStatus>
+      <AccountStatus chain="eth" size="large"></AccountStatus>
     </div>
   )
 }
