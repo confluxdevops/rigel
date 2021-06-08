@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import {
-  errorFilled,
-  successFilled,
-  warningFilled,
-  infoFilled,
-} from '../../assets/images'
+  ErrorFilled,
+  SuccessFilled,
+  WarningFilled,
+  InfoFilled,
+} from '../../assets/svg'
 import {Close} from '../../assets/svg'
 
 function Alert({
@@ -20,10 +20,10 @@ function Alert({
   bordered = false,
 }) {
   const typeToIcon = {
-    success: <img className="w-4 h-4 mr-2" src={successFilled} alt="success" />,
-    info: <img className="w-4 h-4 mr-2" src={infoFilled} alt="info" />,
-    error: <img className="w-4 h-4 mr-2" src={errorFilled} alt="error" />,
-    warning: <img className="w-4 h-4 mr-2" src={warningFilled} alt="warning" />,
+    success: <SuccessFilled className="w-4 h-4 mr-2" />,
+    info: <InfoFilled className="w-4 h-4 mr-2" />,
+    error: <ErrorFilled className="w-4 h-4 mr-2" />,
+    warning: <WarningFilled className="w-4 h-4 mr-2" />,
   }
   const IconComponent = typeToIcon[type]
   const getStyle = () => {
@@ -84,5 +84,5 @@ Alert.propTypes = {
   onClose: PropTypes.func,
   closeIcon: PropTypes.node,
   icon: PropTypes.node,
-  content: PropTypes.oneOfType(PropTypes.string, PropTypes.node),
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 }

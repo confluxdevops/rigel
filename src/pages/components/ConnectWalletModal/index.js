@@ -2,15 +2,15 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 
 import {Modal, Loading, Button} from '../../../components'
-import Config, {SupportedChains} from '../../../constants/chainConfig'
+import {ChainConfig, SupportedChains} from '../../../constants/chainConfig'
 import {TypeConnectWallet} from '../../../constants'
-import {errorOutlined} from '../../../assets/images'
+import {ErrorOutlined} from '../../../assets/svg'
 import {useWallet} from '../../../hooks/useWallet'
 
 function ConnectWalletModal({open = false, type, chain, onClose}) {
   const {t} = useTranslation()
   const {tryActivate} = useWallet(chain)
-  const walletConfig = Config[chain].wallet
+  const walletConfig = ChainConfig[chain].wallet
   const walletName = walletConfig.name
   const onInstall = () => {
     window.open(walletConfig.website, '_blank')
@@ -63,7 +63,7 @@ function ConnectWalletModal({open = false, type, chain, onClose}) {
   } else if (type === TypeConnectWallet.error) {
     content = (
       <div className="flex flex-col items-center">
-        <img src={errorOutlined} alt="error" className="w-12 h-12" />
+        <ErrorOutlined className="w-12 h-12" />
         <div className="text-error text-base font-bold leading-6 mb-2 mt-2">
           {t('errorConnecting')}
         </div>

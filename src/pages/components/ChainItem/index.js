@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import Config, {SupportedChains} from '../../../constants/chainConfig'
+import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 
 function ChainItem({chain}) {
-  const chainConfig = Config[chain]
+  const chainConfig = ChainConfig[chain]
   const getIcon = () => {
     return chainConfig.icon()
   }

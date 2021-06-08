@@ -18,7 +18,7 @@ function TokenIcon({chain, token, size = 'medium'}) {
         <span className="absolute right-0 bottom-0">
           <ChainIcon
             chain={token && token.origin}
-            className={`${size === 'large' ? 'w-3 h-3' : 'w-2 h-2'}`}
+            size={`${size === 'large' ? 'w-3 h-3' : 'w-2 h-2'}`}
           ></ChainIcon>
         </span>
       )}

@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 //TODO: Remove
 import {useState} from 'react'
-import {ReactComponent as Logo} from '../logo.svg'
-import {logo} from '../assets/images'
+import {ArrowRight, Logo} from '../assets/svg'
 import TokenSelect from '../pages/Shuttle/ShuttleForm/TokenSelect'
 import {
   Button,
@@ -20,9 +19,9 @@ import {
 import {
   TransactionReceiptionModal,
   ConnectWalletModal,
+  AccountStatus,
 } from '../pages/components'
 import {requestSponsor} from '../utils/request'
-import {AccountStatus} from '../pages/components'
 
 function Example() {
   const [open, setOpen] = useState(false)
@@ -79,7 +78,7 @@ function Example() {
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <div className="App-header">
-        <img src={logo} alt="logo" />
+        <Logo />
         <Logo className="text-primary" />
         <Loading />
         <Button disabled onClick={info}>
@@ -87,7 +86,7 @@ function Example() {
         </Button>
         <Button
           onClick={() => setOpen(true)}
-          startIcon={<Logo className=" text-white" />}
+          startIcon={<ArrowRight className="text-white" />}
           className="mb-2"
         >
           Notification
@@ -144,6 +143,7 @@ function Example() {
           }
         />
       </div>
+      <AccountStatus chain="eth" size="big" />
       <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']} arrow>
         <Button onClick={e => e.preventDefault()}>Hover me</Button>
       </Dropdown>

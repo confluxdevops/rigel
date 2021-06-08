@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
-import Config, {SupportedChains} from '../../../constants/chainConfig'
+import {ChainConfig, SupportedChains} from '../../../constants/chainConfig'
 import {useWallet} from '../../../hooks/useWallet'
 import {ConnectWalletModal, WalletIcon} from '../../components'
 import {TypeConnectWallet} from '../../../constants'
@@ -8,7 +8,7 @@ import {TypeConnectWallet} from '../../../constants'
 function ConnectWallet({size = 'medium', chain, className = ''}) {
   const [open, setOpen] = useState(false)
   const {type, setType, tryActivate} = useWallet(chain)
-  const walletConfig = Config[chain]?.wallet
+  const walletConfig = ChainConfig[chain]?.wallet
   const getIcon = () => {
     return (
       <WalletIcon

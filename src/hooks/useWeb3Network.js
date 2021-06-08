@@ -5,14 +5,15 @@
 import {useEffect, useState} from 'react'
 import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
 import {NetworkContextName} from '../constants'
-import {injected} from '../constants/web3Connectors'
+import {injected} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
+import {isMobile} from 'react-device-detect'
 
 /**
  * doc: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#useweb3react
  * @returns context object
  * object details:
- activate: (
+  activate: (
     connector: AbstractConnectorInterface,
     onError?: (error: Error) => void,
     throwErrors?: boolean
@@ -86,7 +87,7 @@ export function useEagerConnect() {
           setTried(true)
         })
       } else {
-        if (window.ethereum) {
+        if (window.ethereum && isMobile) {
           activate(injected, undefined, true).catch(() => {
             setTried(true)
           })
@@ -113,7 +114,7 @@ export function useInstalled() {
 }
 
 export function useAddress() {
-  const {account} = useWeb3React()()
+  const {account} = useWeb3React()
   return account
 }
 
