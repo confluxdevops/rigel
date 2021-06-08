@@ -5,14 +5,14 @@ import {useWallet} from '../../../hooks/useWallet'
 import {ConnectWalletModal, WalletIcon} from '../../components'
 import {TypeConnectWallet} from '../../../constants'
 
-function ConnectWallet({size, chain, className = ''}) {
+function ConnectWallet({size = 'medium', chain, className = ''}) {
   const [open, setOpen] = useState(false)
   const {type, setType, tryActivate} = useWallet(chain)
   const walletConfig = ChainConfig[chain]?.wallet
   const getIcon = () => {
     return (
       <WalletIcon
-        className={`${size === 'small' ? 'w-3' : 'w-4'}`}
+        className={`${size === 'medium' ? 'w-3' : 'w-4'}`}
         chain={chain}
       />
     )
@@ -34,7 +34,7 @@ function ConnectWallet({size, chain, className = ''}) {
 
   return (
     <>
-      {size === 'small' && (
+      {size === 'medium' && (
         <div
           className={`inline-flex p-2 h-6 bg-primary-10 items-center rounded cursor-pointer ${className} `}
           onClick={onConnect}
@@ -46,7 +46,7 @@ function ConnectWallet({size, chain, className = ''}) {
           </span>
         </div>
       )}
-      {size === 'big' && (
+      {size === 'large' && (
         <div
           className={`flex border rounded-sm w-52 h-9 justify-center items-center border-primary cursor-pointer ${className}`}
           onClick={onConnect}
@@ -68,7 +68,7 @@ function ConnectWallet({size, chain, className = ''}) {
   )
 }
 ConnectWallet.propTypes = {
-  size: PropTypes.oneOf(['small', 'big']).isRequired,
+  size: PropTypes.oneOf(['medium', 'large']).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   className: PropTypes.string,
 }
