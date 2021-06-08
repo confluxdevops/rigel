@@ -24,7 +24,7 @@ function TokenSelect({token, onClick, type, chain}) {
       <TokenIcon token={token} chain={chain} />
       <span className={`ml-1 ${className}`}>{token && token.symbol}</span>
       {type === 'from' && (
-        <WrapIcon type="circle" className="ml-1" size="w-4 h-4">
+        <WrapIcon type="circle" className="ml-1">
           <ArrowRightWithBg />
         </WrapIcon>
       )}

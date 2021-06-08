@@ -42,10 +42,12 @@ function WalletHub({connectData, history = []}) {
     children = (
       <div className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative">
         {WalletConfig[unConnectedData[0].type].icon()}
-        <div className="h-full border border-gray-20 flex items-center rounded-full ml-1 px-3">
+        <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
-          <span className="mr-1">{shortenAddress(connectData[0].address)}</span>
-          <WrapIcon size="w-4 h-4">
+          <span className="mr-1">
+            {shortenAddress(connectedData[0].chain, connectedData[0].address)}
+          </span>
+          <WrapIcon type="circle">
             {arrow === 'down' ? <ArrowDownWithBg /> : <ArrowUpWithBg />}
           </WrapIcon>
         </div>
@@ -62,7 +64,7 @@ function WalletHub({connectData, history = []}) {
         <Connected className="w-2 h-2 mr-1" />
         {WalletConfig[KeyOfCfx].icon()}
         {WalletConfig[KeyOfMetaMask].icon('-ml-1')}
-        <WrapIcon size="w-4 h-4" className="ml-1">
+        <WrapIcon type="circle" className="ml-1">
           {arrow === 'down' ? <ArrowDownWithBg /> : <ArrowUpWithBg />}
         </WrapIcon>
       </div>
@@ -81,7 +83,7 @@ function WalletHub({connectData, history = []}) {
 }
 
 WalletHub.propTypes = {
-  connectData: PropTypes.object.isRequiredisRequired,
+  connectData: PropTypes.array.isRequired,
   history: PropTypes.array,
 }
 
@@ -103,9 +105,9 @@ const Popup = ({onClick}) => {
         <div></div>
       </div>
       <div className="p-3 bg-gray-10 flex flex-col">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
-          <div>
+          <div className="flex items-center">
             <Link>{t('all')}</Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>

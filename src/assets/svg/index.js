@@ -13,6 +13,7 @@ export {ReactComponent as ArrowDownWithBg} from './color/bg-arrow-down.svg'
 export {ReactComponent as ArrowUpWithBg} from './color/bg-arrow-up.svg'
 export {ReactComponent as Plus} from './color/plus.svg'
 export {ReactComponent as Disabled} from './color/disabled.svg'
+export {ReactComponent as Sun} from './color/sun.svg'
 
 // only need define the size
 export {ReactComponent as BscIcon} from './chain-bsc-logo.svg'

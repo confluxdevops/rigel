@@ -47,7 +47,6 @@ function TokenItem({chain, token, selectedToken, onClick}) {
           <WrapIcon
             type="circle"
             className="ml-1 cursor-pointer"
-            size="w-4 h-4"
             onClick={e => onAddToken(e)}
           >
             <PlusWithBg />
