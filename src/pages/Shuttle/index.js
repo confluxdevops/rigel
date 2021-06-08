@@ -2,7 +2,7 @@ import ShuttleForm from './ShuttleForm'
 
 function Shuttle() {
   return (
-    <div>
+    <div className="flex justify-center">
       <ShuttleForm />
     </div>
   )
