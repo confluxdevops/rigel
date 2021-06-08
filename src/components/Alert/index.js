@@ -84,5 +84,5 @@ Alert.propTypes = {
   onClose: PropTypes.func,
   closeIcon: PropTypes.node,
   icon: PropTypes.node,
-  content: PropTypes.oneOfType(PropTypes.string, PropTypes.node),
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 }
