@@ -6,8 +6,8 @@ import {NotConnected, Connected, NoPending} from '../../../assets/svg'
 import {
   WalletConfig,
   ChainConfig,
-  KeyOfCfx,
   KeyOfMetaMask,
+  KeyOfPortal,
 } from '../../../constants/chainConfig'
 import {shortenAddress} from '../../../utils/address'
 import {
@@ -39,7 +39,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
   } else if (length === 1) {
     children = (
       <div className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative">
-        {WalletConfig[unConnectedData[0].type].icon()}
+        {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet].icon()}
         <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
           <span className="mr-1">
@@ -62,7 +62,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
     children = (
       <div className="h-8 px-3 flex items-center rounded-full border border-gray-20">
         <Connected className="w-2 h-2 mr-1" />
-        {WalletConfig[KeyOfCfx].icon()}
+        {WalletConfig[KeyOfPortal].icon()}
         {WalletConfig[KeyOfMetaMask].icon('-ml-1')}
         <WrapIcon type="circle" className="ml-1">
           {arrow === 'down' ? <ArrowDownWithBg /> : <ArrowUpWithBg />}
@@ -96,8 +96,12 @@ export default WalletHub
 
 const Popup = ({onClick, connectData, pendingTransactions}) => {
   const {t} = useTranslation()
-  const metamaskData = connectData.filter(data => data.chain !== KeyOfCfx)[0]
-  const portalData = connectData.filter(data => data.chain === KeyOfCfx)[0]
+  const metamaskData = connectData.filter(
+    data => ChainConfig[data.chain].wallet === KeyOfMetaMask,
+  )[0]
+  const portalData = connectData.filter(
+    data => ChainConfig[data.chain].wallet === KeyOfPortal,
+  )[0]
   const noPending = (
     <div className="flex flex-col items-center mt-1">
       <NoPending className="mb-1" />
@@ -136,7 +140,6 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>
         </div>
-        {/* TODO: pendingTransactions shuttle pending transactions, only display 5 max */}
         <div>
           {pendingTransactions.length === 0
             ? noPending

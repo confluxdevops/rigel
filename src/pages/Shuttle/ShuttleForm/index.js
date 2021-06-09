@@ -74,7 +74,12 @@ function ShuttleForm() {
         {/* TODO SelectToken */}
         <div className="flex-1"></div>
       </div>
-      <WrapIcon type="circle" size="w-8 h-8" className="my-4">
+      <WrapIcon
+        type="circle"
+        size="w-8 h-8"
+        className="my-4"
+        onClick={invertChain}
+      >
         <ChangeWithBg />
       </WrapIcon>
       <div className="flex w-full">

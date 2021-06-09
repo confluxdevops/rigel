@@ -12,11 +12,10 @@ function Header() {
   //TODO: remove mock data
   const connectData = [
     {
-      type: 'portal',
       chain: 'cfx',
       address: 'cfxtest:aame5p2tdzfsc3zsmbg1urwkg5ax22epg27cnu1rwm',
     },
-    {type: 'metamask', chain: 'eth', address: null},
+    {chain: 'eth', address: null},
   ]
   const pendingTransactions = [
     {
