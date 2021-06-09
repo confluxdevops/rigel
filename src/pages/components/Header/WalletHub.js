@@ -2,7 +2,7 @@ import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {Dropdown, WrapIcon, Link} from '../../../components'
-import {NotConnected, Connected} from '../../../assets/svg'
+import {NotConnected, Connected, NoPending} from '../../../assets/svg'
 import {
   WalletConfig,
   KeyOfCfx,
@@ -15,12 +15,13 @@ import {
   Close,
   ArrowRight,
 } from '../../../assets/svg'
+import {AccountStatus} from '../../components'
 
 // const connectData = [
 //   {type: 'portal', chain:'cfx', address: 'cfx:asfasfasd...'},
 //   {type: 'metamask', chain:'eth', false, address: null},
 // ]
-function WalletHub({connectData, history = []}) {
+function WalletHub({connectData, pendingTransactions = []}) {
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
   const connectedData = connectData.filter(data => !!data.address)
@@ -51,9 +52,11 @@ function WalletHub({connectData, history = []}) {
             {arrow === 'down' ? <ArrowDownWithBg /> : <ArrowUpWithBg />}
           </WrapIcon>
         </div>
-        {history.length > 0 && (
+        {pendingTransactions.length > 0 && (
           <div className="flex items-center justify-center w-4 h-4 absolute top-0 right-0 rounded-full bg-error text-xs text-gray-0">
-            {history.length > 99 ? '99+' : history.length}
+            {pendingTransactions.length > 99
+              ? '99+'
+              : pendingTransactions.length}
           </div>
         )}
       </div>
@@ -74,7 +77,12 @@ function WalletHub({connectData, history = []}) {
   return (
     <Dropdown
       trigger={['click']}
-      overlay={<Popup />}
+      overlay={
+        <Popup
+          connectData={connectData}
+          pendingTransactions={pendingTransactions}
+        />
+      }
       onVisibleChange={visible => onVisibleChange(visible)}
     >
       {children}
@@ -84,13 +92,20 @@ function WalletHub({connectData, history = []}) {
 
 WalletHub.propTypes = {
   connectData: PropTypes.array.isRequired,
-  history: PropTypes.array,
+  pendingTransactions: PropTypes.array,
 }
 
 export default WalletHub
 
-const Popup = ({onClick}) => {
+const Popup = ({onClick, connectData, pendingTransactions}) => {
   const {t} = useTranslation()
+  const metamaskData = connectData.filter(data => data.chain !== KeyOfCfx)[0]
+  const portalData = connectData.filter(data => data.chain === KeyOfCfx)[0]
+  const noPending = (
+    <div className="flex flex-col items-center mt-1 mb-3">
+      <NoPending className="mb-1" />
+    </div>
+  )
   return (
     <div className="w-60 shadow-3 rounded flex flex-col">
       <div className="p-3 bg-gray-0 flex flex-col">
@@ -101,19 +116,25 @@ const Popup = ({onClick}) => {
             onClick={() => onClick & onClick()}
           />
         </div>
-        {/* TODO: ConnectWallet */}
-        <div></div>
+        <div className="pt-3 flex flex-col">
+          <AccountStatus
+            chain={metamaskData.chain}
+            size="large"
+            className="mb-3"
+          />
+          <AccountStatus chain={portalData.chain} size="large" />
+        </div>
       </div>
       <div className="p-3 bg-gray-10 flex flex-col">
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div className="flex items-center">
-            <Link>{t('all')}</Link>
+            <Link size="small">{t('all')}</Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>
         </div>
-        {/* TODO: history shuttle pending transactions, only display 5 max */}
-        <div></div>
+        {/* TODO: pendingTransactions shuttle pending transactions, only display 5 max */}
+        <div>{pendingTransactions.length === 0 ? noPending : null}</div>
       </div>
     </div>
   )
@@ -121,4 +142,6 @@ const Popup = ({onClick}) => {
 
 Popup.propTypes = {
   onClick: PropTypes.func,
+  connectData: PropTypes.array.isRequired,
+  pendingTransactions: PropTypes.array,
 }

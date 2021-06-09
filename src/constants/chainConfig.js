@@ -148,8 +148,8 @@ export const ChainConfig = {
   },
   [KeyOfBtc]: {
     key: KeyOfBtc,
-    icon(className) {
-      return <ChainIcon className={className} chain={KeyOfBtc} />
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfBtc} />
     },
     fullName: 'Bitcoin',
     shortName: 'Bitcoin',

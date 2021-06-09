@@ -55,9 +55,9 @@ function Button({
   }
 
   const getIconSize = () => {
-    if (size === 'large') return 'w-6 h-6'
-    if (size === 'medium') return 'w-5 h-5'
-    if (size === 'small') return 'w-4 h-4'
+    if (size === 'large') return 'w-5 h-5'
+    if (size === 'medium') return 'w-4 h-4'
+    if (size === 'small') return 'w-3 h-3'
   }
 
   return (

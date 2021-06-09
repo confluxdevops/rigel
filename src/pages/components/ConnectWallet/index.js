@@ -1,22 +1,22 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
-import {ChainConfig, SupportedChains} from '../../../constants/chainConfig'
+import {useTranslation} from 'react-i18next'
+import {
+  ChainConfig,
+  WalletConfig,
+  SupportedChains,
+} from '../../../constants/chainConfig'
 import {useWallet} from '../../../hooks/useWallet'
-import {ConnectWalletModal, WalletIcon} from '../../components'
+import {ConnectWalletModal} from '../../components'
+import {Button, Tag} from '../../../components'
 import {TypeConnectWallet} from '../../../constants'
 
 function ConnectWallet({size = 'medium', chain, className = ''}) {
+  const {t} = useTranslation()
   const [open, setOpen] = useState(false)
   const {type, setType, tryActivate} = useWallet(chain)
-  const walletConfig = ChainConfig[chain]?.wallet
-  const getIcon = () => {
-    return (
-      <WalletIcon
-        className={`${size === 'medium' ? 'w-3' : 'w-4'}`}
-        chain={chain}
-      />
-    )
-  }
+  const walletConfig = WalletConfig[ChainConfig[chain]?.wallet]
+  const walletIcon = walletConfig.icon(className, 'w-3 h-3')
   const onConnect = () => {
     setOpen(true)
     if (type === TypeConnectWallet.loading) {
@@ -35,35 +35,28 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
   return (
     <>
       {size === 'medium' && (
-        <div
-          className={`inline-flex p-2 h-6 bg-primary-10 items-center rounded cursor-pointer ${className} `}
-          onClick={onConnect}
-          aria-hidden="true"
-        >
-          {getIcon()}
-          <span className="ml-1.5 text-primary text-xs font-normal">
-            Connect
-          </span>
-        </div>
+        <Tag className={className} onClick={onConnect} icon={walletIcon}>
+          {t('connect')}
+        </Tag>
       )}
       {size === 'large' && (
-        <div
-          className={`flex border rounded-sm w-52 h-9 justify-center items-center border-primary cursor-pointer ${className}`}
+        <Button
+          fullWidth
+          size="small"
+          className={className}
           onClick={onConnect}
-          aria-hidden="true"
+          variant="outlined"
+          startIcon={walletIcon}
         >
-          {getIcon()}
-          <span className="ml-2 text-xs text-primary">
-            Connect {walletConfig?.name}
-          </span>
-        </div>
+          {`${t('Connect')} ${walletConfig?.name}`}
+        </Button>
       )}
       <ConnectWalletModal
         type={type}
         chain={chain}
         open={open}
         onClose={onClose}
-      ></ConnectWalletModal>
+      />
     </>
   )
 }

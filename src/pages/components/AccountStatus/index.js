@@ -11,8 +11,12 @@ function AccountStatus({chain, className, size = 'medium'}) {
   }
 
   const getIconStyle = () => {
-    if (size === 'medium') return 'mr-1.5 w-3'
-    if (size === 'large') return 'mr-2 w-4'
+    if (size === 'medium') return 'mr-1.5'
+    if (size === 'large') return 'mr-2'
+  }
+  const getIconSize = () => {
+    if (size === 'medium') return 'w-3 h-3'
+    if (size === 'large') return 'w-4 h-4'
   }
   return (
     <div className={`${className}`}>
@@ -22,6 +26,7 @@ function AccountStatus({chain, className, size = 'medium'}) {
           showIcon={true}
           className={getAccountCompStyle()}
           iconClassName={getIconStyle()}
+          iconSize={getIconSize()}
         />
       ) : (
         <ConnectWallet chain={chain} size={size} />

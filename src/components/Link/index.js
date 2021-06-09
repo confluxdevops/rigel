@@ -24,9 +24,9 @@ function CustomLink({
   }
 
   const getSizeStyle = () => {
-    if (size === 'large') return 'text-base h-12'
-    if (size === 'medium') return 'text-sm h-10'
-    if (size === 'small') return 'text-xs h-8'
+    if (size === 'large') return 'text-base '
+    if (size === 'medium') return 'text-sm'
+    if (size === 'small') return 'text-xs'
     return ''
   }
 
@@ -36,9 +36,9 @@ function CustomLink({
   }
 
   const getIconSize = () => {
-    if (size === 'large') return 'w-6 h-6'
-    if (size === 'medium') return 'w-5 h-5'
-    if (size === 'small') return 'w-4 h-4'
+    if (size === 'large') return 'w-5 h-5'
+    if (size === 'medium') return 'w-4 h-4'
+    if (size === 'small') return 'w-3 h-3'
   }
 
   return (
