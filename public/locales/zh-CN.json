@@ -10,7 +10,7 @@
   "installWallet": "Install {{walletName}} Wallet",
   "installTipOne": " You will need to install {{walletName}} to continue.",
   "installTipTwo": "Once you have installed, go ahead and refresh the page.",
-  "connectWallet": "Connect Wallet",
+  "connectWallet": "连接钱包",
   "loginAndAuth": "Please login and authorize access to your {{walletName}} accounts to continue.",
   "errorConnecting": "Error Connecting",
   "tryAgain": "Try Again",
@@ -18,9 +18,9 @@
   "selectToken": "选择代币",
   "commonTokens": "常用代币",
   "tokenList": "代币列表",
-  "connectWallet": "连接钱包",
   "next": "下一步",
   "accounts": "账户",
   "shuttleRecord": "跨链历史",
-  "all": "全部"
+  "all": "全部",
+  "app": "应用"
 }

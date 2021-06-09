@@ -67,6 +67,11 @@ body {
   @apply font-normal;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
 #root,
 body,
 html {

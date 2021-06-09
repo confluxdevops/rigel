@@ -18,9 +18,9 @@
   "selectToken": "Select Token",
   "commonTokens": "Common Tokens",
   "tokenList": "Token List",
-  "connectWallet": "Connect Wallet",
   "next": "Next",
   "accounts": "Accounts",
   "shuttleRecord": "Cross-Chian Record",
-  "all": "All"
+  "all": "All",
+  "app": "App"
 }

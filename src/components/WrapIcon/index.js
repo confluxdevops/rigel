@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import {CircleBg, SquareBg} from '../../assets/svg'
 
-function WrapIcon({type, size = 'w-6 h-6', children, className = ''}) {
+function WrapIcon({type, size = 'w-4 h-4', children, className = ''}) {
   return (
     <div
-      className={`${size} relative flex justify-center items-center ${className}`}
+      className={`${size} relative flex justify-center items-center cursor-pointer ${className}`}
     >
       {type === 'circle' && <CircleBg className={size} />}
       {type === 'square' && <SquareBg className={size} />}
