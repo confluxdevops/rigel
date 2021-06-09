@@ -17,10 +17,6 @@ import {
 } from '../../../assets/svg'
 import {AccountStatus} from '../../components'
 
-// const connectData = [
-//   {type: 'portal', chain:'cfx', address: 'cfx:asfasfasd...'},
-//   {type: 'metamask', chain:'eth', false, address: null},
-// ]
 function WalletHub({connectData, pendingTransactions = []}) {
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
@@ -129,7 +125,9 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div className="flex items-center">
-            <Link size="small">{t('all')}</Link>
+            <Link size="small" to="/">
+              {t('all')}
+            </Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>
         </div>
