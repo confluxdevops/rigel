@@ -2,12 +2,15 @@
  * For the chain based on Ethereum: multiple connectors
  * But only support MetaMask now
  */
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useMemo} from 'react'
 import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
-import {NetworkContextName} from '../constants'
+import {useInterval} from 'react-use'
+import {NetworkContextName, IntervalTime} from '../constants'
 import {injected} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
 import {isMobile} from 'react-device-detect'
+import {getContract} from '../utils/web3'
+import ERC20_ABI from '../abi/erc20.json'
 
 /**
  * doc: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#useweb3react
@@ -151,4 +154,48 @@ export function useConnect() {
     }
   }
   return {type, setType, tryActivate, error, address: account}
+}
+
+/**
+ * Get the balance of Native Token, etc: the ETH token on the Ethereum chain
+ * doc: https://github.com/streamich/react-use/blob/master/docs/useInterval.md
+ * @param {*} address token address
+ * @param {*} delay interval delay milliseconds
+ * @returns the balance
+ */
+export function useBalance(address, delay) {
+  const [balance, setBalance] = useState(0)
+  const {account, library} = useWeb3React()
+  useInterval(
+    () => {
+      library &&
+        library.getBalance(address).then(balance => {
+          setBalance(balance)
+        })
+    },
+    account ? delay || IntervalTime.fetchBalance : null,
+  )
+  return balance
+}
+
+// returns null when has error
+export function useContract(address, ABI, withSignerIfPossible = true) {
+  const {library, account} = useActiveWeb3React()
+  return useMemo(() => {
+    if (!address || !ABI || !library) return null
+    try {
+      return getContract(
+        address,
+        ABI,
+        library,
+        withSignerIfPossible && account ? account : undefined,
+      )
+    } catch (error) {
+      return null
+    }
+  }, [address, ABI, library, withSignerIfPossible, account])
+}
+
+export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
+  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
