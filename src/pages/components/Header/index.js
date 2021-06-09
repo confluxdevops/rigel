@@ -9,7 +9,7 @@ import './header.css'
 
 function Header() {
   const {t} = useTranslation()
-
+  //TODO: remove mock data
   const connectData = [
     {
       type: 'portal',
@@ -18,6 +18,15 @@ function Header() {
     },
     {type: 'metamask', chain: 'eth', address: null},
   ]
+  const pendingTransactions = [
+    {
+      type: 'shuttle',
+      fromChain: 'eth',
+      toChain: 'cfx',
+      tokenSymbol: 'ETH',
+    },
+    {type: 'approve', tokenSymbol: 'UNI'},
+  ]
   return (
     <div className="h-16 px-8 bg-gray-0 flex justify-between items-center w-full">
       <div className="flex items-center">
@@ -25,7 +34,10 @@ function Header() {
         <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
       </div>
       <div className="flex items-center">
-        <WalletHub connectData={connectData} />
+        <WalletHub
+          connectData={connectData}
+          pendingTransactions={pendingTransactions}
+        />
         <WrapIcon type="square" className="ml-3" size="w-7 h-7">
           <Sun />
         </WrapIcon>

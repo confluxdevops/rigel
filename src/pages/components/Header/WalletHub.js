@@ -1,10 +1,11 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
-import {Dropdown, WrapIcon, Link} from '../../../components'
+import {Dropdown, WrapIcon, Link, Loading} from '../../../components'
 import {NotConnected, Connected, NoPending} from '../../../assets/svg'
 import {
   WalletConfig,
+  ChainConfig,
   KeyOfCfx,
   KeyOfMetaMask,
 } from '../../../constants/chainConfig'
@@ -98,12 +99,16 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
   const metamaskData = connectData.filter(data => data.chain !== KeyOfCfx)[0]
   const portalData = connectData.filter(data => data.chain === KeyOfCfx)[0]
   const noPending = (
-    <div className="flex flex-col items-center mt-1 mb-3">
+    <div className="flex flex-col items-center mt-1">
       <NoPending className="mb-1" />
+      <span className="text-xs text-gray-40">
+        Pending transactions will appear here
+      </span>
     </div>
   )
+  const displayPendingTransactions = pendingTransactions.slice(0, 5)
   return (
-    <div className="w-60 shadow-3 rounded flex flex-col">
+    <div className="w-60 shadow-common rounded flex flex-col">
       <div className="p-3 bg-gray-0 flex flex-col">
         <div className="flex justify-between">
           <span className="text-gray-40 text-xs">{t('accounts')}</span>
@@ -125,14 +130,30 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div className="flex items-center">
-            <Link size="small" to="/">
+            <Link size="small" to="/history">
               {t('all')}
             </Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>
         </div>
         {/* TODO: pendingTransactions shuttle pending transactions, only display 5 max */}
-        <div>{pendingTransactions.length === 0 ? noPending : null}</div>
+        <div>
+          {pendingTransactions.length === 0
+            ? noPending
+            : displayPendingTransactions.map((data, index) => {
+                const {type, tokenSymbol, fromChain, toChain} = data
+                return (
+                  <div className="mt-3 flex items-center" key={index}>
+                    <Loading size="w-3 h-3" className="mr-1" />
+                    <span className="text-gray-80 text-xs">
+                      {type === 'shuttle' &&
+                        `${tokenSymbol} From ${ChainConfig[fromChain].shortName} To ${ChainConfig[toChain].shortName}`}
+                      {type === 'approve' && `Approve ${tokenSymbol}`}
+                    </span>
+                  </div>
+                )
+              })}
+        </div>
       </div>
     </div>
   )
