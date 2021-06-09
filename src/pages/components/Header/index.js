@@ -52,7 +52,7 @@ function Header() {
 function HeaderLink({to, children, disabled = false}) {
   const getStyle = () => {
     if (disabled) return 'text-gray-40'
-    return 'text-gray-60 hover:underline'
+    return 'text-gray-60'
   }
   return (
     <NavLink
