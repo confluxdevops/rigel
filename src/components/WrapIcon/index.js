@@ -5,7 +5,7 @@ function WrapIcon({type, size = 'w-4 h-4', children, className = '', onClick}) {
   return (
     <div
       onClick={() => onClick && onClick()}
-      aria-hidden={true}
+      aria-hidden="true"
       className={`${size} relative flex justify-center items-center cursor-pointer ${className}`}
     >
       {type === 'circle' && <CircleBg className={size} />}

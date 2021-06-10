@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import {SuccessFilled, Disabled} from '../../assets/svg'
 function MenuItem({
@@ -14,6 +15,16 @@ function MenuItem({
     if (selected) return 'bg-gray-0 text-primary cursor-poiniter'
     return 'bg-gray-0 text-gray-100 cursor-poiniter hover:bg-gray-10 hover:text-primary'
   }
+  const iconComp = icon
+    ? React.cloneElement(icon, {
+        className: `mr-2 w-6 h-6 ${icon.props.className}`,
+      })
+    : null
+  const selectedIconComp = selectedIcon
+    ? React.cloneElement(selectedIcon, {
+        className: `w-4 h-4 ${selectedIcon.props.className}`,
+      })
+    : null
   return (
     <div
       key={itemKey}
@@ -24,19 +35,17 @@ function MenuItem({
       } flex items-center ${getStyle()}`}
     >
       <div className="flex items-center flex-1">
-        {icon && <span className="flex items-center mr-2 w-6 h-6">{icon}</span>}
+        {iconComp}
         {children}
       </div>
-      {!disabled && selected && (
-        <span className="flex items-center w-4 h-4">
-          {selectedIcon ? selectedIcon : <SuccessFilled className="w-4 h-4" />}
-        </span>
-      )}
-      {disabled && (
-        <span className="flex items-center w-4 h-4">
-          <Disabled className="text-gray-40 w-4 h-4" />
-        </span>
-      )}
+      {!disabled &&
+        selected &&
+        (selectedIcon ? (
+          selectedIconComp
+        ) : (
+          <SuccessFilled className="w-4 h-4" />
+        ))}
+      {disabled && <Disabled className="text-gray-40 w-4 h-4" />}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {ArrowRightWithBg} from '../../../assets/svg'
+import {BgArrowRight} from '../../../assets/svg'
 import {WrapIcon} from '../../../components'
 import {TokenIcon} from '../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
@@ -25,7 +25,7 @@ function TokenSelect({token, onClick, type, chain}) {
       <span className={`ml-1 ${className}`}>{token && token.symbol}</span>
       {type === 'from' && (
         <WrapIcon type="circle" className="ml-1">
-          <ArrowRightWithBg />
+          <BgArrowRight />
         </WrapIcon>
       )}
     </div>

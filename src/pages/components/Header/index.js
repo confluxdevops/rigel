@@ -38,10 +38,10 @@ function Header() {
           pendingTransactions={pendingTransactions}
         />
         <WrapIcon type="square" className="ml-3" size="w-7 h-7">
-          <Sun />
+          <Sun className="text-gray-80" />
         </WrapIcon>
         <WrapIcon type="square" className="ml-3" size="w-7 h-7">
-          <Sun />
+          <Sun className="text-gray-80" />
         </WrapIcon>
       </div>
     </div>

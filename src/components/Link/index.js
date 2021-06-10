@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 
@@ -41,6 +42,22 @@ function CustomLink({
     if (size === 'small') return 'w-3 h-3'
   }
 
+  const startIconComp = startIcon
+    ? React.cloneElement(startIcon, {
+        className: `mr-2 ${getIconColor()} ${getIconSize()} ${
+          startIcon.props.className
+        }`,
+      })
+    : null
+
+  const endIconComp = endIcon
+    ? React.cloneElement(endIcon, {
+        className: `ml-2 ${getIconColor()} ${getIconSize()} ${
+          endIcon.props.className
+        }`,
+      })
+    : null
+
   return (
     <Link
       onClick={e => onClick && onClick(e)}
@@ -49,21 +66,9 @@ function CustomLink({
       flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
       {...props}
     >
-      {startIcon && (
-        <span
-          className={`flex items-center mr-2 ${getIconColor()} ${getIconSize()}`}
-        >
-          {startIcon}
-        </span>
-      )}
+      {startIconComp}
       {children}
-      {endIcon && (
-        <span
-          className={`flex items-center ml-2 ${getIconColor()} ${getIconSize()}`}
-        >
-          {endIcon}
-        </span>
-      )}
+      {endIconComp}
     </Link>
   )
 }

@@ -5,10 +5,10 @@ import PropTypes from 'prop-types'
 import {IS_DEV} from '../utils'
 import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
 import {
-  BscIcon,
-  BtcIcon,
-  EthIcon,
-  CfxIcon,
+  ChainBscLogo,
+  ChainBtcLogo,
+  ChainEthLogo,
+  ChainCfxLogo,
   MetamaskLogo,
   PortalLogo,
 } from '../assets/svg'
@@ -184,16 +184,16 @@ export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
   let icon
   switch (chain) {
     case KeyOfEth:
-      icon = <EthIcon />
+      icon = <ChainEthLogo />
       break
     case KeyOfBsc:
-      icon = <BscIcon />
+      icon = <ChainBscLogo />
       break
     case KeyOfCfx:
-      icon = <CfxIcon />
+      icon = <ChainCfxLogo />
       break
     case KeyOfBtc:
-      icon = <BtcIcon />
+      icon = <ChainBtcLogo />
       break
   }
   return React.cloneElement(icon, {

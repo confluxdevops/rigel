@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 function Button({
   onClick,
@@ -60,6 +61,22 @@ function Button({
     if (size === 'small') return 'w-3 h-3'
   }
 
+  const startIconComp = startIcon
+    ? React.cloneElement(startIcon, {
+        className: `mr-2 ${getIconColor()} ${getIconSize()} ${
+          startIcon.props.className
+        }`,
+      })
+    : null
+
+  const endIconComp = endIcon
+    ? React.cloneElement(endIcon, {
+        className: `ml-2 ${getIconColor()} ${getIconSize()} ${
+          endIcon.props.className
+        }`,
+      })
+    : null
+
   return (
     <button
       onClick={e => onClick && onClick(e)}
@@ -70,21 +87,9 @@ function Button({
       } ${className}`}
       {...props}
     >
-      {startIcon && (
-        <span
-          className={`flex items-center mr-2 ${getIconColor()} ${getIconSize()}`}
-        >
-          {startIcon}
-        </span>
-      )}
+      {startIconComp}
       {children}
-      {endIcon && (
-        <span
-          className={`flex items-center ml-2 ${getIconColor()} ${getIconSize()}`}
-        >
-          {endIcon}
-        </span>
-      )}
+      {endIconComp}
     </button>
   )
 }

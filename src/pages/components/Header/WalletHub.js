@@ -2,7 +2,15 @@ import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {Dropdown, WrapIcon, Link, Loading} from '../../../components'
-import {NotConnected, Connected, NoPending} from '../../../assets/svg'
+import {
+  NotConnected,
+  Connected,
+  NoPending,
+  BgArrowDown,
+  BgArrowUp,
+  Close,
+  ArrowRight,
+} from '../../../assets/svg'
 import {
   WalletConfig,
   ChainConfig,
@@ -10,12 +18,6 @@ import {
   KeyOfPortal,
 } from '../../../constants/chainConfig'
 import {shortenAddress} from '../../../utils/address'
-import {
-  ArrowDownWithBg,
-  ArrowUpWithBg,
-  Close,
-  ArrowRight,
-} from '../../../assets/svg'
 import {AccountStatus} from '../../components'
 
 function WalletHub({connectData, pendingTransactions = []}) {
@@ -46,7 +48,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
             {shortenAddress(connectedData[0].chain, connectedData[0].address)}
           </span>
           <WrapIcon type="circle">
-            {arrow === 'down' ? <ArrowDownWithBg /> : <ArrowUpWithBg />}
+            {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
           </WrapIcon>
         </div>
         {pendingTransactions.length > 0 && (
@@ -65,7 +67,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
         {WalletConfig[KeyOfPortal].icon()}
         {WalletConfig[KeyOfMetaMask].icon('-ml-1')}
         <WrapIcon type="circle" className="ml-1">
-          {arrow === 'down' ? <ArrowDownWithBg /> : <ArrowUpWithBg />}
+          {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
         </WrapIcon>
       </div>
     )

@@ -38,7 +38,7 @@ function TokenList({chain}) {
   return (
     <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl py-6 shadow-common">
       <div className="flex justify-center items-center relative w-full mb-4 px-6">
-        <ArrowLeft className="text-gray-40 absolute left-6" />
+        <ArrowLeft className="text-gray-40 absolute left-6 w-6 h-6" />
         <span className="text-base text-gray-100">{t('selectToken')}</span>
       </div>
       <div className="px-6 w-full">
