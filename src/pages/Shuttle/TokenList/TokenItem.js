@@ -18,7 +18,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
     if (_.isEqual(token, selectedToken)) {
       return 'bg-gray-10'
     }
-    return 'bg-gray-0 hover:bg-gray-4'
+    return 'bg-gray-0 hover:bg-gray-10'
   }
 
   const onAddToken = e => {

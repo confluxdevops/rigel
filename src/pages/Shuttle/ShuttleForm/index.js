@@ -64,7 +64,7 @@ function ShuttleForm() {
   }, [fromChain, toChain, history, location.pathname, others])
 
   return (
-    <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6">
+    <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">
       <div className="flex w-full">
         <ChainSelect
           chain={fromChain || DefaultFromChain}

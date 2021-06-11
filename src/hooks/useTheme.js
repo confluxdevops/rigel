@@ -1,21 +1,19 @@
-import {useState, useEffect} from 'react'
+import useDarkMode from 'use-dark-mode'
 
 export default function useTheme() {
   let initTheme = 'light'
   if (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) &&
+    localStorage.darkMode === 'dark' ||
+    (!('darkMode' in localStorage) &&
       window.matchMedia('(prefers-color-scheme: dark)').matches)
   ) {
     initTheme = 'dark'
   }
-  const [theme, setTheme] = useState(initTheme)
-  useEffect(() => {
-    const colorTheme = theme === 'light' ? 'dark' : 'light'
-    const root = window.document.documentElement
-    root.classList.remove(colorTheme)
-    root.classList.add(theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
-  return [theme, setTheme]
+
+  const darkMode = useDarkMode(initTheme, {
+    classNameDark: 'dark',
+    classNameLight: 'light',
+    storageKey: 'darkMode',
+  })
+  return darkMode
 }

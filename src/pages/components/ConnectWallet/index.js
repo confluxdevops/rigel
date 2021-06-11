@@ -48,7 +48,7 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
           variant="outlined"
           startIcon={walletIcon}
         >
-          {`${t('Connect')} ${walletConfig?.name}`}
+          {`${t('connect')} ${walletConfig?.name}`}
         </Button>
       )}
       <ConnectWalletModal

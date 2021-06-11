@@ -11,30 +11,32 @@ function App() {
   return (
     <Suspense fallback={null}>
       <Router>
-        <Header />
-        <div className="container mx-auto flex-grow justify-center pb-6">
-          <Web3ReactManager>
-            <Switch>
-              <Route path="/shuttle">
-                <Shuttle />
-              </Route>
-              {/* TODO: Remove */}
-              <Route path="/tokenlist">
-                <TokenList chain="eth" />
-              </Route>
-              {/* TODO: Remove */}
-              <Route path="/example">
-                <Example />
-              </Route>
-              <Route path="/history">
-                <History />
-              </Route>
-              <Route path="/" exec>
-                {/* TODO home page */}
-                <Home />
-              </Route>
-            </Switch>
-          </Web3ReactManager>
+        <div className="flex flex-col h-full relative background">
+          <Header />
+          <div className="container mx-auto flex-grow justify-center pb-6">
+            <Web3ReactManager>
+              <Switch>
+                <Route path="/shuttle">
+                  <Shuttle />
+                </Route>
+                {/* TODO: Remove */}
+                <Route path="/tokenlist">
+                  <TokenList chain="eth" />
+                </Route>
+                {/* TODO: Remove */}
+                <Route path="/example">
+                  <Example />
+                </Route>
+                <Route path="/history">
+                  <History />
+                </Route>
+                <Route path="/" exec>
+                  {/* TODO home page */}
+                  <Home />
+                </Route>
+              </Switch>
+            </Web3ReactManager>
+          </div>
         </div>
       </Router>
     </Suspense>
