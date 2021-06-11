@@ -28,7 +28,7 @@ function Button({
     if (variant === 'text') {
       if (danger) return 'text error bg-transparent hover:bg-error-10'
       if (color === 'primary')
-        return 'text-gray-80 bg-transparent hover:bg-gray-4'
+        return 'text-gray-80 bg-transparent hover:bg-gray-10'
     } else if (variant === 'outlined') {
       if (danger)
         return 'border border-error text-error bg-white hover:border-error-dark hover:text-error-dark'

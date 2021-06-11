@@ -44,7 +44,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
         {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet].icon()}
         <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
-          <span className="mr-1">
+          <span className="mr-1 text-gray-100">
             {shortenAddress(connectedData[0].chain, connectedData[0].address)}
           </span>
           <WrapIcon type="circle">
