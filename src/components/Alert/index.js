@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   ErrorFilled,
@@ -49,6 +50,12 @@ function Alert({
     }
   }
 
+  const closeIconComp = closeIcon
+    ? React.cloneElement(closeIcon, {
+        className: `w-4 h-4 text-gray-40 ${closeIcon.props.className}`,
+      })
+    : null
+
   if (!open) return null
 
   return (
@@ -60,12 +67,15 @@ function Alert({
         <span className="text-gray-80">{content}</span>
       </div>
       {closable && (
-        <span
-          aria-hidden="true"
-          onClick={e => onCloseClick(e)}
-          className="w-4 h-4 text-gray-40"
-        >
-          {closeIcon ? closeIcon : <Close />}
+        <span aria-hidden="true" onClick={e => onCloseClick(e)}>
+          {closeIcon ? (
+            closeIconComp
+          ) : (
+            <Close
+              className="w-4 h-4 text-gray-40"
+              onClick={e => onCloseClick(e)}
+            />
+          )}
         </span>
       )}
     </div>

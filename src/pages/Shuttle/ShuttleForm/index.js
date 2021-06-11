@@ -10,7 +10,7 @@ import {
   DefaultToChain,
   KeyOfCfx,
 } from '../../../constants/chainConfig'
-import {ChangeWithBg} from '../../../assets/svg'
+import {BgChange} from '../../../assets/svg'
 
 function ShuttleForm() {
   const {t} = useTranslation()
@@ -20,7 +20,7 @@ function ShuttleForm() {
 
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
-      invertChain()
+      onInvertChain()
       return
     }
     const pathWithQuery = queryString.stringifyUrl({
@@ -35,7 +35,7 @@ function ShuttleForm() {
     history.push(pathWithQuery)
   }
 
-  const invertChain = () => {
+  const onInvertChain = () => {
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
@@ -74,8 +74,13 @@ function ShuttleForm() {
         {/* TODO SelectToken */}
         <div className="flex-1"></div>
       </div>
-      <WrapIcon type="circle" size="w-8 h-8" className="my-4">
-        <ChangeWithBg />
+      <WrapIcon
+        type="circle"
+        size="w-8 h-8"
+        className="my-4"
+        onClick={onInvertChain}
+      >
+        <BgChange />
       </WrapIcon>
       <div className="flex w-full">
         <ChainSelect

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 //TODO: Remove
 import {useState} from 'react'
-import {ArrowRight, Logo} from '../assets/svg'
+import {ArrowRight, Logo, NoPending} from '../assets/svg'
 import TokenSelect from '../pages/Shuttle/ShuttleForm/TokenSelect'
 import {
   Button,
@@ -78,7 +78,7 @@ function Example() {
   return (
     <div className="container mx-auto h-full flex justify-center items-center">
       <div className="App-header">
-        <Logo />
+        <NoPending />
         <Logo className="text-primary" />
         <Loading />
         <Button disabled onClick={info}>
@@ -143,7 +143,6 @@ function Example() {
           }
         />
       </div>
-      <AccountStatus chain="eth" size="big" />
       <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']} arrow>
         <Button onClick={e => e.preventDefault()}>Hover me</Button>
       </Dropdown>

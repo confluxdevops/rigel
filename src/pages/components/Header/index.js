@@ -9,14 +9,22 @@ import './header.css'
 
 function Header() {
   const {t} = useTranslation()
-
+  //TODO: remove mock data
   const connectData = [
     {
-      type: 'portal',
       chain: 'cfx',
       address: 'cfxtest:aame5p2tdzfsc3zsmbg1urwkg5ax22epg27cnu1rwm',
     },
-    {type: 'metamask', chain: 'eth', address: null},
+    {chain: 'eth', address: null},
+  ]
+  const pendingTransactions = [
+    {
+      type: 'shuttle',
+      fromChain: 'eth',
+      toChain: 'cfx',
+      tokenSymbol: 'ETH',
+    },
+    {type: 'approve', tokenSymbol: 'UNI'},
   ]
   return (
     <div className="h-16 px-8 bg-gray-0 flex justify-between items-center w-full">
@@ -25,12 +33,15 @@ function Header() {
         <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
       </div>
       <div className="flex items-center">
-        <WalletHub connectData={connectData} />
+        <WalletHub
+          connectData={connectData}
+          pendingTransactions={pendingTransactions}
+        />
         <WrapIcon type="square" className="ml-3" size="w-7 h-7">
-          <Sun />
+          <Sun className="text-gray-80" />
         </WrapIcon>
         <WrapIcon type="square" className="ml-3" size="w-7 h-7">
-          <Sun />
+          <Sun className="text-gray-80" />
         </WrapIcon>
       </div>
     </div>
@@ -40,7 +51,7 @@ function Header() {
 function HeaderLink({to, children, disabled = false}) {
   const getStyle = () => {
     if (disabled) return 'text-gray-40'
-    return 'text-gray-60 hover:underline'
+    return 'text-gray-60'
   }
   return (
     <NavLink

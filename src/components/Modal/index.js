@@ -31,6 +31,20 @@ function Modal({
     onClose && onClose(e)
   })
 
+  const iconComp = icon
+    ? React.cloneElement(icon, {
+        className: `w-12 h-12 mb-3 ${icon.props.className}`,
+      })
+    : null
+
+  const closeIconComp = closeIcon
+    ? React.cloneElement(closeIcon, {
+        className: `${size === 'medium' ? 'w-6 h-6' : 'w-4 h-4'} text-gray-40 ${
+          closeIcon.props.className
+        }`,
+      })
+    : null
+
   if (!open) return null
   return (
     <div
@@ -47,16 +61,20 @@ function Modal({
           <span
             aria-hidden="true"
             onClick={e => onCloseClick(e)}
-            className={`flex items-center absolute ${
-              size === 'medium' ? 'w-6 h-6' : 'w-4 h-4'
-            } top-3 right-3 text-gray-40`}
+            className="absolute top-3 right-3"
           >
-            {closeIcon ? closeIcon : <Close />}
+            {closeIcon ? (
+              closeIconComp
+            ) : (
+              <Close
+                className={`${
+                  size === 'medium' ? 'w-6 h-6' : 'w-4 h-4'
+                } text-gray-40`}
+              />
+            )}
           </span>
         )}
-        {icon && (
-          <span className="flex items-center w-12 h-12 mb-3">{icon}</span>
-        )}
+        {iconComp}
         {title && (
           <div className="text-base text-gray-100 mb-2 font-medium">
             {title}

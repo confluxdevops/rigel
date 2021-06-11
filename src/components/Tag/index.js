@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Close} from '../../assets/svg'
 
@@ -53,6 +54,22 @@ function Tag({
     !disabled && onClose && onClose(e)
   }
 
+  const iconComp = icon
+    ? React.cloneElement(icon, {
+        className: `mr-1 ${getIconColor()} ${getIconSize()} ${
+          icon.props.className
+        }`,
+      })
+    : null
+
+  const closeIconComp = closeIcon
+    ? React.cloneElement(closeIcon, {
+        className: `${getIconColor()} ${getIconSize()} ${
+          closeIcon.props.className
+        }`,
+      })
+    : null
+
   return (
     <button
       onClick={e => onClick && onClick(e)}
@@ -61,21 +78,19 @@ function Tag({
       flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
       {...props}
     >
-      {icon && (
-        <span
-          className={`flex items-center mr-1 ${getIconColor()} ${getIconSize()}`}
-        >
-          {icon}
-        </span>
-      )}
+      {iconComp}
       {children}
       {closable && (
         <span
           aria-hidden="true"
           onClick={e => onCloseClick(e)}
-          className={`flex items-center focus:outline-none ml-1 ${getIconColor()} ${getIconSize()}`}
+          className={`ml-1`}
         >
-          {closeIcon ? closeIcon : <Close />}
+          {closeIcon ? (
+            closeIconComp
+          ) : (
+            <Close className={`${getIconColor()} ${getIconSize()}`} />
+          )}
         </span>
       )}
     </button>
