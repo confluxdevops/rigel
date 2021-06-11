@@ -18,7 +18,6 @@ export {default as SquareBg} from './SquareBg'
 export {default as SuccessFilled} from './SuccessFilled'
 export {default as SuccessOutlined} from './SuccessOutlined'
 export {default as WarningFilled} from './WarningFilled'
-export {default as Background} from './Background'
 
 // need to change color to currentColor
 export {default as ArrowDownFilled} from './color/ArrowDownFilled'
