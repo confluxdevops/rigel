@@ -3,7 +3,7 @@ import _ from 'underscore'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon} from '../../components'
 import {WrapIcon} from '../../../components'
-import {PlusWithBg} from '../../../assets/svg'
+import {BgPlus} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../../hooks/useTokenList'
@@ -18,7 +18,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
     if (_.isEqual(token, selectedToken)) {
       return 'bg-gray-10'
     }
-    return 'bg-gray-0 hover:bg-gray-4'
+    return 'bg-gray-0 hover:bg-gray-10'
   }
 
   const onAddToken = e => {
@@ -49,7 +49,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
             className="ml-1 cursor-pointer"
             onClick={e => onAddToken(e)}
           >
-            <PlusWithBg />
+            <BgPlus />
           </WrapIcon>
         )}
       </div>

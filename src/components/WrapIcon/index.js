@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
 import {CircleBg, SquareBg} from '../../assets/svg'
 
-function WrapIcon({type, size = 'w-4 h-4', children, className = ''}) {
+function WrapIcon({type, size = 'w-4 h-4', children, className = '', onClick}) {
   return (
     <div
+      onClick={() => onClick && onClick()}
+      aria-hidden="true"
       className={`${size} relative flex justify-center items-center cursor-pointer ${className}`}
     >
       {type === 'circle' && <CircleBg className={size} />}
@@ -27,4 +29,5 @@ WrapIcon.propTypes = {
     PropTypes.node,
   ]).isRequired,
   className: PropTypes.string,
+  onClick: PropTypes.func,
 }

@@ -11,10 +11,10 @@ import {
   KeyOfCfx,
   SupportedChains,
 } from '../../../constants/chainConfig'
-import {ChangeWithBg} from '../../../assets/svg'
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
 import {useWallet} from '../../../hooks/useWallet'
+import {BgChange} from '../../../assets/svg'
 
 const TokenSample = {
   burn_fee: '5834000',
@@ -52,7 +52,7 @@ function ShuttleForm() {
   const {address: fromAddress} = useWallet(fromChain)
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
-      invertChain()
+      onInvertChain()
       return
     }
     const pathWithQuery = queryString.stringifyUrl({
@@ -67,7 +67,7 @@ function ShuttleForm() {
     history.push(pathWithQuery)
   }
 
-  const invertChain = () => {
+  const onInvertChain = () => {
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
@@ -103,7 +103,7 @@ function ShuttleForm() {
   }, [history, location.pathname, location.search])
 
   return (
-    <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6">
+    <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">
       <div className="flex w-full">
         <ChainSelect
           chain={fromChain || DefaultFromChain}
@@ -135,8 +135,13 @@ function ShuttleForm() {
           </div>
         </div>
       </div>
-      <WrapIcon type="circle" size="w-8 h-8" className="my-4">
-        <ChangeWithBg onClick={invertChain} />
+      <WrapIcon
+        type="circle"
+        size="w-8 h-8"
+        className="my-4"
+        onClick={onInvertChain}
+      >
+        <BgChange />
       </WrapIcon>
       <div className="flex w-full">
         <ChainSelect

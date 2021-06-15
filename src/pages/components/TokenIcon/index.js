@@ -19,7 +19,7 @@ function TokenIcon({chain, token, size = 'medium'}) {
           <ChainIcon
             chain={token && token.origin}
             size={`${size === 'large' ? 'w-3 h-3' : 'w-2 h-2'}`}
-          ></ChainIcon>
+          />
         </span>
       )}
     </div>

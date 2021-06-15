@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 
@@ -24,9 +25,9 @@ function CustomLink({
   }
 
   const getSizeStyle = () => {
-    if (size === 'large') return 'text-base h-12'
-    if (size === 'medium') return 'text-sm h-10'
-    if (size === 'small') return 'text-xs h-8'
+    if (size === 'large') return 'text-base '
+    if (size === 'medium') return 'text-sm'
+    if (size === 'small') return 'text-xs'
     return ''
   }
 
@@ -36,10 +37,26 @@ function CustomLink({
   }
 
   const getIconSize = () => {
-    if (size === 'large') return 'w-6 h-6'
-    if (size === 'medium') return 'w-5 h-5'
-    if (size === 'small') return 'w-4 h-4'
+    if (size === 'large') return 'w-5 h-5'
+    if (size === 'medium') return 'w-4 h-4'
+    if (size === 'small') return 'w-3 h-3'
   }
+
+  const startIconComp = startIcon
+    ? React.cloneElement(startIcon, {
+        className: `mr-2 ${getIconColor()} ${getIconSize()} ${
+          startIcon.props.className
+        }`,
+      })
+    : null
+
+  const endIconComp = endIcon
+    ? React.cloneElement(endIcon, {
+        className: `ml-2 ${getIconColor()} ${getIconSize()} ${
+          endIcon.props.className
+        }`,
+      })
+    : null
 
   return (
     <Link
@@ -49,21 +66,9 @@ function CustomLink({
       flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
       {...props}
     >
-      {startIcon && (
-        <span
-          className={`flex items-center mr-2 ${getIconColor()} ${getIconSize()}`}
-        >
-          {startIcon}
-        </span>
-      )}
+      {startIconComp}
       {children}
-      {endIcon && (
-        <span
-          className={`flex items-center ml-2 ${getIconColor()} ${getIconSize()}`}
-        >
-          {endIcon}
-        </span>
-      )}
+      {endIconComp}
     </Link>
   )
 }

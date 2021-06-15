@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {ArrowRightWithBg} from '../../../assets/svg'
+import {BgArrowRight} from '../../../assets/svg'
 import {WrapIcon} from '../../../components'
 import {TokenIcon} from '../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
@@ -17,7 +17,9 @@ function TokenSelect({token, onClick, type, chain}) {
 
   return (
     <div
-      className={`flex items-center ${type === 'from' ? 'cursor-pointer' : ''}`}
+      className={`flex items-center bg-gray-10 ${
+        type === 'from' ? 'cursor-pointer' : ''
+      }`}
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
     >
@@ -25,7 +27,7 @@ function TokenSelect({token, onClick, type, chain}) {
       <span className={`ml-1 ${className}`}>{token && token.symbol}</span>
       {type === 'from' && (
         <WrapIcon type="circle" className="ml-1">
-          <ArrowRightWithBg />
+          <BgArrowRight />
         </WrapIcon>
       )}
     </div>
