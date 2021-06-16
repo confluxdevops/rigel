@@ -181,6 +181,7 @@ export const SupportedChainIdsWeb3 = [
 
 const DefaultChainIconSize = 'w-10 h-10'
 export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
+  //TODO: add oec config
   let icon
   switch (chain) {
     case KeyOfEth:
@@ -194,6 +195,9 @@ export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
       break
     case KeyOfBtc:
       icon = <ChainBtcLogo />
+      break
+    default:
+      icon = <ChainCfxLogo />
       break
   }
   return React.cloneElement(icon, {

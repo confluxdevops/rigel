@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react'
+import {useState, useContext} from 'react'
+import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import {useTranslation} from 'react-i18next'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -15,46 +16,21 @@ import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
 import {useWallet} from '../../../hooks/useWallet'
 import {BgChange} from '../../../assets/svg'
+import {PageContext, PageType} from './../index'
 
-const TokenSample = {
-  burn_fee: '5834000',
-  // ctoken: 'cfxtest:acbp2sm9d1ajzthsep0nkmpm0su0n4dzmeexzdcksf',
-  decimals: 6,
-  icon: 'https://conflux-static.oss-cn-beijing.aliyuncs.com/icons/default.png',
-  id: 58,
-  in_token_list: 1,
-  is_admin: 0,
-  minimal_burn_value: '19527000',
-  minimal_mint_value: '0',
-  mint_fee: '0',
-  // name: 'conflux USD Tether',
-  origin: 'eth',
-  address: '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5',
-  name: 'USD Tether',
-  symbol: 'usdt',
-  sponsor: 'cfxtest:aajbjw3xb9u581j4hn0n15ys7t6f61kr1628kf304y',
-  sponsor_value: '2999860445361000000',
-  supported: 1,
-  // symbol: 'cUSDT',
-  to_chain: 'cfx',
-  total_supply: '99997085589000000000000',
-  wallet_fee: '0',
-}
-
-function ShuttleForm() {
+function ShuttleForm({fromChain, toChain, tokenInfo}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
-  const [fromChain, setFromChain] = useState(DefaultFromChain)
-  const [toChain, setToChain] = useState(DefaultToChain)
-  const [others, setOthers] = useState({})
   const [balanceVal] = useState(0)
   const {address: fromAddress} = useWallet(fromChain)
+  const {setPageType, setPageProps} = useContext(PageContext)
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
       onInvertChain()
       return
     }
+    const {...others} = queryString.parse(location.search)
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
@@ -62,45 +38,31 @@ function ShuttleForm() {
         fromChain: type === 'from' ? chain : fromChain,
         toChain:
           type === 'to' ? chain : chain !== KeyOfCfx ? KeyOfCfx : toChain,
+        fromToken: '',
       },
     })
     history.push(pathWithQuery)
   }
 
   const onInvertChain = () => {
+    const {...others} = queryString.parse(location.search)
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
         ...others,
         fromChain: toChain,
         toChain: fromChain,
+        fromToken:
+          fromChain !== KeyOfCfx ? tokenInfo?.ctoken : tokenInfo?.reference,
       },
     })
     history.push(pathWithQuery)
   }
 
-  const onChooseToken = () => {}
-
-  useEffect(() => {
-    const {fromChain, toChain, ...others} = queryString.parse(location.search)
-    const nFromChain =
-      SupportedChains.indexOf(fromChain) !== -1 ? fromChain : DefaultFromChain
-    const nToChain =
-      SupportedChains.indexOf(toChain) !== -1 ? toChain : DefaultToChain
-    const nOthers = others || {}
-    setFromChain(nFromChain)
-    setToChain(nToChain)
-    setOthers(nOthers)
-    const pathWithQuery = queryString.stringifyUrl({
-      url: location.pathname,
-      query: {
-        ...others,
-        fromChain: nFromChain,
-        toChain: nToChain,
-      },
-    })
-    history.push(pathWithQuery)
-  }, [history, location.pathname, location.search])
+  const onChooseToken = () => {
+    setPageType(PageType.tokenList)
+    setPageProps({chain: fromChain, selectedToken: tokenInfo})
+  }
 
   return (
     <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">
@@ -114,7 +76,7 @@ function ShuttleForm() {
         <div className="flex-1 border-2 border-gray-10 rounded p-2">
           <div className="flex flex-1 justify-between">
             <TokenSelect
-              token={TokenSample}
+              token={tokenInfo}
               type="from"
               chain={fromChain}
               onClick={onChooseToken}
@@ -158,7 +120,7 @@ function ShuttleForm() {
           </div>
           <div className="flex">
             <TokenSelect
-              token={TokenSample}
+              token={tokenInfo}
               type="to"
               chain={toChain}
             ></TokenSelect>
@@ -170,6 +132,13 @@ function ShuttleForm() {
       </Button>
     </div>
   )
+}
+
+ShuttleForm.propTypes = {
+  fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
+  fromToken: PropTypes.string,
+  tokenInfo: PropTypes.object,
 }
 
 export default ShuttleForm

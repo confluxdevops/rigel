@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import {BgArrowRight} from '../../../assets/svg'
 import {WrapIcon} from '../../../components'
 import {TokenIcon} from '../../components'
-import {SupportedChains} from '../../../constants/chainConfig'
+import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
 
 function TokenSelect({token, onClick, type, chain}) {
+  let symbol = chain === KeyOfCfx ? token?.csymbol : token?.reference_symbol
   let className = ''
   switch (type) {
     case 'from':
@@ -24,7 +25,7 @@ function TokenSelect({token, onClick, type, chain}) {
       aria-hidden="true"
     >
       <TokenIcon token={token} chain={chain} />
-      <span className={`ml-1 ${className}`}>{token && token.symbol}</span>
+      <span className={`ml-1 ${className}`}>{symbol}</span>
       {type === 'from' && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />

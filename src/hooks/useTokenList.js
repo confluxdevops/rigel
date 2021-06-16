@@ -29,6 +29,10 @@ export function useMapTokenList(chain) {
       symbol: isCfxChain ? symbol : reference_symbol,
       name: isCfxChain ? name : reference_name,
       address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+      csymbol: symbol,
+      reference_symbol,
+      ctoken,
+      reference,
       ...others,
     }
   })

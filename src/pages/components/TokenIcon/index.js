@@ -13,6 +13,7 @@ function TokenIcon({chain, token, size = 'medium'}) {
   }, [chain, token])
   return (
     <div className={`${size === 'large' ? 'w-7 h-7' : 'w-4 h-4'} relative`}>
+      {/* TODO: some token has not icon property */}
       <img src={token && token.icon} alt="token icon" className="" />
       {subscriptShown && (
         <span className="absolute right-0 bottom-0">
