@@ -4,7 +4,7 @@ import {
   WalletIcon,
   ChainConfig,
 } from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
+import useWallet from '../../../hooks/useWallet'
 import {shortenAddress} from '../../../utils/address'
 
 function Account({

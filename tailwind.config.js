@@ -42,7 +42,6 @@ module.exports = {
         success: '#7cd77b',
         warning: '#ffca4f',
         info: '#4c65e9',
-        background: 'var(--bg-background)',
         'primary-dark': '#16bd98',
         'error-dark': '#b83c36',
         'success-dark': '#52b067',

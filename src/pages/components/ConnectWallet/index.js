@@ -6,7 +6,7 @@ import {
   WalletConfig,
   SupportedChains,
 } from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
+import useWallet from '../../../hooks/useWallet'
 import {ConnectWalletModal} from '../../components'
 import {Button, Tag} from '../../../components'
 import {TypeConnectWallet} from '../../../constants'

@@ -1,6 +1,6 @@
 {
   "waiting": "等待确认",
-  "shuttleInfo": "跨 <1>{{value}}</1> {{token}} 去 {{chain}}",
+  "shuttleInfo": "跨 <strong>{{value}}</strong> {{token}} 去 {{chain}}",
   "confirm": "在 {{wallet}} 确认这笔交易",
   "submitted": "交易已发出",
   "viewOnScan": "去 Scan 上查看",
@@ -23,5 +23,17 @@
   "shuttleRecord": "跨链历史",
   "all": "全部",
   "app": "应用",
-  "connect": "连接"
+  "connect": "连接",
+  "fromChain": "From Chain",
+  "toChain": "To Chain",
+  "transactionAmount": "Transaction Amount",
+  "asset": "Asset",
+  "destination": "Destination",
+  "shuttleFee": "Shuttle Fee",
+  "addressTip": "• Please make sure the address is correct.",
+  "notContractTip": "• <strong>Don’t use<strong> contract account or the deposit address given by CEX.",
+  "gasTip": "• You need to pay the gas fee of the <strong>{{fromChain}}</strong> network.",
+  "checkboxLabel": "I’m clear the above description",
+  "approve": "Approve {{token}}",
+  "send": "Send"
 }

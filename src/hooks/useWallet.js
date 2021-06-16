@@ -3,7 +3,7 @@ import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {useConnect as useConnectPortal} from './usePortal'
 import {useConnect as useConnectWeb3} from './useWeb3Network'
 
-export function useWallet(chain) {
+export default function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
   const connectObjWeb3 = useConnectWeb3()
   let connectObj = {}

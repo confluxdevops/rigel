@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 
@@ -12,49 +12,45 @@ function CustomLink({
   endIcon,
   ...props
 }) {
-  const getDisabledStyle = () => {
+  const disabledStyle = useMemo(() => {
     if (disabled) {
       return 'bg-transparent text-gray-40 cursor-not-allowed'
     }
     return ''
-  }
+  }, [disabled])
 
-  const getColorStyle = () => {
+  const colorStyle = useMemo(() => {
     if (disabled) return ''
     return 'text-primary bg-transparent hover:text-primary-dark hover:underline'
-  }
+  }, [disabled])
 
-  const getSizeStyle = () => {
+  const sizeStyle = useMemo(() => {
     if (size === 'large') return 'text-base '
     if (size === 'medium') return 'text-sm'
     if (size === 'small') return 'text-xs'
     return ''
-  }
+  }, [size])
 
-  const getIconColor = () => {
+  const iconColor = useMemo(() => {
     if (disabled) return 'text-gray-40'
     return 'text-primary hover:text-primary-dark'
-  }
+  }, [disabled])
 
-  const getIconSize = () => {
+  const iconSize = useMemo(() => {
     if (size === 'large') return 'w-5 h-5'
     if (size === 'medium') return 'w-4 h-4'
     if (size === 'small') return 'w-3 h-3'
-  }
+  }, [size])
 
   const startIconComp = startIcon
     ? React.cloneElement(startIcon, {
-        className: `mr-2 ${getIconColor()} ${getIconSize()} ${
-          startIcon.props.className
-        }`,
+        className: `mr-2 ${iconColor} ${iconSize} ${startIcon.props.className}`,
       })
     : null
 
   const endIconComp = endIcon
     ? React.cloneElement(endIcon, {
-        className: `ml-2 ${getIconColor()} ${getIconSize()} ${
-          endIcon.props.className
-        }`,
+        className: `ml-2 ${iconColor} ${iconSize} ${endIcon.props.className}`,
       })
     : null
 
@@ -63,7 +59,7 @@ function CustomLink({
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
-      flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
+      flex justify-center items-center focus:outline-none rounded ${disabledStyle} ${colorStyle} ${sizeStyle} ${className}`}
       {...props}
     >
       {startIconComp}

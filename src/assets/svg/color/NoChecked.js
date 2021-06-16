@@ -1,4 +1,4 @@
-function SvgClose(props) {
+function SvgNoChecked(props) {
   return (
     <svg
       width={24}
@@ -8,15 +8,16 @@ function SvgClose(props) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M18 6L6 18M6 6l12 12"
+      <rect
+        x={2.5}
+        y={2.5}
+        width={19}
+        height={19}
+        rx={1.5}
         stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   )
 }
 
-export default SvgClose
+export default SvgNoChecked

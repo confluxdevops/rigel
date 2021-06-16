@@ -29,14 +29,7 @@ function TransactionReceiptionModal({
     content = (
       <div className="flex flex-col items-center">
         <span>
-          <Trans
-            i18nKey="shuttleInfo"
-            value={value}
-            token={token}
-            chain={chain}
-          >
-            Shuttle <strong>{{value}}</strong> {{token}} to {{chain}}
-          </Trans>
+          <Trans i18nKey="shuttleInfo" values={{value, token, chain}} />
         </span>
         <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
           {t('confirm', {

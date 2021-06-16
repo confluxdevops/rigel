@@ -1,32 +1,35 @@
+import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
+import useWallet from '../../../hooks/useWallet'
 import {Account, ConnectWallet} from '../index'
 
 function AccountStatus({chain, className, size = 'medium'}) {
   const {address} = useWallet(chain)
-  const getAccountCompStyle = () => {
+  const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
-  }
+  }, [size])
 
-  const getIconStyle = () => {
+  const iconStyle = useMemo(() => {
     if (size === 'medium') return 'mr-1.5'
     if (size === 'large') return 'mr-2'
-  }
-  const getIconSize = () => {
+  }, [size])
+
+  const iconSize = useMemo(() => {
     if (size === 'medium') return 'w-3 h-3'
     if (size === 'large') return 'w-4 h-4'
-  }
+  }, [size])
+
   return (
     <div className={`${className}`}>
       {address ? (
         <Account
           chain={chain}
           showIcon={true}
-          className={getAccountCompStyle()}
-          iconClassName={getIconStyle()}
-          iconSize={getIconSize()}
+          className={accountCompStyle}
+          iconClassName={iconStyle}
+          iconSize={iconSize}
         />
       ) : (
         <ConnectWallet chain={chain} size={size} />

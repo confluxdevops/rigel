@@ -1,25 +1,17 @@
-// import {useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {NavLink} from 'react-router-dom'
+import {useLocation} from 'react-use'
 import {useTranslation} from 'react-i18next'
-import {Logo, Sun, Moon, EnglishIcon, ChineseIcon} from '../../../assets/svg'
-import useTheme from '../../../hooks/useTheme'
+import {Logo, DarkLogo} from '../../../assets/svg'
 import WalletHub from './WalletHub'
-import {WrapIcon} from '../../../components'
+import LanguageButton from './LanguageButton'
+import ThemeButton from './ThemeButton'
 import './header.css'
 
 function Header() {
-  const {t, i18n} = useTranslation()
-  const {value, toggle} = useTheme()
+  const {t} = useTranslation()
+  const {pathname} = useLocation()
 
-  const {language} = i18n
-  const onChangeLanguage = () => {
-    if (language === 'en') {
-      i18n.changeLanguage('zh-CN')
-    } else if (language === 'zh-CN') {
-      i18n.changeLanguage('en')
-    }
-  }
   //TODO: remove mock data
   const connectData = [
     {
@@ -37,44 +29,31 @@ function Header() {
     },
     {type: 'approve', tokenSymbol: 'UNI'},
   ]
-  return (
-    <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
-      <div className="flex items-center">
-        <Logo className="mr-8" />
-        <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
+  if (pathname !== '/') {
+    return (
+      <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
+        <div className="flex items-center">
+          <Logo className="mr-8" />
+          <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
+        </div>
+        <div className="flex items-center">
+          <WalletHub
+            connectData={connectData}
+            pendingTransactions={pendingTransactions}
+          />
+          <ThemeButton />
+          <LanguageButton />
+        </div>
       </div>
-      <div className="flex items-center">
-        <WalletHub
-          connectData={connectData}
-          pendingTransactions={pendingTransactions}
-        />
-        <WrapIcon
-          type="square"
-          className="ml-3"
-          size="w-7 h-7"
-          onClick={toggle}
-        >
-          {value ? (
-            <Moon className="text-gray-80" />
-          ) : (
-            <Sun className="text-gray-80" />
-          )}
-        </WrapIcon>
-        <WrapIcon
-          type="square"
-          className="ml-3"
-          size="w-7 h-7"
-          onClick={onChangeLanguage}
-        >
-          {language === 'en' ? (
-            <EnglishIcon className="text-gray-80" />
-          ) : (
-            <ChineseIcon className="text-gray-80" />
-          )}
-        </WrapIcon>
+    )
+  } else {
+    return (
+      <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
+        <DarkLogo />
+        <LanguageButton />
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 function HeaderLink({to, children, disabled = false}) {

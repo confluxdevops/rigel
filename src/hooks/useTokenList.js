@@ -26,9 +26,18 @@ export function useMapTokenList(chain) {
       ...others
     } = token
     return {
+      //symbol, name,cname address is only for dispalying
+      // ctoken, csymbol, cname is conflux token info
+      // reference, reference_symbol, reference_name is other chain token info
       symbol: isCfxChain ? symbol : reference_symbol,
       name: isCfxChain ? name : reference_name,
       address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+      ctoken,
+      csymbol: symbol,
+      cname: name,
+      reference,
+      reference_symbol,
+      reference_name,
       ...others,
     }
   })

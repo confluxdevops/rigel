@@ -1,6 +1,6 @@
 {
   "waiting": "Waiting for confirmation",
-  "shuttleInfo": "Shuttle <1>{{value}}</1> {{token}} to {{chain}}",
+  "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{token}} to {{chain}}",
   "confirm": "Confirm this transaction in {{wallet}}",
   "submitted": "Transaction Submitted",
   "viewOnScan": "View on Scan",
@@ -23,5 +23,18 @@
   "shuttleRecord": "Cross-Chian Record",
   "all": "All",
   "app": "App",
-  "connect": "Connect"
+  "connect": "Connect",
+  "fromChain": "From Chain",
+  "toChain": "To Chain",
+  "transactionAmount": "Transaction Amount",
+  "asset": "Asset",
+  "destination": "Destination",
+  "shuttleFee": "Shuttle Fee",
+  "tipTitle": "You must kown",
+  "addressTip": "• Please make sure the address is correct.",
+  "notContractTip": "• <strong>Don’t use</strong> contract account or the deposit address given by CEX.",
+  "gasTip": "• You need to pay the gas fee of the <strong>{{fromChain}}</strong> network.",
+  "checkboxLabel": "I’m clear the above description",
+  "approve": "Approve {{token}}",
+  "send": "Send"
 }
