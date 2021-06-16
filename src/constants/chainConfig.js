@@ -9,6 +9,7 @@ import {
   ChainBtcLogo,
   ChainEthLogo,
   ChainCfxLogo,
+  ChainOecLogo,
   MetamaskLogo,
   PortalLogo,
 } from '../assets/svg'
@@ -38,6 +39,19 @@ export const ScanUrlBsc = IS_DEV
 export const ChainIdBsc = {
   MAINNET: 56,
   TESTNET: 97,
+}
+
+/**
+ * oec config
+ */
+
+export const KeyOfOec = 'oec'
+export const ScanUrlOec = IS_DEV
+  ? 'https://www.oklink.com/okexchain/'
+  : 'https://www.oklink.com/okexchain-test/'
+export const ChainIdOec = {
+  MAINNET: 66,
+  TESTNET: 65,
 }
 
 /**
@@ -128,6 +142,24 @@ export const ChainConfig = {
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: KeyOfMetaMask,
   },
+  [KeyOfOec]: {
+    key: KeyOfOec,
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfOec} />
+    },
+    fullName: 'OKExChain',
+    shortName: 'OEC',
+    tokenName: 'OKT',
+    checkAddress: checkHexAddress,
+    displayFilter,
+    scanUrl: ScanUrlOec,
+    scanTxUrl: ScanUrlOec + '/tx/',
+    scanTokenUrl: ScanUrlOec + '/tokenAddr/',
+    // TODO
+    commonTokens: ['OKT'],
+    supportedChainIds: Object.values(ChainIdOec),
+    wallet: KeyOfMetaMask,
+  },
   [KeyOfCfx]: {
     key: KeyOfCfx,
     icon(className, size) {
@@ -181,7 +213,6 @@ export const SupportedChainIdsWeb3 = [
 
 const DefaultChainIconSize = 'w-10 h-10'
 export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
-  //TODO: add oec config
   let icon
   switch (chain) {
     case KeyOfEth:
@@ -196,8 +227,8 @@ export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
     case KeyOfBtc:
       icon = <ChainBtcLogo />
       break
-    default:
-      icon = <ChainCfxLogo />
+    case KeyOfOec:
+      icon = <ChainOecLogo />
       break
   }
   return React.cloneElement(icon, {
