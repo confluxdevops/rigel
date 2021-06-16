@@ -9,7 +9,7 @@ import CommonTokens from './CommonTokens'
 import TokenItem from './TokenItem'
 import {useHistory, useLocation} from 'react-router-dom'
 
-function TokenList({chain, selectedToken}) {
+function TokenList({chain, selectedToken = {}}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()

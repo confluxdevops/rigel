@@ -12,6 +12,7 @@ function Input({
   size = 'medium',
   width = 'w-60',
   errorMessage = '',
+  onBlur,
   ...props
 }) {
   const [focused, setFocused] = useState(false)
@@ -48,7 +49,7 @@ function Input({
         <input
           value={value}
           onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onBlur={() => onBlur && onBlur()}
           onChange={e => onChange && onChange(e)}
           className="w-full h-full px-3 text-sm text-gray-80 placeholder-gray-40 border-0 rounded p-0 outline-none"
           {...props}
@@ -81,6 +82,7 @@ Input.propTypes = {
   suffix: PropTypes.node,
   disabled: PropTypes.bool,
   bordered: PropTypes.bool,
+  onBlur: PropTypes.func,
 }
 
 export default Input

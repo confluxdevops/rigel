@@ -15,17 +15,21 @@ import {
 } from '../../../constants/chainConfig'
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
-import {useWallet, useBalance} from '../../../hooks/useWallet'
+import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain} from '../../../hooks/useTokenList'
 import {BgChange} from '../../../assets/svg'
 import {PageContext, PageType} from '../../Shuttle'
+import {getMaxAmount} from '../../../utils'
+import {BigNumZero} from '../../../constants'
 
-function ShuttleForm({fromChain, toChain, tokenInfo}) {
+function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
-  const [balanceVal, setBalanceVal] = useState(0)
+  const [balanceVal, setBalanceVal] = useState(BigNumZero.toString(10))
+  const [amountVal, setAmountVal] = useState('')
   const {address: fromAddress} = useWallet(fromChain)
+  const isNativeToken = useIsNativeToken(fromChain, fromToken)
   const isCfxChain = useIsCfxChain(fromChain)
   const balance = useBalance(
     fromChain,
@@ -73,9 +77,20 @@ function ShuttleForm({fromChain, toChain, tokenInfo}) {
     setPageProps({chain: fromChain, selectedToken: tokenInfo})
   }
 
+  const onMaxClick = () => {
+    const maxAmount = isNativeToken
+      ? getMaxAmount(fromChain, balanceVal)
+      : balanceVal
+    setAmountVal(maxAmount.toString(10))
+  }
+
+  const onInputChange = e => {
+    setAmountVal(e.target.value)
+  }
+
   useEffect(() => {
     if (fromAddress) {
-      setBalanceVal(convertDecimal(balance, tokenInfo?.decimal))
+      setBalanceVal(convertDecimal(balance, undefined, tokenInfo?.decimal))
     }
   }, [balance, fromAddress, tokenInfo?.decimal])
 
@@ -107,8 +122,13 @@ function ShuttleForm({fromChain, toChain, tokenInfo}) {
             )}
           </div>
           <div className="flex">
-            <Input bordered={false} />
-            {fromAddress && <Tag>Max</Tag>}
+            <Input
+              bordered={false}
+              value={amountVal}
+              onChange={onInputChange}
+              placeholder="0.00"
+            />
+            {fromAddress && <Tag onClick={onMaxClick}>Max</Tag>}
           </div>
         </div>
       </div>

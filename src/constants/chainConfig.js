@@ -123,6 +123,7 @@ export const ChainConfig = {
     commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: KeyOfMetaMask,
+    remainderAmount: 0.2, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
   },
   [KeyOfBsc]: {
     key: KeyOfBsc,
@@ -141,6 +142,7 @@ export const ChainConfig = {
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: KeyOfMetaMask,
+    remainderAmount: 0.2,
   },
   [KeyOfOec]: {
     key: KeyOfOec,
@@ -159,6 +161,7 @@ export const ChainConfig = {
     commonTokens: ['OKT'],
     supportedChainIds: Object.values(ChainIdOec),
     wallet: KeyOfMetaMask,
+    remainderAmount: 0.2,
   },
   [KeyOfCfx]: {
     key: KeyOfCfx,
@@ -177,6 +180,7 @@ export const ChainConfig = {
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
     wallet: KeyOfPortal,
+    remainderAmount: 2,
   },
   [KeyOfBtc]: {
     key: KeyOfBtc,
@@ -196,6 +200,7 @@ export const ChainConfig = {
     scanUrl: ScanUrlBtc,
     scanTxUrl: ScanUrlBtc + '/tx/',
     commonTokens: [],
+    remainderAmount: 0,
   },
 }
 
