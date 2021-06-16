@@ -230,6 +230,10 @@ export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
     case KeyOfOec:
       icon = <ChainOecLogo />
       break
+    default:
+      //TODO: maybe need to change a better default icon
+      icon = <></>
+      break
   }
   return React.cloneElement(icon, {
     className: `${size} ${className}`,

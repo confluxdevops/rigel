@@ -9,7 +9,7 @@ export function useInstalled() {
 }
 
 export function useAddress() {
-  const {address} = useConfluxPortal()()
+  const {address} = useConfluxPortal()
   return address
 }
 
@@ -53,4 +53,13 @@ export function useContract(address, ABI) {
 
 export function useTokenContract(tokenAddress) {
   return useContract(tokenAddress, ERC20_ABI)
+}
+
+/**
+ * get CFX balance from Conflux Network
+ * @returns balance of account
+ */
+export function useNativeTokenBalance() {
+  const {balances} = useConfluxPortal()
+  return balances && balances[0]
 }

@@ -12,7 +12,6 @@ export function useIsCfxChain(chain) {
 // only use for display
 export function useMapTokenList(chain) {
   const tokenList = useTokenList(chain)
-  console.log(tokenList)
   const isCfxChain = useIsCfxChain(chain)
   return tokenList.map(token => {
     if (!token) return {}

@@ -1,8 +1,9 @@
-import {useState, useContext} from 'react'
+import {useState, useContext, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import {useTranslation} from 'react-i18next'
 import {useHistory, useLocation} from 'react-router-dom'
+import {convertDecimal} from '@cfxjs/data-format'
 
 import ChainSelect from './ChainSelect'
 import {WrapIcon, Button, Input, Tag} from '../../../components'
@@ -14,16 +15,24 @@ import {
 } from '../../../constants/chainConfig'
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
-import {useWallet} from '../../../hooks/useWallet'
+import {useWallet, useBalance} from '../../../hooks/useWallet'
+import {useIsCfxChain} from '../../../hooks/useTokenList'
 import {BgChange} from '../../../assets/svg'
-import {PageContext, PageType} from './../index'
+import {PageContext, PageType} from '../../Shuttle'
 
 function ShuttleForm({fromChain, toChain, tokenInfo}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
-  const [balanceVal] = useState(0)
+  const [balanceVal, setBalanceVal] = useState(0)
   const {address: fromAddress} = useWallet(fromChain)
+  const isCfxChain = useIsCfxChain(fromChain)
+  const balance = useBalance(
+    fromChain,
+    fromAddress,
+    isCfxChain ? tokenInfo?.ctoken : tokenInfo?.reference,
+    fromAddress,
+  )
   const {setPageType, setPageProps} = useContext(PageContext)
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
@@ -63,6 +72,12 @@ function ShuttleForm({fromChain, toChain, tokenInfo}) {
     setPageType(PageType.tokenList)
     setPageProps({chain: fromChain, selectedToken: tokenInfo})
   }
+
+  useEffect(() => {
+    if (fromAddress) {
+      setBalanceVal(convertDecimal(balance, tokenInfo?.decimal))
+    }
+  }, [balance, fromAddress, tokenInfo?.decimal])
 
   return (
     <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">

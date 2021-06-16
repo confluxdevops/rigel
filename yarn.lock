@@ -1242,6 +1242,13 @@
   resolved "https://registry.yarnpkg.com/@cfxjs/bytes/-/bytes-0.0.2.tgz#f3eb11b3dedb5ddd62337c30944055bd2f1b6e06"
   integrity sha512-pDWTRc1tD+QX1fEgkr5OK6vNAhRp0r5pXjLcXjQgZLFiocd0TzBhjey2qXa2/UyVJZBuTLSxdWzLcJvQUyKWWg==
 
+"@cfxjs/data-format@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@cfxjs/data-format/-/data-format-0.0.3.tgz#70d1682a1c735e4c94a7953f5de97316b0387402"
+  integrity sha512-BhMEayfz9DTYxhgBBosNgSCNT8j+YKJLXy7cxLYlVTDezJ2qVAPkqsyusvHyuE9Rz4DtWqXI8UuLReTjU4n+5Q==
+  dependencies:
+    big.js "^6.1.1"
+
 "@cfxjs/fluent-wallet-consts@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@cfxjs/fluent-wallet-consts/-/fluent-wallet-consts-0.0.2.tgz#d86b88afcd1ec3ed8a03977ac11fe34b0e6e3777"

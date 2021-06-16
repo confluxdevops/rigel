@@ -5,7 +5,8 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
 import {useInterval} from 'react-use'
-import {NetworkContextName, IntervalTime} from '../constants'
+import Big from 'big.js'
+import {NetworkContextName, IntervalTime, BigNumZero} from '../constants'
 import {injected} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
 import {isMobile} from 'react-device-detect'
@@ -163,15 +164,20 @@ export function useConnect() {
  * @param {*} delay interval delay milliseconds
  * @returns the balance
  */
-export function useBalance(address, delay) {
-  const [balance, setBalance] = useState(0)
+export function useNativeTokenBalance(address, delay) {
+  const [balance, setBalance] = useState(BigNumZero)
   const {account, library} = useWeb3React()
   useInterval(
     () => {
       library &&
-        library.getBalance(address).then(balance => {
-          setBalance(balance)
-        })
+        library
+          .getBalance(address)
+          .then(balance => {
+            setBalance(new Big(balance.toString(10)))
+          })
+          .catch(() => {
+            setBalance(BigNumZero)
+          })
     },
     account ? delay || IntervalTime.fetchBalance : null,
   )

@@ -1,3 +1,5 @@
+import Big from 'big.js'
+
 export const NetworkContextName = 'NETWORK'
 
 export const TypeConnectWallet = {
@@ -18,3 +20,5 @@ export const ProxyUrlPrefix = {
 export const IntervalTime = {
   fetchBalance: 3000,
 }
+
+export const BigNumZero = new Big(0)
