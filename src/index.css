@@ -67,6 +67,10 @@ body {
   @apply font-normal;
 }
 
+strong {
+  @apply text-warning-dark;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -99,6 +103,8 @@ html {
   --color-gray-100: #1b1b1c;
   --shadow-common: 2px 8px 44px #e3edff;
   @apply bg-light;
+  @apply bg-no-repeat;
+  @apply bg-cover;
 }
 
 .dark {
@@ -121,5 +127,10 @@ html {
   --color-gray-90: #f7f8fa;
   --color-gray-100: #fff;
   --shadow-common: 2px 8px 44px #1d1d1d;
+  @apply bg-dark;
+}
+
+.home {
+  --color-gray-80: #eaecef;
   @apply bg-dark;
 }

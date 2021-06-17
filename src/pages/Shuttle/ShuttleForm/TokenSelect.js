@@ -1,3 +1,4 @@
+import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {BgArrowRight} from '../../../assets/svg'
 import {WrapIcon} from '../../../components'
@@ -5,16 +6,11 @@ import {TokenIcon} from '../../components'
 import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
 
 function TokenSelect({token, onClick, type, chain}) {
-  let symbol = chain === KeyOfCfx ? token?.csymbol : token?.reference_symbol
-  let className = ''
-  switch (type) {
-    case 'from':
-      className = 'text-black'
-      break
-    case 'to':
-      className = 'text-gray-40'
-      break
-  }
+  const symbol = chain === KeyOfCfx ? token?.csymbol : token?.reference_symbol
+  const style = useMemo(() => {
+    if (type === 'from') return 'text-gray-100'
+    if (type === 'to') return 'text-gray-40'
+  }, [type])
 
   return (
     <div
@@ -24,8 +20,8 @@ function TokenSelect({token, onClick, type, chain}) {
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
     >
-      <TokenIcon token={token} chain={chain} />
-      <span className={`ml-1 ${className}`}>{symbol}</span>
+      <TokenIcon token={token} chain={chain} size="small" />
+      <span className={`ml-1 ${style}`}>{symbol}</span>
       {type === 'from' && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />

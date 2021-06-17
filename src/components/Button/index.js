@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
 function Button({
   onClick,
@@ -14,16 +14,16 @@ function Button({
   endIcon,
   ...props
 }) {
-  const getDisabledStyle = () => {
+  const disabledStyle = useMemo(() => {
     if (disabled) {
       if (variant === 'text')
         return 'bg-transparent text-gray-40 cursor-not-allowed'
       else return 'bg-gray-20 text-gray-40 cursor-not-allowed'
     }
     return ''
-  }
+  }, [disabled, variant])
 
-  const getColorStyle = () => {
+  const colorStyle = useMemo(() => {
     if (disabled) return ''
     if (variant === 'text') {
       if (danger) return 'text error bg-transparent hover:bg-error-10'
@@ -40,40 +40,36 @@ function Button({
         return 'text-white bg-primary hover:bg-primary-dark'
     }
     return ''
-  }
+  }, [disabled, variant, color, danger])
 
-  const getSizeStyle = () => {
+  const sizeStyle = useMemo(() => {
     if (size === 'large') return 'text-base h-12'
     if (size === 'medium') return 'text-sm h-10'
     if (size === 'small') return 'text-xs h-8'
     return ''
-  }
+  }, [size])
 
-  const getIconColor = () => {
+  const iconColor = useMemo(() => {
     if (disabled) return 'text-gray-40'
     if (variant === 'contained') return 'text-white'
     return 'text-primary hover:text-primary-dark'
-  }
+  }, [disabled, variant])
 
-  const getIconSize = () => {
+  const iconSize = useMemo(() => {
     if (size === 'large') return 'w-5 h-5'
     if (size === 'medium') return 'w-4 h-4'
     if (size === 'small') return 'w-3 h-3'
-  }
+  }, [size])
 
   const startIconComp = startIcon
     ? React.cloneElement(startIcon, {
-        className: `mr-2 ${getIconColor()} ${getIconSize()} ${
-          startIcon.props.className
-        }`,
+        className: `mr-2 ${iconColor} ${iconSize} ${startIcon.props.className}`,
       })
     : null
 
   const endIconComp = endIcon
     ? React.cloneElement(endIcon, {
-        className: `ml-2 ${getIconColor()} ${getIconSize()} ${
-          endIcon.props.className
-        }`,
+        className: `ml-2 ${iconColor} ${iconSize} ${endIcon.props.className}`,
       })
     : null
 
@@ -82,7 +78,7 @@ function Button({
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
-      flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${
+      flex justify-center items-center focus:outline-none rounded ${disabledStyle} ${colorStyle} ${sizeStyle} ${
         fullWidth ? 'w-full' : 'px-4'
       } ${className}`}
       {...props}

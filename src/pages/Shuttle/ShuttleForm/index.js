@@ -17,7 +17,7 @@ import {
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
-import {useIsCfxChain} from '../../../hooks/useTokenList'
+import {useIsCfxChain} from '../../../hooks'
 import {BgChange} from '../../../assets/svg'
 import {PageContext, PageType} from '../../Shuttle'
 import {getMaxAmount} from '../../../utils'

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {
   ErrorFilled,
@@ -27,7 +27,8 @@ function Alert({
     warning: <WarningFilled className="w-4 h-4 mr-2" />,
   }
   const IconComponent = typeToIcon[type]
-  const getStyle = () => {
+
+  const style = useMemo(() => {
     if (type === 'info')
       return `bg-info-10 border ${bordered ? 'border-info' : 'border-info-10'}`
     if (type === 'warning')
@@ -42,7 +43,8 @@ function Alert({
       return `bg-success-10 border ${
         bordered ? 'border-success' : 'border-success-10'
       }`
-  }
+  }, [bordered, type])
+
   const onCloseClick = e => {
     e.stopPropagation()
     if (closable) {
@@ -60,7 +62,7 @@ function Alert({
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-3 ${getStyle()} ${width} ${className}`}
+      className={`flex items-center justify-between px-4 py-3 ${style} ${width} ${className}`}
     >
       <div className="flex items-center">
         {icon || IconComponent || null}

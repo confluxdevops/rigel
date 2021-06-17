@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useMemo} from 'react'
 import PropTypes from 'prop-types'
 
 function Input({
@@ -16,26 +16,26 @@ function Input({
   ...props
 }) {
   const [focused, setFocused] = useState(false)
-  const getDisabledStyle = () => {
+  const disabledStyle = useMemo(() => {
     if (disabled) return 'bg-gray-10 cursor-not-allowed'
     return 'bg-gray-0'
-  }
+  }, [disabled])
 
-  const getSizeStyle = () => {
+  const sizeStyle = useMemo(() => {
     if (size === 'medium') return 'h-10'
     if (size === 'large') return 'h-12'
-  }
+  }, [size])
 
-  const getBorderStyle = () => {
+  const borderStyle = useMemo(() => {
     if (!bordered) return 'border-0'
     if (errorMessage !== '') return 'border-error border'
     else return `border ${focused ? 'border-primary' : 'border-gray-20'}`
-  }
+  }, [bordered, errorMessage, focused])
 
   return (
     <div className={`${width}`}>
       <div
-        className={`flex justify-between items-center rounded ${width} ${getDisabledStyle()} ${getSizeStyle()} ${getBorderStyle()} ${className}`}
+        className={`flex justify-between items-center rounded ${width} ${disabledStyle} ${sizeStyle} ${borderStyle} ${className}`}
       >
         {prefix && (
           <div
