@@ -1,18 +1,12 @@
-import {useMemo} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
-import {KeyOfCfx, ChainConfig} from '../constants/chainConfig'
-
-export function useIsCfxChain(chain) {
-  const isCfxChain = useMemo(() => chain === KeyOfCfx, [chain])
-  return isCfxChain
-}
+import {ChainConfig} from '../constants/chainConfig'
+import {useIsCfxChain} from '../hooks'
 
 // only use for display
 export function useMapTokenList(chain) {
   const tokenList = useTokenList(chain)
-  console.log(tokenList)
   const isCfxChain = useIsCfxChain(chain)
   return tokenList.map(token => {
     if (!token) return {}
@@ -26,9 +20,18 @@ export function useMapTokenList(chain) {
       ...others
     } = token
     return {
+      //symbol, name,cname address is only for dispalying
+      // ctoken, csymbol, cname is conflux token info
+      // reference, reference_symbol, reference_name is other chain token info
       symbol: isCfxChain ? symbol : reference_symbol,
       name: isCfxChain ? name : reference_name,
       address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+      ctoken,
+      csymbol: symbol,
+      cname: name,
+      reference,
+      reference_symbol,
+      reference_name,
       ...others,
     }
   })

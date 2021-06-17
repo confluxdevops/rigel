@@ -16,27 +16,20 @@ function TransactionReceiptionModal({
   toChain,
   fromChain,
   value,
-  fromToken,
-  toToken,
+  fromTokenInfo,
+  toTokenInfo,
   txHash,
 }) {
   const {t} = useTranslation()
-  const {addToken, success} = useAddTokenToMetamask(toToken)
+  const {addToken, success} = useAddTokenToMetamask(toTokenInfo)
   let content
   if (type === 'ongoing') {
-    const token = fromToken && fromToken.symbol
+    const token = fromTokenInfo && fromTokenInfo.symbol
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
         <span>
-          <Trans
-            i18nKey="shuttleInfo"
-            value={value}
-            token={token}
-            chain={chain}
-          >
-            Shuttle <strong>{{value}}</strong> {{token}} to {{chain}}
-          </Trans>
+          <Trans i18nKey="shuttleInfo" values={{value, token, chain}} />
         </span>
         <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
           {t('confirm', {
@@ -74,8 +67,12 @@ function TransactionReceiptionModal({
             onClick={addToken}
           >
             {success
-              ? t('addedTokenToMetaMask', {token: toToken && toToken.symbol})
-              : t('addTokenToMetaMask', {token: toToken && toToken.symbol})}
+              ? t('addedTokenToMetaMask', {
+                  token: toTokenInfo && toTokenInfo.symbol,
+                })
+              : t('addTokenToMetaMask', {
+                  token: toTokenInfo && toTokenInfo.symbol,
+                })}
           </Button>
         )}
       </div>
@@ -111,8 +108,8 @@ TransactionReceiptionModal.propTypes = {
   toChain: PropTypes.oneOf(SupportedChains),
   fromChain: PropTypes.oneOf(SupportedChains),
   value: PropTypes.string,
-  fromToken: PropTypes.object,
-  toToken: PropTypes.object,
+  fromTokenInfo: PropTypes.object,
+  toTokenInfo: PropTypes.object,
   txHash: PropTypes.string,
 }
 

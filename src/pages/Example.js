@@ -127,8 +127,8 @@ function Example() {
           open={false}
           fromChain="cfx"
           toChain="eth"
-          fromToken={{symbol: 'CFX'}}
-          toToken={{symbol: 'eCFX'}}
+          fromTokenInfo={{symbol: 'CFX'}}
+          toTokenInfo={{symbol: 'eCFX'}}
           value="23.68"
         />
         <Modal

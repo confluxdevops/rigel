@@ -1,5 +1,4 @@
-import React from 'react'
-import {useRef} from 'react'
+import React, {useRef} from 'react'
 import PropTypes from 'prop-types'
 import {useClickAway} from 'react-use'
 import {Close} from '../../assets/svg'

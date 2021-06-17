@@ -10,7 +10,7 @@ function SvgBgArrowRight(props) {
     >
       <path
         d="M10 16l4-4-4-4"
-        stroke="#999"
+        stroke="currentColor"
         strokeWidth={1.6}
         strokeLinecap="round"
         strokeLinejoin="round"

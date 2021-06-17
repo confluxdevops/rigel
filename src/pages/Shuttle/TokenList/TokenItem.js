@@ -6,7 +6,7 @@ import {WrapIcon} from '../../../components'
 import {BgPlus} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
-import {useIsCfxChain} from '../../../hooks/useTokenList'
+import {useIsCfxChain} from '../../../hooks'
 
 function TokenItem({chain, token, selectedToken, onClick}) {
   const {addToken} = useAddTokenToMetamask(token)
@@ -33,7 +33,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
       className={`px-6 flex justify-between items-center w-full h-14 flex-shrink-0 cursor-pointer ${getSelectedStyle()}`}
     >
       <div className="flex items-center">
-        <TokenIcon size="large" chain={chain} token={token} />
+        <TokenIcon size="large" chain={chain} token={token} showAlarm={true} />
         <div className="flex flex-col ml-2">
           <span className="text-gray-100">{symbol}</span>
           <span className="text-gray-40 text-xs">{name}</span>

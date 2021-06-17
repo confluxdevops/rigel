@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {Close} from '../../assets/svg'
 
@@ -15,14 +15,14 @@ function Tag({
   closable = false,
   ...props
 }) {
-  const getDisabledStyle = () => {
+  const disabledStyle = useMemo(() => {
     if (disabled) {
       return 'bg-gray-20 text-gray-40 cursor-not-allowed'
     }
     return ''
-  }
+  }, [disabled])
 
-  const getColorStyle = () => {
+  const colorStyle = useMemo(() => {
     if (disabled) return ''
     if (color === 'primary') {
       return 'text-primary bg-primary-10 hover:border hover:border-primary'
@@ -30,24 +30,24 @@ function Tag({
       return 'text-error bg-error-10 hover:border hover:border-error'
     }
     return ''
-  }
+  }, [disabled, color])
 
-  const getSizeStyle = () => {
+  const sizeStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs h-6 px-2'
     if (size === 'small') return 'text-2xs h-4 px-1'
     return ''
-  }
+  }, [size])
 
-  const getIconColor = () => {
+  const iconColor = useMemo(() => {
     if (disabled) return 'text-gray-40'
     if (color === 'primary') return 'text-primary'
     if (color === 'error') return 'text-error'
-  }
+  }, [disabled, color])
 
-  const getIconSize = () => {
+  const iconSize = useMemo(() => {
     if (size === 'medium') return 'w-3 h-3'
     if (size === 'small') return 'w-2 h-2'
-  }
+  }, [size])
 
   const onCloseClick = e => {
     e.stopPropagation()
@@ -56,17 +56,13 @@ function Tag({
 
   const iconComp = icon
     ? React.cloneElement(icon, {
-        className: `mr-1 ${getIconColor()} ${getIconSize()} ${
-          icon.props.className
-        }`,
+        className: `mr-1 ${iconColor} ${iconSize} ${icon.props.className}`,
       })
     : null
 
   const closeIconComp = closeIcon
     ? React.cloneElement(closeIcon, {
-        className: `${getIconColor()} ${getIconSize()} ${
-          closeIcon.props.className
-        }`,
+        className: `${iconColor} ${iconSize} ${closeIcon.props.className}`,
       })
     : null
 
@@ -75,7 +71,7 @@ function Tag({
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
-      flex justify-center items-center focus:outline-none rounded ${getDisabledStyle()} ${getColorStyle()} ${getSizeStyle()} ${className}`}
+      flex justify-center items-center focus:outline-none rounded ${disabledStyle} ${colorStyle} ${sizeStyle} ${className}`}
       {...props}
     >
       {iconComp}
@@ -89,7 +85,7 @@ function Tag({
           {closeIcon ? (
             closeIconComp
           ) : (
-            <Close className={`${getIconColor()} ${getIconSize()}`} />
+            <Close className={`${iconColor} ${iconSize}`} />
           )}
         </span>
       )}

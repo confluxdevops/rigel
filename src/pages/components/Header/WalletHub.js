@@ -33,14 +33,14 @@ function WalletHub({connectData, pendingTransactions = []}) {
   let children
   if (length === 0) {
     children = (
-      <div className="h-8 px-3 flex items-center border rounded-full border-primary text-primary">
+      <div className="h-8 px-3 flex items-center border rounded-full border-primary text-primary cursor-pointer">
         <NotConnected className="w-2 h-2 mr-1" />
         <span>{t('connectWallet')}</span>
       </div>
     )
   } else if (length === 1) {
     children = (
-      <div className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative">
+      <div className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative cursor-pointer">
         {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet].icon()}
         <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
@@ -62,7 +62,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
     )
   } else if (length === 2) {
     children = (
-      <div className="h-8 px-3 flex items-center rounded-full border border-gray-20">
+      <div className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer">
         <Connected className="w-2 h-2 mr-1" />
         {WalletConfig[KeyOfPortal].icon()}
         {WalletConfig[KeyOfMetaMask].icon('-ml-1')}

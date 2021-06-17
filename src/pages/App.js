@@ -11,7 +11,7 @@ function App() {
   return (
     <Suspense fallback={null}>
       <Router>
-        <div className="flex flex-col h-full relative background">
+        <div className="flex flex-col h-full relative">
           <Header />
           <div className="container mx-auto flex-grow justify-center pb-6">
             <Web3ReactManager>
@@ -30,7 +30,7 @@ function App() {
                 <Route path="/history">
                   <History />
                 </Route>
-                <Route path="/" exec>
+                <Route path="/" exact>
                   {/* TODO home page */}
                   <Home />
                 </Route>
