@@ -4,8 +4,10 @@ import {
   WalletIcon,
   ChainConfig,
 } from '../../../constants/chainConfig'
-import useWallet from '../../../hooks/useWallet'
+import {useWallet} from '../../../hooks/useWallet'
 import {shortenAddress} from '../../../utils/address'
+import {useIsBtcChain} from '../../../hooks'
+import {useState} from '../../../state'
 
 function Account({
   chain,
@@ -16,16 +18,20 @@ function Account({
 }) {
   const {address} = useWallet(chain)
   const walletKey = ChainConfig[chain].wallet
+  const isBtcChain = useIsBtcChain(chain)
+  const {btcAddress} = useState()
+
   return (
     <div className={`flex justify-center ${className}`}>
-      {showIcon && (
+      {showIcon && !isBtcChain && (
         <WalletIcon
           type={walletKey}
           className={iconClassName}
           size={iconSize}
         />
       )}
-      {address ? shortenAddress(chain, address) : ''}
+      {!isBtcChain && address && shortenAddress(chain, address)}
+      {isBtcChain && btcAddress && shortenAddress(chain, btcAddress)}
     </div>
   )
 }

@@ -1,18 +1,12 @@
-import {useMemo} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
-import {KeyOfCfx, ChainConfig} from '../constants/chainConfig'
-
-export function useIsCfxChain(chain) {
-  const isCfxChain = useMemo(() => chain === KeyOfCfx, [chain])
-  return isCfxChain
-}
+import {ChainConfig} from '../constants/chainConfig'
+import {useIsCfxChain} from '../hooks'
 
 // only use for display
 export function useMapTokenList(chain) {
   const tokenList = useTokenList(chain)
-  console.log(tokenList)
   const isCfxChain = useIsCfxChain(chain)
   return tokenList.map(token => {
     if (!token) return {}

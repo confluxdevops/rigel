@@ -5,7 +5,7 @@ import {Modal, Loading, Button} from '../../../components'
 import {ChainConfig, SupportedChains} from '../../../constants/chainConfig'
 import {TypeConnectWallet} from '../../../constants'
 import {ErrorOutlined} from '../../../assets/svg'
-import useWallet from '../../../hooks/useWallet'
+import {useWallet} from '../../../hooks/useWallet'
 
 function ConnectWalletModal({open = false, type, chain, onClose}) {
   const {t} = useTranslation()

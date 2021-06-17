@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
-import useWallet from '../../../hooks/useWallet'
+import {useWallet} from '../../../hooks/useWallet'
 import {Account, ConnectWallet} from '../index'
 
 function AccountStatus({chain, className, size = 'medium'}) {

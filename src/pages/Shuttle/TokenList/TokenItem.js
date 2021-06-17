@@ -6,7 +6,7 @@ import {WrapIcon} from '../../../components'
 import {BgPlus} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
-import {useIsCfxChain} from '../../../hooks/useTokenList'
+import {useIsCfxChain} from '../../../hooks'
 
 function TokenItem({chain, token, selectedToken, onClick}) {
   const {addToken} = useAddTokenToMetamask(token)

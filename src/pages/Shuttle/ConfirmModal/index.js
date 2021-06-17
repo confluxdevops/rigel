@@ -21,7 +21,7 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
       </span>
       <SelectedChains fromChain={fromChain} toChain={toChain} />
       <ConfirmInfo fromChain={fromChain} toChain={toChain} token={fromToken} />
-      <ConfirmTips fromChain={fromChain} />
+      <ConfirmTips fromChain={fromChain} toChain={toChain} />
     </div>
   )
   return <Modal size="medium" open={open} content={content} />

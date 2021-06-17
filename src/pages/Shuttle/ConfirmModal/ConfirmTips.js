@@ -4,10 +4,12 @@ import {useTranslation, Trans} from 'react-i18next'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 import {Checkbox, Button} from '../../../components'
 import {Send} from '../../../assets/svg'
+import {useIsBtcChain} from '../../../hooks'
 
-function ConfirmTips({fromChain}) {
+function ConfirmTips({fromChain, toChain}) {
   const [checked, setChecked] = useState(false)
   const {t} = useTranslation()
+  const isBtcChain = useIsBtcChain(toChain)
 
   //TODO
   // const approveButton = <Button>{t('approve', {token: symbol})}</Button>
@@ -16,16 +18,22 @@ function ConfirmTips({fromChain}) {
   return (
     <div className="flex w-110 flex-col mt-6 bg-gray-10 -mb-6 px-6 pb-6 pt-4 text-gray-80 text-xs">
       <span className="text-sm">{t('tipTitle')}</span>
-      <span>{t('addressTip')}</span>
-      <span>
-        <Trans i18nKey="notContractTip" />
-      </span>
-      <span>
-        <Trans
-          i18nKey="gasTip"
-          values={{fromChain: ChainConfig[fromChain].shortName}}
-        />
-      </span>
+      <span>{isBtcChain ? t('btcAddressTip') : t('addressTip')}</span>
+      {!isBtcChain && (
+        <span>
+          <Trans i18nKey="notContractTip" />
+        </span>
+      )}
+      {!isBtcChain && (
+        <span>
+          <Trans
+            i18nKey="gasTip"
+            values={{fromChain: ChainConfig[fromChain].shortName}}
+          />
+        </span>
+      )}
+      {isBtcChain && <span>{t('btcGasTip')}</span>}
+      {isBtcChain && <span>{t('btcWaitLongTip')}</span>}
       <Checkbox
         className="mt-4 mb-6"
         checked={checked}
@@ -42,6 +50,7 @@ function ConfirmTips({fromChain}) {
 
 ConfirmTips.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
 }
 
 export default ConfirmTips

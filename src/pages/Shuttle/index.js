@@ -1,14 +1,21 @@
+import {useEffectOnce} from 'react-use'
 import ShuttleForm from './ShuttleForm'
 import ConfirmModal from './ConfirmModal'
+import {useState} from '../../state'
 
 function Shuttle() {
+  const {setBtcAddress} = useState()
+  useEffectOnce(() =>
+    setBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
+  )
+
   return (
     <div className="flex justify-center">
       <ShuttleForm />
       <ConfirmModal
         open={true}
-        fromChain="eth"
-        toChain="cfx"
+        fromChain="cfx"
+        toChain="btc"
         value="26.38"
         fromToken={{
           symbol: 'KNC',

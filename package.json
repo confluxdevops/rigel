@@ -13,6 +13,7 @@
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "big.js": "^6.1.1",
+    "bitcoin-address-validation": "^2.1.0",
     "i18next": "^20.2.1",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-http-backend": "^1.2.4",
