@@ -7,7 +7,7 @@ function TokenIcon({chain, token, size = 'medium'}, showAlarm = false) {
   const {icon, origin, supported} = token
   const subscriptShown = useMemo(() => {
     if (origin !== chain) return true
-    else return false
+    return false
   }, [chain, origin])
 
   const iconSize = useMemo(() => {
