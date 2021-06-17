@@ -23,5 +23,13 @@
   "shuttleRecord": "Cross-Chian Record",
   "all": "All",
   "app": "App",
-  "connect": "Connect"
+  "connect": "Connect",
+  "error": {
+    "inputValidAmount": "Please type a valid amount",
+    "mustGtZero": "The amount must be greater than 0",
+    "mustLsMax": "The amount must be less than {{value}}"
+  },
+  "balance": "Balance",
+  "max": "Max",
+  "receiveAs": "Receive as"
 }

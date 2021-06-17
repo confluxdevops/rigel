@@ -4,6 +4,7 @@ import queryString from 'query-string'
 import {useTranslation} from 'react-i18next'
 import {useHistory, useLocation} from 'react-router-dom'
 import {convertDecimal} from '@cfxjs/data-format'
+import Big from 'big.js'
 
 import ChainSelect from './ChainSelect'
 import {WrapIcon, Button, Input, Tag} from '../../../components'
@@ -27,7 +28,9 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   const location = useLocation()
   const history = useHistory()
   const [balanceVal, setBalanceVal] = useState(BigNumZero.toString(10))
+  const [maxAmount, setMaxAmount] = useState(BigNumZero.toString(10))
   const [amountVal, setAmountVal] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const {address: fromAddress} = useWallet(fromChain)
   const isNativeToken = useIsNativeToken(fromChain, fromToken)
   const isCfxChain = useIsCfxChain(fromChain)
@@ -38,6 +41,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
     fromAddress,
   )
   const {setPageType, setPageProps} = useContext(PageContext)
+
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
       onInvertChain()
@@ -70,6 +74,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
       },
     })
     history.push(pathWithQuery)
+    setAmountVal('')
   }
 
   const onChooseToken = () => {
@@ -78,14 +83,38 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   }
 
   const onMaxClick = () => {
-    const maxAmount = isNativeToken
-      ? getMaxAmount(fromChain, balanceVal)
-      : balanceVal
-    setAmountVal(maxAmount.toString(10))
+    setAmountVal(maxAmount)
+    setErrorMsg('')
   }
 
   const onInputChange = e => {
     setAmountVal(e.target.value)
+  }
+
+  const onInputBlur = () => {
+    const error = validateData(amountVal)
+    setErrorMsg(error)
+  }
+
+  function validateData(value) {
+    const val = Number(value)
+    let error = ''
+    if (!isNaN(val)) {
+      const valBig = new Big(val)
+      if (valBig.gt(0)) {
+        //must be greater than zero
+        if (!valBig.lte(maxAmount)) {
+          //must be less than Max value
+          error = t('error.mustLsMax', {value: maxAmount})
+        }
+      } else {
+        error = t('error.mustGtZero')
+      }
+    } else {
+      //not a valid number
+      error = t('error.inputValidAmount')
+    }
+    return error
   }
 
   useEffect(() => {
@@ -93,6 +122,14 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
       setBalanceVal(convertDecimal(balance, undefined, tokenInfo?.decimal))
     }
   }, [balance, fromAddress, tokenInfo?.decimal])
+
+  useEffect(() => {
+    const maxAmount = isNativeToken
+      ? getMaxAmount(fromChain, balanceVal)
+      : balanceVal
+
+    setMaxAmount(maxAmount.toString(10))
+  }, [balanceVal, fromChain, isNativeToken])
 
   return (
     <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">
@@ -116,7 +153,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
           <div className="flex justify-end">
             {fromAddress && (
               <div>
-                <span>Balance</span>
+                <span>{t('balance')}</span>
                 <span className="ml-2">{balanceVal}</span>
               </div>
             )}
@@ -126,12 +163,14 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
               bordered={false}
               value={amountVal}
               onChange={onInputChange}
+              onBlur={onInputBlur}
               placeholder="0.00"
             />
-            {fromAddress && <Tag onClick={onMaxClick}>Max</Tag>}
+            {fromAddress && <Tag onClick={onMaxClick}>{t('max')}</Tag>}
           </div>
         </div>
       </div>
+      {errorMsg && <div className="text-xs text-error mt-2">{errorMsg}</div>}
       <WrapIcon
         type="circle"
         size="w-8 h-8"
@@ -150,7 +189,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
         {/* TODO UI */}
         <div className="flex flex-col justify-between flex-1 border-2 border-gray-10 rounded p-2">
           <div className="flex flex-1 justify-between">
-            <div>Receive as</div>
+            <div>{t('receiveAs')}</div>
             <AccountStatus chain={toChain} size="medium"></AccountStatus>
           </div>
           <div className="flex">
