@@ -44,5 +44,8 @@
   },
   "checkboxLabel": "I’m clear the above description",
   "approve": "Approve {{token}}",
-  "send": "Send"
+  "send": "Send",
+  "pleaseWait": "Please Wait Patiently",
+  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+  "copiedSuccess": "Copied success!"
 }

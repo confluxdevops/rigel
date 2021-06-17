@@ -2,10 +2,12 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
+import {useIsBtcChain} from '../../../hooks'
 
 import SelectedChains from './SelectedChains'
 import ConfirmInfo from './ConfirmInfo'
 import ConfirmTips from './ConfirmTips'
+import BtcConfirmTips from './BtcConfirmTips'
 
 function ConfirmModal({
   open = false,
@@ -15,6 +17,7 @@ function ConfirmModal({
   value,
 }) {
   const {t} = useTranslation()
+  const fromIsBtcChain = useIsBtcChain(fromChain)
   const {symbol} = fromTokenInfo
   const content = (
     <div className="flex flex-col items-center">
@@ -31,7 +34,10 @@ function ConfirmModal({
         toChain={toChain}
         token={fromTokenInfo}
       />
-      <ConfirmTips fromChain={fromChain} toChain={toChain} />
+      {fromIsBtcChain && <BtcConfirmTips />}
+      {!fromIsBtcChain && (
+        <ConfirmTips fromChain={fromChain} toChain={toChain} />
+      )}
     </div>
   )
   return <Modal size="medium" open={open} content={content} />

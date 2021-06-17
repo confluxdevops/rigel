@@ -19,7 +19,7 @@ function Account({
   const {address} = useWallet(chain)
   const walletKey = ChainConfig[chain].wallet
   const isBtcChain = useIsBtcChain(chain)
-  const {btcAddress} = useShuttleState()
+  const {toBtcAddress} = useShuttleState()
 
   return (
     <div className={`flex justify-center ${className}`}>
@@ -31,7 +31,7 @@ function Account({
         />
       )}
       {!isBtcChain && address && shortenAddress(chain, address)}
-      {isBtcChain && btcAddress && shortenAddress(chain, btcAddress)}
+      {isBtcChain && toBtcAddress && shortenAddress(chain, toBtcAddress)}
     </div>
   )
 }
