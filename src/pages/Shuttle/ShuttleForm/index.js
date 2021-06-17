@@ -31,6 +31,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   const [maxAmount, setMaxAmount] = useState(BigNumZero.toString(10))
   const [amountVal, setAmountVal] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+  const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
   const isNativeToken = useIsNativeToken(fromChain, fromToken)
   const isCfxChain = useIsCfxChain(fromChain)
@@ -88,11 +89,9 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   }
 
   const onInputChange = e => {
-    setAmountVal(e.target.value)
-  }
-
-  const onInputBlur = () => {
-    const error = validateData(amountVal)
+    let value = e.target.value
+    setAmountVal(value)
+    const error = validateData(value)
     setErrorMsg(error)
   }
 
@@ -131,6 +130,14 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
     setMaxAmount(maxAmount.toString(10))
   }, [balanceVal, fromChain, isNativeToken])
 
+  useEffect(() => {
+    if (amountVal && !errorMsg) {
+      setBtnDisabled(false)
+    } else {
+      setBtnDisabled(true)
+    }
+  }, [amountVal, errorMsg])
+
   return (
     <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">
       <div className="flex w-full">
@@ -163,7 +170,6 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
               bordered={false}
               value={amountVal}
               onChange={onInputChange}
-              onBlur={onInputBlur}
               placeholder="0.00"
             />
             {fromAddress && <Tag onClick={onMaxClick}>{t('max')}</Tag>}
@@ -201,7 +207,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
           </div>
         </div>
       </div>
-      <Button className="mt-6" fullWidth>
+      <Button className="mt-6" fullWidth disabled={btnDisabled}>
         {t('next')}
       </Button>
     </div>
