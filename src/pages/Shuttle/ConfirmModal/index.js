@@ -7,9 +7,15 @@ import SelectedChains from './SelectedChains'
 import ConfirmInfo from './ConfirmInfo'
 import ConfirmTips from './ConfirmTips'
 
-function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
+function ConfirmModal({
+  open = false,
+  fromChain,
+  toChain,
+  fromTokenInfo,
+  value,
+}) {
   const {t} = useTranslation()
-  const {symbol} = fromToken
+  const {symbol} = fromTokenInfo
   const content = (
     <div className="flex flex-col items-center">
       <span className="text-gray-100 text-xl">
@@ -20,7 +26,11 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
         {t('transactionAmount')}
       </span>
       <SelectedChains fromChain={fromChain} toChain={toChain} />
-      <ConfirmInfo fromChain={fromChain} toChain={toChain} token={fromToken} />
+      <ConfirmInfo
+        fromChain={fromChain}
+        toChain={toChain}
+        token={fromTokenInfo}
+      />
       <ConfirmTips fromChain={fromChain} toChain={toChain} />
     </div>
   )
@@ -29,7 +39,7 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
 
 ConfirmModal.propTypes = {
   open: PropTypes.bool,
-  fromToken: PropTypes.object.isRequired,
+  fromTokenInfo: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,

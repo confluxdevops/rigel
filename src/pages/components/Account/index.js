@@ -7,7 +7,7 @@ import {
 import {useWallet} from '../../../hooks/useWallet'
 import {shortenAddress} from '../../../utils/address'
 import {useIsBtcChain} from '../../../hooks'
-import {useState} from '../../../state'
+import {useShuttleState} from '../../../state'
 
 function Account({
   chain,
@@ -19,7 +19,7 @@ function Account({
   const {address} = useWallet(chain)
   const walletKey = ChainConfig[chain].wallet
   const isBtcChain = useIsBtcChain(chain)
-  const {btcAddress} = useState()
+  const {btcAddress} = useShuttleState()
 
   return (
     <div className={`flex justify-center ${className}`}>

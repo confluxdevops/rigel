@@ -103,6 +103,8 @@ html {
   --color-gray-100: #1b1b1c;
   --shadow-common: 2px 8px 44px #e3edff;
   @apply bg-light;
+  @apply bg-no-repeat;
+  @apply bg-cover;
 }
 
 .dark {

@@ -1,10 +1,10 @@
 import {useEffectOnce} from 'react-use'
 import ShuttleForm from './ShuttleForm'
 import ConfirmModal from './ConfirmModal'
-import {useState} from '../../state'
+import {useShuttleState} from '../../state'
 
 function Shuttle() {
-  const {setBtcAddress} = useState()
+  const {setBtcAddress} = useShuttleState()
   useEffectOnce(() =>
     setBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
   )
@@ -17,7 +17,7 @@ function Shuttle() {
         fromChain="cfx"
         toChain="btc"
         value="26.38"
-        fromToken={{
+        fromTokenInfo={{
           symbol: 'KNC',
           icon: 'https://conflux-static.oss-cn-beijing.aliyuncs.com/icons/default.png',
           origin: 'eth',

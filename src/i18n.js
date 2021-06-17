@@ -18,7 +18,6 @@ i18next
     debug: true,
     fallbackLng: 'en',
     preload: ['en'],
-    keySeparator: false,
     interpolation: {escapeValue: false},
   })
 

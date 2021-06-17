@@ -8,7 +8,7 @@ const createStore = () =>
     setBtcAddress: btcAddress => set({btcAddress}),
   }))
 
-export const useState = () => {
+export const useShuttleState = () => {
   if (!Store) Store = createStore()
   const useStore = Store
   const state = useStore()
