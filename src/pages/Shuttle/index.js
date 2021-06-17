@@ -18,6 +18,7 @@ import {useShuttleState} from '../../state'
 export const PageType = {
   shuttle: 'shuttle',
   tokenList: 'tokenList',
+  confirmModal: 'confirmModal',
 }
 
 export const PageContext = createContext({type: PageType.shuttle})
@@ -112,16 +113,11 @@ function Shuttle() {
         )}
       </div>
       <ConfirmModal
-        open={false}
-        fromChain="cfx"
-        toChain="btc"
-        value="26.38"
-        fromTokenInfo={{
-          symbol: 'KNC',
-          icon: 'https://conflux-static.oss-cn-beijing.aliyuncs.com/icons/default.png',
-          origin: 'eth',
-          supported: 1,
-        }}
+        open={pageType === PageType.confirmModal}
+        fromChain={pageProps.fromChain}
+        toChain={pageProps.toChain}
+        value={pageProps.value}
+        fromTokenInfo={pageProps.fromTokenInfo || {}}
       />
     </PageContext.Provider>
   )

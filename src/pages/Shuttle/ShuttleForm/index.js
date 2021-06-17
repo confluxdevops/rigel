@@ -95,6 +95,16 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
     setErrorMsg(error)
   }
 
+  const onNextClick = () => {
+    setPageType(PageType.confirmModal)
+    setPageProps({
+      fromChain,
+      toChain,
+      fromTokenInfo: tokenInfo,
+      value: amountVal,
+    })
+  }
+
   function validateData(value) {
     const val = Number(value)
     let error = ''
@@ -207,7 +217,12 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
           </div>
         </div>
       </div>
-      <Button className="mt-6" fullWidth disabled={btnDisabled}>
+      <Button
+        className="mt-6"
+        fullWidth
+        disabled={btnDisabled}
+        onClick={onNextClick}
+      >
         {t('next')}
       </Button>
     </div>
