@@ -133,10 +133,10 @@ function getNotificationInstance(args, callback) {
 }
 
 const typeToIcon = {
-  success: <SuccessFilled className="w-6 h-6 mr-2" />,
-  info: <InfoFilled className="w-6 h-6 mr-2" />,
-  error: <ErrorFilled className="w-6 h-6 mr-2" />,
-  warning: <WarningFilled className="w-6 h-6 mr-2" />,
+  success: <SuccessFilled className="w-6 h-6 mr-4" />,
+  info: <InfoFilled className="w-6 h-6 mr-4" />,
+  error: <ErrorFilled className="w-6 h-6 mr-4" />,
+  warning: <WarningFilled className="w-6 h-6 mr-4" />,
 }
 
 function getRCNoticeProps(args) {
@@ -158,7 +158,7 @@ function getRCNoticeProps(args) {
 
   let iconNode = null
   if (icon) {
-    iconNode = <span className="w-6 h-6 mr-2">{args.icon}</span>
+    iconNode = <span className="w-6 h-6 mr-4">{args.icon}</span>
   } else if (type) {
     iconNode = typeToIcon[type] || null
   }
@@ -168,8 +168,10 @@ function getRCNoticeProps(args) {
       <div className="flex" role="alert">
         {iconNode}
         <div className="flex flex-col flex-1">
-          <div className="text-gray-100 text-base pr-6 mb-2">{title}</div>
-          <div className="text-gray-40 text-xs">{content}</div>
+          <div className="text-gray-80 font-medium text-base pr-6 mb-2">
+            {title}
+          </div>
+          <div className="text-gray-60">{content}</div>
         </div>
         {actions ? <span className="flex justify-end">{actions}</span> : null}
       </div>

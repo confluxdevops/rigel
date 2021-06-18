@@ -17,7 +17,7 @@ function Shuttle() {
         fromChain="btc"
         toChain="cfx"
         value="26.38"
-        fromTokenInfo={{
+        fromToken={{
           symbol: 'KNC',
           icon: 'https://conflux-static.oss-cn-beijing.aliyuncs.com/icons/default.png',
           origin: 'eth',

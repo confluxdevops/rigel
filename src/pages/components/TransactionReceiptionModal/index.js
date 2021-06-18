@@ -16,15 +16,15 @@ function TransactionReceiptionModal({
   toChain,
   fromChain,
   value,
-  fromTokenInfo,
-  toTokenInfo,
+  fromToken,
+  toToken,
   txHash,
 }) {
   const {t} = useTranslation()
-  const {addToken, success} = useAddTokenToMetamask(toTokenInfo)
+  const {addToken, success} = useAddTokenToMetamask(toToken)
   let content
   if (type === 'ongoing') {
-    const token = fromTokenInfo && fromTokenInfo.symbol
+    const token = fromToken && fromToken.symbol
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
@@ -68,10 +68,10 @@ function TransactionReceiptionModal({
           >
             {success
               ? t('addedTokenToMetaMask', {
-                  token: toTokenInfo && toTokenInfo.symbol,
+                  token: toToken && toToken.symbol,
                 })
               : t('addTokenToMetaMask', {
-                  token: toTokenInfo && toTokenInfo.symbol,
+                  token: toToken && toToken.symbol,
                 })}
           </Button>
         )}
@@ -108,8 +108,8 @@ TransactionReceiptionModal.propTypes = {
   toChain: PropTypes.oneOf(SupportedChains),
   fromChain: PropTypes.oneOf(SupportedChains),
   value: PropTypes.string,
-  fromTokenInfo: PropTypes.object,
-  toTokenInfo: PropTypes.object,
+  fromToken: PropTypes.object,
+  toToken: PropTypes.object,
   txHash: PropTypes.string,
 }
 

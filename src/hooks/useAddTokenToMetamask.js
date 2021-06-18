@@ -16,16 +16,17 @@ export default function useAddTokenToMetamask(token) {
       library.provider.request &&
       token
     ) {
+      const {address, symbol, decimals, icon} = token
       library.provider
         .request({
           method: 'wallet_watchAsset',
           params: {
             type: 'ERC20',
             options: {
-              address: token.address,
-              symbol: token.symbol,
-              decimals: token.decimals,
-              image: token.icon,
+              address: address,
+              symbol: symbol,
+              decimals: decimals,
+              image: icon,
             },
           },
         })

@@ -46,7 +46,7 @@ function Example() {
       onClick: () => {
         console.log('Notification Clicked!')
       },
-      duration: 1,
+      duration: 0,
     })
   }
 
@@ -127,8 +127,8 @@ function Example() {
           open={false}
           fromChain="cfx"
           toChain="eth"
-          fromTokenInfo={{symbol: 'CFX'}}
-          toTokenInfo={{symbol: 'eCFX'}}
+          fromToken={{symbol: 'CFX'}}
+          toToken={{symbol: 'eCFX'}}
           value="23.68"
         />
         <Modal
