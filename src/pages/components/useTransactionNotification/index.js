@@ -1,21 +1,18 @@
 import {ChainConfig} from '../../../constants/chainConfig'
-import {Notification, Link} from '../../../components'
-import {useIsMobie} from '../../../hooks'
+import {Notification} from '../../../components'
 
-const useTransactionNotification = ({token, fromChain, toChain, value}) => {
-  const isMobile = useIsMobie()
-  const {symbol} = token
-  const openNotification = () =>
-    Notification.open({
+const useTransactionNotification = () => {
+  return ({symbol, fromChain, toChain, value, isMobile}) => {
+    return Notification.open({
       title: `${value} ${symbol} from ${ChainConfig[fromChain].shortName} to ${ChainConfig[toChain].shortName}`,
       type: 'success',
-      content: <Link>View in history</Link>,
-      duration: 3,
+      content: 'View in history',
+      duration: 0,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
-      className: `bg-${ChainConfig[fromChain].wallet}'`,
+      className: `bg-${ChainConfig[fromChain].wallet} h-32`,
     })
-  return openNotification
+  }
 }
 
 export default useTransactionNotification

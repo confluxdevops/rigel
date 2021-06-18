@@ -22,16 +22,13 @@ import {
   AccountStatus,
   useTransactionNotification,
 } from '../pages/components'
+import {useIsMobile} from '../hooks'
 import {requestSponsor} from '../utils/request'
 
 function Example() {
   const [open, setOpen] = useState(false)
-  const openNotification = useTransactionNotification({
-    token: {symbol: 'ETH'},
-    fromChain: 'BSC',
-    toChain: 'ETH',
-    value: '10',
-  })
+  const isMobile = useIsMobile()
+  const openNotification = useTransactionNotification()
   // requestSponsor('getTokenList', ['eth']).then(res => {
   //   console.log(res)
   // })
@@ -94,7 +91,15 @@ function Example() {
           Message
         </Button>
         <Button
-          onClick={() => openNotification()}
+          onClick={() =>
+            openNotification({
+              symbol: 'ETH',
+              fromChain: 'cfx',
+              toChain: 'eth',
+              value: '10',
+              isMobile,
+            })
+          }
           startIcon={<ArrowRight className="text-white" />}
           className="mb-2"
         >
