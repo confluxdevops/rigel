@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {ChainIcon, SupportedChains} from '../../../constants/chainConfig'
 import {TokenAlert} from '../../../assets/svg'
 
-function TokenIcon({chain, token, size = 'medium'}, showAlarm = false) {
+function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
   const {icon, origin, supported} = token
   const subscriptShown = useMemo(() => {
     if (origin !== chain) return true
