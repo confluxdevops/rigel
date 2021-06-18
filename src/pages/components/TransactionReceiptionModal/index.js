@@ -50,11 +50,7 @@ function TransactionReceiptionModal({
   } else if (type === 'success') {
     content = (
       <div className="flex flex-1 flex-col items-center">
-        <Link
-          href={ChainConfig[fromChain].scanTxUrl + txHash}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
           {t('viewOnScan')}
         </Link>
         {ChainConfig[toChain].wallet === KeyOfMetaMask && (
