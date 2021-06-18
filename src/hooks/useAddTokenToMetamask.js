@@ -23,9 +23,9 @@ export default function useAddTokenToMetamask(token) {
           params: {
             type: 'ERC20',
             options: {
-              address: address,
-              symbol: symbol,
-              decimals: decimals,
+              address,
+              symbol,
+              decimals,
               image: icon,
             },
           },
