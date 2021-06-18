@@ -16,7 +16,7 @@ function ConfirmTips({fromChain, toChain}) {
   const sendButton = <Button startIcon={<Send />}>{t('send')}</Button>
 
   return (
-    <div className="flex w-110 flex-col mt-6 bg-gray-10 -mb-6 px-6 pb-6 pt-4 text-gray-80 text-xs">
+    <div className="flex w-full md:w-110 flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs">
       <span className="text-sm">{t('tips.mustKnow')}</span>
       <span>
         {isBtcChain ? t('tips.toBtcAddressTip') : t('tips.addressTip')}

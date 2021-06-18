@@ -28,19 +28,21 @@ function ConfirmModal({
       <span className="inline-block -mt-1 mb-4 text-gray-40">
         {t('transactionAmount')}
       </span>
-      <SelectedChains fromChain={fromChain} toChain={toChain} />
-      <ConfirmInfo
-        fromChain={fromChain}
-        toChain={toChain}
-        token={fromTokenInfo}
-      />
+      <div className="px-6 md:px-0 w-full">
+        <SelectedChains fromChain={fromChain} toChain={toChain} />
+        <ConfirmInfo
+          fromChain={fromChain}
+          toChain={toChain}
+          token={fromTokenInfo}
+        />
+      </div>
       {fromIsBtcChain && <BtcConfirmTips />}
       {!fromIsBtcChain && (
         <ConfirmTips fromChain={fromChain} toChain={toChain} />
       )}
     </div>
   )
-  return <Modal size="medium" open={open} content={content} />
+  return <Modal size="medium" open={open} content={content} className="pb-0" />
 }
 
 ConfirmModal.propTypes = {

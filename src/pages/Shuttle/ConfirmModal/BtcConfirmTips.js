@@ -12,7 +12,7 @@ function BtcConfirmTips() {
   const [copied, setCopied] = useState(false)
 
   return (
-    <div className="flex w-110 flex-col mt-6 bg-gray-10 -mb-6 px-6 pb-6 pt-4 text-gray-80 text-xs relative">
+    <div className="flex w-full md:w-110 flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs relative">
       <span>{t('tips.btcWalletTip')}</span>
       <span>{t('tips.fromBtcAddressTip')}</span>
       <span>{t('tips.fromBtcGasTip')}</span>
