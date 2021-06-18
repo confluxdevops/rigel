@@ -31,7 +31,7 @@ function TransactionReceiptionModal({
         <span>
           <Trans i18nKey="shuttleInfo" values={{value, token, chain}} />
         </span>
-        <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
+        <div className="bg-warning-10 text-warning-dark w-full p-4 mt-4 text-center">
           {t('confirm', {
             wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
           })}
@@ -44,6 +44,7 @@ function TransactionReceiptionModal({
         icon={<Loading />}
         title={t('waiting')}
         content={content}
+        className="!pb-0 !px-0"
       />
     )
   } else if (type === 'success') {

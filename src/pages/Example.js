@@ -137,8 +137,8 @@ function Example() {
           <TokenSelect token={token} type="to" chain="cfx" />
         </div>
         <TransactionReceiptionModal
-          type="success"
-          open={false}
+          type="ongoing"
+          open={true}
           fromChain="cfx"
           toChain="eth"
           fromToken={{symbol: 'CFX'}}
