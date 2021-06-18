@@ -32,6 +32,8 @@ module.exports = {
       },
       backgroundImage: () => ({
         light: "url('/src/assets/svg/background.svg')",
+        metamask: "url('/src/assets/svg/metamask.svg')",
+        portal: "url('/src/assets/svg/portal.svg')",
       }),
       colors: {
         dark: '#373739',

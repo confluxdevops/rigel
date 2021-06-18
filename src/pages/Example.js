@@ -20,11 +20,18 @@ import {
   TransactionReceiptionModal,
   ConnectWalletModal,
   AccountStatus,
+  useTransactionNotification,
 } from '../pages/components'
 import {requestSponsor} from '../utils/request'
 
 function Example() {
   const [open, setOpen] = useState(false)
+  const openNotification = useTransactionNotification({
+    token: {symbol: 'ETH'},
+    fromChain: 'BSC',
+    toChain: 'ETH',
+    value: '10',
+  })
   // requestSponsor('getTokenList', ['eth']).then(res => {
   //   console.log(res)
   // })
@@ -37,20 +44,20 @@ function Example() {
     symbol: 'cEth',
   }
 
-  const openNotification = () => {
-    Notification.open({
-      title: 'Notification Title',
-      type: 'warning',
-      content:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      onClick: () => {
-        console.log('Notification Clicked!')
-      },
-      placement: 'bottomRight',
-      duration: 0,
-      bottom: 0,
-    })
-  }
+  // const openNotification = () => {
+  //   Notification.open({
+  //     title: 'Notification Title',
+  //     type: 'success',
+  //     content:
+  //       'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+  //     onClick: () => {
+  //       console.log('Notification Clicked!')
+  //     },
+  //     placement: 'bottomRight',
+  //     duration: 0,
+  //     bottom: 0,
+  //   })
+  // }
 
   const info = () => {
     Message.info({content: 'this is a message'})
