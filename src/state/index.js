@@ -4,8 +4,10 @@ let Store = null
 
 const createStore = () =>
   create(set => ({
-    btcAddress: '',
-    setBtcAddress: btcAddress => set({btcAddress}),
+    toBtcAddress: '',
+    fromBtcAddress: '',
+    setFromBtcAddress: fromBtcAddress => set({fromBtcAddress}),
+    setToBtcAddress: toBtcAddress => set({toBtcAddress}),
   }))
 
 export const useShuttleState = () => {

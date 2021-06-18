@@ -12,7 +12,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
   const {addToken} = useAddTokenToMetamask(token)
   const {symbol, name, address} = token
   const isCfxChain = useIsCfxChain(chain)
-  const tokenAddress = shortenAddress(chain, address)
+  const tokenAddress = shortenAddress(chain, address, 'contract')
 
   const getSelectedStyle = () => {
     if (_.isEqual(token, selectedToken)) {
