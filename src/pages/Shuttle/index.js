@@ -10,12 +10,12 @@ function Shuttle() {
   )
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center px-3 md:px-0">
       <ShuttleForm />
       <ConfirmModal
         open={true}
-        fromChain="btc"
-        toChain="cfx"
+        fromChain="cfx"
+        toChain="btc"
         value="26.38"
         fromTokenInfo={{
           symbol: 'KNC',

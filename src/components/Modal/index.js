@@ -48,12 +48,16 @@ function Modal({
   return (
     <div
       ref={ref}
-      className="fixed w-full h-full top-0 left-0 bg-black bg-opacity-60 transation flex justify-center items-center z-10"
+      className="fixed w-full h-full top-0 left-0 px-3 md:px-0 bg-black bg-opacity-60 transation flex justify-center items-center z-10"
     >
       <div
         className={`relative overflow-auto flex flex-col items-center z-20 ${
-          width ? width : size === 'medium' ? 'w-110' : 'w-70'
-        } rounded bg-white shadow-3 p-6 ${className}`}
+          width
+            ? width
+            : size === 'medium'
+            ? 'w-full md:w-110'
+            : 'w-full md:w-70'
+        } rounded bg-white shadow-3 py-6 px-0 md:px-6 ${className}`}
         {...props}
       >
         {closable && (
