@@ -1,16 +1,30 @@
-import {ChainConfig} from '../../../constants/chainConfig'
-import {Notification} from '../../../components'
+import {
+  ChainConfig,
+  KeyOfPortal,
+  KeyOfMetaMask,
+} from '../../../constants/chainConfig'
+import {Notification, Link} from '../../../components'
 
 const useTransactionNotification = () => {
   return ({symbol, fromChain, toChain, value, isMobile}) =>
     Notification.open({
       title: `${value} ${symbol} from ${ChainConfig[fromChain].shortName} to ${ChainConfig[toChain].shortName}`,
       type: 'success',
-      content: 'View in history',
+      content: (
+        <div>
+          <Link className="!justify-start">View in history</Link>
+        </div>
+      ),
       duration: 0,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
-      className: `bg-${ChainConfig[fromChain].wallet} h-32`,
+      className: `${
+        ChainConfig[fromChain].wallet === KeyOfPortal
+          ? 'bg-portal'
+          : ChainConfig[fromChain].wallet === KeyOfMetaMask
+          ? 'bg-metamask'
+          : ''
+      } h-32`,
     })
 }
 

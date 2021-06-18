@@ -22,7 +22,7 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
       <span className="inline-block -mt-1 mb-4 text-gray-40">
         {t('transactionAmount')}
       </span>
-      <div className="px-6 md:px-0 w-full">
+      <div className="px-6 w-full">
         <SelectedChains fromChain={fromChain} toChain={toChain} />
         <ConfirmInfo
           fromChain={fromChain}
@@ -36,7 +36,14 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
       )}
     </div>
   )
-  return <Modal size="medium" open={open} content={content} className="pb-0" />
+  return (
+    <Modal
+      size="medium"
+      open={open}
+      content={content}
+      className="!pb-0 !px-0"
+    />
+  )
 }
 
 ConfirmModal.propTypes = {

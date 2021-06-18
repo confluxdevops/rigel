@@ -12,13 +12,8 @@ function AccountStatus({chain, className, size = 'medium'}) {
   }, [size])
 
   const iconStyle = useMemo(() => {
-    if (size === 'medium') return 'mr-1.5'
-    if (size === 'large') return 'mr-2'
-  }, [size])
-
-  const iconSize = useMemo(() => {
-    if (size === 'medium') return 'w-3 h-3'
-    if (size === 'large') return 'w-4 h-4'
+    if (size === 'medium') return 'mr-1.5 !w-3 !h-3'
+    if (size === 'large') return 'mr-2 !w-4 !h-4'
   }, [size])
 
   return (
@@ -29,7 +24,6 @@ function AccountStatus({chain, className, size = 'medium'}) {
           showIcon={true}
           className={accountCompStyle}
           iconClassName={iconStyle}
-          iconSize={iconSize}
         />
       ) : (
         <ConnectWallet chain={chain} size={size} />

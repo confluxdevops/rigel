@@ -18,7 +18,7 @@ function Toast({
   if (!open) return null
   const iconComp = icon
     ? React.cloneElement(icon, {
-        className: 'w-13 h-13 mb-2',
+        className: `w-13 h-13 mb-2 ${icon.props.className || ''}`,
       })
     : null
 

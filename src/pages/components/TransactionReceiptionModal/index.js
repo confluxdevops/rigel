@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
-import {Modal, Loading, Button} from '../../../components'
+import {Modal, Loading, Button, Link} from '../../../components'
 import {
   SupportedChains,
   ChainConfig,
@@ -49,14 +49,13 @@ function TransactionReceiptionModal({
   } else if (type === 'success') {
     content = (
       <div className="flex flex-1 flex-col items-center">
-        <a
-          className="text-primary text-xs font-medium no-underline"
+        <Link
           href={ChainConfig[fromChain].scanTxUrl + txHash}
           target="_blank"
           rel="noreferrer"
         >
           {t('viewOnScan')}
-        </a>
+        </Link>
         {ChainConfig[toChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
@@ -81,7 +80,7 @@ function TransactionReceiptionModal({
       <Modal
         open={open}
         title={t('submitted')}
-        icon={<SuccessOutlined className="w-12 h-12" />}
+        icon={<SuccessOutlined />}
         content={content}
       />
     )
@@ -91,13 +90,7 @@ function TransactionReceiptionModal({
         {t('rejected')}
       </div>
     )
-    return (
-      <Modal
-        open={open}
-        icon={<ErrorOutlined className="w-12 h-12" />}
-        content={content}
-      />
-    )
+    return <Modal open={open} icon={<ErrorOutlined />} content={content} />
   }
   return <div>TransactionReceiptionModal</div>
 }

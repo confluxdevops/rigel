@@ -32,14 +32,14 @@ function Modal({
 
   const iconComp = icon
     ? React.cloneElement(icon, {
-        className: `w-12 h-12 mb-3 ${icon.props.className}`,
+        className: `w-12 h-12 mb-3 ${icon.props.className || ''}`,
       })
     : null
 
   const closeIconComp = closeIcon
     ? React.cloneElement(closeIcon, {
         className: `${size === 'medium' ? 'w-6 h-6' : 'w-4 h-4'} text-gray-40 ${
-          closeIcon.props.className
+          closeIcon.props.className || ''
         }`,
       })
     : null
@@ -57,7 +57,7 @@ function Modal({
             : size === 'medium'
             ? 'w-full md:w-110'
             : 'w-full md:w-70'
-        } rounded bg-white shadow-3 py-6 px-0 md:px-6 ${className}`}
+        } rounded bg-white shadow-3 p-6 ${className}`}
         {...props}
       >
         {closable && (
