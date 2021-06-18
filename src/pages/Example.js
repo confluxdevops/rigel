@@ -46,7 +46,9 @@ function Example() {
       onClick: () => {
         console.log('Notification Clicked!')
       },
+      placement: 'bottomRight',
       duration: 0,
+      bottom: 0,
     })
   }
 
@@ -85,7 +87,7 @@ function Example() {
           Message
         </Button>
         <Button
-          onClick={() => setOpen(true)}
+          onClick={() => openNotification()}
           startIcon={<ArrowRight className="text-white" />}
           className="mb-2"
         >

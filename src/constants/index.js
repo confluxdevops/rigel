@@ -9,3 +9,5 @@ export const ProxyUrlPrefix = {
   shuttleflow: '/rpcshuttleflow',
   sponsor: '/rpcsponsor',
 }
+
+export const MobileBreakpoint = 768
