@@ -23,7 +23,7 @@ import DEPOSIT_RELAYER_ABI from '../../../../abi/depositRelayerABI.json'
 import {calculateGasMargin} from '../../../../utils'
 import {TransactionReceiptionModal} from '../../../components'
 
-function ShuttleInButton({fromChain, toChain, fromTokenInfo, value}) {
+function ShuttleInButton({fromChain, toChain, fromToken, value}) {
   const drContractAddress =
     ChainConfig[fromChain].contractAddress?.depositRelayer
   const {t} = useTranslation()
@@ -32,7 +32,7 @@ function ShuttleInButton({fromChain, toChain, fromTokenInfo, value}) {
   const [txModalShown, setTxModalShown] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
   const [txHash, setTxHash] = useState('')
-  const {address, decimals, symbol} = fromTokenInfo
+  const {address, decimals, symbol} = fromToken
   const {address: fromAccountAddress} = useWallet(fromChain)
   const {address: toAccountAddress} = useWallet(toChain)
   const isNativeToken = useIsNativeToken(fromChain, address)
@@ -176,8 +176,8 @@ function ShuttleInButton({fromChain, toChain, fromTokenInfo, value}) {
         open={txModalShown}
         fromChain={fromChain}
         toChain={toChain}
-        fromTokenInfo={fromTokenInfo}
-        toTokenInfo={fromTokenInfo}
+        fromToken={fromToken}
+        toToken={fromToken}
         value={value}
         txHash={txHash}
       />
@@ -188,7 +188,7 @@ function ShuttleInButton({fromChain, toChain, fromTokenInfo, value}) {
 ShuttleInButton.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromTokenInfo: PropTypes.object.isRequired,
+  fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
 }
 export default ShuttleInButton

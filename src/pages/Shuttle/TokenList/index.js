@@ -20,7 +20,7 @@ function TokenList({chain, selectedToken = {}}) {
       url: location.pathname,
       query: {
         ...others,
-        fromToken: token.address,
+        fromTokenAddress: token.address,
       },
     })
     history.push(pathWithQuery)

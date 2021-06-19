@@ -2,20 +2,17 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
+import {useIsBtcChain} from '../../../hooks'
 
 import SelectedChains from './SelectedChains'
 import ConfirmInfo from './ConfirmInfo'
 import ConfirmTips from './ConfirmTips'
+import BtcConfirmTips from './BtcConfirmTips'
 
-function ConfirmModal({
-  open = false,
-  fromChain,
-  toChain,
-  fromTokenInfo,
-  value,
-}) {
+function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
   const {t} = useTranslation()
-  const {symbol} = fromTokenInfo
+  const fromIsBtcChain = useIsBtcChain(fromChain)
+  const {symbol} = fromToken
   const content = (
     <div className="flex flex-col items-center">
       <span className="text-gray-100 text-xl">
@@ -25,26 +22,38 @@ function ConfirmModal({
       <span className="inline-block -mt-1 mb-4 text-gray-40">
         {t('transactionAmount')}
       </span>
-      <SelectedChains fromChain={fromChain} toChain={toChain} />
-      <ConfirmInfo
-        fromChain={fromChain}
-        toChain={toChain}
-        token={fromTokenInfo}
-      />
-      <ConfirmTips
-        fromChain={fromChain}
-        toChain={toChain}
-        fromTokenInfo={fromTokenInfo}
-        value={value}
-      />
+      <div className="px-6 w-full">
+        <SelectedChains fromChain={fromChain} toChain={toChain} />
+        <ConfirmInfo
+          fromChain={fromChain}
+          toChain={toChain}
+          token={fromToken}
+        />
+      </div>
+      {fromIsBtcChain && <BtcConfirmTips />}
+      {!fromIsBtcChain && (
+        <ConfirmTips
+          fromChain={fromChain}
+          toChain={toChain}
+          fromToken={fromToken}
+          value={value}
+        />
+      )}
     </div>
   )
-  return <Modal size="medium" open={open} content={content} />
+  return (
+    <Modal
+      size="medium"
+      open={open}
+      content={content}
+      className="!pb-0 !px-0"
+    />
+  )
 }
 
 ConfirmModal.propTypes = {
   open: PropTypes.bool,
-  fromTokenInfo: PropTypes.object.isRequired,
+  fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,

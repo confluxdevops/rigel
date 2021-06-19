@@ -30,3 +30,4 @@ export const TxReceiptModalType = {
   success: 'success',
   error: 'error',
 }
+export const MobileBreakpoint = 768

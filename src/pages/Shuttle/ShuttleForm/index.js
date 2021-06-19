@@ -23,7 +23,7 @@ import {PageContext, PageType} from '../../Shuttle'
 import {getMaxAmount} from '../../../utils'
 import {BigNumZero} from '../../../constants'
 
-function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
+function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
@@ -33,12 +33,12 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   const [errorMsg, setErrorMsg] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
-  const isNativeToken = useIsNativeToken(fromChain, fromToken)
+  const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
   const isCfxChain = useIsCfxChain(fromChain)
   const balance = useBalance(
     fromChain,
     fromAddress,
-    isCfxChain ? tokenInfo?.ctoken : tokenInfo?.reference,
+    isCfxChain ? token?.ctoken : token?.reference,
     [fromAddress],
   )
   const {setPageType, setPageProps} = useContext(PageContext)
@@ -56,7 +56,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
         fromChain: type === 'from' ? chain : fromChain,
         toChain:
           type === 'to' ? chain : chain !== KeyOfCfx ? KeyOfCfx : toChain,
-        fromToken: '',
+        fromTokenAddress: '',
       },
     })
     history.push(pathWithQuery)
@@ -70,8 +70,8 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
         ...others,
         fromChain: toChain,
         toChain: fromChain,
-        fromToken:
-          fromChain !== KeyOfCfx ? tokenInfo?.ctoken : tokenInfo?.reference,
+        fromTokenAddress:
+          fromChain !== KeyOfCfx ? token?.ctoken : token?.reference,
       },
     })
     history.push(pathWithQuery)
@@ -80,7 +80,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
 
   const onChooseToken = () => {
     setPageType(PageType.tokenList)
-    setPageProps({chain: fromChain, selectedToken: tokenInfo})
+    setPageProps({chain: fromChain, selectedToken: token})
   }
 
   const onMaxClick = () => {
@@ -100,7 +100,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
     setPageProps({
       fromChain,
       toChain,
-      fromTokenInfo: tokenInfo,
+      fromToken: token,
       value: amountVal,
     })
   }
@@ -128,9 +128,9 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
 
   useEffect(() => {
     if (fromAddress) {
-      setBalanceVal(convertDecimal(balance, undefined, tokenInfo?.decimal))
+      setBalanceVal(convertDecimal(balance, undefined, token?.decimal))
     }
-  }, [balance, fromAddress, tokenInfo?.decimal])
+  }, [balance, fromAddress, token?.decimal])
 
   useEffect(() => {
     const maxAmount = isNativeToken
@@ -149,7 +149,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
   }, [amountVal, errorMsg])
 
   return (
-    <div className="flex flex-col mt-16 w-110 items-center shadow-common p-6 bg-gray-0 rounded-2.5xl">
+    <div className="flex flex-col mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl">
       <div className="flex w-full">
         <ChainSelect
           chain={fromChain || DefaultFromChain}
@@ -160,7 +160,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
         <div className="flex-1 border-2 border-gray-10 rounded p-2">
           <div className="flex flex-1 justify-between">
             <TokenSelect
-              token={tokenInfo}
+              token={token}
               type="from"
               chain={fromChain}
               onClick={onChooseToken}
@@ -209,11 +209,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
             <AccountStatus chain={toChain} size="medium"></AccountStatus>
           </div>
           <div className="flex">
-            <TokenSelect
-              token={tokenInfo}
-              type="to"
-              chain={toChain}
-            ></TokenSelect>
+            <TokenSelect token={token} type="to" chain={toChain}></TokenSelect>
           </div>
         </div>
       </div>
@@ -232,8 +228,8 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
 ShuttleForm.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromToken: PropTypes.string,
-  tokenInfo: PropTypes.object,
+  fromTokenAddress: PropTypes.string,
+  token: PropTypes.object,
 }
 
 export default ShuttleForm

@@ -23,8 +23,7 @@ function ConfirmInfo({fromChain, toChain, token}) {
           showIcon={true}
           chain={toChain}
           className="text-gray-100"
-          iconClassName="mr-1"
-          iconSize="w-5 h-5"
+          iconClassName="mr-1 !w-5 !h-5"
         />
       </div>
       <div className="flex items-center justify-between mt-4">

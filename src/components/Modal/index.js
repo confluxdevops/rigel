@@ -32,14 +32,14 @@ function Modal({
 
   const iconComp = icon
     ? React.cloneElement(icon, {
-        className: `w-12 h-12 mb-3 ${icon.props.className}`,
+        className: `w-12 h-12 mb-3 ${icon.props.className || ''}`,
       })
     : null
 
   const closeIconComp = closeIcon
     ? React.cloneElement(closeIcon, {
         className: `${size === 'medium' ? 'w-6 h-6' : 'w-4 h-4'} text-gray-40 ${
-          closeIcon.props.className
+          closeIcon.props.className || ''
         }`,
       })
     : null
@@ -48,11 +48,15 @@ function Modal({
   return (
     <div
       ref={ref}
-      className="fixed w-full h-full top-0 left-0 bg-black bg-opacity-60 transation flex justify-center items-center z-10"
+      className="fixed w-full h-full top-0 left-0 px-3 md:px-0 bg-black bg-opacity-60 transation flex justify-center items-center z-10"
     >
       <div
         className={`relative overflow-auto flex flex-col items-center z-20 ${
-          width ? width : size === 'medium' ? 'w-110' : 'w-70'
+          width
+            ? width
+            : size === 'medium'
+            ? 'w-full md:w-110'
+            : 'w-full md:w-70'
         } rounded bg-white shadow-3 p-6 ${className}`}
         {...props}
       >

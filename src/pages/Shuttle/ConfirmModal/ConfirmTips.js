@@ -6,7 +6,7 @@ import {Checkbox} from '../../../components'
 import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
 import {ShuttleInButton} from './ShuttleButton'
 
-function ConfirmTips({fromChain, toChain, fromTokenInfo, value}) {
+function ConfirmTips({fromChain, toChain, fromToken, value}) {
   const [checked, setChecked] = useState(false)
   const {t} = useTranslation()
   const isBtcChain = useIsBtcChain(toChain)
@@ -15,7 +15,7 @@ function ConfirmTips({fromChain, toChain, fromTokenInfo, value}) {
   let BtnComp = isCfxChain ? ShuttleInButton : ShuttleInButton
 
   return (
-    <div className="flex w-110 flex-col mt-6 bg-gray-10 -mb-6 px-6 pb-6 pt-4 text-gray-80 text-xs">
+    <div className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs">
       <span className="text-sm">{t('tips.mustKnow')}</span>
       <span>
         {isBtcChain ? t('tips.toBtcAddressTip') : t('tips.addressTip')}
@@ -47,7 +47,7 @@ function ConfirmTips({fromChain, toChain, fromTokenInfo, value}) {
       <BtnComp
         fromChain={fromChain}
         toChain={toChain}
-        fromTokenInfo={fromTokenInfo}
+        fromToken={fromToken}
         value={value}
       ></BtnComp>
     </div>
@@ -57,7 +57,7 @@ function ConfirmTips({fromChain, toChain, fromTokenInfo, value}) {
 ConfirmTips.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromTokenInfo: PropTypes.object.isRequired,
+  fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
 }
 

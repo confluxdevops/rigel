@@ -149,7 +149,7 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
                 const {type, tokenSymbol, fromChain, toChain} = data
                 return (
                   <div className="mt-3 flex items-center" key={index}>
-                    <Loading size="w-3 h-3" className="mr-1" />
+                    <Loading className="mr-1 !w-3 !h-3" />
                     <span className="text-gray-80 text-xs">
                       {type === 'shuttle' &&
                         `${tokenSymbol} From ${ChainConfig[fromChain].shortName} To ${ChainConfig[toChain].shortName}`}

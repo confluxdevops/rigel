@@ -1,5 +1,6 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  mode: 'jit',
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontSize: {
@@ -32,6 +33,8 @@ module.exports = {
       },
       backgroundImage: () => ({
         light: "url('/src/assets/svg/background.svg')",
+        metamask: "url('/src/assets/svg/metamask.svg')",
+        portal: "url('/src/assets/svg/portal.svg')",
       }),
       colors: {
         dark: '#373739',

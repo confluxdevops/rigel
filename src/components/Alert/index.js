@@ -54,7 +54,7 @@ function Alert({
 
   const closeIconComp = closeIcon
     ? React.cloneElement(closeIcon, {
-        className: `w-4 h-4 text-gray-40 ${closeIcon.props.className}`,
+        className: `w-4 h-4 text-gray-40 ${closeIcon.props.className || ''}`,
       })
     : null
 
