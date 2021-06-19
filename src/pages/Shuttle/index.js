@@ -10,6 +10,7 @@ import {
   DefaultToChain,
   SupportedChains,
   ChainConfig,
+  KeyOfCfx,
 } from '../../constants/chainConfig'
 import {useMapTokenList} from '../../hooks/useTokenList'
 import ConfirmModal from './ConfirmModal'
@@ -39,6 +40,7 @@ function Shuttle() {
   const [toChain, setToChain] = useState(DefaultToChain)
   const [fromTokenAddress, setFromTokenAddress] = useState('')
   const token = useToken(fromChain, fromTokenAddress)
+
   const {setFromBtcAddress} = useShuttleState()
   useEffectOnce(() =>
     setFromBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
@@ -46,36 +48,31 @@ function Shuttle() {
 
   //TODO: set default fromToken when the fromToken is not in tokenList
 
-  // useEffect(() => {
-  //   console.log('eeee')
-  //   const {fromToken,...others} = queryString.parse(location.search)
-
-  //   let nFromToken =fromToken
-  //   if(!token){
-  //     nFromToken=ChainConfig[fromChain]?.tokenName?.toLowerCase()
-  //   }
-  //   setFromToken(nFromToken)
-  //   const pathWithQuery = queryString.stringifyUrl({
-  //     url: location.pathname,
-  //     query: {
-  //       ...others,
-  //       fromToken:nFromToken
-  //     },
-  //   })
-  //   history.push(pathWithQuery)
-  // }, [fromChain, history, location.pathname, location.search, token]);
-
+  /**
+   * 1. The fromChain and toChain must be in the SupportChains list
+   * 2. The fromChain and toChain must be different, the one must be cfx chain , another one must be not cfx chain
+   */
   useEffect(() => {
     const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
       location.search,
     )
-    const nFromChain =
+    let nFromChain =
       SupportedChains.indexOf(fromChain) !== -1 ? fromChain : DefaultFromChain
-    const nToChain =
+    let nToChain =
       SupportedChains.indexOf(toChain) !== -1 ? toChain : DefaultToChain
+    if (fromChain === toChain && fromChain === KeyOfCfx) {
+      nFromChain = DefaultFromChain
+    }
+    if (fromChain === toChain && fromChain !== KeyOfCfx) {
+      nFromChain = KeyOfCfx
+    }
     let nFromTokenAddress = fromTokenAddress
     if (!fromTokenAddress) {
       nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
+    } else {
+      if (!token) {
+        nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
+      }
     }
     setFromChain(nFromChain)
     setToChain(nToChain)
@@ -91,7 +88,9 @@ function Shuttle() {
     })
     history.push(pathWithQuery)
     setPageType(PageType.shuttle)
-  }, [history, location.pathname, location.search])
+    // TODO:(discussion)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history, location.pathname, location.search, JSON.stringify(token)])
 
   return (
     <PageContext.Provider
