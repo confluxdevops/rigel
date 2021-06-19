@@ -22,3 +22,11 @@ export const IntervalTime = {
 }
 
 export const BigNumZero = new Big(0)
+
+export const ZeroAddrHex = '0x0000000000000000000000000000000000000000'
+
+export const TxReceiptModalType = {
+  ongoing: 'ongoing',
+  success: 'success',
+  error: 'error',
+}

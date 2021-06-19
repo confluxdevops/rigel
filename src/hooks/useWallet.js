@@ -59,23 +59,24 @@ export function useTokenContract(chain, tokenAddress) {
 export function useContractState(chain, tokenAddress, method, params) {
   const contract = useTokenContract(chain, tokenAddress)
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
-  let [data, setData] = useState(null)
-  // eslint-disable-next-line no-debugger
-
+  const [data, setData] = useState(null)
   useEffect(() => {
     if (isNativeToken) {
       setData(null)
     } else {
       contract &&
-        contract[method](params)
+        contract[method](...params)
           .then(res => {
             setData(res)
           })
-          .catch(() => {
+          .catch(error => {
+            console.log(error)
             setData(null)
           })
     }
-  }, [contract, method, params, isNativeToken])
+    //TODO: Array dependency always call?
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contract, method, `${params}`, isNativeToken])
   return data
 }
 
@@ -86,7 +87,8 @@ export function useTokenBalance(chain, tokenAddress, params) {
 }
 
 export function useTokenAllowance(chain, tokenAddress, params) {
-  return useContractState(chain, tokenAddress, 'allowance', params)
+  const allowance = useContractState(chain, tokenAddress, 'allowance', params)
+  return allowance
 }
 
 export function useNativeTokenBalance(chain, address) {

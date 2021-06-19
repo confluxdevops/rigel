@@ -1,5 +1,6 @@
 import {ChainConfig} from '../constants/chainConfig'
 import Big from 'big.js'
+import {BigNumber} from '@ethersproject/bignumber'
 import {BigNumZero} from '../constants'
 
 export const IS_DEV =
@@ -29,4 +30,11 @@ export const getMaxAmount = (chain, amount) => {
   } else {
     return BigNumZero
   }
+}
+
+// add 10%
+export function calculateGasMargin(value) {
+  return value
+    .mul(BigNumber.from(10000).add(BigNumber.from(1000)))
+    .div(BigNumber.from(10000))
 }

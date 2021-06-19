@@ -39,7 +39,7 @@ function ShuttleForm({fromChain, toChain, fromToken, tokenInfo = {}}) {
     fromChain,
     fromAddress,
     isCfxChain ? tokenInfo?.ctoken : tokenInfo?.reference,
-    fromAddress,
+    [fromAddress],
   )
   const {setPageType, setPageProps} = useContext(PageContext)
 
