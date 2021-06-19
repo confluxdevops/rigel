@@ -56,13 +56,17 @@ function Tag({
 
   const iconComp = icon
     ? React.cloneElement(icon, {
-        className: `mr-1 ${iconColor} ${iconSize} ${icon.props.className}`,
+        className: `mr-1 ${iconColor} ${iconSize} ${
+          icon.props.className || ''
+        }`,
       })
     : null
 
   const closeIconComp = closeIcon
     ? React.cloneElement(closeIcon, {
-        className: `${iconColor} ${iconSize} ${closeIcon.props.className}`,
+        className: `${iconColor} ${iconSize} ${
+          closeIcon.props.className || ''
+        }`,
       })
     : null
 

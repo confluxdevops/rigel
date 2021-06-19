@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {useLocation} from 'react-use'
 import {useTranslation} from 'react-i18next'
 import {Logo, DarkLogo, MobileLogo, DarkMobileLogo} from '../../../assets/svg'
-import {useIsMobie} from '../../../hooks'
+import {useIsMobile} from '../../../hooks'
 import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
@@ -11,7 +11,7 @@ import './header.css'
 function Header() {
   const {t} = useTranslation()
   const {pathname} = useLocation()
-  const isMobile = useIsMobie()
+  const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
 
   //TODO: remove mock data

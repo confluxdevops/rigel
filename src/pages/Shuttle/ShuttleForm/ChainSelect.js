@@ -74,7 +74,7 @@ function useChainsData(type, chain, fromChain) {
           let item = {}
           item.key = chain.key
           item.name = chain.fullName
-          item.icon = chain.icon('h-6 w-6')
+          item.icon = chain.icon('!h-6 !w-6')
           item.disabled = false
           if (chainName === chain) {
             item.selected = true
@@ -90,7 +90,7 @@ function useChainsData(type, chain, fromChain) {
           let item = {}
           item.key = chain.key
           item.name = chain.fullName
-          item.icon = chain.icon('h-6 w-6')
+          item.icon = chain.icon('!h-6 !w-6')
           if (fromChain !== KeyOfCfx) {
             if (chainName !== KeyOfCfx) {
               item.disabled = true

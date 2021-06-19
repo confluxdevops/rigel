@@ -9,16 +9,10 @@ import ConfirmInfo from './ConfirmInfo'
 import ConfirmTips from './ConfirmTips'
 import BtcConfirmTips from './BtcConfirmTips'
 
-function ConfirmModal({
-  open = false,
-  fromChain,
-  toChain,
-  fromTokenInfo,
-  value,
-}) {
+function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
   const {t} = useTranslation()
   const fromIsBtcChain = useIsBtcChain(fromChain)
-  const {symbol} = fromTokenInfo
+  const {symbol} = fromToken
   const content = (
     <div className="flex flex-col items-center">
       <span className="text-gray-100 text-xl">
@@ -28,12 +22,12 @@ function ConfirmModal({
       <span className="inline-block -mt-1 mb-4 text-gray-40">
         {t('transactionAmount')}
       </span>
-      <div className="px-6 md:px-0 w-full">
+      <div className="px-6 w-full">
         <SelectedChains fromChain={fromChain} toChain={toChain} />
         <ConfirmInfo
           fromChain={fromChain}
           toChain={toChain}
-          token={fromTokenInfo}
+          token={fromToken}
         />
       </div>
       {fromIsBtcChain && <BtcConfirmTips />}
@@ -42,12 +36,19 @@ function ConfirmModal({
       )}
     </div>
   )
-  return <Modal size="medium" open={open} content={content} className="pb-0" />
+  return (
+    <Modal
+      size="medium"
+      open={open}
+      content={content}
+      className="!pb-0 !px-0"
+    />
+  )
 }
 
 ConfirmModal.propTypes = {
   open: PropTypes.bool,
-  fromTokenInfo: PropTypes.object.isRequired,
+  fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,

@@ -16,7 +16,7 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
   const [open, setOpen] = useState(false)
   const {type, setType, tryActivate} = useWallet(chain)
   const walletConfig = WalletConfig[ChainConfig[chain]?.wallet]
-  const walletIcon = walletConfig.icon(className, 'w-3 h-3')
+  const walletIcon = walletConfig.icon(`${className} !w-3 !h-3`)
   const onConnect = () => {
     setOpen(true)
     if (type === TypeConnectWallet.loading) {

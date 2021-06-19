@@ -1,9 +1,9 @@
 function SvgSuccessOutlined(props) {
   return (
     <svg
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
+      width={52}
+      height={52}
+      viewBox="0 0 52 52"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}

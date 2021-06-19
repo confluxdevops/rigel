@@ -7,12 +7,12 @@ import Home from '../pages/Home'
 import TokenList from '../pages/Shuttle/TokenList'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
 import Example from './Example'
-import {useIsMobie} from '../hooks'
+import {useIsMobile} from '../hooks'
 import {useShuttleState} from '../state'
 
 function App() {
   const {setToBtcAddress} = useShuttleState()
-  const isMobile = useIsMobie()
+  const isMobile = useIsMobile()
 
   useEffectOnce(() => {
     setToBtcAddress('bc1qkuwf9ddw3hqyxsvz9v9zjef0qxq7s7zjvujhjl')

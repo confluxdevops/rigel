@@ -18,13 +18,13 @@ function MenuItem({
 
   const iconComp = icon
     ? React.cloneElement(icon, {
-        className: `mr-2 w-6 h-6 ${icon.props.className}`,
+        className: `mr-2 w-6 h-6 ${icon.props.className || ''}`,
       })
     : null
 
   const selectedIconComp = selectedIcon
     ? React.cloneElement(selectedIcon, {
-        className: `w-4 h-4 ${selectedIcon.props.className}`,
+        className: `w-4 h-4 ${selectedIcon.props.className || ''}`,
       })
     : null
 

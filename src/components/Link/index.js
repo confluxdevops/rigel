@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
 
 function CustomLink({
   onClick,
@@ -44,18 +43,23 @@ function CustomLink({
 
   const startIconComp = startIcon
     ? React.cloneElement(startIcon, {
-        className: `mr-2 ${iconColor} ${iconSize} ${startIcon.props.className}`,
+        className: `mr-2 ${iconColor} ${iconSize} ${
+          startIcon.props.className || ''
+        }`,
       })
     : null
 
   const endIconComp = endIcon
     ? React.cloneElement(endIcon, {
-        className: `ml-2 ${iconColor} ${iconSize} ${endIcon.props.className}`,
+        className: `ml-2 ${iconColor} ${iconSize} ${
+          endIcon.props.className || ''
+        }`,
       })
     : null
 
   return (
-    <Link
+    <a
+      aria-hidden="true"
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
@@ -65,7 +69,7 @@ function CustomLink({
       {startIconComp}
       {children}
       {endIconComp}
-    </Link>
+    </a>
   )
 }
 

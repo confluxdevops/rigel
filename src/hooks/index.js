@@ -13,7 +13,7 @@ export function useIsBtcChain(chain) {
   return isBtcChain
 }
 
-export function useIsMobie() {
+export function useIsMobile() {
   const {width} = useWindowSize()
   if (width < MobileBreakpoint) return true
   return false
