@@ -106,6 +106,7 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
   }
 
   function validateData(value) {
+    if (!fromAddress) return ''
     const val = Number(value)
     let error = ''
     if (!isNaN(val)) {
@@ -141,12 +142,12 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
   }, [balanceVal, fromChain, isNativeToken])
 
   useEffect(() => {
-    if (amountVal && !errorMsg) {
+    if (fromAddress && amountVal && !errorMsg) {
       setBtnDisabled(false)
     } else {
       setBtnDisabled(true)
     }
-  }, [amountVal, errorMsg])
+  }, [amountVal, errorMsg, fromAddress])
 
   return (
     <div className="flex flex-col mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl">
