@@ -1,7 +1,6 @@
 import {createContext, useState, useEffect} from 'react'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
-import {useEffectOnce} from 'react-use'
 
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
@@ -14,7 +13,6 @@ import {
 } from '../../constants/chainConfig'
 import {useMapTokenList} from '../../hooks/useTokenList'
 import ConfirmModal from './ConfirmModal'
-import {useShuttleState} from '../../state'
 
 export const PageType = {
   shuttle: 'shuttle',
@@ -40,11 +38,6 @@ function Shuttle() {
   const [toChain, setToChain] = useState(DefaultToChain)
   const [fromTokenAddress, setFromTokenAddress] = useState('')
   const token = useToken(fromChain, fromTokenAddress)
-
-  const {setFromBtcAddress} = useShuttleState()
-  useEffectOnce(() =>
-    setFromBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
-  )
 
   //TODO: set default fromToken when the fromToken is not in tokenList
 
