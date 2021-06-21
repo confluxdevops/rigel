@@ -9,6 +9,7 @@ import {
 } from '../../../constants/chainConfig'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
+import {TxReceiptModalType} from '../../../constants'
 
 function TransactionReceiptionModal({
   open,
@@ -23,6 +24,10 @@ function TransactionReceiptionModal({
   const {t} = useTranslation()
   const {addToken, success} = useAddTokenToMetamask(toToken)
   let content
+  const onAddToken = () => {
+    if (success) return
+    addToken()
+  }
   if (type === 'ongoing') {
     const token = fromToken && fromToken.symbol
     const chain = ChainConfig[toChain].fullName
@@ -53,14 +58,15 @@ function TransactionReceiptionModal({
         <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
           {t('viewOnScan')}
         </Link>
-        {ChainConfig[toChain].wallet === KeyOfMetaMask && (
+        {ChainConfig[fromChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
             fullWidth
             className="mt-4"
             endIcon={!success ? <MetamaskLogo alt="metamaskLogo" /> : null}
+            disabled={success}
             // TODO: deal with metamask is not installed
-            onClick={addToken}
+            onClick={onAddToken}
           >
             {success
               ? t('addedTokenToMetaMask', {
@@ -94,7 +100,7 @@ function TransactionReceiptionModal({
 
 TransactionReceiptionModal.propTypes = {
   open: PropTypes.bool,
-  type: PropTypes.oneOf(['ongoing', 'success', 'error']).isRequired,
+  type: PropTypes.oneOf(Object.values(TxReceiptModalType)).isRequired,
   toChain: PropTypes.oneOf(SupportedChains),
   fromChain: PropTypes.oneOf(SupportedChains),
   value: PropTypes.string,

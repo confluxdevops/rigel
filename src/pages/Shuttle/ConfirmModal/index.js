@@ -32,7 +32,12 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
       </div>
       {fromIsBtcChain && <BtcConfirmTips />}
       {!fromIsBtcChain && (
-        <ConfirmTips fromChain={fromChain} toChain={toChain} />
+        <ConfirmTips
+          fromChain={fromChain}
+          toChain={toChain}
+          fromToken={fromToken}
+          value={value}
+        />
       )}
     </div>
   )

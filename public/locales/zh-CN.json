@@ -24,6 +24,14 @@
   "all": "全部",
   "app": "应用",
   "connect": "连接",
+  "error": {
+    "inputValidAmount": "请输入数字",
+    "mustGtZero": "值必须大于0",
+    "mustLsMax": "值需要小于 {{value}}"
+  },
+  "balance": "余额",
+  "max": "最大",
+  "receiveAs": "Receive as",
   "fromChain": "From Chain",
   "toChain": "To Chain",
   "transactionAmount": "Transaction Amount",
