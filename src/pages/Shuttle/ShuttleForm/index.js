@@ -17,7 +17,6 @@ import {
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
-import {useIsCfxChain} from '../../../hooks'
 import {BgChange} from '../../../assets/svg'
 import {getMaxAmount} from '../../../utils'
 import {BigNumZero} from '../../../constants'
@@ -26,7 +25,8 @@ function ShuttleForm({
   fromChain,
   toChain,
   fromTokenAddress,
-  token = {},
+  fromToken,
+  toToken,
   onChooseToken,
   onNextClick,
   onChangeValue,
@@ -41,13 +41,8 @@ function ShuttleForm({
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
-  const isCfxChain = useIsCfxChain(fromChain)
-  const balance = useBalance(
-    fromChain,
-    fromAddress,
-    isCfxChain ? token?.ctoken : token?.reference,
-    [fromAddress],
-  )
+  const {address, decimal} = fromToken
+  const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
 
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
@@ -76,8 +71,7 @@ function ShuttleForm({
         ...others,
         fromChain: toChain,
         toChain: fromChain,
-        fromTokenAddress:
-          fromChain !== KeyOfCfx ? token?.ctoken : token?.reference,
+        fromTokenAddress: toToken?.address,
       },
     })
     history.push(pathWithQuery)
@@ -120,9 +114,9 @@ function ShuttleForm({
 
   useEffect(() => {
     if (fromAddress) {
-      setBalanceVal(convertDecimal(balance, undefined, token?.decimal))
+      setBalanceVal(convertDecimal(balance, undefined, decimal))
     }
-  }, [balance, fromAddress, token?.decimal])
+  }, [balance, fromAddress, decimal])
 
   useEffect(() => {
     const maxAmount = isNativeToken
@@ -152,7 +146,7 @@ function ShuttleForm({
         <div className="flex-1 border-2 border-gray-10 rounded p-2">
           <div className="flex flex-1 justify-between">
             <TokenSelect
-              token={token}
+              token={fromToken}
               type="from"
               chain={fromChain}
               onClick={() => onChooseToken && onChooseToken()}
@@ -201,7 +195,11 @@ function ShuttleForm({
             <AccountStatus chain={toChain} size="medium"></AccountStatus>
           </div>
           <div className="flex">
-            <TokenSelect token={token} type="to" chain={toChain}></TokenSelect>
+            <TokenSelect
+              token={toToken}
+              type="to"
+              chain={toChain}
+            ></TokenSelect>
           </div>
         </div>
       </div>
@@ -221,7 +219,8 @@ ShuttleForm.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromTokenAddress: PropTypes.string,
-  token: PropTypes.object,
+  fromToken: PropTypes.object,
+  toToken: PropTypes.object,
   onChooseToken: PropTypes.func,
   onNextClick: PropTypes.func,
   onChangeValue: PropTypes.func,

@@ -3,7 +3,7 @@ import {useEffectOnce} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 
-import {useToken} from '../../hooks/useTokenList'
+import {useFromToken, useToToken} from '../../hooks/useTokenList'
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
 import {
@@ -12,28 +12,30 @@ import {
   SupportedChains,
   ChainConfig,
 } from '../../constants/chainConfig'
+import {TxReceiptModalType} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import {useShuttleState} from '../../state'
+import {TransactionReceiptionModal} from '../components'
 
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const [showTokenList, setShowTokenList] = useState(false)
-  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [tokenListShow, setTokenListShow] = useState(false)
+  const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [value, setValue] = useState('')
-  const [fromChain, setFromChain] = useState(DefaultFromChain)
-  const [toChain, setToChain] = useState(DefaultToChain)
-  const [fromTokenAddress, setFromTokenAddress] = useState('')
-  // const [txModalShown, setTxModalShown] = useState(false)
-  // const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
-  // const [txHash, setTxHash] = useState('')
-  const token = useToken(fromChain, fromTokenAddress)
+  const [txModalShow, setTxModalShow] = useState(false)
+  const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
+  const [txHash, setTxHash] = useState('')
+  const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
+    location.search,
+  )
+  const fromToken = useFromToken(fromChain, fromTokenAddress)
+  const toToken = useToToken(toChain, fromTokenAddress)
 
   const {setFromBtcAddress} = useShuttleState()
   useEffectOnce(() =>
     setFromBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
   )
-
   //TODO: set default fromToken when the fromToken is not in tokenList
 
   /**
@@ -41,9 +43,6 @@ function Shuttle() {
    * 2. The fromChain and toChain must be different, the one must be cfx chain , another one must be not cfx chain
    */
   useEffectOnce(() => {
-    const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
-      location.search,
-    )
     let nFromChain =
       SupportedChains.indexOf(fromChain) !== -1 ? fromChain : DefaultFromChain
     let nToChain =
@@ -53,12 +52,9 @@ function Shuttle() {
       nToChain = DefaultToChain
     }
     let nFromTokenAddress = fromTokenAddress
-    if (!fromTokenAddress || !token) {
-      nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
+    if (!fromTokenAddress || Object.keys(fromToken).length === 0) {
+      nFromTokenAddress = ChainConfig[nFromChain]?.tokenName?.toLowerCase()
     }
-    setFromChain(nFromChain)
-    setToChain(nToChain)
-    setFromTokenAddress(nFromTokenAddress)
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
@@ -71,39 +67,51 @@ function Shuttle() {
     history.push(pathWithQuery)
   })
 
+  if (!fromChain) return null
   return (
     <div className="flex justify-center px-3 md:px-0">
-      {!showTokenList && (
+      {!tokenListShow && (
         <ShuttleForm
           fromChain={fromChain}
           toChain={toChain}
           fromTokenAddress={fromTokenAddress}
-          token={token}
-          onChooseToken={() => setShowTokenList(true)}
-          onNextClick={() => setShowConfirmModal(true)}
+          fromToken={fromToken}
+          toToken={toToken}
+          onChooseToken={() => setTokenListShow(true)}
+          onNextClick={() => setConfirmModalShow(true)}
           onChangeValue={value => setValue(value)}
           value={value}
         />
       )}
-      {showTokenList && <TokenList chain={fromChain} selectedToken={token} />}
-      <ConfirmModal
-        open={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        fromChain={fromChain}
-        toChain={toChain}
-        value={value}
-        fromToken={token}
-      />
-      {/* {txModalShown &&     <TransactionReceiptionModal
-        type={txModalType}
-        open={txModalShown}
-        fromChain={fromChain}
-        toChain={toChain}
-        fromToken={token}
-        toToken={}
-        value={value}
-        txHash={txHash}
-      />} */}
+      {tokenListShow && (
+        <TokenList chain={fromChain} selectedToken={fromToken} />
+      )}
+      {confirmModalShow && (
+        <ConfirmModal
+          open={confirmModalShow}
+          onClose={() => setConfirmModalShow(false)}
+          fromChain={fromChain}
+          toChain={toChain}
+          value={value}
+          fromToken={fromToken}
+          setTxModalType={setTxModalType}
+          setTxModalShow={setTxModalShow}
+          setTxHash={setTxHash}
+        />
+      )}
+      {txModalShow && (
+        <TransactionReceiptionModal
+          type={txModalType}
+          open={txModalShow}
+          fromChain={fromChain}
+          toChain={toChain}
+          fromToken={fromToken}
+          toToken={toToken}
+          value={value}
+          txHash={txHash}
+          onClose={() => setTxModalShow(false)}
+        />
+      )}
     </div>
   )
 }

@@ -21,7 +21,6 @@ import {
 import {useContract, useTokenContract} from '../../../../hooks/useWeb3Network'
 import DEPOSIT_RELAYER_ABI from '../../../../abi/depositRelayerABI.json'
 import {calculateGasMargin} from '../../../../utils'
-import {TransactionReceiptionModal} from '../../../components'
 
 function ShuttleInButton({
   fromChain,
@@ -30,16 +29,16 @@ function ShuttleInButton({
   value,
   onClose,
   disabled,
+  setTxModalType,
+  setTxModalShow,
+  setTxHash,
 }) {
   const drContractAddress =
     ChainConfig[fromChain].contractAddress?.depositRelayer
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
-  const [txModalShown, setTxModalShown] = useState(false)
   const [didMount, setDidMount] = useState(false)
-  const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
-  const [txHash, setTxHash] = useState('')
   const {address, decimals, symbol} = fromToken
   const {address: fromAccountAddress} = useWallet(fromChain)
   const {address: toAccountAddress} = useWallet(toChain)
@@ -125,7 +124,7 @@ function ShuttleInButton({
         params[1],
         params[2],
       )
-      setTxModalShown(true)
+      setTxModalShow(true)
       drContract
         .deposit(params[0], params[1], {
           ...params[2],
@@ -155,7 +154,7 @@ function ShuttleInButton({
         params[3],
         params[4],
       )
-      setTxModalShown(true)
+      setTxModalShow(true)
       drContract
         .depositToken(params[0], params[1], params[2], params[3], {
           ...params[4],
@@ -189,16 +188,6 @@ function ShuttleInButton({
           {t('send')}
         </Button>
       )}
-      <TransactionReceiptionModal
-        type={txModalType}
-        open={txModalShown}
-        fromChain={fromChain}
-        toChain={toChain}
-        fromToken={fromToken}
-        toToken={fromToken}
-        value={value}
-        txHash={txHash}
-      />
     </>
   )
 }
@@ -210,5 +199,8 @@ ShuttleInButton.propTypes = {
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
   disabled: PropTypes.bool,
+  setTxModalType: PropTypes.func,
+  setTxHash: PropTypes.func,
+  setTxModalShow: PropTypes.func,
 }
 export default ShuttleInButton

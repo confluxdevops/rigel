@@ -16,6 +16,7 @@ function ConfirmModal({
   fromToken,
   value,
   onClose,
+  ...props
 }) {
   const {t} = useTranslation()
   const fromIsBtcChain = useIsBtcChain(fromChain)
@@ -34,7 +35,7 @@ function ConfirmModal({
         <ConfirmInfo
           fromChain={fromChain}
           toChain={toChain}
-          token={fromToken}
+          fromToken={fromToken}
         />
       </div>
       {fromIsBtcChain && <BtcConfirmTips />}
@@ -45,6 +46,7 @@ function ConfirmModal({
           fromToken={fromToken}
           value={value}
           onClose={onClose}
+          {...props}
         />
       )}
     </div>

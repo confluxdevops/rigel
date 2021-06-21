@@ -20,6 +20,7 @@ function TransactionReceiptionModal({
   fromToken,
   toToken,
   txHash,
+  onClose,
 }) {
   const {t} = useTranslation()
   const {addToken, success} = useAddTokenToMetamask(toToken)
@@ -50,6 +51,7 @@ function TransactionReceiptionModal({
         title={t('waiting')}
         content={content}
         className="!pb-0 !px-0"
+        onClose={onClose}
       />
     )
   } else if (type === 'success') {
@@ -58,7 +60,7 @@ function TransactionReceiptionModal({
         <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
           {t('viewOnScan')}
         </Link>
-        {ChainConfig[fromChain].wallet === KeyOfMetaMask && (
+        {ChainConfig[toChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
             fullWidth
@@ -85,6 +87,7 @@ function TransactionReceiptionModal({
         title={t('submitted')}
         icon={<SuccessOutlined />}
         content={content}
+        onClose={onClose}
       />
     )
   } else if (type === 'error') {
@@ -93,9 +96,15 @@ function TransactionReceiptionModal({
         {t('rejected')}
       </div>
     )
-    return <Modal open={open} icon={<ErrorOutlined />} content={content} />
+    return (
+      <Modal
+        open={open}
+        icon={<ErrorOutlined />}
+        content={content}
+        onClose={onClose}
+      />
+    )
   }
-  return <div>TransactionReceiptionModal</div>
 }
 
 TransactionReceiptionModal.propTypes = {

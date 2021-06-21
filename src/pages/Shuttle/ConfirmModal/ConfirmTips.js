@@ -6,7 +6,7 @@ import {Checkbox} from '../../../components'
 import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
 import {ShuttleInButton} from './ShuttleButton'
 
-function ConfirmTips({fromChain, toChain, fromToken, value, onClose}) {
+function ConfirmTips({fromChain, toChain, ...props}) {
   const [checked, setChecked] = useState(false)
   const {t} = useTranslation()
   const isBtcChain = useIsBtcChain(toChain)
@@ -47,10 +47,8 @@ function ConfirmTips({fromChain, toChain, fromToken, value, onClose}) {
       <BtnComp
         fromChain={fromChain}
         toChain={toChain}
-        fromToken={fromToken}
-        value={value}
-        onClose={onClose}
         disabled={!checked}
+        {...props}
       />
     </div>
   )
@@ -59,9 +57,6 @@ function ConfirmTips({fromChain, toChain, fromToken, value, onClose}) {
 ConfirmTips.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromToken: PropTypes.object.isRequired,
-  value: PropTypes.string.isRequired,
-  onClose: PropTypes.func,
 }
 
 export default ConfirmTips
