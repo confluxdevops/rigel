@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
 import PropTypes from 'prop-types'
-import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
+import {SupportedChains} from '../../../constants/chainConfig'
 import {useWallet} from '../../../hooks/useWallet'
 import {Account, ConnectWallet} from '../index'
 
@@ -15,7 +15,7 @@ function AccountStatus({chain, className, size = 'medium'}) {
     if (size === 'medium') return 'mr-1.5 !w-3 !h-3'
     if (size === 'large') return 'mr-2 !w-4 !h-4'
   }, [size])
-  if (!ChainConfig[chain].wallet) return null
+
   return (
     <div className={`${className}`}>
       {address ? (

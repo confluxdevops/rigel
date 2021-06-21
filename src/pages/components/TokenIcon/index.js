@@ -22,15 +22,13 @@ function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
     if (size === 'small') return '!w-2 !h-2'
   }, [size])
 
-  if (!icon) return null
-
   return (
     <div className={`${iconSize} relative`}>
       <img src={icon} alt="token icon" />
       {supported !== 1 && showAlarm && (
         <TokenAlert className="absolute -left-1 -top-1 w-4 h-4" />
       )}
-      {subscriptShown && (
+      {subscriptShown && origin && (
         <span className="absolute -right-0.5 -bottom-0.5">
           <ChainIcon chain={origin} className={`${subscriptSize}`} />
         </span>
