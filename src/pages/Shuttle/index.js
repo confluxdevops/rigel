@@ -1,8 +1,9 @@
-import {createContext, useState, useEffect} from 'react'
+import {useState} from 'react'
+import {useEffectOnce} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
-import {useEffectOnce} from 'react-use'
 
+import {useToken} from '../../hooks/useTokenList'
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
 import {
@@ -10,35 +11,22 @@ import {
   DefaultToChain,
   SupportedChains,
   ChainConfig,
-  KeyOfCfx,
 } from '../../constants/chainConfig'
-import {useMapTokenList} from '../../hooks/useTokenList'
 import ConfirmModal from './ConfirmModal'
 import {useShuttleState} from '../../state'
-
-export const PageType = {
-  shuttle: 'shuttle',
-  tokenList: 'tokenList',
-  confirmModal: 'confirmModal',
-}
-
-export const PageContext = createContext({type: PageType.shuttle})
-
-export function useToken(fromChain, fromTokenAddress) {
-  const tokenList = useMapTokenList(fromChain)
-  const data =
-    tokenList.filter(token => token.address === fromTokenAddress) || []
-  return data && data[0]
-}
 
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const [pageType, setPageType] = useState('shuttleform')
-  const [pageProps, setPageProps] = useState({})
+  const [showTokenList, setShowTokenList] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [value, setValue] = useState('')
   const [fromChain, setFromChain] = useState(DefaultFromChain)
   const [toChain, setToChain] = useState(DefaultToChain)
   const [fromTokenAddress, setFromTokenAddress] = useState('')
+  // const [txModalShown, setTxModalShown] = useState(false)
+  // const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
+  // const [txHash, setTxHash] = useState('')
   const token = useToken(fromChain, fromTokenAddress)
 
   const {setFromBtcAddress} = useShuttleState()
@@ -52,7 +40,7 @@ function Shuttle() {
    * 1. The fromChain and toChain must be in the SupportChains list
    * 2. The fromChain and toChain must be different, the one must be cfx chain , another one must be not cfx chain
    */
-  useEffect(() => {
+  useEffectOnce(() => {
     const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
       location.search,
     )
@@ -60,19 +48,13 @@ function Shuttle() {
       SupportedChains.indexOf(fromChain) !== -1 ? fromChain : DefaultFromChain
     let nToChain =
       SupportedChains.indexOf(toChain) !== -1 ? toChain : DefaultToChain
-    if (fromChain === toChain && fromChain === KeyOfCfx) {
+    if (fromChain === toChain) {
       nFromChain = DefaultFromChain
-    }
-    if (fromChain === toChain && fromChain !== KeyOfCfx) {
-      nFromChain = KeyOfCfx
+      nToChain = DefaultToChain
     }
     let nFromTokenAddress = fromTokenAddress
-    if (!fromTokenAddress) {
+    if (!fromTokenAddress || !token) {
       nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
-    } else {
-      if (!token) {
-        nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
-      }
     }
     setFromChain(nFromChain)
     setToChain(nToChain)
@@ -87,39 +69,42 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
-    setPageType(PageType.shuttle)
-    // TODO:(discussion)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history, location.pathname, location.search, JSON.stringify(token)])
+  })
 
   return (
-    <PageContext.Provider
-      value={{type: pageType, setPageType, pageProps, setPageProps}}
-    >
-      <div className="flex justify-center px-3 md:px-0">
-        {pageType === PageType.shuttle && (
-          <ShuttleForm
-            fromChain={fromChain}
-            toChain={toChain}
-            fromTokenAddress={fromTokenAddress}
-            token={token}
-          />
-        )}
-        {pageType === PageType.tokenList && (
-          <TokenList
-            chain={pageProps && pageProps.chain}
-            selectedToken={(pageProps && pageProps.selectedToken) || {}}
-          />
-        )}
-      </div>
+    <div className="flex justify-center px-3 md:px-0">
+      {!showTokenList && (
+        <ShuttleForm
+          fromChain={fromChain}
+          toChain={toChain}
+          fromTokenAddress={fromTokenAddress}
+          token={token}
+          onChooseToken={() => setShowTokenList(true)}
+          onNextClick={() => setShowConfirmModal(true)}
+          onChangeValue={value => setValue(value)}
+          value={value}
+        />
+      )}
+      {showTokenList && <TokenList chain={fromChain} selectedToken={token} />}
       <ConfirmModal
-        open={pageType === PageType.confirmModal}
-        fromChain={pageProps.fromChain}
-        toChain={pageProps.toChain}
-        value={pageProps.value}
-        fromToken={pageProps.fromToken || {}}
+        open={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        fromChain={fromChain}
+        toChain={toChain}
+        value={value}
+        fromToken={token}
       />
-    </PageContext.Provider>
+      {/* {txModalShown &&     <TransactionReceiptionModal
+        type={txModalType}
+        open={txModalShown}
+        fromChain={fromChain}
+        toChain={toChain}
+        fromToken={token}
+        toToken={}
+        value={value}
+        txHash={txHash}
+      />} */}
+    </div>
   )
 }
 

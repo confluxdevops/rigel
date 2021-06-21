@@ -9,7 +9,14 @@ import ConfirmInfo from './ConfirmInfo'
 import ConfirmTips from './ConfirmTips'
 import BtcConfirmTips from './BtcConfirmTips'
 
-function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
+function ConfirmModal({
+  open = false,
+  fromChain,
+  toChain,
+  fromToken,
+  value,
+  onClose,
+}) {
   const {t} = useTranslation()
   const fromIsBtcChain = useIsBtcChain(fromChain)
   const {symbol} = fromToken
@@ -37,6 +44,7 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
           toChain={toChain}
           fromToken={fromToken}
           value={value}
+          onClose={onClose}
         />
       )}
     </div>
@@ -46,6 +54,7 @@ function ConfirmModal({open = false, fromChain, toChain, fromToken, value}) {
       size="medium"
       open={open}
       content={content}
+      onClose={onClose}
       className="!pb-0 !px-0"
     />
   )
@@ -57,6 +66,7 @@ ConfirmModal.propTypes = {
   value: PropTypes.string.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
+  onClose: PropTypes.func,
 }
 
 export default ConfirmModal

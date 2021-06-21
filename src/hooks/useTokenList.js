@@ -129,3 +129,9 @@ export function useTokenPair({origin, toChain, token}) {
       (obj?.reference === token || obj?.ctoken === token),
   )
 }
+
+export function useToken(chain, tokenAddress) {
+  const tokenList = useMapTokenList(chain)
+  const data = tokenList.filter(token => token.address === tokenAddress) || []
+  return (data && data[0]) || {}
+}

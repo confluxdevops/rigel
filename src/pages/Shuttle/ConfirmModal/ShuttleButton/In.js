@@ -23,13 +23,21 @@ import DEPOSIT_RELAYER_ABI from '../../../../abi/depositRelayerABI.json'
 import {calculateGasMargin} from '../../../../utils'
 import {TransactionReceiptionModal} from '../../../components'
 
-function ShuttleInButton({fromChain, toChain, fromToken, value}) {
+function ShuttleInButton({
+  fromChain,
+  toChain,
+  fromToken,
+  value,
+  onClose,
+  disabled,
+}) {
   const drContractAddress =
     ChainConfig[fromChain].contractAddress?.depositRelayer
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [txModalShown, setTxModalShown] = useState(false)
+  const [didMount, setDidMount] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
   const [txHash, setTxHash] = useState('')
   const {address, decimals, symbol} = fromToken
@@ -43,6 +51,7 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
     drContractAddress,
   ])
   useEffect(() => {
+    setDidMount(true)
     if (!isNativeToken) {
       if (
         new Big(tokenAllownace ? tokenAllownace.toString(10) : 0).lt(
@@ -53,6 +62,9 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
       } else {
         setApproveShown(false)
       }
+    }
+    return () => {
+      setDidMount(false)
     }
   }, [decimals, tokenAllownace, value, isNativeToken])
 
@@ -157,17 +169,23 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
           setTxModalType(TxReceiptModalType.error)
         })
     }
+    onClose && onClose()
   }
+
+  if (!didMount) {
+    return null
+  }
+
   return (
     <>
       {approveShown && (
-        <Button onClick={onApprove}>
+        <Button onClick={onApprove} disabled={disabled}>
           {isApproving && <Loading size="w-6 h-6" />}
           {!isApproving && t('approve', {token: symbol})}
         </Button>
       )}
       {!approveShown && (
-        <Button startIcon={<Send />} onClick={onSubmit}>
+        <Button startIcon={<Send />} onClick={onSubmit} disabled={disabled}>
           {t('send')}
         </Button>
       )}
@@ -190,5 +208,7 @@ ShuttleInButton.propTypes = {
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
+  onClose: PropTypes.func,
+  disabled: PropTypes.bool,
 }
 export default ShuttleInButton

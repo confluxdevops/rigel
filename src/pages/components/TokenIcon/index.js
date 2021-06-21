@@ -22,6 +22,8 @@ function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
     if (size === 'small') return '!w-2 !h-2'
   }, [size])
 
+  if (!icon) return null
+
   return (
     <div className={`${iconSize} relative`}>
       <img src={icon} alt="token icon" />

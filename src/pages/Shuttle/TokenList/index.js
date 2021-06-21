@@ -9,7 +9,7 @@ import CommonTokens from './CommonTokens'
 import TokenItem from './TokenItem'
 import {useHistory, useLocation} from 'react-router-dom'
 
-function TokenList({chain, selectedToken = {}}) {
+function TokenList({chain, selectedToken}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
@@ -55,7 +55,7 @@ function TokenList({chain, selectedToken = {}}) {
 
 TokenList.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
-  selectedToken: PropTypes.object.isRequired,
+  selectedToken: PropTypes.object,
 }
 
 export default TokenList
