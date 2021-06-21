@@ -4,15 +4,15 @@ import {useTranslation, Trans} from 'react-i18next'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 import {Checkbox} from '../../../components'
 import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
-import {ShuttleInButton} from './ShuttleButton'
+import {ShuttleInButton, ShuttleOutButton} from './ShuttleButton'
 
 function ConfirmTips({fromChain, toChain, fromToken, value}) {
   const [checked, setChecked] = useState(false)
   const {t} = useTranslation()
   const isBtcChain = useIsBtcChain(toChain)
   const isCfxChain = useIsCfxChain(toChain)
-  //TODO: add shuttleOut
-  let BtnComp = isCfxChain ? ShuttleInButton : ShuttleInButton
+  //TODO: add shuttleOut function
+  let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
 
   return (
     <div className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs">

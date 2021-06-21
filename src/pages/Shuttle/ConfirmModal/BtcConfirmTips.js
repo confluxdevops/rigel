@@ -10,7 +10,6 @@ function BtcConfirmTips() {
   const {t} = useTranslation()
   const {fromBtcAddress} = useShuttleState()
   const [copied, setCopied] = useState(false)
-
   return (
     <div className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs relative">
       <span>{t('tips.btcWalletTip')}</span>
@@ -28,7 +27,7 @@ function BtcConfirmTips() {
               </span>
             </div>
             <CopyToClipboard
-              value={fromBtcAddress}
+              text={fromBtcAddress}
               onCopy={() => setCopied(true)}
             >
               <CopyIcon className="text-gray-40 w-4 h-4 flex-shrink-0 cursor-pointer" />
