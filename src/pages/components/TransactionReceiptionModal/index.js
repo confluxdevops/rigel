@@ -36,7 +36,7 @@ function TransactionReceiptionModal({
         <span>
           <Trans i18nKey="shuttleInfo" values={{value, token, chain}} />
         </span>
-        <div className="bg-warning-10 text-warning-dark w-full p-4 mt-4 text-center">
+        <div className="bg-warning-10 text-warning-dark w-full px-6 pt-3 pb-6 mt-4 text-center">
           {t('confirm', {
             wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
           })}
