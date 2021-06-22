@@ -15,7 +15,7 @@ function CommonToken({token, selectedToken, onClick}) {
   return (
     <div
       className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer ${getSelectedStyle()}`}
-      onClick={onClick && onClick(token)}
+      onClick={() => onClick && onClick(token)}
       aria-hidden="true"
     >
       {symbol}
@@ -41,7 +41,7 @@ function CommonTokens({chain, selectedToken, onSelect}) {
             return (
               <CommonToken
                 key={index}
-                onClick={onSelect && onSelect(token)}
+                onClick={onSelect}
                 token={token}
                 selectedToken={selectedToken}
               />

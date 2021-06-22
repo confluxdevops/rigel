@@ -21,9 +21,9 @@ function App() {
   return (
     <Suspense fallback={null}>
       <Router>
-        <div className="flex flex-col h-full relative">
+        <div className="flex flex-col h-full relative overflow-y-hidden">
           <Header />
-          <div className="container mx-auto flex-grow justify-center md:pb-6">
+          <div className="container mx-auto flex flex-1 justify-center md:pb-6">
             <Web3ReactManager>
               <Switch>
                 <Route path="/shuttle">

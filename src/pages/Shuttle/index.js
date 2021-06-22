@@ -11,6 +11,7 @@ import {
   DefaultToChain,
   SupportedChains,
   ChainConfig,
+  KeyOfCfx,
 } from '../../constants/chainConfig'
 import {TxReceiptModalType} from '../../constants'
 import ConfirmModal from './ConfirmModal'
@@ -33,6 +34,7 @@ function Shuttle() {
   const toToken = useToToken(toChain, fromTokenAddress)
 
   const {setFromBtcAddress} = useShuttleState()
+
   useEffectOnce(() =>
     setFromBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
   )
@@ -66,6 +68,55 @@ function Shuttle() {
     history.push(pathWithQuery)
   })
 
+  const onSelectToken = token => {
+    setTokenListShow(false)
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain,
+        toChain,
+        fromTokenAddress: token.address,
+      },
+    })
+    history.push(pathWithQuery)
+  }
+
+  const onChainChange = (chain, type) => {
+    if (type === 'from' && chain === toChain) {
+      onInvertChain()
+      return
+    }
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain: type === 'from' ? chain : fromChain,
+        toChain:
+          type === 'to' ? chain : chain !== KeyOfCfx ? KeyOfCfx : toChain,
+        fromTokenAddress:
+          type === 'from'
+            ? ChainConfig[chain]?.tokenName?.toLowerCase()
+            : fromTokenAddress,
+      },
+    })
+    history.push(pathWithQuery)
+  }
+
+  const onInvertChain = () => {
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain: toChain,
+        toChain: fromChain,
+        fromTokenAddress: toToken?.address,
+      },
+    })
+    history.push(pathWithQuery)
+    setValue('')
+  }
+
   if (!fromChain) return null
   return (
     <div className="flex justify-center px-3 md:px-0">
@@ -80,10 +131,17 @@ function Shuttle() {
           onNextClick={() => setConfirmModalShow(true)}
           onChangeValue={value => setValue(value)}
           value={value}
+          onChainChange={onChainChange}
+          onInvertChain={onInvertChain}
         />
       )}
       {tokenListShow && (
-        <TokenList chain={fromChain} selectedToken={fromToken} />
+        <TokenList
+          chain={fromChain}
+          selectedToken={fromToken}
+          onSelectToken={onSelectToken}
+          onBack={() => setTokenListShow(false)}
+        />
       )}
       {confirmModalShow && (
         <ConfirmModal
