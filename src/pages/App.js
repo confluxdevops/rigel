@@ -16,7 +16,7 @@ function App() {
       <Router>
         <div className="flex flex-col h-full relative overflow-y-hidden">
           <Header />
-          <div className="container mx-auto flex flex-1 justify-center md:pb-6">
+          <div className="container mx-auto flex flex-1 justify-center md:pb-6 h-0">
             <Web3ReactManager>
               <Switch>
                 <Route path="/shuttle">
