@@ -6,6 +6,7 @@ import {TokenIcon} from '../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
 
 function TokenSelect({token, onClick, type, chain}) {
+  const {symbol} = token
   const style = useMemo(() => {
     if (type === 'from') return 'text-gray-100'
     if (type === 'to') return 'text-gray-40'
@@ -20,7 +21,7 @@ function TokenSelect({token, onClick, type, chain}) {
       aria-hidden="true"
     >
       <TokenIcon token={token} chain={chain} size="small" />
-      <span className={`ml-1 ${style}`}>{token && token.symbol}</span>
+      <span className={`ml-1 ${style}`}>{symbol}</span>
       {type === 'from' && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />

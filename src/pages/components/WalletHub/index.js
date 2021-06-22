@@ -28,7 +28,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
   const length = connectedData.length
   const onVisibleChange = visible => {
     if (visible) setArrow('top')
-    if (arrow === 'top') setArrow('down')
+    if (!visible) setArrow('down')
   }
   let children
   if (length === 0) {
@@ -78,6 +78,10 @@ function WalletHub({connectData, pendingTransactions = []}) {
       trigger={['click']}
       overlay={
         <Popup
+          onClickHandler={() => {
+            if (arrow === 'down') setArrow('up')
+            if (arrow === 'top') setArrow('down')
+          }}
           connectData={connectData}
           pendingTransactions={pendingTransactions}
         />
@@ -96,7 +100,7 @@ WalletHub.propTypes = {
 
 export default WalletHub
 
-const Popup = ({onClick, connectData, pendingTransactions}) => {
+const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
   const {t} = useTranslation()
   const metamaskData = connectData.filter(
     data => ChainConfig[data.chain].wallet === KeyOfMetaMask,
@@ -120,7 +124,10 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
           <span className="text-gray-40 text-xs">{t('accounts')}</span>
           <Close
             className="w-4 h-4 text-gray-40"
-            onClick={() => onClick & onClick()}
+            onClick={() => {
+              onClick & onClick()
+              onClickHandler && onClickHandler()
+            }}
           />
         </div>
         <div className="pt-3 flex flex-col">
@@ -149,7 +156,7 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
                 const {type, tokenSymbol, fromChain, toChain} = data
                 return (
                   <div className="mt-3 flex items-center" key={index}>
-                    <Loading size="w-3 h-3" className="mr-1" />
+                    <Loading className="mr-1 !w-3 !h-3" />
                     <span className="text-gray-80 text-xs">
                       {type === 'shuttle' &&
                         `${tokenSymbol} From ${ChainConfig[fromChain].shortName} To ${ChainConfig[toChain].shortName}`}
@@ -166,6 +173,7 @@ const Popup = ({onClick, connectData, pendingTransactions}) => {
 
 Popup.propTypes = {
   onClick: PropTypes.func,
+  onClickHandler: PropTypes.func,
   connectData: PropTypes.array.isRequired,
   pendingTransactions: PropTypes.array,
 }

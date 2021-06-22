@@ -24,6 +24,15 @@
   "all": "全部",
   "app": "应用",
   "connect": "连接",
+  "error": {
+    "inputValidAmount": "请输入数字",
+    "mustGtZero": "值必须大于0",
+    "mustLsMax": "值需要小于 {{value}}",
+    "addressInvalid": "Address is invalid"
+  },
+  "balance": "余额",
+  "max": "最大",
+  "receiveAs": "Receive as",
   "fromChain": "From Chain",
   "toChain": "To Chain",
   "transactionAmount": "Transaction Amount",
@@ -50,4 +59,8 @@
     "ShuttleFlow": "ShuttleFlow App",
     "LightPaper": "LightPaper"
   }
+  "pleaseWait": "Please Wait Patiently",
+  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+  "copiedSuccess": "Copied success!",
+  "notice": "Notice"
 }

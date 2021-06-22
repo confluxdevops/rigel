@@ -88,9 +88,8 @@ function ConnectWalletModal({open = false, type, chain, onClose}) {
         }
       />
     )
-  } else {
-    return null
   }
+  return null
 }
 
 ConnectWalletModal.propTypes = {

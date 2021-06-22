@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
-import {Modal, Loading, Button} from '../../../components'
+import {Modal, Loading, Button, Link} from '../../../components'
 import {
   SupportedChains,
   ChainConfig,
@@ -9,6 +9,7 @@ import {
 } from '../../../constants/chainConfig'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
+import {TxReceiptModalType} from '../../../constants'
 
 function TransactionReceiptionModal({
   open,
@@ -16,22 +17,27 @@ function TransactionReceiptionModal({
   toChain,
   fromChain,
   value,
-  fromTokenInfo,
-  toTokenInfo,
+  fromToken,
+  toToken,
   txHash,
+  onClose,
 }) {
   const {t} = useTranslation()
-  const {addToken, success} = useAddTokenToMetamask(toTokenInfo)
+  const {addToken, success} = useAddTokenToMetamask(toToken)
   let content
+  const onAddToken = () => {
+    if (success) return
+    addToken()
+  }
   if (type === 'ongoing') {
-    const token = fromTokenInfo && fromTokenInfo.symbol
+    const token = fromToken && fromToken.symbol
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
         <span>
           <Trans i18nKey="shuttleInfo" values={{value, token, chain}} />
         </span>
-        <div className="bg-warning-10 text-warning-dark px-8 py-3 mt-3 text-center">
+        <div className="bg-warning-10 text-warning-dark w-full px-6 pt-3 pb-6 mt-4 text-center">
           {t('confirm', {
             wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
           })}
@@ -44,34 +50,32 @@ function TransactionReceiptionModal({
         icon={<Loading />}
         title={t('waiting')}
         content={content}
+        className="!pb-0 !px-0"
+        onClose={onClose}
       />
     )
   } else if (type === 'success') {
     content = (
       <div className="flex flex-1 flex-col items-center">
-        <a
-          className="text-primary text-xs font-medium no-underline"
-          href={ChainConfig[fromChain].scanTxUrl + txHash}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
           {t('viewOnScan')}
-        </a>
+        </Link>
         {ChainConfig[toChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
             fullWidth
             className="mt-4"
             endIcon={!success ? <MetamaskLogo alt="metamaskLogo" /> : null}
+            disabled={success}
             // TODO: deal with metamask is not installed
-            onClick={addToken}
+            onClick={onAddToken}
           >
             {success
               ? t('addedTokenToMetaMask', {
-                  token: toTokenInfo && toTokenInfo.symbol,
+                  token: toToken && toToken.symbol,
                 })
               : t('addTokenToMetaMask', {
-                  token: toTokenInfo && toTokenInfo.symbol,
+                  token: toToken && toToken.symbol,
                 })}
           </Button>
         )}
@@ -81,8 +85,9 @@ function TransactionReceiptionModal({
       <Modal
         open={open}
         title={t('submitted')}
-        icon={<SuccessOutlined className="w-12 h-12" />}
+        icon={<SuccessOutlined />}
         content={content}
+        onClose={onClose}
       />
     )
   } else if (type === 'error') {
@@ -94,22 +99,22 @@ function TransactionReceiptionModal({
     return (
       <Modal
         open={open}
-        icon={<ErrorOutlined className="w-12 h-12" />}
+        icon={<ErrorOutlined />}
         content={content}
+        onClose={onClose}
       />
     )
   }
-  return <div>TransactionReceiptionModal</div>
 }
 
 TransactionReceiptionModal.propTypes = {
   open: PropTypes.bool,
-  type: PropTypes.oneOf(['ongoing', 'success', 'error']).isRequired,
+  type: PropTypes.oneOf(Object.values(TxReceiptModalType)).isRequired,
   toChain: PropTypes.oneOf(SupportedChains),
   fromChain: PropTypes.oneOf(SupportedChains),
   value: PropTypes.string,
-  fromTokenInfo: PropTypes.object,
-  toTokenInfo: PropTypes.object,
+  fromToken: PropTypes.object,
+  toToken: PropTypes.object,
   txHash: PropTypes.string,
 }
 

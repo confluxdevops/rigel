@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {ChainIcon, SupportedChains} from '../../../constants/chainConfig'
 import {TokenAlert} from '../../../assets/svg'
 
-function TokenIcon({chain, token, size = 'medium'}, showAlarm = false) {
+function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
   const {icon, origin, supported} = token
   const subscriptShown = useMemo(() => {
     if (origin !== chain) return true
@@ -17,9 +17,9 @@ function TokenIcon({chain, token, size = 'medium'}, showAlarm = false) {
   }, [size])
 
   const subscriptSize = useMemo(() => {
-    if (size === 'large') return 'w-3 h-3'
-    if (size === 'medium') return 'w-2.5 h-2.5'
-    if (size === 'small') return 'w-2 h-2'
+    if (size === 'large') return '!w-3 !h-3'
+    if (size === 'medium') return '!w-2.5 !h-2.5'
+    if (size === 'small') return '!w-2 !h-2'
   }, [size])
 
   return (
@@ -28,9 +28,9 @@ function TokenIcon({chain, token, size = 'medium'}, showAlarm = false) {
       {supported !== 1 && showAlarm && (
         <TokenAlert className="absolute -left-1 -top-1 w-4 h-4" />
       )}
-      {subscriptShown && (
+      {subscriptShown && origin && (
         <span className="absolute -right-0.5 -bottom-0.5">
-          <ChainIcon chain={origin} size={`${subscriptSize}`} />
+          <ChainIcon chain={origin} className={`${subscriptSize}`} />
         </span>
       )}
     </div>
