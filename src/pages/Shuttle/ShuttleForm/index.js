@@ -299,11 +299,9 @@ function ShuttleForm({
               {t('notice')}
             </span>
             <ul className="text-gray-80">
-              <li className="list-disc leading-4 ml-4">{t('btcTips.first')}</li>
-              <li className="list-disc leading-4 ml-4">
-                {t('btcTips.second')}
-              </li>
-              <li className="list-disc leading-4 ml-4">{t('btcTips.third')}</li>
+              <li className="leading-4 ml-4">{t('tips.toBtcAddressTip')}</li>
+              <li className="leading-4 ml-4">{t('tips.toBtcGasTip')}</li>
+              <li className="leading-4 ml-4">{t('tips.btcWaitLongTip')}</li>
             </ul>
           </div>
         </>
