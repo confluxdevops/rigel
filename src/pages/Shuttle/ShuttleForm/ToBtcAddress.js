@@ -16,6 +16,8 @@ function ToBtcAddress({
         onChange={onAddressInputChange}
         placeholder={t('destination')}
         width="w-full"
+        size="large"
+        className="!bg-transparent"
         errorMessage={errorBtcAddressMsg}
       />
       <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-3 text-gray-80">

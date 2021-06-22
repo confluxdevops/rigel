@@ -36,7 +36,7 @@ function FromToken({
           value={value}
           onChange={onInputChange}
           placeholder="0.00"
-          className="!text-gray-100 !text-lg"
+          className="!text-gray-100 !text-lg !bg-transparent"
           width="w-32"
         />
         <div className="flex flex-col items-end">
