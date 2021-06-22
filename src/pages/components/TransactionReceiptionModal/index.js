@@ -60,7 +60,7 @@ function TransactionReceiptionModal({
         <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
           {t('viewOnScan')}
         </Link>
-        {ChainConfig[toChain].wallet === KeyOfMetaMask && (
+        {ChainConfig[fromChain].wallet === KeyOfMetaMask && (
           <Button
             variant="outlined"
             fullWidth
