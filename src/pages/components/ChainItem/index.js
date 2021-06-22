@@ -4,7 +4,7 @@ import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 function ChainItem({chain, className = '', iconSize = ''}) {
   const chainConfig = ChainConfig[chain]
   const getIcon = () => {
-    return chainConfig.icon(iconSize)
+    return chainConfig?.icon(iconSize)
   }
   return (
     <div className={`flex flex-col ${className}`}>

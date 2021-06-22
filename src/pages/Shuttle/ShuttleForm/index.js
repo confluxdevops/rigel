@@ -17,9 +17,14 @@ import {
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
+import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange} from '../../../assets/svg'
 import {getMaxAmount} from '../../../utils'
+import {checkBtcAddress} from '../../../utils/address'
 import {BigNumZero} from '../../../constants'
+import useShuttleAddress from '../../../hooks/useShuttleAddress'
+import {useShuttleState} from '../../../state'
+import {AlertTriangle} from '../../../assets/svg'
 
 function ShuttleForm({
   fromChain,
@@ -38,11 +43,26 @@ function ShuttleForm({
   const [balanceVal, setBalanceVal] = useState(BigNumZero.toString(10))
   const [maxAmount, setMaxAmount] = useState(BigNumZero.toString(10))
   const [errorMsg, setErrorMsg] = useState('')
+  const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
+  const [btcAddressVal, setBtcAddressVal] = useState('')
+  const [originalShuttleAddress, setOriginalShuttleAddress] = useState()
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
+  const {address: toAddress} = useWallet(toChain)
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
+  const isFromChainCfx = useIsCfxChain(fromChain)
+  const isToChainCfx = useIsCfxChain(toChain)
+  const isFromChainBtc = useIsBtcChain(fromChain)
+  const isToChainBtc = useIsBtcChain(toChain)
+  const shuttleAddress = useShuttleAddress(
+    originalShuttleAddress,
+    fromChain,
+    toChain,
+    isFromChainCfx ? 'out' : 'in',
+  )
   const {address, decimal} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
+  const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
 
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
@@ -90,15 +110,36 @@ function ShuttleForm({
     setErrorMsg(error)
   }
 
+  const onAddressInputChange = e => {
+    let value = e.target.value
+    setBtcAddressVal(value)
+    const isBtcAddress = checkBtcAddress(value)
+    if (!isBtcAddress) {
+      setErrorBtcAddressMsg(t('error.addressInvalid'))
+    } else {
+      setErrorBtcAddressMsg('')
+    }
+  }
+
+  const onNextBtnClick = () => {
+    if (isFromChainBtc) {
+      setFromBtcAddress(shuttleAddress)
+    }
+    if (isToChainBtc) {
+      setToBtcAddress(btcAddressVal)
+    }
+    onNextClick && onNextClick()
+  }
+
   function validateData(value) {
-    if (!fromAddress) return ''
+    if (!isFromChainBtc && !fromAddress) return ''
     const val = Number(value)
     let error = ''
     if (!isNaN(val)) {
       const valBig = new Big(val)
       if (valBig.gt(0)) {
         //must be greater than zero
-        if (!valBig.lte(maxAmount)) {
+        if (!isFromChainBtc && !valBig.lte(maxAmount)) {
           //must be less than Max value
           error = t('error.mustLsMax', {value: maxAmount})
         }
@@ -127,12 +168,49 @@ function ShuttleForm({
   }, [balanceVal, fromChain, isNativeToken])
 
   useEffect(() => {
-    if (fromAddress && value && !errorMsg) {
-      setBtnDisabled(false)
+    setBtnDisabled(true)
+    if (
+      (!isFromChainBtc && isToChainCfx) ||
+      (isFromChainCfx && !isToChainBtc)
+    ) {
+      if (fromAddress && value && !errorMsg) {
+        setBtnDisabled(false)
+      }
     } else {
-      setBtnDisabled(true)
+      if (isFromChainBtc && toAddress && value && !errorMsg) {
+        setBtnDisabled(false)
+      }
+      if (
+        isToChainBtc &&
+        fromAddress &&
+        value &&
+        !errorMsg &&
+        btcAddressVal &&
+        !errorBtcAddressMsg
+      ) {
+        setBtnDisabled(false)
+      }
     }
-  }, [value, errorMsg, fromAddress])
+  }, [
+    value,
+    btcAddressVal,
+    errorBtcAddressMsg,
+    errorMsg,
+    fromAddress,
+    isFromChainCfx,
+    isFromChainBtc,
+    isToChainBtc,
+    isToChainCfx,
+    toAddress,
+  ])
+
+  useEffect(() => {
+    if (isFromChainBtc) {
+      setOriginalShuttleAddress(toAddress)
+    } else {
+      setOriginalShuttleAddress('')
+    }
+  }, [fromChain, isFromChainBtc, toAddress])
 
   return (
     <div className="flex flex-col mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl">
@@ -203,11 +281,36 @@ function ShuttleForm({
           </div>
         </div>
       </div>
+      {isToChainBtc && (
+        <>
+          <Input
+            value={btcAddressVal}
+            onChange={onAddressInputChange}
+            placeholder={t('destination')}
+            width="w-full"
+            className="mt-3"
+          />
+          {errorBtcAddressMsg && (
+            <div className="text-xs text-error mt-2">{errorBtcAddressMsg}</div>
+          )}
+          <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-3">
+            <span className="text-warning-dark flex items-center">
+              <AlertTriangle className="mr-2 w-4 h-4" />
+              {t('notice')}
+            </span>
+            <ul className="text-gray-80">
+              <li className="leading-4 ml-4">{t('tips.toBtcAddressTip')}</li>
+              <li className="leading-4 ml-4">{t('tips.toBtcGasTip')}</li>
+              <li className="leading-4 ml-4">{t('tips.btcWaitLongTip')}</li>
+            </ul>
+          </div>
+        </>
+      )}
       <Button
         className="mt-6"
         fullWidth
         disabled={btnDisabled}
-        onClick={() => onNextClick && onNextClick()}
+        onClick={onNextBtnClick}
       >
         {t('next')}
       </Button>

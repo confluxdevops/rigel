@@ -27,7 +27,8 @@
   "error": {
     "inputValidAmount": "Please type a valid amount",
     "mustGtZero": "The amount must be greater than 0",
-    "mustLsMax": "The amount must be less than {{value}}"
+    "mustLsMax": "The amount must be less than {{value}}",
+    "addressInvalid": "Address is invalid"
   },
   "balance": "Balance",
   "max": "Max",
@@ -55,5 +56,6 @@
   "send": "Send",
   "pleaseWait": "Please Wait Patiently",
   "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
-  "copiedSuccess": "Copied success!"
+  "copiedSuccess": "Copied success!",
+  "notice": "Notice"
 }
