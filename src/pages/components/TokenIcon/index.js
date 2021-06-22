@@ -28,7 +28,7 @@ function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
       {supported !== 1 && showAlarm && (
         <TokenAlert className="absolute -left-1 -top-1 w-4 h-4" />
       )}
-      {subscriptShown && (
+      {subscriptShown && origin && (
         <span className="absolute -right-0.5 -bottom-0.5">
           <ChainIcon chain={origin} className={`${subscriptSize}`} />
         </span>
