@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
-import {ChainConfig} from '../constants/chainConfig'
+import {ChainConfig, KeyOfCfx} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 
 // only use for display
@@ -35,6 +35,13 @@ export function useMapTokenList(chain) {
       ...others,
     }
   })
+}
+
+export function useCfxTokenList(toChain) {
+  const mapTokenList = useMapTokenList(KeyOfCfx)
+  return mapTokenList.filter(
+    token => token?.to_chain === toChain || token?.to_chain === KeyOfCfx,
+  )
 }
 
 // get all token list from backend

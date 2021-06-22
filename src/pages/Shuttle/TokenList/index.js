@@ -2,14 +2,19 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {ArrowLeft} from '../../../assets/svg'
-import {useMapTokenList} from '../../../hooks/useTokenList'
+import {useIsCfxChain} from '../../../hooks'
+import {useMapTokenList, useCfxTokenList} from '../../../hooks/useTokenList'
 import TokenSearch from './TokenSearch'
 import CommonTokens from './CommonTokens'
 import TokenItem from './TokenItem'
 
-function TokenList({chain, selectedToken, onSelectToken, onBack}) {
+function TokenList({fromChain, toChain, selectedToken, onSelectToken, onBack}) {
   const {t} = useTranslation()
-  const tokenList = useMapTokenList(chain)
+  const isFromChainCfx = useIsCfxChain(fromChain)
+  const mapTokenList = useMapTokenList(fromChain)
+  const cfxTokenList = useCfxTokenList(toChain)
+  const tokenList = isFromChainCfx ? cfxTokenList : mapTokenList
+
   return (
     <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl py-6 shadow-common">
       <div className="flex justify-center items-center relative w-full mb-4 px-6">
@@ -23,7 +28,7 @@ function TokenList({chain, selectedToken, onSelectToken, onBack}) {
         <TokenSearch />
       </div>
       <CommonTokens
-        chain={chain}
+        chain={fromChain}
         selectedToken={selectedToken}
         onSelect={onSelectToken}
       />
@@ -34,7 +39,7 @@ function TokenList({chain, selectedToken, onSelectToken, onBack}) {
             <TokenItem
               key={index}
               token={token}
-              chain={chain}
+              chain={fromChain}
               selectedToken={selectedToken}
               onClick={onSelectToken}
             />
@@ -46,7 +51,8 @@ function TokenList({chain, selectedToken, onSelectToken, onBack}) {
 }
 
 TokenList.propTypes = {
-  chain: PropTypes.oneOf(SupportedChains).isRequired,
+  fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
   selectedToken: PropTypes.object,
   onSelectToken: PropTypes.func,
   onBack: PropTypes.func,

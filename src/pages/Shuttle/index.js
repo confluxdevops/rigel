@@ -160,7 +160,8 @@ function Shuttle() {
       )}
       {tokenListShow && (
         <TokenList
-          chain={fromChain}
+          fromChain={fromChain}
+          toChain={toChain}
           selectedToken={fromToken}
           onSelectToken={onSelectToken}
           onBack={() => setTokenListShow(false)}
