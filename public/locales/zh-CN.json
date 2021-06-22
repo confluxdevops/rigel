@@ -27,7 +27,8 @@
   "error": {
     "inputValidAmount": "请输入数字",
     "mustGtZero": "值必须大于0",
-    "mustLsMax": "值需要小于 {{value}}"
+    "mustLsMax": "值需要小于 {{value}}",
+    "addressInvalid": "Address is invalid"
   },
   "balance": "余额",
   "max": "最大",
@@ -55,5 +56,6 @@
   "send": "Send",
   "pleaseWait": "Please Wait Patiently",
   "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
-  "copiedSuccess": "Copied success!"
+  "copiedSuccess": "Copied success!",
+  "notice": "Notice"
 }
