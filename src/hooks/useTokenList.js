@@ -130,11 +130,11 @@ export function useCommonTokens(fromChain, toChain) {
   })
 }
 
-export function useTokenPair({origin, toChain, token}) {
+export function useTokenPair({fromChain, toChain, token}) {
   const allTokenList = useAllTokenList()
   return allTokenList.filter(
     obj =>
-      obj?.origin === origin &&
+      obj?.origin === fromChain &&
       obj?.to_chain === toChain &&
       (obj?.reference === token || obj?.ctoken === token),
   )
