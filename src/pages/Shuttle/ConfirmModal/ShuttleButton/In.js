@@ -21,17 +21,24 @@ import {
 import {useContract, useTokenContract} from '../../../../hooks/useWeb3Network'
 import DEPOSIT_RELAYER_ABI from '../../../../abi/depositRelayerABI.json'
 import {calculateGasMargin} from '../../../../utils'
-import {TransactionReceiptionModal} from '../../../components'
 
-function ShuttleInButton({fromChain, toChain, fromToken, value}) {
+function ShuttleInButton({
+  fromChain,
+  toChain,
+  fromToken,
+  value,
+  onClose,
+  disabled,
+  setTxModalType,
+  setTxModalShow,
+  setTxHash,
+}) {
   const drContractAddress =
     ChainConfig[fromChain].contractAddress?.depositRelayer
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
-  const [txModalShown, setTxModalShown] = useState(false)
-  const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
-  const [txHash, setTxHash] = useState('')
+  const [didMount, setDidMount] = useState(false)
   const {address, decimals, symbol} = fromToken
   const {address: fromAccountAddress} = useWallet(fromChain)
   const {address: toAccountAddress} = useWallet(toChain)
@@ -43,6 +50,7 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
     drContractAddress,
   ])
   useEffect(() => {
+    setDidMount(true)
     if (!isNativeToken) {
       if (
         new Big(tokenAllownace ? tokenAllownace.toString(10) : 0).lt(
@@ -53,6 +61,9 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
       } else {
         setApproveShown(false)
       }
+    }
+    return () => {
+      setDidMount(false)
     }
   }, [decimals, tokenAllownace, value, isNativeToken])
 
@@ -113,7 +124,7 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
         params[1],
         params[2],
       )
-      setTxModalShown(true)
+      setTxModalShow(true)
       drContract
         .deposit(params[0], params[1], {
           ...params[2],
@@ -143,7 +154,7 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
         params[3],
         params[4],
       )
-      setTxModalShown(true)
+      setTxModalShow(true)
       drContract
         .depositToken(params[0], params[1], params[2], params[3], {
           ...params[4],
@@ -157,30 +168,26 @@ function ShuttleInButton({fromChain, toChain, fromToken, value}) {
           setTxModalType(TxReceiptModalType.error)
         })
     }
+    onClose && onClose()
   }
+
+  if (!didMount) {
+    return null
+  }
+
   return (
     <>
       {approveShown && (
-        <Button onClick={onApprove}>
+        <Button onClick={onApprove} disabled={disabled}>
           {isApproving && <Loading size="w-6 h-6" />}
           {!isApproving && t('approve', {token: symbol})}
         </Button>
       )}
       {!approveShown && (
-        <Button startIcon={<Send />} onClick={onSubmit}>
+        <Button startIcon={<Send />} onClick={onSubmit} disabled={disabled}>
           {t('send')}
         </Button>
       )}
-      <TransactionReceiptionModal
-        type={txModalType}
-        open={txModalShown}
-        fromChain={fromChain}
-        toChain={toChain}
-        fromToken={fromToken}
-        toToken={fromToken}
-        value={value}
-        txHash={txHash}
-      />
     </>
   )
 }
@@ -190,5 +197,10 @@ ShuttleInButton.propTypes = {
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
+  onClose: PropTypes.func,
+  disabled: PropTypes.bool,
+  setTxModalType: PropTypes.func,
+  setTxHash: PropTypes.func,
+  setTxModalShow: PropTypes.func,
 }
 export default ShuttleInButton

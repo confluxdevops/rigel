@@ -1,4 +1,4 @@
-import {useState, useContext, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import {useTranslation} from 'react-i18next'
@@ -17,31 +17,32 @@ import {
 import TokenSelect from './TokenSelect'
 import {AccountStatus} from '../../components'
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
-import {useIsCfxChain} from '../../../hooks'
 import {BgChange} from '../../../assets/svg'
-import {PageContext, PageType} from '../../Shuttle'
 import {getMaxAmount} from '../../../utils'
 import {BigNumZero} from '../../../constants'
 
-function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
+function ShuttleForm({
+  fromChain,
+  toChain,
+  fromTokenAddress,
+  fromToken,
+  toToken,
+  onChooseToken,
+  onNextClick,
+  onChangeValue,
+  value,
+}) {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
   const [balanceVal, setBalanceVal] = useState(BigNumZero.toString(10))
   const [maxAmount, setMaxAmount] = useState(BigNumZero.toString(10))
-  const [amountVal, setAmountVal] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
-  const isCfxChain = useIsCfxChain(fromChain)
-  const balance = useBalance(
-    fromChain,
-    fromAddress,
-    isCfxChain ? token?.ctoken : token?.reference,
-    [fromAddress],
-  )
-  const {setPageType, setPageProps} = useContext(PageContext)
+  const {address, decimal} = fromToken
+  const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
 
   const onChainChange = (chain, type) => {
     if (type === 'from' && chain === toChain) {
@@ -70,39 +71,23 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
         ...others,
         fromChain: toChain,
         toChain: fromChain,
-        fromTokenAddress:
-          fromChain !== KeyOfCfx ? token?.ctoken : token?.reference,
+        fromTokenAddress: toToken?.address,
       },
     })
     history.push(pathWithQuery)
-    setAmountVal('')
-  }
-
-  const onChooseToken = () => {
-    setPageType(PageType.tokenList)
-    setPageProps({chain: fromChain, selectedToken: token})
+    onChangeValue && onChangeValue('')
   }
 
   const onMaxClick = () => {
-    setAmountVal(maxAmount)
+    onChangeValue && onChangeValue(maxAmount)
     setErrorMsg('')
   }
 
   const onInputChange = e => {
     let value = e.target.value
-    setAmountVal(value)
+    onChangeValue && onChangeValue(value)
     const error = validateData(value)
     setErrorMsg(error)
-  }
-
-  const onNextClick = () => {
-    setPageType(PageType.confirmModal)
-    setPageProps({
-      fromChain,
-      toChain,
-      fromToken: token,
-      value: amountVal,
-    })
   }
 
   function validateData(value) {
@@ -129,9 +114,9 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
 
   useEffect(() => {
     if (fromAddress) {
-      setBalanceVal(convertDecimal(balance, undefined, token?.decimal))
+      setBalanceVal(convertDecimal(balance, undefined, decimal))
     }
-  }, [balance, fromAddress, token?.decimal])
+  }, [balance, fromAddress, decimal])
 
   useEffect(() => {
     const maxAmount = isNativeToken
@@ -142,12 +127,12 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
   }, [balanceVal, fromChain, isNativeToken])
 
   useEffect(() => {
-    if (fromAddress && amountVal && !errorMsg) {
+    if (fromAddress && value && !errorMsg) {
       setBtnDisabled(false)
     } else {
       setBtnDisabled(true)
     }
-  }, [amountVal, errorMsg, fromAddress])
+  }, [value, errorMsg, fromAddress])
 
   return (
     <div className="flex flex-col mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl">
@@ -157,14 +142,14 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
           type="from"
           onClick={onChainChange}
         ></ChainSelect>
-        {/* TODO:UI */}
+        {/* TODO:UI and extract componnent FromToken */}
         <div className="flex-1 border-2 border-gray-10 rounded p-2">
           <div className="flex flex-1 justify-between">
             <TokenSelect
-              token={token}
+              token={fromToken}
               type="from"
               chain={fromChain}
-              onClick={onChooseToken}
+              onClick={() => onChooseToken && onChooseToken()}
             ></TokenSelect>
             <AccountStatus chain={fromChain} size="medium"></AccountStatus>
           </div>
@@ -179,7 +164,7 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
           <div className="flex">
             <Input
               bordered={false}
-              value={amountVal}
+              value={value}
               onChange={onInputChange}
               placeholder="0.00"
             />
@@ -203,14 +188,18 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
           onClick={onChainChange}
           fromChain={fromChain || DefaultFromChain}
         ></ChainSelect>
-        {/* TODO UI */}
+        {/* TODO:UI and extract componnent ToToken */}
         <div className="flex flex-col justify-between flex-1 border-2 border-gray-10 rounded p-2">
           <div className="flex flex-1 justify-between">
             <div>{t('receiveAs')}</div>
             <AccountStatus chain={toChain} size="medium"></AccountStatus>
           </div>
           <div className="flex">
-            <TokenSelect token={token} type="to" chain={toChain}></TokenSelect>
+            <TokenSelect
+              token={toToken}
+              type="to"
+              chain={toChain}
+            ></TokenSelect>
           </div>
         </div>
       </div>
@@ -218,7 +207,7 @@ function ShuttleForm({fromChain, toChain, fromTokenAddress, token = {}}) {
         className="mt-6"
         fullWidth
         disabled={btnDisabled}
-        onClick={onNextClick}
+        onClick={() => onNextClick && onNextClick()}
       >
         {t('next')}
       </Button>
@@ -230,7 +219,12 @@ ShuttleForm.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromTokenAddress: PropTypes.string,
-  token: PropTypes.object,
+  fromToken: PropTypes.object,
+  toToken: PropTypes.object,
+  onChooseToken: PropTypes.func,
+  onNextClick: PropTypes.func,
+  onChangeValue: PropTypes.func,
+  value: PropTypes.string,
 }
 
 export default ShuttleForm

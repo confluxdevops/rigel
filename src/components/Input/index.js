@@ -49,7 +49,10 @@ function Input({
         <input
           value={value}
           onFocus={() => setFocused(true)}
-          onBlur={() => onBlur && onBlur()}
+          onBlur={() => {
+            setFocused(false)
+            onBlur && onBlur()
+          }}
           onChange={e => onChange && onChange(e)}
           className="w-full h-full px-3 text-sm text-gray-80 placeholder-gray-40 border-0 rounded p-0 outline-none"
           {...props}

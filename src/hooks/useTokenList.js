@@ -48,6 +48,7 @@ export function useAllTokenList() {
 // token list of one chain
 export function useTokenList(chain) {
   const allTokenList = useAllTokenList()
+  if (!chain) return []
   return allTokenList
     .filter(obj => obj?.origin === chain || obj?.to_chain === chain)
     .filter(ChainConfig[chain].displayFilter)
@@ -128,4 +129,24 @@ export function useTokenPair({origin, toChain, token}) {
       obj?.to_chain === toChain &&
       (obj?.reference === token || obj?.ctoken === token),
   )
+}
+
+export function useFromToken(fromChain, fromTokenAddress) {
+  const tokenList = useMapTokenList(fromChain)
+  const data =
+    tokenList.filter(token => token.address === fromTokenAddress) || []
+  return (data && data[0]) || {}
+}
+
+export function useToToken(toChain, fromTokenAddress) {
+  const tokenList = useMapTokenList(toChain)
+  const data =
+    tokenList.filter(
+      token =>
+        (token.address === token.ctoken &&
+          token.reference === fromTokenAddress) ||
+        (token.address === token.reference &&
+          token.ctoken === fromTokenAddress),
+    ) || []
+  return (data && data[0]) || {}
 }
