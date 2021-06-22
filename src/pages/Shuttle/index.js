@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useEffectOnce} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -16,7 +16,6 @@ import {
 } from '../../constants/chainConfig'
 import {TxReceiptModalType} from '../../constants'
 import ConfirmModal from './ConfirmModal'
-import {useShuttleState} from '../../state'
 import {TransactionReceiptionModal} from '../components'
 
 function Shuttle() {
@@ -37,12 +36,6 @@ function Shuttle() {
   const btcTokenPair = useToToken(
     KeyOfCfx,
     ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
-  )
-
-  const {setFromBtcAddress} = useShuttleState()
-
-  useEffectOnce(() =>
-    setFromBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
   )
 
   /**
@@ -73,6 +66,23 @@ function Shuttle() {
     })
     history.push(pathWithQuery)
   })
+
+  // because geting cBTC address need time, only need rerender when cBtc address change
+  useEffect(() => {
+    if (fromChain === KeyOfCfx && toChain === KeyOfBtc) {
+      const pathWithQuery = queryString.stringifyUrl({
+        url: location.pathname,
+        query: {
+          ...others,
+          fromChain,
+          toChain,
+          fromTokenAddress: btcTokenPair?.address,
+        },
+      })
+      history.push(pathWithQuery)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btcTokenPair?.address])
 
   const onSelectToken = token => {
     setTokenListShow(false)
@@ -156,7 +166,7 @@ function Shuttle() {
           onBack={() => setTokenListShow(false)}
         />
       )}
-      {confirmModalShow && (
+      {true && (
         <ConfirmModal
           open={confirmModalShow}
           onClose={() => setConfirmModalShow(false)}

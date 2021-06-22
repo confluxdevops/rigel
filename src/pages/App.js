@@ -1,5 +1,4 @@
 import {Suspense} from 'react'
-import {useEffectOnce} from 'react-use'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
@@ -8,15 +7,9 @@ import TokenList from '../pages/Shuttle/TokenList'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
 import Example from './Example'
 import {useIsMobile} from '../hooks'
-import {useShuttleState} from '../state'
 
 function App() {
-  const {setToBtcAddress} = useShuttleState()
   const isMobile = useIsMobile()
-
-  useEffectOnce(() => {
-    setToBtcAddress('bc1qkuwf9ddw3hqyxsvz9v9zjef0qxq7s7zjvujhjl')
-  })
 
   return (
     <Suspense fallback={null}>
