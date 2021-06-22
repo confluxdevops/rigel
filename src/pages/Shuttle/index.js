@@ -12,6 +12,7 @@ import {
   SupportedChains,
   ChainConfig,
   KeyOfCfx,
+  KeyOfBtc,
 } from '../../constants/chainConfig'
 import {TxReceiptModalType} from '../../constants'
 import ConfirmModal from './ConfirmModal'
@@ -32,6 +33,11 @@ function Shuttle() {
   )
   const fromToken = useFromToken(fromChain, fromTokenAddress)
   const toToken = useToToken(toChain, fromTokenAddress)
+
+  const btcTokenPair = useToToken(
+    KeyOfCfx,
+    ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
+  )
 
   const {setFromBtcAddress} = useShuttleState()
 
@@ -87,6 +93,16 @@ function Shuttle() {
       onInvertChain()
       return
     }
+    let nFromTokenAddress
+    if (type === 'from') {
+      nFromTokenAddress = ChainConfig[chain]?.tokenName?.toLowerCase()
+    }
+    if (type === 'to' && chain === KeyOfBtc) {
+      nFromTokenAddress = btcTokenPair?.address
+    }
+    if (type === 'to' && chain !== KeyOfBtc) {
+      nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
+    }
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
@@ -94,10 +110,7 @@ function Shuttle() {
         fromChain: type === 'from' ? chain : fromChain,
         toChain:
           type === 'to' ? chain : chain !== KeyOfCfx ? KeyOfCfx : toChain,
-        fromTokenAddress:
-          type === 'from'
-            ? ChainConfig[chain]?.tokenName?.toLowerCase()
-            : fromTokenAddress,
+        fromTokenAddress: nFromTokenAddress,
       },
     })
     history.push(pathWithQuery)

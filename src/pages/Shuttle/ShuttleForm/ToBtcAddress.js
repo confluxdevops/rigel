@@ -1,0 +1,40 @@
+import PropTypes from 'prop-types'
+import {useTranslation} from 'react-i18next'
+import {Input} from '../../../components'
+import {AlertTriangle} from '../../../assets/svg'
+
+function ToBtcAddress({
+  btcAddressVal,
+  errorBtcAddressMsg,
+  onAddressInputChange,
+}) {
+  const {t} = useTranslation()
+  return (
+    <div className="flex flex-col mt-4">
+      <Input
+        value={btcAddressVal}
+        onChange={onAddressInputChange}
+        placeholder={t('destination')}
+        width="w-full"
+        errorMessage={errorBtcAddressMsg}
+      />
+      <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-3 text-gray-80">
+        <span className="text-warning-dark flex items-center">
+          <AlertTriangle className="mr-2 w-4 h-4" />
+          {t('notice')}
+        </span>
+        <span>{t('tips.toBtcAddressTip')}</span>
+        <span>{t('tips.toBtcGasTip')}</span>
+        <span>{t('tips.btcWaitLongTip')}</span>
+      </div>
+    </div>
+  )
+}
+
+ToBtcAddress.propTypes = {
+  btcAddressVal: PropTypes.string,
+  errorBtcAddressMsg: PropTypes.string,
+  onAddressInputChange: PropTypes.func,
+}
+
+export default ToBtcAddress

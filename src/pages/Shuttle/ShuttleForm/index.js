@@ -4,15 +4,13 @@ import {useTranslation} from 'react-i18next'
 import {convertDecimal} from '@cfxjs/data-format'
 import Big from 'big.js'
 
-import ChainSelect from './ChainSelect'
-import {WrapIcon, Button, Input, Tag} from '../../../components'
+import {WrapIcon, Button} from '../../../components'
 import {
   DefaultFromChain,
   DefaultToChain,
   SupportedChains,
 } from '../../../constants/chainConfig'
-import TokenSelect from './TokenSelect'
-import {AccountStatus} from '../../components'
+
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange} from '../../../assets/svg'
@@ -21,7 +19,10 @@ import {checkBtcAddress} from '../../../utils/address'
 import {BigNumZero} from '../../../constants'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
-import {AlertTriangle} from '../../../assets/svg'
+import ChainSelect from './ChainSelect'
+import FromToken from './FromToken'
+import ToToken from './ToToken'
+import ToBtcAddress from './ToBtcAddress'
 
 function ShuttleForm({
   fromChain,
@@ -176,44 +177,28 @@ function ShuttleForm({
   }, [fromChain, isFromChainBtc, toAddress])
 
   return (
-    <div className="flex flex-col mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl h-fit">
+    <div className="flex flex-col relative mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl h-fit">
       <div className="flex w-full">
         <ChainSelect
           chain={fromChain || DefaultFromChain}
           type="from"
           onClick={onChangeChain}
-        ></ChainSelect>
-        {/* TODO:UI and extract componnent FromToken */}
-        <div className="flex-1 border-2 border-gray-10 rounded p-2">
-          <div className="flex flex-1 justify-between">
-            <TokenSelect
-              token={fromToken}
-              type="from"
-              chain={fromChain}
-              onClick={() => onChooseToken && onChooseToken()}
-            ></TokenSelect>
-            <AccountStatus chain={fromChain} size="medium"></AccountStatus>
-          </div>
-          <div className="flex justify-end">
-            {fromAddress && (
-              <div>
-                <span>{t('balance')}</span>
-                <span className="ml-2">{balanceVal}</span>
-              </div>
-            )}
-          </div>
-          <div className="flex">
-            <Input
-              bordered={false}
-              value={value}
-              onChange={onInputChange}
-              placeholder="0.00"
-            />
-            {fromAddress && <Tag onClick={onMaxClick}>{t('max')}</Tag>}
-          </div>
-        </div>
+        />
+        <FromToken
+          fromChain={fromChain}
+          fromToken={fromToken}
+          fromAddress={fromAddress}
+          value={value}
+          balanceVal={balanceVal}
+          onMaxClick={onMaxClick}
+          onChooseToken={onChooseToken}
+          onInputChange={onInputChange}
+        />
       </div>
-      {errorMsg && <div className="text-xs text-error mt-2">{errorMsg}</div>}
+      <div className="flex w-full">
+        <div className="w-29.5" />
+        {errorMsg && <div className="text-xs text-error mt-2">{errorMsg}</div>}
+      </div>
       <WrapIcon
         type="circle"
         size="w-8 h-8"
@@ -228,46 +213,15 @@ function ShuttleForm({
           type="to"
           onClick={onChangeChain}
           fromChain={fromChain || DefaultFromChain}
-        ></ChainSelect>
-        {/* TODO:UI and extract componnent ToToken */}
-        <div className="flex flex-col justify-between flex-1 border-2 border-gray-10 rounded p-2">
-          <div className="flex flex-1 justify-between">
-            <div>{t('receiveAs')}</div>
-            <AccountStatus chain={toChain} size="medium"></AccountStatus>
-          </div>
-          <div className="flex">
-            <TokenSelect
-              token={toToken}
-              type="to"
-              chain={toChain}
-            ></TokenSelect>
-          </div>
-        </div>
+        />
+        <ToToken toChain={toChain} toToken={toToken} />
       </div>
       {isToChainBtc && (
-        <>
-          <Input
-            value={btcAddressVal}
-            onChange={onAddressInputChange}
-            placeholder={t('destination')}
-            width="w-full"
-            className="mt-3"
-          />
-          {errorBtcAddressMsg && (
-            <div className="text-xs text-error mt-2">{errorBtcAddressMsg}</div>
-          )}
-          <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-3">
-            <span className="text-warning-dark flex items-center">
-              <AlertTriangle className="mr-2 w-4 h-4" />
-              {t('notice')}
-            </span>
-            <ul className="text-gray-80">
-              <li className="leading-4 ml-4">{t('tips.toBtcAddressTip')}</li>
-              <li className="leading-4 ml-4">{t('tips.toBtcGasTip')}</li>
-              <li className="leading-4 ml-4">{t('tips.btcWaitLongTip')}</li>
-            </ul>
-          </div>
-        </>
+        <ToBtcAddress
+          btcAddressVal={btcAddressVal}
+          errorBtcAddressMsg={errorBtcAddressMsg}
+          onAddressInputChange={onAddressInputChange}
+        />
       )}
       <Button
         className="mt-6"

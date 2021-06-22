@@ -208,4 +208,5 @@ ShuttleInButton.propTypes = {
   setTxHash: PropTypes.func,
   setTxModalShow: PropTypes.func,
 }
+
 export default ShuttleInButton

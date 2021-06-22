@@ -14,9 +14,7 @@ function TokenSelect({token, onClick, type, chain}) {
 
   return (
     <div
-      className={`flex items-center bg-gray-10 ${
-        type === 'from' ? 'cursor-pointer' : ''
-      }`}
+      className={`flex items-center ${type === 'from' ? 'cursor-pointer' : ''}`}
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
     >
