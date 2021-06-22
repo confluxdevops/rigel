@@ -30,10 +30,10 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  const fromToken = useFromToken(fromChain, fromTokenAddress)
-  const toToken = useToToken(toChain, fromTokenAddress)
-
+  const fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
+  const toToken = useToToken(fromChain, toChain, fromTokenAddress)
   const btcTokenPair = useToToken(
+    KeyOfBtc,
     KeyOfCfx,
     ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
   )

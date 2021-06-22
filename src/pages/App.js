@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
 import Home from '../pages/Home'
-import TokenList from '../pages/Shuttle/TokenList'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
 import Example from './Example'
 import {useIsMobile} from '../hooks'
@@ -21,10 +20,6 @@ function App() {
               <Switch>
                 <Route path="/shuttle">
                   <Shuttle />
-                </Route>
-                {/* TODO: Remove */}
-                <Route path="/tokenlist">
-                  <TokenList chain="eth" />
                 </Route>
                 {/* TODO: Remove */}
                 <Route path="/example">

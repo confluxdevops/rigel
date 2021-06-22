@@ -2,19 +2,14 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {ArrowLeft} from '../../../assets/svg'
-import {useIsCfxChain} from '../../../hooks'
-import {useMapTokenList, useCfxTokenList} from '../../../hooks/useTokenList'
+import {useMapTokenList} from '../../../hooks/useTokenList'
 import TokenSearch from './TokenSearch'
 import CommonTokens from './CommonTokens'
 import TokenItem from './TokenItem'
 
 function TokenList({fromChain, toChain, selectedToken, onSelectToken, onBack}) {
   const {t} = useTranslation()
-  const isFromChainCfx = useIsCfxChain(fromChain)
-  const mapTokenList = useMapTokenList(fromChain)
-  const cfxTokenList = useCfxTokenList(toChain)
-  const tokenList = isFromChainCfx ? cfxTokenList : mapTokenList
-
+  const tokenList = useMapTokenList(fromChain, toChain)
   return (
     <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl py-6 shadow-common">
       <div className="flex justify-center items-center relative w-full mb-4 px-6">
@@ -28,7 +23,8 @@ function TokenList({fromChain, toChain, selectedToken, onSelectToken, onBack}) {
         <TokenSearch />
       </div>
       <CommonTokens
-        chain={fromChain}
+        fromChain={fromChain}
+        toChain={toChain}
         selectedToken={selectedToken}
         onSelect={onSelectToken}
       />
