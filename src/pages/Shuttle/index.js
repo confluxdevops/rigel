@@ -82,7 +82,7 @@ function Shuttle() {
     history.push(pathWithQuery)
   }
 
-  const onChainChange = (chain, type) => {
+  const onChangeChain = (chain, type) => {
     if (type === 'from' && chain === toChain) {
       onInvertChain()
       return
@@ -131,7 +131,7 @@ function Shuttle() {
           onNextClick={() => setConfirmModalShow(true)}
           onChangeValue={value => setValue(value)}
           value={value}
-          onChainChange={onChainChange}
+          onChangeChain={onChangeChain}
           onInvertChain={onInvertChain}
         />
       )}

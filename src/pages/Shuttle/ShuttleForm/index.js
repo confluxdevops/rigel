@@ -33,7 +33,7 @@ function ShuttleForm({
   onNextClick,
   onChangeValue,
   value,
-  onChainChange,
+  onChangeChain,
   onInvertChain,
 }) {
   const {t} = useTranslation()
@@ -181,7 +181,7 @@ function ShuttleForm({
         <ChainSelect
           chain={fromChain || DefaultFromChain}
           type="from"
-          onClick={onChainChange}
+          onClick={onChangeChain}
         ></ChainSelect>
         {/* TODO:UI and extract componnent FromToken */}
         <div className="flex-1 border-2 border-gray-10 rounded p-2">
@@ -226,7 +226,7 @@ function ShuttleForm({
         <ChainSelect
           chain={toChain || DefaultToChain}
           type="to"
-          onClick={onChainChange}
+          onClick={onChangeChain}
           fromChain={fromChain || DefaultFromChain}
         ></ChainSelect>
         {/* TODO:UI and extract componnent ToToken */}
@@ -292,7 +292,7 @@ ShuttleForm.propTypes = {
   onNextClick: PropTypes.func,
   onChangeValue: PropTypes.func,
   value: PropTypes.string,
-  onChainChange: PropTypes.func,
+  onChangeChain: PropTypes.func,
   onInvertChain: PropTypes.func,
 }
 
