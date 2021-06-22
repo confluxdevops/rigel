@@ -4,8 +4,12 @@ import {BgArrowRight} from '../../../assets/svg'
 import {WrapIcon} from '../../../components'
 import {TokenIcon} from '../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
+import {useIsBtcChain} from '../../../hooks'
 
-function TokenSelect({token, onClick, type, chain}) {
+function TokenSelect({token, onClick, type, fromChain, toChain}) {
+  const isFromBtcChain = useIsBtcChain(fromChain)
+  const isToBtcChain = useIsBtcChain(toChain)
+  const chain = type === 'from' ? fromChain : toChain
   const {symbol} = token
   const style = useMemo(() => {
     if (type === 'from') return 'text-gray-100'
@@ -20,7 +24,7 @@ function TokenSelect({token, onClick, type, chain}) {
     >
       <TokenIcon token={token} chain={chain} size="small" />
       <span className={`ml-1 ${style}`}>{symbol}</span>
-      {type === 'from' && (
+      {type === 'from' && !isFromBtcChain && !isToBtcChain && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />
         </WrapIcon>
@@ -33,7 +37,8 @@ TokenSelect.propTypes = {
   token: PropTypes.object.isRequired,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['from', 'to']).isRequired,
-  chain: PropTypes.oneOf(SupportedChains).isRequired,
+  fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
 }
 
 export default TokenSelect

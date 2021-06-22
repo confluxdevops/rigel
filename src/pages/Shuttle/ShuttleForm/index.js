@@ -186,6 +186,7 @@ function ShuttleForm({
         />
         <FromToken
           fromChain={fromChain}
+          toChain={toChain}
           fromToken={fromToken}
           fromAddress={fromAddress}
           value={value}
@@ -214,7 +215,7 @@ function ShuttleForm({
           onClick={onChangeChain}
           fromChain={fromChain || DefaultFromChain}
         />
-        <ToToken toChain={toChain} toToken={toToken} />
+        <ToToken fromChain={fromChain} toChain={toChain} toToken={toToken} />
       </div>
       {isToChainBtc && (
         <ToBtcAddress

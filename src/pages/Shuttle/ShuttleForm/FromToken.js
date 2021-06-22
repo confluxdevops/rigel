@@ -8,6 +8,7 @@ import TokenSelect from './TokenSelect'
 
 function FromToken({
   fromChain,
+  toChain,
   fromToken,
   onChooseToken,
   fromAddress,
@@ -23,7 +24,8 @@ function FromToken({
         <TokenSelect
           token={fromToken}
           type="from"
-          chain={fromChain}
+          fromChain={fromChain}
+          toChain={toChain}
           onClick={() => onChooseToken && onChooseToken()}
         />
         <AccountStatus chain={fromChain} size="medium" />
@@ -56,6 +58,7 @@ function FromToken({
 
 FromToken.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object,
   fromAddress: PropTypes.string,
   balanceVal: PropTypes.string,

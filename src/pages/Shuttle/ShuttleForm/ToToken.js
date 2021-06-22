@@ -4,7 +4,7 @@ import {SupportedChains} from '../../../constants/chainConfig'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
 
-function ToToken({toChain, toToken}) {
+function ToToken({fromChain, toChain, toToken}) {
   const {t} = useTranslation()
 
   return (
@@ -14,13 +14,19 @@ function ToToken({toChain, toToken}) {
         <AccountStatus chain={toChain} size="medium" />
       </div>
       <div className="flex">
-        <TokenSelect token={toToken} type="to" chain={toChain} />
+        <TokenSelect
+          token={toToken}
+          type="to"
+          fromChain={fromChain}
+          toChain={toChain}
+        />
       </div>
     </div>
   )
 }
 
 ToToken.propTypes = {
+  fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   toToken: PropTypes.object,
 }
