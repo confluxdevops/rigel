@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
+import {Forbidden} from '../../../assets/svg'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
 
@@ -14,12 +15,19 @@ function ToToken({fromChain, toChain, toToken}) {
         <AccountStatus chain={toChain} size="medium" />
       </div>
       <div className="flex">
-        <TokenSelect
-          token={toToken}
-          type="to"
-          fromChain={fromChain}
-          toChain={toChain}
-        />
+        {Object.keys(toToken).length === 0 ? (
+          <span className="flex items-center text-gray-40">
+            <Forbidden className="w-3 h-3 text-gray-40 mr-1" />
+            {t('tips.notAvailable')}
+          </span>
+        ) : (
+          <TokenSelect
+            token={toToken}
+            type="to"
+            fromChain={fromChain}
+            toChain={toChain}
+          />
+        )}
       </div>
     </div>
   )
