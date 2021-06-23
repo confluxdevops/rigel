@@ -17,6 +17,7 @@ module.exports = {
         15: '3.75rem',
         24.5: '6.125rem',
         26.5: '6.625rem',
+        29.5: '7.375rem',
         50: '12.5rem',
         63: '15.75rem',
         70: '17.5rem',
@@ -33,6 +34,7 @@ module.exports = {
         236: '59rem',
         256: '64rem',
         360: '90rem',
+        fit: 'fit-content',
       },
       borderRadius: {
         '2.5xl': '1.25rem',

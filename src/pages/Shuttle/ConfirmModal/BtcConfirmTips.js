@@ -4,7 +4,7 @@ import QRCode from 'qrcode.react'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import {useShuttleState} from '../../../state'
 import {CopyIcon, AlertTriangle} from '../../../assets/svg'
-import {Toast} from '../../../components'
+import {Toast, Circle} from '../../../components'
 
 function BtcConfirmTips() {
   const {t} = useTranslation()
@@ -12,9 +12,18 @@ function BtcConfirmTips() {
   const [copied, setCopied] = useState(false)
   return (
     <div className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs relative">
-      <span>{t('tips.btcWalletTip')}</span>
-      <span>{t('tips.fromBtcAddressTip')}</span>
-      <span>{t('tips.fromBtcGasTip')}</span>
+      <span className="flex items-center">
+        <Circle />
+        {t('tips.btcWalletTip')}
+      </span>
+      <span className="flex items-center">
+        <Circle />
+        {t('tips.fromBtcAddressTip')}
+      </span>
+      <span className="flex items-center">
+        <Circle />
+        {t('tips.fromBtcGasTip')}
+      </span>
       <div className="flex mt-6 overflow-x-hidden">
         <div className="flex">
           <QRCode value={fromBtcAddress} size={112} />
