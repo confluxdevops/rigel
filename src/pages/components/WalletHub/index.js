@@ -125,7 +125,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           <Close
             className="w-4 h-4 text-gray-40"
             onClick={() => {
-              onClick & onClick()
+              onClick && onClick()
               onClickHandler && onClickHandler()
             }}
           />

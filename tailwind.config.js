@@ -17,10 +17,12 @@ module.exports = {
         15: '3.75rem',
         24.5: '6.125rem',
         26.5: '6.625rem',
+        29.5: '7.375rem',
         50: '12.5rem',
         70: '17.5rem',
         100: '25rem',
         110: '27.5rem',
+        fit: 'fit-content',
       },
       borderRadius: {
         '2.5xl': '1.25rem',

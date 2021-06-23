@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useEffectOnce} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -11,10 +11,11 @@ import {
   DefaultToChain,
   SupportedChains,
   ChainConfig,
+  KeyOfCfx,
+  KeyOfBtc,
 } from '../../constants/chainConfig'
 import {TxReceiptModalType} from '../../constants'
 import ConfirmModal from './ConfirmModal'
-import {useShuttleState} from '../../state'
 import {TransactionReceiptionModal} from '../components'
 
 function Shuttle() {
@@ -29,12 +30,12 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  const fromToken = useFromToken(fromChain, fromTokenAddress)
-  const toToken = useToToken(toChain, fromTokenAddress)
-
-  const {setFromBtcAddress} = useShuttleState()
-  useEffectOnce(() =>
-    setFromBtcAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'),
+  const fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
+  const toToken = useToToken(fromChain, toChain, fromTokenAddress)
+  const btcTokenPair = useToToken(
+    KeyOfBtc,
+    KeyOfCfx,
+    ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
   )
 
   /**
@@ -66,6 +67,79 @@ function Shuttle() {
     history.push(pathWithQuery)
   })
 
+  // because geting cBTC address need time, only need rerender when cBtc address change
+  useEffect(() => {
+    if (fromChain === KeyOfCfx && toChain === KeyOfBtc) {
+      const pathWithQuery = queryString.stringifyUrl({
+        url: location.pathname,
+        query: {
+          ...others,
+          fromChain,
+          toChain,
+          fromTokenAddress: btcTokenPair?.address,
+        },
+      })
+      history.push(pathWithQuery)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btcTokenPair?.address])
+
+  const onSelectToken = token => {
+    setTokenListShow(false)
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain,
+        toChain,
+        fromTokenAddress: token.address,
+      },
+    })
+    history.push(pathWithQuery)
+  }
+
+  const onChangeChain = (chain, type) => {
+    if (type === 'from' && chain === toChain) {
+      onInvertChain()
+      return
+    }
+    let nFromTokenAddress
+    if (type === 'from') {
+      nFromTokenAddress = ChainConfig[chain]?.tokenName?.toLowerCase()
+    }
+    if (type === 'to' && chain === KeyOfBtc) {
+      nFromTokenAddress = btcTokenPair?.address
+    }
+    if (type === 'to' && chain !== KeyOfBtc) {
+      nFromTokenAddress = ChainConfig[fromChain]?.tokenName?.toLowerCase()
+    }
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain: type === 'from' ? chain : fromChain,
+        toChain:
+          type === 'to' ? chain : chain !== KeyOfCfx ? KeyOfCfx : toChain,
+        fromTokenAddress: nFromTokenAddress,
+      },
+    })
+    history.push(pathWithQuery)
+  }
+
+  const onInvertChain = () => {
+    const pathWithQuery = queryString.stringifyUrl({
+      url: location.pathname,
+      query: {
+        ...others,
+        fromChain: toChain,
+        toChain: fromChain,
+        fromTokenAddress: toToken?.address,
+      },
+    })
+    history.push(pathWithQuery)
+    setValue('')
+  }
+
   if (!fromChain) return null
   return (
     <div className="flex justify-center px-3 md:px-0">
@@ -80,12 +154,20 @@ function Shuttle() {
           onNextClick={() => setConfirmModalShow(true)}
           onChangeValue={value => setValue(value)}
           value={value}
+          onChangeChain={onChangeChain}
+          onInvertChain={onInvertChain}
         />
       )}
       {tokenListShow && (
-        <TokenList chain={fromChain} selectedToken={fromToken} />
+        <TokenList
+          fromChain={fromChain}
+          toChain={toChain}
+          selectedToken={fromToken}
+          onSelectToken={onSelectToken}
+          onBack={() => setTokenListShow(false)}
+        />
       )}
-      {confirmModalShow && (
+      {true && (
         <ConfirmModal
           open={confirmModalShow}
           onClose={() => setConfirmModalShow(false)}
