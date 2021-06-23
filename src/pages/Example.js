@@ -160,11 +160,7 @@ function Example() {
       <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']} arrow>
         <Button onClick={e => e.preventDefault()}>Hover me</Button>
       </Dropdown>
-      <ConnectWalletModal
-        type="uninstalled"
-        chain="eth"
-        open={false}
-      ></ConnectWalletModal>
+      <ConnectWalletModal type="uninstalled" chain="eth" open={false} />
       <AccountStatus chain="eth" size="large" />
     </div>
   )

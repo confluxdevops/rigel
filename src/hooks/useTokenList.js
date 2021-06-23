@@ -5,36 +5,38 @@ import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 
 // only use for display
-export function useMapTokenList(chain) {
-  const tokenList = useTokenList(chain)
-  const isCfxChain = useIsCfxChain(chain)
-  return tokenList.map(token => {
-    if (!token) return {}
-    const {
-      ctoken,
-      symbol,
-      name,
-      reference,
-      reference_symbol,
-      reference_name,
-      ...others
-    } = token
-    return {
-      //symbol, name,cname address is only for dispalying
-      // ctoken, csymbol, cname is conflux token info
-      // reference, reference_symbol, reference_name is other chain token info
-      symbol: isCfxChain ? symbol : reference_symbol,
-      name: isCfxChain ? name : reference_name,
-      address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
-      ctoken,
-      csymbol: symbol,
-      cname: name,
-      reference,
-      reference_symbol,
-      reference_name,
-      ...others,
-    }
-  })
+export function useMapTokenList(fromChain, toChain) {
+  const tokenList = useTokenList(fromChain)
+  const isFromCfxChain = useIsCfxChain(fromChain)
+  return tokenList
+    .filter(token => token?.to_chain === toChain || token?.origin === toChain)
+    .map(token => {
+      if (!token) return {}
+      const {
+        ctoken,
+        symbol,
+        name,
+        reference,
+        reference_symbol,
+        reference_name,
+        ...others
+      } = token
+      return {
+        //symbol, name,cname address is only for dispalying
+        // ctoken, csymbol, cname is conflux token info
+        // reference, reference_symbol, reference_name is other chain token info
+        symbol: isFromCfxChain ? symbol : reference_symbol,
+        name: isFromCfxChain ? name : reference_name,
+        address: isFromCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+        ctoken,
+        csymbol: symbol,
+        cname: name,
+        reference,
+        reference_symbol,
+        reference_name,
+        ...others,
+      }
+    })
 }
 
 // get all token list from backend
@@ -55,11 +57,11 @@ export function useTokenList(chain) {
 }
 
 // search token address from backend
-function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
-  const searchTokens = useSearchAddressFromList(chain, search)
+function useSearchAddressFromBackend(fromChain, toChain, search) {
+  const searchTokens = useSearchAddressFromList(fromChain, toChain, search)
   const {data} = useSWR(
     [
-      ChainConfig[chain].checkAddress(search) && searchTokens.length === 0
+      ChainConfig[fromChain].checkAddress(search) && searchTokens.length === 0
         ? ProxyUrlPrefix.shuttleflow
         : null,
       fromChain,
@@ -72,10 +74,10 @@ function useSearchAddressFromBackend(chain, search, fromChain, toChain) {
 }
 
 // search token adddress from current list
-function useSearchAddressFromList(chain, search) {
-  const tokenList = useMapTokenList(chain)
+function useSearchAddressFromList(fromChain, toChain, search) {
+  const tokenList = useMapTokenList(fromChain, toChain)
 
-  if (ChainConfig[chain].checkAddress(search)) {
+  if (ChainConfig[fromChain].checkAddress(search)) {
     return tokenList.filter(obj => {
       return obj?.address?.toLowerCase() === search
     })
@@ -85,8 +87,8 @@ function useSearchAddressFromList(chain, search) {
 }
 
 // serach token name from current list
-function useSearchNameFromList(chain, search) {
-  const tokenList = useMapTokenList(chain)
+function useSearchNameFromList(fromChain, toChain, search) {
+  const tokenList = useMapTokenList(fromChain, toChain)
 
   return tokenList.filter(obj => {
     return (
@@ -96,16 +98,23 @@ function useSearchNameFromList(chain, search) {
   })
 }
 
-export function useTokenListBySearch(chain, search, fromChain, toChain) {
+export function useTokenListBySearch(fromChain, toChain, search) {
   const lowerSearch = search?.toLowerCase()
-  const searchAddressFromList = useSearchAddressFromList(chain, lowerSearch)
-  const searchAddressFromBackend = useSearchAddressFromBackend(
-    chain,
-    lowerSearch,
+  const searchAddressFromList = useSearchAddressFromList(
     fromChain,
     toChain,
+    lowerSearch,
   )
-  const searchNameFromList = useSearchNameFromList(chain, lowerSearch)
+  const searchAddressFromBackend = useSearchAddressFromBackend(
+    fromChain,
+    toChain,
+    lowerSearch,
+  )
+  const searchNameFromList = useSearchNameFromList(
+    fromChain,
+    toChain,
+    lowerSearch,
+  )
 
   if (searchAddressFromList.length === 1) return searchAddressFromList
   if (searchAddressFromBackend.length === 1) return searchAddressFromBackend
@@ -113,33 +122,33 @@ export function useTokenListBySearch(chain, search, fromChain, toChain) {
   return []
 }
 
-export function useCommonTokens(chain) {
-  const tokenList = useMapTokenList(chain)
-  const commonTokens = ChainConfig[chain].commonTokens
+export function useCommonTokens(fromChain, toChain) {
+  const tokenList = useMapTokenList(fromChain, toChain)
+  const commonTokens = ChainConfig[fromChain].commonTokens
   return commonTokens.map(address => {
     return tokenList.filter(obj => address === obj?.address)[0]
   })
 }
 
-export function useTokenPair({origin, toChain, token}) {
+export function useTokenPair({fromChain, toChain, token}) {
   const allTokenList = useAllTokenList()
   return allTokenList.filter(
     obj =>
-      obj?.origin === origin &&
+      obj?.origin === fromChain &&
       obj?.to_chain === toChain &&
       (obj?.reference === token || obj?.ctoken === token),
   )
 }
 
-export function useFromToken(fromChain, fromTokenAddress) {
-  const tokenList = useMapTokenList(fromChain)
+export function useFromToken(fromChain, toChain, fromTokenAddress) {
+  const tokenList = useMapTokenList(fromChain, toChain)
   const data =
     tokenList.filter(token => token.address === fromTokenAddress) || []
   return (data && data[0]) || {}
 }
 
-export function useToToken(toChain, fromTokenAddress) {
-  const tokenList = useMapTokenList(toChain)
+export function useToToken(fromChain, toChain, fromTokenAddress) {
+  const tokenList = useMapTokenList(toChain, fromChain)
   const data =
     tokenList.filter(
       token =>

@@ -178,13 +178,18 @@ function ShuttleInButton({
   return (
     <>
       {approveShown && (
-        <Button onClick={onApprove} disabled={disabled}>
+        <Button onClick={onApprove} disabled={disabled} size="large">
           {isApproving && <Loading size="w-6 h-6" />}
           {!isApproving && t('approve', {token: symbol})}
         </Button>
       )}
       {!approveShown && (
-        <Button startIcon={<Send />} onClick={onSubmit} disabled={disabled}>
+        <Button
+          startIcon={<Send />}
+          onClick={onSubmit}
+          disabled={disabled}
+          size="large"
+        >
           {t('send')}
         </Button>
       )}
@@ -203,4 +208,5 @@ ShuttleInButton.propTypes = {
   setTxHash: PropTypes.func,
   setTxModalShow: PropTypes.func,
 }
+
 export default ShuttleInButton
