@@ -33,10 +33,11 @@ function Shuttle() {
     location.search,
   )
   const {address} = tokenFromBackend
-  let fromToken = useFromToken(fromChain, fromTokenAddress)
+  let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
   if (address === fromTokenAddress) fromToken = tokenFromBackend
-  const toToken = useToToken(toChain, fromTokenAddress)
+  const toToken = useToToken(fromChain, toChain, fromTokenAddress)
   const btcTokenPair = useToToken(
+    KeyOfBtc,
     KeyOfCfx,
     ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
   )
