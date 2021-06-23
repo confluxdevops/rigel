@@ -6,8 +6,10 @@ const createStore = () =>
   create(set => ({
     toBtcAddress: '',
     fromBtcAddress: '',
+    tokenFromBackend: {},
     setFromBtcAddress: fromBtcAddress => set({fromBtcAddress}),
     setToBtcAddress: toBtcAddress => set({toBtcAddress}),
+    setTokenFromBackend: tokenFromBackend => set({tokenFromBackend}),
   }))
 
 export const useShuttleState = () => {
