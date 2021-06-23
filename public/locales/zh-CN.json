@@ -54,7 +54,7 @@
   "checkboxLabel": "I’m clear the above description",
   "approve": "Approve {{token}}",
   "send": "Send",
-  "home": {
+  "homePage": {
     "subTitle": "Lighting Fast Interoperable Protocol",
     "ShuttleFlow": "ShuttleFlow App",
     "LightPaper": "LightPaper"
