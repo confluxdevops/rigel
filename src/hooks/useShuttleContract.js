@@ -21,3 +21,27 @@ export function useShuttleContract(contractType, chain) {
   }
   return contract
 }
+
+/**
+ *
+ * @param {*} contractType
+ * @param {*} chain
+ * @param {*} methodWithParams first param is method name,second param is the params of this method
+ */
+export function useContractData(contractType, chain, methodWithParams = []) {
+  const contract = useShuttleContract(contractType, chain)
+  let methodArr = []
+  methodWithParams.map(item => {
+    methodArr.push(contract[item[0]](item[1]))
+  })
+  const promiseArr = methodArr.map(fn => fn.call())
+  let reseponse = []
+  Promise.all(promiseArr)
+    .then(data => {
+      reseponse = data
+    })
+    .catch(() => {
+      reseponse = []
+    })
+  return reseponse
+}
