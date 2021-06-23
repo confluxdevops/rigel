@@ -9,6 +9,7 @@ import {
   ChainBtcLogo,
   ChainEthLogo,
   ChainCfxLogo,
+  ChainOecLogo,
   MetamaskLogo,
   PortalLogo,
 } from '../assets/svg'
@@ -41,6 +42,19 @@ export const ChainIdBsc = {
 }
 
 /**
+ * oec config
+ */
+
+export const KeyOfOec = 'oec'
+export const ScanUrlOec = IS_DEV
+  ? 'https://www.oklink.com/okexchain/'
+  : 'https://www.oklink.com/okexchain-test/'
+export const ChainIdOec = {
+  MAINNET: 66,
+  TESTNET: 65,
+}
+
+/**
  * conflux config
  */
 export const KeyOfCfx = 'cfx'
@@ -67,18 +81,16 @@ export const WalletConfig = {
     key: KeyOfPortal,
     name: 'ConfluxPortal',
     website: 'https://portal.confluxnetwork.org',
-    icon(className, size) {
-      return <WalletIcon className={className} size={size} type={KeyOfPortal} />
+    icon(className) {
+      return <WalletIcon className={className} type={KeyOfPortal} />
     },
   },
   [KeyOfMetaMask]: {
     key: KeyOfMetaMask,
     name: 'MetaMask',
     website: 'https://metamask.io',
-    icon(className, size) {
-      return (
-        <WalletIcon className={className} size={size} type={KeyOfMetaMask} />
-      )
+    icon(className) {
+      return <WalletIcon className={className} type={KeyOfMetaMask} />
     },
   },
 }
@@ -93,8 +105,8 @@ export const displayFilter = obj => {
 export const ChainConfig = {
   [KeyOfEth]: {
     key: KeyOfEth,
-    icon(className, size) {
-      return <ChainIcon className={className} size={size} chain={KeyOfEth} />
+    icon(className) {
+      return <ChainIcon className={className} chain={KeyOfEth} />
     },
     fullName: 'Ethereum', //full name of the chain
     shortName: 'Ethereum', // short name of chain, usually used for fetching api
@@ -109,11 +121,18 @@ export const ChainConfig = {
     commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: KeyOfMetaMask,
+    remainderAmount: 0.2, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
+    contractAddress: {
+      //TODO(refactor): need to write to ContractConfig
+      depositRelayer: IS_DEV
+        ? '0x2f9bd2eeb09a006adf39a33b8782aaf4c7c84b63'
+        : '0x02a9656f6851527e2199ce0ad3c15adddbaf734f',
+    },
   },
   [KeyOfBsc]: {
     key: KeyOfBsc,
-    icon(className, size) {
-      return <ChainIcon className={className} size={size} chain={KeyOfBsc} />
+    icon(className) {
+      return <ChainIcon className={className} chain={KeyOfBsc} />
     },
     fullName: 'Binance Smart Contract',
     shortName: 'BSC',
@@ -127,11 +146,41 @@ export const ChainConfig = {
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: KeyOfMetaMask,
+    remainderAmount: 0.2,
+    contractAddress: {
+      depositRelayer: IS_DEV
+        ? '0x95edfd5fd720ace4cd585a469e5d8f12a448e27c'
+        : '0x50468a03643ae9664c3c40b2bdcd4ebc8a6bc1f3',
+    },
+  },
+  [KeyOfOec]: {
+    key: KeyOfOec,
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfOec} />
+    },
+    fullName: 'OKExChain',
+    shortName: 'OEC',
+    tokenName: 'OKT',
+    checkAddress: checkHexAddress,
+    displayFilter,
+    scanUrl: ScanUrlOec,
+    scanTxUrl: ScanUrlOec + '/tx/',
+    scanTokenUrl: ScanUrlOec + '/tokenAddr/',
+    // TODO
+    commonTokens: ['OKT'],
+    supportedChainIds: Object.values(ChainIdOec),
+    wallet: KeyOfMetaMask,
+    remainderAmount: 0.2,
+    contractAddress: {
+      depositRelayer: IS_DEV
+        ? '0x5cF9C20DE32aE58d33Cb8C22e73d9b2B2E886AdA'
+        : '0x214c2958C04150846A442A7b977F9f190B603F31',
+    },
   },
   [KeyOfCfx]: {
     key: KeyOfCfx,
-    icon(className, size) {
-      return <ChainIcon className={className} size={size} chain={KeyOfCfx} />
+    icon(className) {
+      return <ChainIcon className={className} chain={KeyOfCfx} />
     },
     fullName: 'Conflux',
     shortName: 'Conflux',
@@ -145,11 +194,12 @@ export const ChainConfig = {
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
     wallet: KeyOfPortal,
+    remainderAmount: 2,
   },
   [KeyOfBtc]: {
     key: KeyOfBtc,
-    icon(className, size) {
-      return <ChainIcon className={className} size={size} chain={KeyOfBtc} />
+    icon(className) {
+      return <ChainIcon className={className} chain={KeyOfBtc} />
     },
     fullName: 'Bitcoin',
     shortName: 'Bitcoin',
@@ -164,6 +214,7 @@ export const ChainConfig = {
     scanUrl: ScanUrlBtc,
     scanTxUrl: ScanUrlBtc + '/tx/',
     commonTokens: [],
+    remainderAmount: 0,
   },
 }
 
@@ -180,7 +231,7 @@ export const SupportedChainIdsWeb3 = [
 ]
 
 const DefaultChainIconSize = 'w-10 h-10'
-export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
+export function ChainIcon({chain, className = ''}) {
   let icon
   switch (chain) {
     case KeyOfEth:
@@ -195,14 +246,21 @@ export function ChainIcon({chain, size = DefaultChainIconSize, className}) {
     case KeyOfBtc:
       icon = <ChainBtcLogo />
       break
+    case KeyOfOec:
+      icon = <ChainOecLogo />
+      break
+    default:
+      //TODO: maybe need to change a better default icon
+      icon = <></>
+      break
   }
   return React.cloneElement(icon, {
-    className: `${size} ${className}`,
+    className: `${DefaultChainIconSize} ${className}`,
   })
 }
 
 const DefaultWalletIconSize = 'w-4 h-4'
-export function WalletIcon({type, size = DefaultWalletIconSize, className}) {
+export function WalletIcon({type, className = ''}) {
   let icon
   switch (type) {
     case KeyOfPortal:
@@ -213,18 +271,16 @@ export function WalletIcon({type, size = DefaultWalletIconSize, className}) {
       break
   }
   return React.cloneElement(icon, {
-    className: `${size} ${className}`,
+    className: `${DefaultWalletIconSize} ${className}`,
   })
 }
 
 ChainIcon.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
-  size: PropTypes.string,
   className: PropTypes.string,
 }
 
 WalletIcon.propTypes = {
   type: PropTypes.oneOf(SupportedWallets).isRequired,
-  size: PropTypes.string,
   className: PropTypes.string,
 }

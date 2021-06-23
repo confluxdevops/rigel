@@ -24,6 +24,15 @@
   "all": "All",
   "app": "App",
   "connect": "Connect",
+  "error": {
+    "inputValidAmount": "Please type a valid amount",
+    "mustGtZero": "The amount must be greater than 0",
+    "mustLsMax": "The amount must be less than {{value}}",
+    "addressInvalid": "Address is invalid"
+  },
+  "balance": "Balance",
+  "max": "Max",
+  "receiveAs": "Receive as",
   "fromChain": "From Chain",
   "toChain": "To Chain",
   "transactionAmount": "Transaction Amount",
@@ -32,15 +41,16 @@
   "shuttleFee": "Shuttle Fee",
   "tips": {
     "mustKnow": "You must kown",
-    "addressTip": "• Please make sure the address is correct.",
-    "toBtcAddressTip": "• Please make sure the address entered is correct.",
-    "forbiddenAddressTip": "• <strong>Don’t use</strong> contract account or the deposit address given by CEX.",
-    "gasTip": "• You need to pay the gas fee of the <strong>{{fromChain}}</strong> network.",
-    "toBtcGasTip": "• You need to pay the miner fees of the Bitcoin network.",
-    "btcWaitLongTip": "• Please wait patinently Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
-    "btcWalletTip": "• Please use BTC wallet to transfer funds to this address.",
-    "fromBtcAddressTip": "• This address can only receive BTC.",
-    "fromBtcGasTip": "• Need to pay miner fees."
+    "notice": "Notice",
+    "addressTip": "Please make sure the address is correct.",
+    "toBtcAddressTip": "Please make sure the address entered is correct.",
+    "forbiddenAddressTip": "<strong>Don’t use</strong> contract account or the deposit address given by CEX.",
+    "gasTip": "You need to pay the gas fee of the <strong>{{fromChain}}</strong> network.",
+    "toBtcGasTip": "You need to pay the miner fees of the Bitcoin network.",
+    "btcWaitLongTip": "Please wait patinently Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+    "btcWalletTip": "Please use BTC wallet to transfer funds to this address.",
+    "fromBtcAddressTip": "This address can only receive BTC.",
+    "fromBtcGasTip": "Need to pay miner fees."
   },
   "checkboxLabel": "I’m clear the above description",
   "approve": "Approve {{token}}",
@@ -49,5 +59,8 @@
     "subTitle": "Lighting Fast Interoperable Protocol",
     "ShuttleFlow": "ShuttleFlow App",
     "LightPaper": "LightPaper"
-  }
+  },
+  "pleaseWait": "Please Wait Patiently",
+  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+  "copiedSuccess": "Copied success!"
 }

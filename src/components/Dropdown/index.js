@@ -80,7 +80,7 @@ function Dropdown({
   const child = React.Children.only(children)
 
   const dropdownTrigger = React.cloneElement(child, {
-    className: `trigger ${child.props.className}`,
+    className: `trigger ${child.props.className || ''}`,
     disabled,
   })
 

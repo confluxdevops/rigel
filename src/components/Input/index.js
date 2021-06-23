@@ -7,11 +7,13 @@ function Input({
   value,
   disabled,
   className = '',
+  containerClassName = '',
   onChange,
   bordered = true,
   size = 'medium',
   width = 'w-60',
   errorMessage = '',
+  onBlur,
   ...props
 }) {
   const [focused, setFocused] = useState(false)
@@ -34,7 +36,7 @@ function Input({
   return (
     <div className={`${width}`}>
       <div
-        className={`flex justify-between items-center rounded ${width} ${disabledStyle} ${sizeStyle} ${borderStyle} ${className}`}
+        className={`flex justify-between items-center rounded ${width} ${disabledStyle} ${sizeStyle} ${borderStyle} ${containerClassName}`}
       >
         {prefix && (
           <div
@@ -48,9 +50,12 @@ function Input({
         <input
           value={value}
           onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onBlur={() => {
+            setFocused(false)
+            onBlur && onBlur()
+          }}
           onChange={e => onChange && onChange(e)}
-          className="w-full h-full px-3 text-sm text-gray-80 placeholder-gray-40 border-0 rounded p-0 outline-none"
+          className={`w-full h-full px-3 text-sm text-gray-80 placeholder-gray-40 border-0 rounded p-0 outline-none ${className}`}
           {...props}
         />
         {suffix && (
@@ -73,6 +78,7 @@ function Input({
 Input.propTypes = {
   value: PropTypes.string,
   className: PropTypes.string,
+  containerClassName: PropTypes.string,
   onChange: PropTypes.func,
   width: PropTypes.string,
   size: PropTypes.oneOf(['medium', 'large']),
@@ -81,6 +87,7 @@ Input.propTypes = {
   suffix: PropTypes.node,
   disabled: PropTypes.bool,
   bordered: PropTypes.bool,
+  onBlur: PropTypes.func,
 }
 
 export default Input

@@ -15,7 +15,7 @@ function CommonToken({token, selectedToken, onClick}) {
   return (
     <div
       className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer ${getSelectedStyle()}`}
-      onClick={onClick && onClick(token)}
+      onClick={() => onClick && onClick(token)}
       aria-hidden="true"
     >
       {symbol}
@@ -29,9 +29,10 @@ CommonToken.propTypes = {
   onClick: PropTypes.func,
 }
 
-function CommonTokens({chain, selectedToken, onSelect}) {
+function CommonTokens({fromChain, toChain, selectedToken, onSelect}) {
   const {t} = useTranslation()
-  const commonTokens = useCommonTokens(chain)
+  const commonTokens = useCommonTokens(fromChain, toChain)
+
   return (
     <div className="flex flex-col px-6 pt-3 pb-4 w-full">
       <span className="text-gray-40">{t('commonTokens')}</span>
@@ -41,7 +42,7 @@ function CommonTokens({chain, selectedToken, onSelect}) {
             return (
               <CommonToken
                 key={index}
-                onClick={onSelect && onSelect(token)}
+                onClick={onSelect}
                 token={token}
                 selectedToken={selectedToken}
               />
@@ -54,7 +55,8 @@ function CommonTokens({chain, selectedToken, onSelect}) {
 }
 
 CommonTokens.propTypes = {
-  chain: PropTypes.oneOf(SupportedChains).isRequired,
+  fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
   selectedToken: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
 }

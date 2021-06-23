@@ -9,29 +9,19 @@ import {shortenAddress} from '../../../utils/address'
 import {useIsBtcChain} from '../../../hooks'
 import {useShuttleState} from '../../../state'
 
-function Account({
-  chain,
-  className,
-  iconClassName,
-  iconSize,
-  showIcon = false,
-}) {
+function Account({chain, className, iconClassName, showIcon = false}) {
   const {address} = useWallet(chain)
   const walletKey = ChainConfig[chain].wallet
   const isBtcChain = useIsBtcChain(chain)
-  const {btcAddress} = useShuttleState()
+  const {toBtcAddress} = useShuttleState()
 
   return (
     <div className={`flex justify-center ${className}`}>
       {showIcon && !isBtcChain && (
-        <WalletIcon
-          type={walletKey}
-          className={iconClassName}
-          size={iconSize}
-        />
+        <WalletIcon type={walletKey} className={iconClassName} />
       )}
       {!isBtcChain && address && shortenAddress(chain, address)}
-      {isBtcChain && btcAddress && shortenAddress(chain, btcAddress)}
+      {isBtcChain && toBtcAddress && shortenAddress(chain, toBtcAddress)}
     </div>
   )
 }
@@ -40,7 +30,6 @@ Account.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   className: PropTypes.string,
   iconClassName: PropTypes.string,
-  iconSize: PropTypes.string,
   showIcon: PropTypes.bool,
 }
 export default Account

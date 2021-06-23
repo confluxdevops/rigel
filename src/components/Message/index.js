@@ -101,7 +101,7 @@ function getRCNoticeProps(args) {
 
   const IconComponent =
     type === 'loading' ? (
-      <Loading size="w-5 h-5" className="mr-2" />
+      <Loading className="mr-2 !w-5 !h-5" />
     ) : (
       typeToIcon[type]
     )

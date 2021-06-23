@@ -23,7 +23,7 @@ const SelectedChain = ({chain, type}) => {
         <ChainItem
           chain={chain}
           className="items-center"
-          iconSize="w-12 h-12"
+          iconSize="!w-12 !h-12"
         />
       </div>
     </div>

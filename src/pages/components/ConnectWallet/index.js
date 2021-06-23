@@ -16,7 +16,7 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
   const [open, setOpen] = useState(false)
   const {type, setType, tryActivate} = useWallet(chain)
   const walletConfig = WalletConfig[ChainConfig[chain]?.wallet]
-  const walletIcon = walletConfig.icon(className, 'w-3 h-3')
+  const walletIcon = walletConfig?.icon(`${className} !w-3 !h-3`)
   const onConnect = () => {
     setOpen(true)
     if (type === TypeConnectWallet.loading) {
@@ -31,7 +31,7 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
   const onClose = () => {
     setOpen(false)
   }
-
+  if (!walletConfig) return null
   return (
     <>
       {size === 'medium' && (
@@ -51,12 +51,14 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
           {`${t('connect')} ${walletConfig?.name}`}
         </Button>
       )}
-      <ConnectWalletModal
-        type={type}
-        chain={chain}
-        open={open}
-        onClose={onClose}
-      />
+      {open && (
+        <ConnectWalletModal
+          type={type}
+          chain={chain}
+          open={open}
+          onClose={onClose}
+        />
+      )}
     </>
   )
 }
