@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react'
-import {useEffectOnce} from 'react-use'
+import {useState} from 'react'
+import {useDeepCompareEffect} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 
@@ -42,7 +42,7 @@ function Shuttle() {
    * 1. The fromChain and toChain must be in the SupportChains list
    * 2. The fromChain and toChain must be different, the one must be cfx chain , another one must be not cfx chain
    */
-  useEffectOnce(() => {
+  useDeepCompareEffect(() => {
     let nFromChain =
       SupportedChains.indexOf(fromChain) !== -1 ? fromChain : DefaultFromChain
     let nToChain =
@@ -55,6 +55,9 @@ function Shuttle() {
     if (!fromTokenAddress || Object.keys(fromToken).length === 0) {
       nFromTokenAddress = ChainConfig[nFromChain]?.tokenName?.toLowerCase()
     }
+    if (nFromChain === KeyOfCfx && nToChain === KeyOfBtc) {
+      nFromTokenAddress = btcTokenPair?.address
+    }
     const pathWithQuery = queryString.stringifyUrl({
       url: location.pathname,
       query: {
@@ -65,24 +68,16 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
-  })
-
-  // because geting cBTC address need time, only need rerender when cBtc address change
-  useEffect(() => {
-    if (fromChain === KeyOfCfx && toChain === KeyOfBtc) {
-      const pathWithQuery = queryString.stringifyUrl({
-        url: location.pathname,
-        query: {
-          ...others,
-          fromChain,
-          toChain,
-          fromTokenAddress: btcTokenPair?.address,
-        },
-      })
-      history.push(pathWithQuery)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [btcTokenPair?.address])
+  }, [
+    fromChain,
+    toChain,
+    fromTokenAddress,
+    fromToken,
+    others,
+    history,
+    location.pathname,
+    btcTokenPair?.address,
+  ])
 
   const onSelectToken = token => {
     setTokenListShow(false)
