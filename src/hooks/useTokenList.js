@@ -1,3 +1,4 @@
+import {useMemo} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
 import {ProxyUrlPrefix} from '../constants'
@@ -8,35 +9,41 @@ import {useIsCfxChain} from '../hooks'
 export function useMapTokenList(fromChain, toChain) {
   const tokenList = useTokenList(fromChain)
   const isFromCfxChain = useIsCfxChain(fromChain)
-  return tokenList
-    .filter(token => token?.to_chain === toChain || token?.origin === toChain)
-    .map(token => {
-      if (!token) return {}
-      const {
-        ctoken,
-        symbol,
-        name,
-        reference,
-        reference_symbol,
-        reference_name,
-        ...others
-      } = token
-      return {
-        //symbol, name,cname address is only for dispalying
-        // ctoken, csymbol, cname is conflux token info
-        // reference, reference_symbol, reference_name is other chain token info
-        symbol: isFromCfxChain ? symbol : reference_symbol,
-        name: isFromCfxChain ? name : reference_name,
-        address: isFromCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
-        ctoken,
-        csymbol: symbol,
-        cname: name,
-        reference,
-        reference_symbol,
-        reference_name,
-        ...others,
-      }
-    })
+  return useMemo(
+    () =>
+      tokenList
+        .filter(
+          token => token?.to_chain === toChain || token?.origin === toChain,
+        )
+        .map(token => {
+          if (!token) return {}
+          const {
+            ctoken,
+            symbol,
+            name,
+            reference,
+            reference_symbol,
+            reference_name,
+            ...others
+          } = token
+          return {
+            //symbol, name,cname address is only for dispalying
+            // ctoken, csymbol, cname is conflux token info
+            // reference, reference_symbol, reference_name is other chain token info
+            symbol: isFromCfxChain ? symbol : reference_symbol,
+            name: isFromCfxChain ? name : reference_name,
+            address: isFromCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
+            ctoken,
+            csymbol: symbol,
+            cname: name,
+            reference,
+            reference_symbol,
+            reference_name,
+            ...others,
+          }
+        }),
+    [isFromCfxChain, toChain, tokenList],
+  )
 }
 
 // get all token list from backend
@@ -50,10 +57,16 @@ export function useAllTokenList() {
 // token list of one chain
 export function useTokenList(chain) {
   const allTokenList = useAllTokenList()
-  if (!chain) return []
-  return allTokenList
-    .filter(obj => obj?.origin === chain || obj?.to_chain === chain)
-    .filter(ChainConfig[chain].displayFilter)
+
+  return useMemo(
+    () =>
+      !chain
+        ? []
+        : allTokenList
+            .filter(obj => obj?.origin === chain || obj?.to_chain === chain)
+            .filter(ChainConfig[chain].displayFilter),
+    [allTokenList, chain],
+  )
 }
 
 // search token address from backend
@@ -76,26 +89,33 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
 // search token adddress from current list
 function useSearchAddressFromList(fromChain, toChain, search) {
   const tokenList = useMapTokenList(fromChain, toChain)
+  const isValidAddress = ChainConfig[fromChain].checkAddress(search)
 
-  if (ChainConfig[fromChain].checkAddress(search)) {
-    return tokenList.filter(obj => {
-      return obj?.address?.toLowerCase() === search
-    })
-  }
-
-  return []
+  return useMemo(
+    () =>
+      isValidAddress
+        ? tokenList.filter(obj => {
+            return obj?.address?.toLowerCase() === search
+          })
+        : [],
+    [isValidAddress, tokenList, search],
+  )
 }
 
 // serach token name from current list
 function useSearchNameFromList(fromChain, toChain, search) {
   const tokenList = useMapTokenList(fromChain, toChain)
 
-  return tokenList.filter(obj => {
-    return (
-      obj?.symbol?.toLowerCase().indexOf(search) > -1 ||
-      obj?.name?.toLowerCase().indexOf(search) > -1
-    )
-  })
+  return useMemo(
+    () =>
+      tokenList.filter(obj => {
+        return (
+          obj?.symbol?.toLowerCase().indexOf(search) > -1 ||
+          obj?.name?.toLowerCase().indexOf(search) > -1
+        )
+      }),
+    [search, tokenList],
+  )
 }
 
 export function useTokenListBySearch(fromChain, toChain, search) {

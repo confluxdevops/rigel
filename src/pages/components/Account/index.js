@@ -16,7 +16,7 @@ function Account({chain, className, iconClassName, showIcon = false}) {
   const {toBtcAddress} = useShuttleState()
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div className={`flex items-center ${className}`}>
       {showIcon && !isBtcChain && (
         <WalletIcon type={walletKey} className={iconClassName} />
       )}
