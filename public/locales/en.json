@@ -59,6 +59,11 @@
   "checkboxLabel": "I’m clear the above description",
   "approve": "Approve {{token}}",
   "send": "Send",
+  "home": {
+    "subTitle": "Lighting Fast Interoperable Protocol",
+    "shuttleFlow": "ShuttleFlow App",
+    "lightPaper": "LightPaper"
+  },
   "pleaseWait": "Please Wait Patiently",
   "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
   "copiedSuccess": "Copied success!",
