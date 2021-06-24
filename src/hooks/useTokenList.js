@@ -6,7 +6,7 @@ import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 import {useShuttleState} from '../state'
 
-function mapToken(token, isCfxChain) {
+export function mapToken(token, isCfxChain) {
   if (!token) return {}
   const {
     ctoken,
@@ -18,6 +18,7 @@ function mapToken(token, isCfxChain) {
     ...others
   } = token
   return {
+    ...others,
     //symbol, name,cname address is only for dispalying
     // ctoken, csymbol, cname is conflux token info
     // reference, reference_symbol, reference_name is other chain token info
@@ -30,7 +31,6 @@ function mapToken(token, isCfxChain) {
     reference,
     reference_symbol,
     reference_name,
-    ...others,
   }
 }
 

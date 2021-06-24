@@ -8,6 +8,7 @@ import {ContractType} from '../constants/contractConfig'
 import {KeyOfBtc, KeyOfCfx} from '../constants/chainConfig'
 import {ZeroAddrHex} from '../constants'
 import {useIsCfxChain} from '../hooks'
+import {mapToken} from '../hooks/useTokenList'
 
 export function useShuttleData() {}
 
@@ -19,12 +20,15 @@ export function useShuttleData() {}
  * @returns
  */
 export function useCustodianData(chainOfContract, token) {
-  const {address, origin, decimals, ctoken} = token
+  const {origin} = token
+  const isCfxChain = useIsCfxChain(origin)
+  const mapedToken = mapToken(token, isCfxChain)
+  const {address, decimals, ctoken} = mapedToken
   let contractAddress = address
   if (ctoken === KeyOfCfx) {
     contractAddress = ZeroAddrHex
   }
-  const isCfxChain = useIsCfxChain(origin)
+
   const obverseContract = useShuttleContract(
     ContractType.custodianImpl,
     chainOfContract,
