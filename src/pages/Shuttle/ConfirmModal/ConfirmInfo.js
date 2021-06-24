@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
@@ -5,15 +6,22 @@ import {TokenIcon, Account} from '../../components'
 import {useIsCfxChain} from '../../../hooks'
 import {useCustodianData} from '../../../hooks/useShuttleData'
 
-function ConfirmInfo({fromChain, toChain, fromToken}) {
+function ConfirmInfo({fromChain, toChain, fromToken, toToken}) {
   const {t} = useTranslation()
   const {symbol} = fromToken
   const isFromChainCfx = useIsCfxChain(fromChain)
+  const isToChainCfx = useIsCfxChain(toChain)
   let chainOfContract = isFromChainCfx ? toChain : fromChain
-  const {in_fee, out_fee} = useCustodianData(chainOfContract, fromToken)
-  const shuttleFee = isFromChainCfx
-    ? out_fee?.toString(10)
-    : in_fee?.toString(10)
+  const {in_fee, out_fee} = useCustodianData(chainOfContract, toToken)
+  const [shuttleFee, setShuttleFee] = useState(0)
+  useEffect(() => {
+    if (isToChainCfx) {
+      //no fee when shuttle in to Conflux chain
+      setShuttleFee(0)
+    } else {
+      setShuttleFee(out_fee ? out_fee.toString(10) : 0)
+    }
+  }, [in_fee, isFromChainCfx, isToChainCfx, out_fee])
   return (
     <div className="flex flex-col w-full">
       <div className="flex items-center justify-between mt-4">
@@ -42,6 +50,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
 
 ConfirmInfo.propTypes = {
   fromToken: PropTypes.object.isRequired,
+  toToken: PropTypes.object.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
 }

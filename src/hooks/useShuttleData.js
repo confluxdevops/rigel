@@ -5,7 +5,8 @@ import {useState, useEffect} from 'react'
 import Big from 'big.js'
 import {useShuttleContract} from './useShuttleContract'
 import {ContractType} from '../constants/contractConfig'
-import {KeyOfBtc} from '../constants/chainConfig'
+import {KeyOfBtc, KeyOfCfx} from '../constants/chainConfig'
+import {ZeroAddrHex} from '../constants'
 import {useIsCfxChain} from '../hooks'
 
 export function useShuttleData() {}
@@ -18,7 +19,11 @@ export function useShuttleData() {}
  * @returns
  */
 export function useCustodianData(chainOfContract, token) {
-  const {address, origin, decimals} = token
+  const {address, origin, decimals, ctoken} = token
+  let contractAddress = address
+  if (ctoken === KeyOfCfx) {
+    contractAddress = ZeroAddrHex
+  }
   const isCfxChain = useIsCfxChain(origin)
   const obverseContract = useShuttleContract(
     ContractType.custodianImpl,
@@ -34,15 +39,15 @@ export function useCustodianData(chainOfContract, token) {
   useEffect(() => {
     Promise.all(
       [
-        contract['burn_fee'](address),
-        contract['mint_fee'](address),
-        contract['wallet_fee'](address),
-        address === KeyOfBtc
+        contract['burn_fee'](contractAddress),
+        contract['mint_fee'](contractAddress),
+        contract['wallet_fee'](contractAddress),
+        contractAddress === KeyOfBtc
           ? contract['btc_minimal_burn_value']()
-          : contract['minimal_mint_value'](address),
-        address === KeyOfBtc
+          : contract['minimal_mint_value'](contractAddress),
+        contractAddress === KeyOfBtc
           ? contract['btc_minimal_burn_value']()
-          : contract['minimal_burn_value'](address),
+          : contract['minimal_burn_value'](contractAddress),
         contract['minimal_sponsor_amount'](),
         contract['safe_sponsor_amount'](),
       ].map(fn => fn.call()),
@@ -79,7 +84,7 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [address, contract, dicimalsNum, isCfxChain])
+  }, [address, contract, contractAddress, dicimalsNum, isCfxChain])
   return contractData
 }
 

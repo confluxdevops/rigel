@@ -42,7 +42,7 @@ export function useConnect() {
 export function useContract(address, ABI) {
   const {confluxJS} = useConfluxPortal()
   return useMemo(() => {
-    if (!address || !ABI || !confluxJS) return null
+    if (!ABI || !confluxJS) return null
     try {
       return confluxJS.Contract({abi: ABI, address})
     } catch (error) {

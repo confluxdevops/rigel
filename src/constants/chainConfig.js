@@ -19,7 +19,7 @@ import {
  */
 export const KeyOfEth = 'eth'
 export const ScanUrlEth = IS_DEV
-  ? 'https://rinkeby.etherscan.io/'
+  ? 'https://rinkeby.etherscan.io'
   : 'https://etherscan.io'
 export const ChainIdEth = {
   MAINNET: 1,
@@ -34,8 +34,8 @@ export const ChainIdEth = {
  */
 export const KeyOfBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
-  ? 'https://testnet.bscscan.com/'
-  : 'https://bscscan.com/'
+  ? 'https://testnet.bscscan.com'
+  : 'https://bscscan.com'
 export const ChainIdBsc = {
   MAINNET: 56,
   TESTNET: 97,
@@ -47,8 +47,8 @@ export const ChainIdBsc = {
 
 export const KeyOfOec = 'oec'
 export const ScanUrlOec = IS_DEV
-  ? 'https://www.oklink.com/okexchain/'
-  : 'https://www.oklink.com/okexchain-test/'
+  ? 'https://www.oklink.com/okexchain'
+  : 'https://www.oklink.com/okexchain-test'
 export const ChainIdOec = {
   MAINNET: 66,
   TESTNET: 65,
@@ -59,8 +59,8 @@ export const ChainIdOec = {
  */
 export const KeyOfCfx = 'cfx'
 export const ScanUrlCfx = IS_DEV
-  ? 'https://testnet.confluxscan.io/'
-  : 'https://confluxscan.io/'
+  ? 'https://testnet.confluxscan.io'
+  : 'https://confluxscan.io'
 export const ChainIdCfx = {
   MAINNET: 1029,
   TESTNET: 1,
