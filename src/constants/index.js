@@ -19,6 +19,7 @@ export const ProxyUrlPrefix = {
  */
 export const IntervalTime = {
   fetchBalance: 3000,
+  fetchTokenList: 6000,
 }
 
 export const BigNumZero = new Big(0)

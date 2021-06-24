@@ -121,7 +121,7 @@ export const ChainConfig = {
     commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: KeyOfMetaMask,
-    remainderAmount: 0.2, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
+    remainderAmount: 0.15, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
     contractAddress: {
       //TODO(refactor): need to write to ContractConfig
       depositRelayer: IS_DEV
@@ -146,7 +146,7 @@ export const ChainConfig = {
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: KeyOfMetaMask,
-    remainderAmount: 0.2,
+    remainderAmount: 0.002,
     contractAddress: {
       depositRelayer: IS_DEV
         ? '0x95edfd5fd720ace4cd585a469e5d8f12a448e27c'
@@ -170,7 +170,7 @@ export const ChainConfig = {
     commonTokens: ['OKT'],
     supportedChainIds: Object.values(ChainIdOec),
     wallet: KeyOfMetaMask,
-    remainderAmount: 0.2,
+    remainderAmount: 0.001,
     contractAddress: {
       depositRelayer: IS_DEV
         ? '0x5cF9C20DE32aE58d33Cb8C22e73d9b2B2E886AdA'
@@ -194,7 +194,7 @@ export const ChainConfig = {
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
     supportedChainIds: Object.values(ChainIdCfx),
     wallet: KeyOfPortal,
-    remainderAmount: 2,
+    remainderAmount: 1,
   },
   [KeyOfBtc]: {
     key: KeyOfBtc,
