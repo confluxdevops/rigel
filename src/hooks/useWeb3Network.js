@@ -164,7 +164,10 @@ export function useConnect() {
  * @param {*} delay interval delay milliseconds
  * @returns the balance
  */
-export function useNativeTokenBalance(address, delay) {
+export function useNativeTokenBalance(
+  address,
+  delay = IntervalTime.fetchBalance,
+) {
   const [balance, setBalance] = useState(BigNumZero)
   const {account, library} = useWeb3React()
   useInterval(
@@ -179,7 +182,7 @@ export function useNativeTokenBalance(address, delay) {
             setBalance(BigNumZero)
           })
     },
-    account ? delay || IntervalTime.fetchBalance : null,
+    account ? delay : null,
   )
   return balance
 }
