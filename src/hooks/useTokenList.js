@@ -1,7 +1,7 @@
 import {useMemo, useEffect} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
-import {ProxyUrlPrefix} from '../constants'
+import {ProxyUrlPrefix, IntervalTime} from '../constants'
 import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 import {useShuttleState} from '../state'
@@ -66,7 +66,7 @@ export function useMapTokenList(fromChain, toChain) {
 // get all token list from backend
 export function useAllTokenList() {
   const {data} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
-    refreshInterval: 60000,
+    refreshInterval: IntervalTime.fetchTokenList,
   })
   return data ? data : []
 }
