@@ -13,7 +13,7 @@ import {
 
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
-import {BgChange} from '../../../assets/svg'
+import {BgChange, AlertTriangle} from '../../../assets/svg'
 import {getMaxAmount} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
 import {BigNumZero} from '../../../constants'
@@ -61,6 +61,7 @@ function ShuttleForm({
   const {address, decimal} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
+  const {supported} = fromToken
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -233,6 +234,29 @@ function ShuttleForm({
       >
         {t('next')}
       </Button>
+      {supported === 0 && (
+        <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
+          <span className="flex items-center font-medium">
+            <AlertTriangle className="mr-1 w-4 h-4" />
+            {t('tips.notAvailable')}
+          </span>
+          <span className="inline-block mt-1">
+            {t('tips.notAvailableDescription', {fromChain, toChain})}
+          </span>
+        </div>
+      )}
+      {/* TODO: if shuttle paused */}
+      {false && (
+        <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
+          <span className="flex items-center font-medium">
+            <AlertTriangle className="mr-1 w-4 h-4" />
+            {t('tips.shuttlePaused')}
+          </span>
+          <span className="inline-block mt-1">
+            {t('tips.shuttlePausedDescription', {fromChain, toChain})}
+          </span>
+        </div>
+      )}
     </div>
   )
 }

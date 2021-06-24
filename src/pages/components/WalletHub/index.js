@@ -65,7 +65,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
       <div className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer">
         <Connected className="w-2 h-2 mr-1" />
         {WalletConfig[KeyOfPortal].icon()}
-        {WalletConfig[KeyOfMetaMask].icon('-ml-1')}
+        {WalletConfig[KeyOfMetaMask].icon('ml-0.5')}
         <WrapIcon type="circle" className="ml-1">
           {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
         </WrapIcon>

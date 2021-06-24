@@ -1,14 +1,8 @@
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
+import {useConnectData} from '../../../hooks'
 
 function MobileFooter() {
-  //TODO: remove mock data
-  const connectData = [
-    {
-      chain: 'cfx',
-      address: 'cfxtest:aame5p2tdzfsc3zsmbg1urwkg5ax22epg27cnu1rwm',
-    },
-    {chain: 'eth', address: null},
-  ]
+  const connectData = useConnectData()
   const pendingTransactions = [
     {
       type: 'shuttle',
