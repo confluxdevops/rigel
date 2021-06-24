@@ -35,15 +35,14 @@ function Home() {
   })
   const {i18n, t} = useTranslation()
   const {language} = i18n
-  const openApp = () => {
-    window.open('/shuttle', '_blank')
+  const onOpenApp = () => {
+    window.open('/shuttle')
   }
-  const openPaper = () => {
+  const onOpenPaper = () => {
     window.open(
       language === 'en'
         ? 'https://shuttleflow.io/assets/SF-whitepaper-en.bbd9b.modern.pdf'
         : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf',
-      '_blank',
     )
   }
   return (
@@ -53,10 +52,12 @@ function Home() {
           <img className="w-160 pt-24" src={ShuttleFlow} alt="title" />
           <p className="text-gray-400 mt-9 text-xl">{t('home.subTitle')}</p>
           <div className="mt-9 flex">
-            <Button className="mr-5" onClick={() => openApp()}>
+            <Button className="mr-5" onClick={() => onOpenApp()}>
               {t('home.shuttleFlow')}
             </Button>
-            <Button onClick={() => openPaper()}>{t('home.lightPaper')}</Button>
+            <Button onClick={() => onOpenPaper()}>
+              {t('home.lightPaper')}
+            </Button>
           </div>
         </div>
         <div className="relative">
