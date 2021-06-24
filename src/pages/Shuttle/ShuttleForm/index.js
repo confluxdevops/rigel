@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {convertDecimal} from '@cfxjs/data-format'
@@ -16,7 +16,6 @@ import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
 import {getMaxAmount} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
-import {BigNumZero} from '../../../constants'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
 import ChainSelect from './ChainSelect'
@@ -38,8 +37,6 @@ function ShuttleForm({
   onInvertChain,
 }) {
   const {t} = useTranslation()
-  const [balanceVal, setBalanceVal] = useState(BigNumZero.toString(10))
-  const [maxAmount, setMaxAmount] = useState(BigNumZero.toString(10))
   const [errorMsg, setErrorMsg] = useState('')
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
@@ -58,10 +55,23 @@ function ShuttleForm({
     toChain,
     isFromChainCfx ? 'out' : 'in',
   )
-  const {address, decimal} = fromToken
+  const {address, decimal, supported} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
-  const {supported} = fromToken
+
+  const balanceVal = useMemo(
+    () => convertDecimal(balance, 'divide', decimal),
+    [balance, decimal],
+  )
+
+  const maxAmount = useMemo(
+    () =>
+      (isNativeToken
+        ? getMaxAmount(fromChain, balanceVal)
+        : balanceVal
+      ).toString(10),
+    [balanceVal, fromChain, isNativeToken],
+  )
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -118,20 +128,6 @@ function ShuttleForm({
     }
     return error
   }
-
-  useEffect(() => {
-    if (fromAddress) {
-      setBalanceVal(convertDecimal(balance, undefined, decimal))
-    }
-  }, [balance, fromAddress, decimal])
-
-  useEffect(() => {
-    const maxAmount = isNativeToken
-      ? getMaxAmount(fromChain, balanceVal)
-      : balanceVal
-
-    setMaxAmount(maxAmount.toString(10))
-  }, [balanceVal, fromChain, isNativeToken])
 
   useEffect(() => {
     setBtnDisabled(true)
