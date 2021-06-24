@@ -65,7 +65,8 @@ function ShuttleForm({
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
-    setErrorMsg('')
+    const error = validateData(value)
+    setErrorMsg(error)
   }
 
   const onInputChange = e => {
