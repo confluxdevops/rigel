@@ -42,7 +42,7 @@ function ConfirmTips({fromChain, toChain, ...props}) {
         </span>
       )}
       {isBtcChain && (
-        <span className="flex items-baseline">
+        <span className="flex items-start">
           <Circle />
           {t('tips.btcWaitLongTip')}
         </span>

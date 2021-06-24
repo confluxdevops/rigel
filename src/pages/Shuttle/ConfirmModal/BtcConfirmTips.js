@@ -43,8 +43,8 @@ function BtcConfirmTips() {
             </CopyToClipboard>
           </div>
           <div className="flex flex-col w-full bg-warning-10 p-3 text-xs">
-            <span className="text-warning-dark flex items-center">
-              <AlertTriangle className="mr-2 w-4 h-4" />
+            <span className="text-warning-dark flex items-center font-medium">
+              <AlertTriangle className="mr-1 w-4 h-4" />
               {t('pleaseWait')}
             </span>
             <span className="text-gray-80">{t('waitOneHour')}</span>

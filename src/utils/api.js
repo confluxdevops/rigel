@@ -6,11 +6,7 @@ export function requestAllTokenList(url) {
 }
 
 export function requestToken(url, fromChain, toChain, address) {
-  return jsonRpc(url, 'searchToken', {
-    from_chain: fromChain,
-    to_chain: toChain,
-    token_address: address,
-  })
+  return jsonRpc(url, 'searchToken', [fromChain, toChain, address])
 }
 
 /**
