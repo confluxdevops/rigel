@@ -144,9 +144,6 @@ module.exports = {
         293: '73.25rem',
         302: '75.5rem',
       },
-      minHeight: {
-        15: '60rem',
-      },
     },
   },
   variants: {

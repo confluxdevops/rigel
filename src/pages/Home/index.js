@@ -24,6 +24,7 @@ import {
   TunnelLeft,
   TunnelRight,
 } from '../../assets/img'
+import {Button} from '../../components'
 
 function Home() {
   useEffectOnce(() => {
@@ -34,6 +35,16 @@ function Home() {
   })
   const {i18n, t} = useTranslation()
   const {language} = i18n
+  const onOpenApp = () => {
+    window.open('/shuttle')
+  }
+  const onOpenPaper = () => {
+    window.open(
+      language === 'en'
+        ? 'https://shuttleflow.io/assets/SF-whitepaper-en.bbd9b.modern.pdf'
+        : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf',
+    )
+  }
   return (
     <div className="w-full h-screen relative">
       <div className="w-360">
@@ -41,26 +52,12 @@ function Home() {
           <img className="w-160 pt-24" src={ShuttleFlow} alt="title" />
           <p className="text-gray-400 mt-9 text-xl">{t('home.subTitle')}</p>
           <div className="mt-9 flex">
-            <a
-              className="bg-primary w-32 h-10 rounded-sm flex justify-center items-center mr-5"
-              href="/shuttle"
-              rel="noreferrer"
-              target="_blank"
-            >
-              <p className="text-white text-sm">{t('home.shuttleFlow')}</p>
-            </a>
-            <a
-              className="bg-primary w-24 h-10 rounded-sm flex justify-center items-center"
-              href={
-                language === 'en'
-                  ? 'https://shuttleflow.io/assets/SF-whitepaper-en.bbd9b.modern.pdf'
-                  : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf'
-              }
-              rel="noreferrer"
-              target="_blank"
-            >
-              <p className="text-white text-sm">{t('home.lightPaper')}</p>
-            </a>
+            <Button className="mr-5" onClick={() => onOpenApp()}>
+              {t('home.shuttleFlow')}
+            </Button>
+            <Button onClick={() => onOpenPaper()}>
+              {t('home.lightPaper')}
+            </Button>
           </div>
         </div>
         <div className="relative">
