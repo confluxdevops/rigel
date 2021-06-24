@@ -1,27 +1,29 @@
 import {useEffectOnce} from 'react-use'
 import {useTranslation} from 'react-i18next'
-import {BaseCenter} from '../../assets/img'
-import {BaseLeft} from '../../assets/img'
-import {BaseRight} from '../../assets/img'
-import {ShuttleFlow} from '../../assets/img'
-import {TokenLeft} from '../../assets/img'
-import {SfCenter} from '../../assets/img'
-import {TokenRight} from '../../assets/img'
-import {CopyRight} from '../../assets/img'
-import {Twitter} from '../../assets/img'
-import {Telegram} from '../../assets/img'
-import {Discord} from '../../assets/img'
-import {Medium} from '../../assets/img'
-import {GitHub} from '../../assets/img'
-import {LightLeft} from '../../assets/img'
-import {LightRight} from '../../assets/img'
-import {LightCenter} from '../../assets/img'
-import {LightTunnel1} from '../../assets/img'
-import {LightTunnel2} from '../../assets/img'
-import {PipleLeft} from '../../assets/img'
-import {PipleRight} from '../../assets/img'
-import {TunnelLeft} from '../../assets/img'
-import {TunnelRight} from '../../assets/img'
+import {
+  BaseCenter,
+  BaseLeft,
+  BaseRight,
+  ShuttleFlow,
+  TokenLeft,
+  SfCenter,
+  TokenRight,
+  CopyRight,
+  Twitter,
+  Telegram,
+  Discord,
+  Medium,
+  GitHub,
+  LightLeft,
+  LightRight,
+  LightCenter,
+  LightTunnel1,
+  LightTunnel2,
+  PipleLeft,
+  PipleRight,
+  TunnelLeft,
+  TunnelRight,
+} from '../../assets/img'
 
 function Home() {
   useEffectOnce(() => {
@@ -33,11 +35,11 @@ function Home() {
   const {i18n, t} = useTranslation()
   const {language} = i18n
   return (
-    <div className="w-full min-h-15 h-screen relative">
+    <div className="w-full h-screen relative">
       <div className="w-360">
         <div className="ml-24">
           <img className="w-160 pt-24" src={ShuttleFlow} alt="title" />
-          <p className="text-gray-400 mt-9 text-xl">{t('homePage.subTitle')}</p>
+          <p className="text-gray-400 mt-9 text-xl">{t('home.subTitle')}</p>
           <div className="mt-9 flex">
             <a
               className="bg-primary w-32 h-10 rounded-sm flex justify-center items-center mr-5"
@@ -45,7 +47,7 @@ function Home() {
               rel="noreferrer"
               target="_blank"
             >
-              <p className="text-white text-sm">{t('homePage.ShuttleFlow')}</p>
+              <p className="text-white text-sm">{t('home.shuttleFlow')}</p>
             </a>
             <a
               className="bg-primary w-24 h-10 rounded-sm flex justify-center items-center"
@@ -57,7 +59,7 @@ function Home() {
               rel="noreferrer"
               target="_blank"
             >
-              <p className="text-white text-sm">{t('homePage.LightPaper')}</p>
+              <p className="text-white text-sm">{t('home.lightPaper')}</p>
             </a>
           </div>
         </div>
@@ -186,7 +188,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-8 w-full flex justify-between py-4 border-solid border-t-2 border-gray-20">
+      <div className="absolute bottom-16 w-full flex justify-between py-4 border-solid border-t-2 border-gray-20">
         <img src={CopyRight} alt="copyright" />
         <div className="flex">
           <a
