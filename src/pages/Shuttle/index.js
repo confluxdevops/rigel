@@ -141,7 +141,7 @@ function Shuttle() {
 
   if (!fromChain) return null
   return (
-    <div className="flex justify-center px-3 md:px-0">
+    <div className="flex flex-1 justify-center px-3 md:px-0">
       {!tokenListShow && (
         <ShuttleForm
           fromChain={fromChain}
