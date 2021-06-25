@@ -42,7 +42,6 @@ function ShuttleForm({
   const [errorMsg, setErrorMsg] = useState('')
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
-  const [shuttlePaused, setShuttlePaused] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
   const {address: toAddress} = useWallet(toChain)
@@ -86,6 +85,14 @@ function ShuttleForm({
         : minimal_in_value?.toNumber(),
     [isFromChainCfx, minimal_in_value, minimal_out_value],
   )
+
+  const shuttlePaused = useMemo(() => {
+    try {
+      return reference !== KeyOfBtc && sponsorValue?.lte(safe_sponsor_amount)
+    } catch (error) {
+      return false
+    }
+  }, [reference, safe_sponsor_amount, sponsorValue])
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -180,20 +187,6 @@ function ShuttleForm({
     toAddress,
     btnDisabled,
   ])
-
-  useEffect(() => {
-    try {
-      // lack of mortgage when current value of sponsor is less than or equal to current safe amount of sponsor, in this case , the shuttle action must be paused
-      // no shuttle pausing when the reference is btc
-      if (reference !== KeyOfBtc && sponsorValue?.lte(safe_sponsor_amount)) {
-        setShuttlePaused(true)
-      } else {
-        setShuttlePaused(false)
-      }
-    } catch (error) {
-      setShuttlePaused(false)
-    }
-  }, [reference, safe_sponsor_amount, sponsorValue])
 
   return (
     <div className="flex flex-col relative mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl h-fit">

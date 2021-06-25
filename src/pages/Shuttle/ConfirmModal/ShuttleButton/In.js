@@ -23,7 +23,7 @@ import {
   useWallet,
 } from '../../../../hooks/useWallet'
 import {useTokenContract} from '../../../../hooks/useWeb3Network'
-import {calculateGasMargin} from '../../../../utils'
+import {calculateGasMargin, getExponent} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 
 function ShuttleInButton({
@@ -58,7 +58,7 @@ function ShuttleInButton({
     if (!isNativeToken) {
       if (
         new Big(tokenAllownace ? tokenAllownace.toString(10) : 0).lt(
-          new Big(value).times(`1e${decimals}`),
+          new Big(value).times(getExponent(decimals)),
         )
       ) {
         setApproveShown(true)

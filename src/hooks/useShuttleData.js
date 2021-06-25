@@ -9,12 +9,12 @@ import {KeyOfBtc, KeyOfCfx} from '../constants/chainConfig'
 import {ZeroAddrHex} from '../constants'
 import {useIsCfxChain} from '../hooks'
 import {mapToken} from '../hooks/useTokenList'
+import {getExponent} from '../utils'
 
 export function useShuttleData() {}
 
 /**
  *
- * @param {*} type 'obverse' 'reverse'
  * @param {*} chainOfContract which chain this contract in
  * @param {*} token
  * @returns
@@ -38,7 +38,7 @@ export function useCustodianData(chainOfContract, token) {
     chainOfContract,
   )
   const contract = isCfxChain ? reverseContract : obverseContract
-  const dicimalsNum = `1e${decimals}`
+  const dicimalsNum = getExponent(decimals)
   const [contractData, setContractData] = useState({})
   useEffect(() => {
     if (!origin) {
@@ -87,8 +87,8 @@ export function useCustodianData(chainOfContract, token) {
           minimal_out_value: isCfxChain
             ? minimal_mint_value.div(`${dicimalsNum}`)
             : minimal_burn_value.div(`${dicimalsNum}`),
-          minimal_sponsor_amount: minimal_sponsor_amount.div('1e18'),
-          safe_sponsor_amount: safe_sponsor_amount.div('1e18'),
+          minimal_sponsor_amount: minimal_sponsor_amount.div(getExponent(18)),
+          safe_sponsor_amount: safe_sponsor_amount.div(getExponent(18)),
         })
       })
       .catch(() => {
@@ -131,7 +131,7 @@ export function useSponsorData(chainOfContract, token) {
       .then(data => {
         setContractData({
           sponsor: data[0],
-          sponsorValue: Big(data[1])?.div('1e18'),
+          sponsorValue: Big(data[1])?.div(getExponent(18)),
         })
       })
       .catch(() => {

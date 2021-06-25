@@ -7,7 +7,7 @@ export function useShuttleContract(contractType, chain) {
   const contractObj = ContractConfig[contractType]
   const {abi, wallet} = contractObj
   const addressOfChain = contractObj?.address?.[chain]
-  let address = addressOfChain ? addressOfChain : contractObj?.address
+  const address = addressOfChain ? addressOfChain : contractObj?.address
   const contractPortal = useContractPortal(address, abi)
   const contractWeb3 = useContractWeb3(address, abi)
   let contract = {}

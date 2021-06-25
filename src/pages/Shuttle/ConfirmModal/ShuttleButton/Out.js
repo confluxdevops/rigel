@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
@@ -13,8 +14,8 @@ import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {ContractType} from '../../../../constants/contractConfig'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
 import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
-import {useState, useEffect} from 'react'
 import {useShuttleState} from '../../../../state'
+import {getExponent} from '../../../../utils'
 
 function ShuttleOutButton({
   fromChain,
@@ -62,7 +63,7 @@ function ShuttleOutButton({
     setTxModalShow(true)
     setTxModalType(TxReceiptModalType.ongoing)
     if (isCfxChain) {
-      const amountVal = Big(value).mul(`1e${decimals}`)
+      const amountVal = Big(value).mul(getExponent(decimals))
       if (ctoken === KeyOfCfx) {
         try {
           const data = await confluxJS.sendTransaction({
@@ -90,12 +91,12 @@ function ShuttleOutButton({
         }
       }
     } else {
-      const amountVal = Big(value).mul(`1e18`)
+      const amountVal = Big(value).mul(getExponent(18))
       try {
         const data = await tokenBaseContract['burn'](
           fromAddress,
           amountVal,
-          Big(out_fee).mul('1e18'),
+          Big(out_fee).mul(getExponent(18)),
           outAddress,
           ZeroAddrHex,
         ).sendTransaction({
