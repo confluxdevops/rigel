@@ -9,8 +9,8 @@ import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../../hooks'
 
 function TokenItem({chain, token, selectedToken, onClick}) {
-  const {addToken} = useAddTokenToMetamask(token)
-  const {symbol, name, address} = token
+  const {address, display_symbol, display_name} = token
+  const {addToken, success} = useAddTokenToMetamask(token)
   const isCfxChain = useIsCfxChain(chain)
   const tokenAddress = shortenAddress(chain, address, 'contract')
 
@@ -22,8 +22,9 @@ function TokenItem({chain, token, selectedToken, onClick}) {
   }
 
   const onAddToken = e => {
-    addToken(token, e)
     e.stopPropagation()
+    if (success) return
+    addToken()
   }
 
   return (
@@ -35,8 +36,8 @@ function TokenItem({chain, token, selectedToken, onClick}) {
       <div className="flex items-center">
         <TokenIcon size="large" chain={chain} token={token} showAlarm={true} />
         <div className="flex flex-col ml-2">
-          <span className="text-gray-100">{symbol}</span>
-          <span className="text-gray-40 text-xs">{name}</span>
+          <span className="text-gray-100">{display_symbol}</span>
+          <span className="text-gray-40 text-xs">{display_name}</span>
         </div>
       </div>
       <div className="flex">

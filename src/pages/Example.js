@@ -35,10 +35,9 @@ function Example() {
   //Data for test
   const token = {
     icon: 'https://test.shuttleflow.confluxnetwork.org/assets/ether.d5f86.modern.svg',
-    name: 'ETH',
     origin: 'eth',
-    reference_name: 'ETH',
-    symbol: 'cEth',
+    reference_symbol: 'ETH',
+    display_symbol: 'cEth',
   }
 
   // const openNotification = () => {
@@ -131,10 +130,15 @@ function Example() {
           Max
         </Tag>
         <div>
-          <TokenSelect token={token} type="from" chain="eth" />
+          <TokenSelect
+            token={token}
+            type="from"
+            fromChain="eth"
+            toChain="cfx"
+          />
         </div>
         <div>
-          <TokenSelect token={token} type="to" chain="cfx" />
+          <TokenSelect token={token} type="to" fromChain="cfx" toChain="eth" />
         </div>
         <TransactionReceiptionModal
           type="ongoing"

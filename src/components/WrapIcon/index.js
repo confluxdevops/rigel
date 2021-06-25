@@ -4,7 +4,7 @@ import {CircleBg, SquareBg} from '../../assets/svg'
 function WrapIcon({type, size = 'w-4 h-4', children, className = '', onClick}) {
   return (
     <div
-      onClick={() => onClick && onClick()}
+      onClick={e => onClick && onClick(e)}
       aria-hidden="true"
       className={`${size} relative flex justify-center items-center cursor-pointer ${className}`}
     >

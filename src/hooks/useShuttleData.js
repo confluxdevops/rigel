@@ -22,8 +22,7 @@ export function useShuttleData() {}
 export function useCustodianData(chainOfContract, token) {
   const {origin, decimals, ctoken} = token
   const isCfxChain = useIsCfxChain(origin)
-  const {address} = useTokenAddress(token, isCfxChain)
-  let contractAddress = address
+  let contractAddress = useTokenAddress(token, isCfxChain)
   if (ctoken === KeyOfCfx) {
     contractAddress = ZeroAddrHex
   }
@@ -93,15 +92,14 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [address, contract, contractAddress, dicimalsNum, isCfxChain, origin])
+  }, [contract, contractAddress, dicimalsNum, isCfxChain, origin])
   return contractData
 }
 
 export function useSponsorData(chainOfContract, token) {
   const {origin, ctoken} = token
   const isCfxChain = useIsCfxChain(origin)
-  const address = useTokenAddress(token, isCfxChain)
-  let contractAddress = address
+  let contractAddress = useTokenAddress(token, isCfxChain)
   if (ctoken === KeyOfCfx) {
     contractAddress = ZeroAddrHex
   }
@@ -135,22 +133,22 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [address, contract, contractAddress, origin])
+  }, [contract, contractAddress, origin])
   return contractData
 }
 
 export function useShuttleFee(chainOfContract, token, toChain) {
-  const isCfxChain = useIsCfxChain(toChain)
+  const isToChainCfx = useIsCfxChain(toChain)
   const {in_fee, out_fee} = useCustodianData(chainOfContract, token)
   return useMemo(
     () =>
-      isCfxChain
+      isToChainCfx
         ? in_fee
           ? in_fee.toString(10)
           : 0
         : out_fee
         ? out_fee.toString(10)
         : 0,
-    [in_fee, isCfxChain, out_fee],
+    [in_fee, isToChainCfx, out_fee],
   )
 }

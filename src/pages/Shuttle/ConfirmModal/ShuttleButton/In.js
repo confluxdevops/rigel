@@ -41,7 +41,7 @@ function ShuttleInButton({
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [didMount, setDidMount] = useState(false)
-  const {address, decimals, symbol} = fromToken
+  const {address, decimals, display_symbol} = fromToken
   const {address: fromAccountAddress} = useWallet(fromChain)
   const {address: toAccountAddress} = useWallet(toChain)
   const isNativeToken = useIsNativeToken(fromChain, address)
@@ -184,7 +184,7 @@ function ShuttleInButton({
       {approveShown && (
         <Button onClick={onApprove} disabled={disabled} size="large">
           {isApproving && <Loading size="w-6 h-6" />}
-          {!isApproving && t('approve', {token: symbol})}
+          {!isApproving && t('approve', {tokenSymbol: display_symbol})}
         </Button>
       )}
       {!approveShown && (
