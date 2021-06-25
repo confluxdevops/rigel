@@ -1,7 +1,7 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
-import {ERC20_ABI} from '../abi/'
+import {ERC20_ABI} from '../abi'
 
 export function useInstalled() {
   const {portalInstalled} = useConfluxPortal()

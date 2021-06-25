@@ -56,7 +56,7 @@ function ShuttleForm({
     toChain,
     isFromChainCfx ? 'out' : 'in',
   )
-  const {address, decimal, supported, reference} = fromToken
+  const {address, decimal, supported} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
   const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
@@ -88,11 +88,14 @@ function ShuttleForm({
 
   const shuttlePaused = useMemo(() => {
     try {
-      return reference !== KeyOfBtc && sponsorValue?.lte(safe_sponsor_amount)
+      return (
+        !(fromChain === KeyOfBtc || toChain === KeyOfBtc) &&
+        sponsorValue?.lte(safe_sponsor_amount)
+      )
     } catch (error) {
       return false
     }
-  }, [reference, safe_sponsor_amount, sponsorValue])
+  }, [fromChain, safe_sponsor_amount, sponsorValue, toChain])
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
