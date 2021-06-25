@@ -26,8 +26,8 @@
   "connect": "连接",
   "error": {
     "inputValidAmount": "请输入数字",
-    "mustGtZero": "值必须大于0",
-    "mustLsMax": "值需要小于 {{value}}",
+    "mustGtVal": "值必须大于等于{{value}}",
+    "mustLsMax": "值需要小于等于 {{value}}",
     "addressInvalid": "Address is invalid"
   },
   "balance": "余额",

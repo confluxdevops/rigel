@@ -174,6 +174,7 @@ function Shuttle() {
           toChain={toChain}
           value={value}
           fromToken={fromToken}
+          toToken={toToken}
           setTxModalType={setTxModalType}
           setTxModalShow={setTxModalShow}
           setTxHash={setTxHash}

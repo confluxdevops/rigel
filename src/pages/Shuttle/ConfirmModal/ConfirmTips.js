@@ -11,7 +11,6 @@ function ConfirmTips({fromChain, toChain, ...props}) {
   const {t} = useTranslation()
   const isBtcChain = useIsBtcChain(toChain)
   const isCfxChain = useIsCfxChain(toChain)
-  //TODO: add shuttleOut function
   let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
 
   return (

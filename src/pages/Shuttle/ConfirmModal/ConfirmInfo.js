@@ -2,12 +2,16 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon, Account} from '../../components'
+import {useIsCfxChain} from '../../../hooks'
+import {useShuttleFee} from '../../../hooks/useShuttleData'
 
 function ConfirmInfo({fromChain, toChain, fromToken}) {
-  const {t} = useTranslation()
   const {symbol} = fromToken
-  //TODO
-  const shuttleFee = '0.00' //useShuttleFee()
+  const {t} = useTranslation()
+  const isFromChainCfx = useIsCfxChain(fromChain)
+  const chainOfContract = isFromChainCfx ? toChain : fromChain
+  const shuttleFee = useShuttleFee(chainOfContract, fromToken, toChain)
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex items-center justify-between mt-4">
@@ -36,6 +40,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
 
 ConfirmInfo.propTypes = {
   fromToken: PropTypes.object.isRequired,
+  toToken: PropTypes.object.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
 }

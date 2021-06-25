@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
@@ -11,16 +10,21 @@ import {Logger} from '@ethersproject/logger'
 
 import {Button, Loading} from '../../../../components'
 import {Send} from '../../../../assets/svg'
-import {SupportedChains, ChainConfig} from '../../../../constants/chainConfig'
+import {SupportedChains} from '../../../../constants/chainConfig'
+import {
+  ContractConfig,
+  ContractType,
+} from '../../../../constants/contractConfig'
+
 import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
 import {
   useIsNativeToken,
   useTokenAllowance,
   useWallet,
 } from '../../../../hooks/useWallet'
-import {useContract, useTokenContract} from '../../../../hooks/useWeb3Network'
-import DEPOSIT_RELAYER_ABI from '../../../../abi/depositRelayerABI.json'
-import {calculateGasMargin} from '../../../../utils'
+import {useTokenContract} from '../../../../hooks/useWeb3Network'
+import {calculateGasMargin, getExponent} from '../../../../utils'
+import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 
 function ShuttleInButton({
   fromChain,
@@ -33,8 +37,6 @@ function ShuttleInButton({
   setTxModalShow,
   setTxHash,
 }) {
-  const drContractAddress =
-    ChainConfig[fromChain].contractAddress?.depositRelayer
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
@@ -43,7 +45,9 @@ function ShuttleInButton({
   const {address: fromAccountAddress} = useWallet(fromChain)
   const {address: toAccountAddress} = useWallet(toChain)
   const isNativeToken = useIsNativeToken(fromChain, address)
-  const drContract = useContract(drContractAddress, DEPOSIT_RELAYER_ABI)
+  const drContractAddress =
+    ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
+  const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
   const tokenContract = useTokenContract(address)
   const tokenAllownace = useTokenAllowance(fromChain, address, [
     fromAccountAddress,
@@ -54,7 +58,7 @@ function ShuttleInButton({
     if (!isNativeToken) {
       if (
         new Big(tokenAllownace ? tokenAllownace.toString(10) : 0).lt(
-          new Big(value).times(`1e${decimals}`),
+          new Big(value).times(getExponent(decimals)),
         )
       ) {
         setApproveShown(true)
@@ -134,7 +138,7 @@ function ShuttleInButton({
           setTxHash(data.hash)
           setTxModalType(TxReceiptModalType.success)
         })
-        .catch(error => {
+        .catch(() => {
           setTxModalType(TxReceiptModalType.error)
         })
     } else {
@@ -164,7 +168,7 @@ function ShuttleInButton({
           setTxHash(data.hash)
           setTxModalType(TxReceiptModalType.success)
         })
-        .catch(error => {
+        .catch(() => {
           setTxModalType(TxReceiptModalType.error)
         })
     }

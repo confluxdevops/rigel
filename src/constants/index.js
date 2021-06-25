@@ -32,3 +32,5 @@ export const TxReceiptModalType = {
   error: 'error',
 }
 export const MobileBreakpoint = 768
+
+export const Decimal18 = '1e18'

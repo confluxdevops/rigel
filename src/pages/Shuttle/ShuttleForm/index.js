@@ -9,6 +9,7 @@ import {
   DefaultFromChain,
   DefaultToChain,
   SupportedChains,
+  KeyOfBtc,
 } from '../../../constants/chainConfig'
 
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
@@ -22,6 +23,7 @@ import ChainSelect from './ChainSelect'
 import FromToken from './FromToken'
 import ToToken from './ToToken'
 import ToBtcAddress from './ToBtcAddress'
+import {useCustodianData, useSponsorData} from '../../../hooks/useShuttleData'
 
 function ShuttleForm({
   fromChain,
@@ -40,7 +42,6 @@ function ShuttleForm({
   const [errorMsg, setErrorMsg] = useState('')
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
-  const [originalShuttleAddress, setOriginalShuttleAddress] = useState()
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
   const {address: toAddress} = useWallet(toChain)
@@ -50,7 +51,7 @@ function ShuttleForm({
   const isFromChainBtc = useIsBtcChain(fromChain)
   const isToChainBtc = useIsBtcChain(toChain)
   const shuttleAddress = useShuttleAddress(
-    originalShuttleAddress,
+    isFromChainBtc ? toAddress : '',
     fromChain,
     toChain,
     isFromChainCfx ? 'out' : 'in',
@@ -58,6 +59,10 @@ function ShuttleForm({
   const {address, decimal, supported} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
+  const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
+  const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
+    useCustodianData(chainOfContract, toToken)
+  const {sponsorValue} = useSponsorData(chainOfContract, toToken)
 
   const balanceVal = useMemo(
     () => convertDecimal(balance, 'divide', decimal),
@@ -72,6 +77,25 @@ function ShuttleForm({
       ).toString(10),
     [balanceVal, fromChain, isNativeToken],
   )
+
+  const minimalVal = useMemo(
+    () =>
+      isFromChainCfx
+        ? minimal_out_value?.toNumber()
+        : minimal_in_value?.toNumber(),
+    [isFromChainCfx, minimal_in_value, minimal_out_value],
+  )
+
+  const shuttlePaused = useMemo(() => {
+    try {
+      return (
+        !(fromChain === KeyOfBtc || toChain === KeyOfBtc) &&
+        sponsorValue?.lte(safe_sponsor_amount)
+      )
+    } catch (error) {
+      return false
+    }
+  }, [fromChain, safe_sponsor_amount, sponsorValue, toChain])
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -113,14 +137,14 @@ function ShuttleForm({
     let error = ''
     if (!isNaN(val)) {
       const valBig = new Big(val)
-      if (valBig.gt(0)) {
+      if (valBig.gte(minimalVal)) {
         //must be greater than zero
         if (!isFromChainBtc && !valBig.lte(maxAmount)) {
           //must be less than Max value
           error = t('error.mustLsMax', {value: maxAmount})
         }
       } else {
-        error = t('error.mustGtZero')
+        error = t('error.mustGtVal', {value: minimalVal})
       }
     } else {
       //not a valid number
@@ -164,15 +188,8 @@ function ShuttleForm({
     isToChainBtc,
     isToChainCfx,
     toAddress,
+    btnDisabled,
   ])
-
-  useEffect(() => {
-    if (isFromChainBtc) {
-      setOriginalShuttleAddress(toAddress)
-    } else {
-      setOriginalShuttleAddress('')
-    }
-  }, [fromChain, isFromChainBtc, toAddress])
 
   return (
     <div className="flex flex-col relative mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl h-fit">
@@ -222,15 +239,17 @@ function ShuttleForm({
           onAddressInputChange={onAddressInputChange}
         />
       )}
-      <Button
-        className="mt-6"
-        fullWidth
-        size="large"
-        disabled={btnDisabled}
-        onClick={onNextBtnClick}
-      >
-        {t('next')}
-      </Button>
+      {!shuttlePaused && supported !== 0 && (
+        <Button
+          className="mt-6"
+          fullWidth
+          size="large"
+          disabled={btnDisabled}
+          onClick={onNextBtnClick}
+        >
+          {t('next')}
+        </Button>
+      )}
       {supported === 0 && (
         <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
           <span className="flex items-center font-medium">
@@ -242,8 +261,7 @@ function ShuttleForm({
           </span>
         </div>
       )}
-      {/* TODO: if shuttle paused */}
-      {false && (
+      {shuttlePaused && (
         <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
           <span className="flex items-center font-medium">
             <AlertTriangle className="mr-1 w-4 h-4" />

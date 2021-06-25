@@ -9,6 +9,7 @@ import {
 } from '../../../constants/chainConfig'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
+import {useIsNativeToken} from '../../../hooks/useWallet'
 import {TxReceiptModalType} from '../../../constants'
 
 function TransactionReceiptionModal({
@@ -24,6 +25,7 @@ function TransactionReceiptionModal({
 }) {
   const {t} = useTranslation()
   const {addToken, success} = useAddTokenToMetamask(toToken)
+  const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   let content
   const onAddToken = () => {
     if (success) return
@@ -60,7 +62,7 @@ function TransactionReceiptionModal({
         <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
           {t('viewOnScan')}
         </Link>
-        {ChainConfig[toChain].wallet === KeyOfMetaMask && (
+        {ChainConfig[toChain].wallet === KeyOfMetaMask && !isNativeToken && (
           <Button
             variant="outlined"
             fullWidth

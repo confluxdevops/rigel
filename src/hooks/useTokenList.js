@@ -18,6 +18,7 @@ function mapToken(token, isCfxChain) {
     ...others
   } = token
   return {
+    ...others,
     //symbol, name,cname address is only for dispalying
     // ctoken, csymbol, cname is conflux token info
     // reference, reference_symbol, reference_name is other chain token info
@@ -30,7 +31,6 @@ function mapToken(token, isCfxChain) {
     reference,
     reference_symbol,
     reference_name,
-    ...others,
   }
 }
 
@@ -187,4 +187,10 @@ export function useToToken(fromChain, toChain, fromTokenAddress) {
   )
 
   return (data && data[0]) || {}
+}
+
+export function useTokenAddress(token, isCfxChain) {
+  if (!token) return ''
+  const {ctoken, reference} = token
+  return isCfxChain ? ctoken : reference // address may be string, such as 'eth', 'cfx'
 }

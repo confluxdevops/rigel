@@ -19,7 +19,7 @@ import {
  */
 export const KeyOfEth = 'eth'
 export const ScanUrlEth = IS_DEV
-  ? 'https://rinkeby.etherscan.io/'
+  ? 'https://rinkeby.etherscan.io'
   : 'https://etherscan.io'
 export const ChainIdEth = {
   MAINNET: 1,
@@ -34,8 +34,8 @@ export const ChainIdEth = {
  */
 export const KeyOfBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
-  ? 'https://testnet.bscscan.com/'
-  : 'https://bscscan.com/'
+  ? 'https://testnet.bscscan.com'
+  : 'https://bscscan.com'
 export const ChainIdBsc = {
   MAINNET: 56,
   TESTNET: 97,
@@ -47,8 +47,8 @@ export const ChainIdBsc = {
 
 export const KeyOfOec = 'oec'
 export const ScanUrlOec = IS_DEV
-  ? 'https://www.oklink.com/okexchain/'
-  : 'https://www.oklink.com/okexchain-test/'
+  ? 'https://www.oklink.com/okexchain'
+  : 'https://www.oklink.com/okexchain-test'
 export const ChainIdOec = {
   MAINNET: 66,
   TESTNET: 65,
@@ -59,8 +59,8 @@ export const ChainIdOec = {
  */
 export const KeyOfCfx = 'cfx'
 export const ScanUrlCfx = IS_DEV
-  ? 'https://testnet.confluxscan.io/'
-  : 'https://confluxscan.io/'
+  ? 'https://testnet.confluxscan.io'
+  : 'https://confluxscan.io'
 export const ChainIdCfx = {
   MAINNET: 1029,
   TESTNET: 1,
@@ -122,12 +122,6 @@ export const ChainConfig = {
     supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
     wallet: KeyOfMetaMask,
     remainderAmount: 0.15, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
-    contractAddress: {
-      //TODO(refactor): need to write to ContractConfig
-      depositRelayer: IS_DEV
-        ? '0x2f9bd2eeb09a006adf39a33b8782aaf4c7c84b63'
-        : '0x02a9656f6851527e2199ce0ad3c15adddbaf734f',
-    },
   },
   [KeyOfBsc]: {
     key: KeyOfBsc,
@@ -147,11 +141,6 @@ export const ChainConfig = {
     supportedChainIds: Object.values(ChainIdBsc),
     wallet: KeyOfMetaMask,
     remainderAmount: 0.002,
-    contractAddress: {
-      depositRelayer: IS_DEV
-        ? '0x95edfd5fd720ace4cd585a469e5d8f12a448e27c'
-        : '0x50468a03643ae9664c3c40b2bdcd4ebc8a6bc1f3',
-    },
   },
   [KeyOfOec]: {
     key: KeyOfOec,
@@ -171,11 +160,6 @@ export const ChainConfig = {
     supportedChainIds: Object.values(ChainIdOec),
     wallet: KeyOfMetaMask,
     remainderAmount: 0.001,
-    contractAddress: {
-      depositRelayer: IS_DEV
-        ? '0x5cF9C20DE32aE58d33Cb8C22e73d9b2B2E886AdA'
-        : '0x214c2958C04150846A442A7b977F9f190B603F31',
-    },
   },
   [KeyOfCfx]: {
     key: KeyOfCfx,
