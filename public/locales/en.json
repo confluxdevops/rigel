@@ -62,5 +62,10 @@
   },
   "pleaseWait": "Please Wait Patiently",
   "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
-  "copiedSuccess": "Copied success!"
+  "copiedSuccess": "Copied success!",
+  "maintenance": {
+    "underMaint": "Under maintenance",
+    "maintDesc1": "We are currently undergoing maintenance. We will be back shortly.",
+    "maintDesc2": "Thank you for your patience!"
+  }
 }

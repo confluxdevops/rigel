@@ -31,7 +31,17 @@ function Header() {
     },
     {type: 'approve', tokenSymbol: 'UNI'},
   ]
-  if (pathname !== '/') {
+
+  if (pathname === '/') {
+    return (
+      <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
+        {!isMobile ? <DarkLogo /> : <DarkMobileLogo />}
+        <LanguageButton />
+      </div>
+    )
+  } else if (pathname === '/maintenance') {
+    return null
+  } else {
     return (
       <div className="h-12 md:h-16 px-3 md:px-8 bg-transparent flex justify-between items-center w-full">
         <div className="flex items-center justify-between w-full md:w-auto md:justify-start">
@@ -54,13 +64,6 @@ function Header() {
             <LanguageButton />
           </div>
         )}
-      </div>
-    )
-  } else {
-    return (
-      <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
-        {!isMobile ? <DarkLogo /> : <DarkMobileLogo />}
-        <LanguageButton />
       </div>
     )
   }
