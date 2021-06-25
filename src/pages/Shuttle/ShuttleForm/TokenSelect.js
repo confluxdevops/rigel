@@ -10,7 +10,7 @@ function TokenSelect({token, onClick, type, fromChain, toChain}) {
   const isFromBtcChain = useIsBtcChain(fromChain)
   const isToBtcChain = useIsBtcChain(toChain)
   const chain = type === 'from' ? fromChain : toChain
-  const {symbol} = token
+  const {display_symbol} = token
   const style = useMemo(() => {
     if (type === 'from') return 'text-gray-100'
     if (type === 'to') return 'text-gray-40'
@@ -23,7 +23,7 @@ function TokenSelect({token, onClick, type, fromChain, toChain}) {
       aria-hidden="true"
     >
       <TokenIcon token={token} chain={chain} size="small" />
-      <span className={`ml-1 ${style}`}>{symbol}</span>
+      <span className={`ml-1 ${style}`}>{display_symbol}</span>
       {type === 'from' && !isFromBtcChain && !isToBtcChain && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />

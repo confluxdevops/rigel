@@ -6,7 +6,7 @@ import {useIsCfxChain} from '../../../hooks'
 import {useShuttleFee} from '../../../hooks/useShuttleData'
 
 function ConfirmInfo({fromChain, toChain, fromToken}) {
-  const {symbol} = fromToken
+  const {display_symbol} = fromToken
   const {t} = useTranslation()
   const isFromChainCfx = useIsCfxChain(fromChain)
   const chainOfContract = isFromChainCfx ? toChain : fromChain
@@ -18,7 +18,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
         <span className="text-gray-40">{t('asset')}</span>
         <div className="flex">
           <TokenIcon size="medium" chain={fromChain} token={fromToken} />
-          <span className="text-gray-100 ml-1">{symbol}</span>
+          <span className="text-gray-100 ml-1">{display_symbol}</span>
         </div>
       </div>
       <div className="flex items-center justify-between mt-4">
@@ -32,7 +32,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
       </div>
       <div className="flex items-center justify-between mt-4">
         <span className="text-gray-40">{t('shuttleFee')}</span>
-        <span className="text-gray-100">{`${shuttleFee} ${symbol}`}</span>
+        <span className="text-gray-100">{`${shuttleFee} ${display_symbol}`}</span>
       </div>
     </div>
   )
@@ -40,7 +40,6 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
 
 ConfirmInfo.propTypes = {
   fromToken: PropTypes.object.isRequired,
-  toToken: PropTypes.object.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
 }

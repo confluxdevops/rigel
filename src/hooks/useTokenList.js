@@ -19,15 +19,15 @@ function mapToken(token, isCfxChain) {
   } = token
   return {
     ...others,
-    //symbol, name,cname address is only for dispalying
-    // ctoken, csymbol, cname is conflux token info
+    //display_symbol, display_name, address is only for dispalying
+    // ctoken, symbol, name is conflux token info
     // reference, reference_symbol, reference_name is other chain token info
-    symbol: isCfxChain ? symbol : reference_symbol,
-    name: isCfxChain ? name : reference_name,
+    display_symbol: isCfxChain ? symbol : reference_symbol,
+    display_name: isCfxChain ? name : reference_name,
     address: isCfxChain ? ctoken : reference, // address may be string, such as 'eth', 'cfx'
     ctoken,
-    csymbol: symbol,
-    cname: name,
+    symbol,
+    name,
     reference,
     reference_symbol,
     reference_name,
@@ -118,8 +118,8 @@ function useSearchNameFromList(fromChain, toChain, search) {
     () =>
       tokenList.filter(obj => {
         return (
-          obj?.symbol?.toLowerCase().indexOf(search) > -1 ||
-          obj?.name?.toLowerCase().indexOf(search) > -1
+          obj?.display_symbol?.toLowerCase().indexOf(search) > -1 ||
+          obj?.display_name?.toLowerCase().indexOf(search) > -1
         )
       }),
     [search, tokenList],
@@ -190,7 +190,9 @@ export function useToToken(fromChain, toChain, fromTokenAddress) {
 }
 
 export function useTokenAddress(token, isCfxChain) {
-  if (!token) return ''
   const {ctoken, reference} = token
-  return isCfxChain ? ctoken : reference // address may be string, such as 'eth', 'cfx'
+  return useMemo(
+    () => (!token ? '' : isCfxChain ? ctoken : reference),
+    [ctoken, reference, isCfxChain, token],
+  ) // address may be string, such as 'eth', 'cfx'
 }

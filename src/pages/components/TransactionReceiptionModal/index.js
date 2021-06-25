@@ -32,7 +32,7 @@ function TransactionReceiptionModal({
     addToken()
   }
   if (type === 'ongoing') {
-    const token = fromToken && fromToken.symbol
+    const token = fromToken && fromToken.display_symbol
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
@@ -74,10 +74,10 @@ function TransactionReceiptionModal({
           >
             {success
               ? t('addedTokenToMetaMask', {
-                  token: toToken && toToken.symbol,
+                  token: toToken && toToken.display_symbol,
                 })
               : t('addTokenToMetaMask', {
-                  token: toToken && toToken.symbol,
+                  token: toToken && toToken.display_symbol,
                 })}
           </Button>
         )}

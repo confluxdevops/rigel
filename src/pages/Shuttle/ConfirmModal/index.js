@@ -20,12 +20,12 @@ function ConfirmModal({
 }) {
   const {t} = useTranslation()
   const fromIsBtcChain = useIsBtcChain(fromChain)
-  const {symbol} = fromToken
+  const {display_symbol} = fromToken
   const content = (
     <div className="flex flex-col items-center">
       <span className="text-gray-100 text-xl">
         {value}
-        <span className="text-sm ml-1">{symbol}</span>
+        <span className="text-sm ml-1">{display_symbol}</span>
       </span>
       <span className="inline-block -mt-1 mb-4 text-gray-40">
         {t('transactionAmount')}

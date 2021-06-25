@@ -11,14 +11,14 @@ function CommonToken({token, selectedToken, onClick}) {
     }
     return 'bg-gray-0 border border-gray-20 text-gray-80'
   }
-  const {symbol} = token
+  const {display_symbol} = token
   return (
     <div
       className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer ${getSelectedStyle()}`}
       onClick={() => onClick && onClick(token)}
       aria-hidden="true"
     >
-      {symbol}
+      {display_symbol}
     </div>
   )
 }
