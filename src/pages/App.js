@@ -30,11 +30,9 @@ function App() {
                   <History />
                 </Route>
                 <Route path="/" exact>
-                  {/* TODO home page */}
                   <Home />
                 </Route>
                 <Route path="/maintenance" exact>
-                  {/* TODO home page */}
                   <Maintenance />
                 </Route>
               </Switch>
