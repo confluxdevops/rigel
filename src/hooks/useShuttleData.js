@@ -141,7 +141,8 @@ export function useSponsorData(chainOfContract, token) {
   return contractData
 }
 
-export function useShuttleFee(chainOfContract, token, isCfxChain) {
+export function useShuttleFee(chainOfContract, token, chain) {
+  const isCfxChain = useIsCfxChain(chain)
   const {in_fee, out_fee} = useCustodianData(chainOfContract, token)
   return useMemo(
     () =>

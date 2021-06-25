@@ -9,9 +9,8 @@ function ConfirmInfo({fromChain, toChain, fromToken, toToken}) {
   const {symbol} = fromToken
   const {t} = useTranslation()
   const isFromChainCfx = useIsCfxChain(fromChain)
-  const isToChainCfx = useIsCfxChain(toChain)
   const chainOfContract = isFromChainCfx ? toChain : fromChain
-  const shuttleFee = useShuttleFee(chainOfContract, toToken, isToChainCfx)
+  const shuttleFee = useShuttleFee(chainOfContract, toToken, toChain)
 
   return (
     <div className="flex flex-col w-full">
