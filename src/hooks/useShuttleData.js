@@ -1,7 +1,7 @@
 /**
  * data about shuttle, mainly various contract params
  */
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import Big from 'big.js'
 import {useShuttleContract} from './useShuttleContract'
 import {ContractType} from '../constants/contractConfig'
@@ -139,4 +139,19 @@ export function useSponsorData(chainOfContract, token) {
       })
   }, [address, contract, contractAddress, origin])
   return contractData
+}
+
+export function useShuttleFee(chainOfContract, token, isCfxChain) {
+  const {in_fee, out_fee} = useCustodianData(chainOfContract, token)
+  return useMemo(
+    () =>
+      isCfxChain
+        ? in_fee
+          ? in_fee.toString(10)
+          : 0
+        : out_fee
+        ? out_fee.toString(10)
+        : 0,
+    [in_fee, isCfxChain, out_fee],
+  )
 }

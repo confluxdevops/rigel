@@ -1,10 +1,9 @@
-import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon, Account} from '../../components'
 import {useIsCfxChain} from '../../../hooks'
-import {useCustodianData} from '../../../hooks/useShuttleData'
+import {useShuttleFee} from '../../../hooks/useShuttleData'
 
 function ConfirmInfo({fromChain, toChain, fromToken, toToken}) {
   const {symbol} = fromToken
@@ -12,18 +11,7 @@ function ConfirmInfo({fromChain, toChain, fromToken, toToken}) {
   const isFromChainCfx = useIsCfxChain(fromChain)
   const isToChainCfx = useIsCfxChain(toChain)
   const chainOfContract = isFromChainCfx ? toChain : fromChain
-  const {in_fee, out_fee} = useCustodianData(chainOfContract, toToken)
-  const shuttleFee = useMemo(
-    () =>
-      isToChainCfx
-        ? in_fee
-          ? in_fee.toString(10)
-          : 0
-        : out_fee
-        ? out_fee.toString(10)
-        : 0,
-    [in_fee, isToChainCfx, out_fee],
-  )
+  const shuttleFee = useShuttleFee(chainOfContract, toToken, isToChainCfx)
 
   return (
     <div className="flex flex-col w-full">
