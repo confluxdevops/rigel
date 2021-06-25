@@ -1,11 +1,11 @@
 {
   "waiting": "Waiting for confirmation",
-  "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{token}} to {{chain}}",
+  "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{tokenSymbol}} to {{chain}}",
   "confirm": "Confirm this transaction in {{wallet}}",
   "submitted": "Transaction Submitted",
   "viewOnScan": "View on Scan",
-  "addTokenToMetaMask": "Add {{token}} to MetaMask",
-  "addedTokenToMetaMask": "Added {{token}}",
+  "addTokenToMetaMask": "Add {{tokenSymbol}} to MetaMask",
+  "addedTokenToMetaMask": "Added {{tokenSymbol}}",
   "rejected": "Transaction Rejected",
   "installWallet": "Install {{walletName}} Wallet",
   "installTipOne": " You will need to install {{walletName}} to continue.",
@@ -57,7 +57,7 @@
     "shuttlePausedDescription": "From {{fromChain}} to {{toChain}}, token captain stop service."
   },
   "checkboxLabel": "I’m clear the above description",
-  "approve": "Approve {{token}}",
+  "approve": "Approve {{tokenSymbol}}",
   "send": "Send",
   "home": {
     "subTitle": "Lighting Fast Interoperable Protocol",

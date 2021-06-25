@@ -184,7 +184,7 @@ function ShuttleInButton({
       {approveShown && (
         <Button onClick={onApprove} disabled={disabled} size="large">
           {isApproving && <Loading size="w-6 h-6" />}
-          {!isApproving && t('approve', {token: display_symbol})}
+          {!isApproving && t('approve', {tokenSymbol: display_symbol})}
         </Button>
       )}
       {!approveShown && (

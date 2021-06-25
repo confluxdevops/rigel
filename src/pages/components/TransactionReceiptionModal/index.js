@@ -32,12 +32,12 @@ function TransactionReceiptionModal({
     addToken()
   }
   if (type === 'ongoing') {
-    const token = fromToken && fromToken.display_symbol
+    const tokenSymbol = fromToken && fromToken.display_symbol
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
         <span>
-          <Trans i18nKey="shuttleInfo" values={{value, token, chain}} />
+          <Trans i18nKey="shuttleInfo" values={{value, tokenSymbol, chain}} />
         </span>
         <div className="bg-warning-10 text-warning-dark w-full px-6 pt-3 pb-6 mt-4 text-center">
           {t('confirm', {
@@ -74,10 +74,10 @@ function TransactionReceiptionModal({
           >
             {success
               ? t('addedTokenToMetaMask', {
-                  token: toToken && toToken.display_symbol,
+                  tokenSymbol: toToken && toToken.display_symbol,
                 })
               : t('addTokenToMetaMask', {
-                  token: toToken && toToken.display_symbol,
+                  tokenSymbol: toToken && toToken.display_symbol,
                 })}
           </Button>
         )}
