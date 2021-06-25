@@ -9,6 +9,7 @@ import {
   DefaultFromChain,
   DefaultToChain,
   SupportedChains,
+  KeyOfBtc,
 } from '../../../constants/chainConfig'
 
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
@@ -41,7 +42,6 @@ function ShuttleForm({
   const [errorMsg, setErrorMsg] = useState('')
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
-  const [originalShuttleAddress, setOriginalShuttleAddress] = useState()
   const [shuttlePaused, setShuttlePaused] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
@@ -52,18 +52,19 @@ function ShuttleForm({
   const isFromChainBtc = useIsBtcChain(fromChain)
   const isToChainBtc = useIsBtcChain(toChain)
   const shuttleAddress = useShuttleAddress(
-    originalShuttleAddress,
+    isFromChainBtc ? toAddress : '',
     fromChain,
     toChain,
     isFromChainCfx ? 'out' : 'in',
   )
-  const {address, decimal, supported} = fromToken
+  const {address, decimal, supported, reference} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
-  let chainOfContract = isFromChainCfx ? toChain : fromChain
+  const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
   const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
     useCustodianData(chainOfContract, toToken)
   const {sponsorValue} = useSponsorData(chainOfContract, toToken)
+
   const balanceVal = useMemo(
     () => convertDecimal(balance, 'divide', decimal),
     [balance, decimal],
@@ -181,16 +182,10 @@ function ShuttleForm({
   ])
 
   useEffect(() => {
-    if (isFromChainBtc) {
-      setOriginalShuttleAddress(toAddress)
-    } else {
-      setOriginalShuttleAddress('')
-    }
-  }, [fromChain, isFromChainBtc, toAddress])
-
-  useEffect(() => {
     try {
-      if (sponsorValue?.lte(safe_sponsor_amount)) {
+      // lack of mortgage when current value of sponsor is less than or equal to current safe amount of sponsor, in this case , the shuttle action must be paused
+      // no shuttle pausing when the reference is btc
+      if (reference !== KeyOfBtc && sponsorValue?.lte(safe_sponsor_amount)) {
         setShuttlePaused(true)
       } else {
         setShuttlePaused(false)
@@ -198,7 +193,7 @@ function ShuttleForm({
     } catch (error) {
       setShuttlePaused(false)
     }
-  }, [safe_sponsor_amount, sponsorValue])
+  }, [reference, safe_sponsor_amount, sponsorValue])
 
   return (
     <div className="flex flex-col relative mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl h-fit">
