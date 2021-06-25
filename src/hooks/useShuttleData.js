@@ -41,6 +41,10 @@ export function useCustodianData(chainOfContract, token) {
   const dicimalsNum = `1e${decimals}`
   const [contractData, setContractData] = useState({})
   useEffect(() => {
+    if (!origin) {
+      setContractData({})
+      return
+    }
     Promise.all(
       [
         contract['burn_fee'](contractAddress),
@@ -68,16 +72,18 @@ export function useCustodianData(chainOfContract, token) {
         ] = data.map(x => Big(x))
 
         setContractData({
-          in_fee: isCfxChain
-            ? burn_fee.div(`${dicimalsNum}`)
-            : mint_fee.div(`${dicimalsNum}`),
+          //   in_fee: isCfxChain
+          //     ? burn_fee.div(`${dicimalsNum}`)
+          //     : mint_fee.div(`${dicimalsNum}`),
+          in_fee: Big(0), //shuttle in fee has already benn zero in new version
           out_fee: isCfxChain
             ? mint_fee.div(`${dicimalsNum}`)
             : burn_fee.div(`${dicimalsNum}`),
           wallet_fee: wallet_fee.div(`${dicimalsNum}`),
-          minimal_in_value: isCfxChain
-            ? minimal_burn_value.div(`${dicimalsNum}`)
-            : minimal_mint_value.div(`${dicimalsNum}`),
+          //   minimal_in_value: isCfxChain
+          //     ? minimal_burn_value.div(`${dicimalsNum}`)
+          //     : minimal_mint_value.div(`${dicimalsNum}`),
+          minimal_in_value: Big(0), // the minimal shuttle-in vlaue has already benn zero in new version
           minimal_out_value: isCfxChain
             ? minimal_mint_value.div(`${dicimalsNum}`)
             : minimal_burn_value.div(`${dicimalsNum}`),
@@ -88,12 +94,19 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [address, contract, contractAddress, dicimalsNum, isCfxChain])
+  }, [address, contract, contractAddress, dicimalsNum, isCfxChain, origin])
   return contractData
 }
 
-export function useSponsorData(type = 'obverse', chainOfContract, token) {
-  const {address} = token
+export function useSponsorData(chainOfContract, token) {
+  const {origin, ctoken} = token
+  const isCfxChain = useIsCfxChain(origin)
+  const mapedToken = mapToken(token, isCfxChain)
+  const {address} = mapedToken
+  let contractAddress = address
+  if (ctoken === KeyOfCfx) {
+    contractAddress = ZeroAddrHex
+  }
   const obverseData = useShuttleContract(
     ContractType.tokenSponsor,
     chainOfContract,
@@ -102,23 +115,28 @@ export function useSponsorData(type = 'obverse', chainOfContract, token) {
     ContractType.tokenSponsorReverse,
     chainOfContract,
   )
-  const contract = type === 'obverse' ? obverseData : reverseData
+  const contract = isCfxChain ? reverseData : obverseData
   const [contractData, setContractData] = useState({})
   useEffect(() => {
+    if (!origin) {
+      setContractData({})
+      return
+    }
     Promise.all(
-      [contract['sponsorOf'](address), contract['sponsorValueOf'](address)].map(
-        fn => fn.call(),
-      ),
+      [
+        contract['sponsorOf'](contractAddress),
+        contract['sponsorValueOf'](contractAddress),
+      ].map(fn => fn.call()),
     )
       .then(data => {
         setContractData({
           sponsor: data[0],
-          sponsorValue: Big(data[1]),
+          sponsorValue: Big(data[1])?.div('1e18'),
         })
       })
       .catch(() => {
         setContractData({})
       })
-  }, [address, contract])
+  }, [address, contract, contractAddress, origin])
   return contractData
 }

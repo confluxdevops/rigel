@@ -19,7 +19,7 @@ function ConfirmInfo({fromChain, toChain, fromToken, toToken}) {
       //no fee when shuttle in to Conflux chain
       setShuttleFee(0)
     } else {
-      setShuttleFee(out_fee ? out_fee.toString(10) : 0)
+      setShuttleFee(out_fee ? out_fee.toString(10) : in_fee?.toString(10))
     }
   }, [in_fee, isFromChainCfx, isToChainCfx, out_fee])
   return (

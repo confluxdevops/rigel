@@ -22,6 +22,7 @@ import ChainSelect from './ChainSelect'
 import FromToken from './FromToken'
 import ToToken from './ToToken'
 import ToBtcAddress from './ToBtcAddress'
+import {useCustodianData, useSponsorData} from '../../../hooks/useShuttleData'
 
 function ShuttleForm({
   fromChain,
@@ -41,6 +42,7 @@ function ShuttleForm({
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [originalShuttleAddress, setOriginalShuttleAddress] = useState()
+  const [shuttlePaused, setShuttlePaused] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(true)
   const {address: fromAddress} = useWallet(fromChain)
   const {address: toAddress} = useWallet(toChain)
@@ -58,7 +60,10 @@ function ShuttleForm({
   const {address, decimal, supported} = fromToken
   const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
-
+  let chainOfContract = isFromChainCfx ? toChain : fromChain
+  const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
+    useCustodianData(chainOfContract, toToken)
+  const {sponsorValue} = useSponsorData(chainOfContract, toToken)
   const balanceVal = useMemo(
     () => convertDecimal(balance, 'divide', decimal),
     [balance, decimal],
@@ -71,6 +76,14 @@ function ShuttleForm({
         : balanceVal
       ).toString(10),
     [balanceVal, fromChain, isNativeToken],
+  )
+
+  const minimalVal = useMemo(
+    () =>
+      isFromChainCfx
+        ? minimal_out_value?.toNumber()
+        : minimal_in_value?.toNumber(),
+    [isFromChainCfx, minimal_in_value, minimal_out_value],
   )
 
   const onMaxClick = () => {
@@ -113,14 +126,14 @@ function ShuttleForm({
     let error = ''
     if (!isNaN(val)) {
       const valBig = new Big(val)
-      if (valBig.gt(0)) {
+      if (valBig.gte(minimalVal)) {
         //must be greater than zero
         if (!isFromChainBtc && !valBig.lte(maxAmount)) {
           //must be less than Max value
           error = t('error.mustLsMax', {value: maxAmount})
         }
       } else {
-        error = t('error.mustGtZero')
+        error = t('error.mustGtVal', {value: minimalVal})
       }
     } else {
       //not a valid number
@@ -164,6 +177,7 @@ function ShuttleForm({
     isToChainBtc,
     isToChainCfx,
     toAddress,
+    btnDisabled,
   ])
 
   useEffect(() => {
@@ -173,6 +187,18 @@ function ShuttleForm({
       setOriginalShuttleAddress('')
     }
   }, [fromChain, isFromChainBtc, toAddress])
+
+  useEffect(() => {
+    try {
+      if (sponsorValue?.lte(safe_sponsor_amount)) {
+        setShuttlePaused(true)
+      } else {
+        setShuttlePaused(false)
+      }
+    } catch (error) {
+      setShuttlePaused(false)
+    }
+  }, [safe_sponsor_amount, sponsorValue])
 
   return (
     <div className="flex flex-col relative mt-4 md:mt-16 w-full md:w-110 items-center shadow-common py-6 px-3 md:px-6 bg-gray-0 rounded-2.5xl h-fit">
@@ -222,15 +248,17 @@ function ShuttleForm({
           onAddressInputChange={onAddressInputChange}
         />
       )}
-      <Button
-        className="mt-6"
-        fullWidth
-        size="large"
-        disabled={btnDisabled}
-        onClick={onNextBtnClick}
-      >
-        {t('next')}
-      </Button>
+      {!shuttlePaused && supported !== 0 && (
+        <Button
+          className="mt-6"
+          fullWidth
+          size="large"
+          disabled={btnDisabled}
+          onClick={onNextBtnClick}
+        >
+          {t('next')}
+        </Button>
+      )}
       {supported === 0 && (
         <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
           <span className="flex items-center font-medium">
@@ -242,8 +270,7 @@ function ShuttleForm({
           </span>
         </div>
       )}
-      {/* TODO: if shuttle paused */}
-      {false && (
+      {shuttlePaused && (
         <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
           <span className="flex items-center font-medium">
             <AlertTriangle className="mr-1 w-4 h-4" />
