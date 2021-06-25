@@ -6,7 +6,7 @@ import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 import {useShuttleState} from '../state'
 
-export function mapToken(token, isCfxChain) {
+function mapToken(token, isCfxChain) {
   if (!token) return {}
   const {
     ctoken,
@@ -187,4 +187,10 @@ export function useToToken(fromChain, toChain, fromTokenAddress) {
   )
 
   return (data && data[0]) || {}
+}
+
+export function useTokenAddress(token, isCfxChain) {
+  if (!token) return ''
+  const {ctoken, reference} = token
+  return isCfxChain ? ctoken : reference // address may be string, such as 'eth', 'cfx'
 }

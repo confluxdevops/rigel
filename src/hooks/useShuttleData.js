@@ -8,7 +8,7 @@ import {ContractType} from '../constants/contractConfig'
 import {KeyOfBtc, KeyOfCfx} from '../constants/chainConfig'
 import {ZeroAddrHex} from '../constants'
 import {useIsCfxChain} from '../hooks'
-import {mapToken} from '../hooks/useTokenList'
+import {useTokenAddress} from '../hooks/useTokenList'
 import {getExponent} from '../utils'
 
 export function useShuttleData() {}
@@ -20,10 +20,9 @@ export function useShuttleData() {}
  * @returns
  */
 export function useCustodianData(chainOfContract, token) {
-  const {origin} = token
+  const {origin, decimals, ctoken} = token
   const isCfxChain = useIsCfxChain(origin)
-  const mapedToken = mapToken(token, isCfxChain)
-  const {address, decimals, ctoken} = mapedToken
+  const {address} = useTokenAddress(token, isCfxChain)
   let contractAddress = address
   if (ctoken === KeyOfCfx) {
     contractAddress = ZeroAddrHex
@@ -101,8 +100,7 @@ export function useCustodianData(chainOfContract, token) {
 export function useSponsorData(chainOfContract, token) {
   const {origin, ctoken} = token
   const isCfxChain = useIsCfxChain(origin)
-  const mapedToken = mapToken(token, isCfxChain)
-  const {address} = mapedToken
+  const address = useTokenAddress(token, isCfxChain)
   let contractAddress = address
   if (ctoken === KeyOfCfx) {
     contractAddress = ZeroAddrHex
@@ -141,8 +139,8 @@ export function useSponsorData(chainOfContract, token) {
   return contractData
 }
 
-export function useShuttleFee(chainOfContract, token, chain) {
-  const isCfxChain = useIsCfxChain(chain)
+export function useShuttleFee(chainOfContract, token, toChain) {
+  const isCfxChain = useIsCfxChain(toChain)
   const {in_fee, out_fee} = useCustodianData(chainOfContract, token)
   return useMemo(
     () =>

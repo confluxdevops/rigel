@@ -5,12 +5,12 @@ import {TokenIcon, Account} from '../../components'
 import {useIsCfxChain} from '../../../hooks'
 import {useShuttleFee} from '../../../hooks/useShuttleData'
 
-function ConfirmInfo({fromChain, toChain, fromToken, toToken}) {
+function ConfirmInfo({fromChain, toChain, fromToken}) {
   const {symbol} = fromToken
   const {t} = useTranslation()
   const isFromChainCfx = useIsCfxChain(fromChain)
   const chainOfContract = isFromChainCfx ? toChain : fromChain
-  const shuttleFee = useShuttleFee(chainOfContract, toToken, toChain)
+  const shuttleFee = useShuttleFee(chainOfContract, fromToken, toChain)
 
   return (
     <div className="flex flex-col w-full">
