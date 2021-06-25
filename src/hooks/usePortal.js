@@ -1,7 +1,7 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
-import ERC20_ABI from '../abi/erc20.json'
+import {ERC20_ABI} from '../abi'
 
 export function useInstalled() {
   const {portalInstalled} = useConfluxPortal()
@@ -42,7 +42,7 @@ export function useConnect() {
 export function useContract(address, ABI) {
   const {confluxJS} = useConfluxPortal()
   return useMemo(() => {
-    if (!address || !ABI || !confluxJS) return null
+    if (!ABI || !confluxJS) return null
     try {
       return confluxJS.Contract({abi: ABI, address})
     } catch (error) {

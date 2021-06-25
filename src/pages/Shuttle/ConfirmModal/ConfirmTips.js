@@ -11,7 +11,6 @@ function ConfirmTips({fromChain, toChain, ...props}) {
   const {t} = useTranslation()
   const isBtcChain = useIsBtcChain(toChain)
   const isCfxChain = useIsCfxChain(toChain)
-  //TODO: add shuttleOut function
   let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
 
   return (
@@ -43,7 +42,7 @@ function ConfirmTips({fromChain, toChain, ...props}) {
         </span>
       )}
       {isBtcChain && (
-        <span className="flex items-baseline">
+        <span className="flex items-start">
           <Circle />
           {t('tips.btcWaitLongTip')}
         </span>

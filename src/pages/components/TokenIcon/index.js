@@ -4,7 +4,7 @@ import {ChainIcon, SupportedChains} from '../../../constants/chainConfig'
 import {TokenAlert} from '../../../assets/svg'
 
 function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
-  const {icon, origin, supported} = token
+  const {icon, origin, in_token_list} = token
   const subscriptShown = useMemo(() => {
     if (origin !== chain) return true
     return false
@@ -25,7 +25,7 @@ function TokenIcon({chain, token, size = 'medium', showAlarm = false}) {
   return (
     <div className={`${iconSize} relative`}>
       <img src={icon} alt="token icon" />
-      {supported !== 1 && showAlarm && (
+      {in_token_list === 0 && showAlarm && (
         <TokenAlert className="absolute -left-1 -top-1 w-4 h-4" />
       )}
       {subscriptShown && origin && (

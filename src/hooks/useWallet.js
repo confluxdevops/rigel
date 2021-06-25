@@ -69,8 +69,7 @@ export function useContractState(chain, tokenAddress, method, params) {
           .then(res => {
             setData(res)
           })
-          .catch(error => {
-            console.log(error)
+          .catch(() => {
             setData(null)
           })
     }

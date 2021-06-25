@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {useLocation} from 'react-use'
 import {useTranslation} from 'react-i18next'
 import {Logo, DarkLogo, MobileLogo, DarkMobileLogo} from '../../../assets/svg'
-import {useIsMobile} from '../../../hooks'
+import {useIsMobile, useConnectData} from '../../../hooks'
 import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
@@ -14,14 +14,7 @@ function Header() {
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
 
-  //TODO: remove mock data
-  const connectData = [
-    {
-      chain: 'cfx',
-      address: 'cfxtest:aame5p2tdzfsc3zsmbg1urwkg5ax22epg27cnu1rwm',
-    },
-    {chain: 'eth', address: null},
-  ]
+  const connectData = useConnectData()
   const pendingTransactions = [
     {
       type: 'shuttle',

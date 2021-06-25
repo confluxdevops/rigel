@@ -11,7 +11,7 @@ import {injected} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
 import {isMobile} from 'react-device-detect'
 import {getContract} from '../utils/web3'
-import ERC20_ABI from '../abi/erc20.json'
+import {ERC20_ABI} from '../abi'
 
 /**
  * doc: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#useweb3react
@@ -164,7 +164,10 @@ export function useConnect() {
  * @param {*} delay interval delay milliseconds
  * @returns the balance
  */
-export function useNativeTokenBalance(address, delay) {
+export function useNativeTokenBalance(
+  address,
+  delay = IntervalTime.fetchBalance,
+) {
   const [balance, setBalance] = useState(BigNumZero)
   const {account, library} = useWeb3React()
   useInterval(
@@ -179,7 +182,7 @@ export function useNativeTokenBalance(address, delay) {
             setBalance(BigNumZero)
           })
     },
-    account ? delay || IntervalTime.fetchBalance : null,
+    account ? delay : null,
   )
   return balance
 }

@@ -17,10 +17,12 @@ import {
 import {TxReceiptModalType} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
+import {useShuttleState} from '../../state'
 
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
+  const {tokenFromBackend} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [value, setValue] = useState('')
@@ -30,7 +32,9 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  const fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
+  const {address} = tokenFromBackend
+  let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
+  if (address === fromTokenAddress) fromToken = tokenFromBackend
   const toToken = useToToken(fromChain, toChain, fromTokenAddress)
   const btcTokenPair = useToToken(
     KeyOfBtc,
@@ -137,7 +141,7 @@ function Shuttle() {
 
   if (!fromChain) return null
   return (
-    <div className="flex justify-center px-3 md:px-0">
+    <div className="flex flex-1 justify-center px-3 md:px-0">
       {!tokenListShow && (
         <ShuttleForm
           fromChain={fromChain}
@@ -170,6 +174,7 @@ function Shuttle() {
           toChain={toChain}
           value={value}
           fromToken={fromToken}
+          toToken={toToken}
           setTxModalType={setTxModalType}
           setTxModalShow={setTxModalShow}
           setTxHash={setTxHash}
