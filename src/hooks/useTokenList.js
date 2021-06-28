@@ -67,6 +67,7 @@ export function useMapTokenList(fromChain, toChain) {
 export function useAllTokenList() {
   const {data} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
     refreshInterval: IntervalTime.fetchTokenList,
+    suspense: true,
   })
   return data ? data : []
 }

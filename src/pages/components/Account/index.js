@@ -9,14 +9,20 @@ import {shortenAddress} from '../../../utils/address'
 import {useIsBtcChain} from '../../../hooks'
 import {useShuttleState} from '../../../state'
 
-function Account({chain, className, iconClassName, showIcon = false}) {
+function Account({
+  chain,
+  className,
+  iconClassName,
+  showIcon = false,
+  ...props
+}) {
   const {address} = useWallet(chain)
   const walletKey = ChainConfig[chain].wallet
   const isBtcChain = useIsBtcChain(chain)
   const {toBtcAddress} = useShuttleState()
 
   return (
-    <div className={`flex items-center ${className}`}>
+    <div className={`flex items-center ${className}`} {...props}>
       {showIcon && !isBtcChain && (
         <WalletIcon type={walletKey} className={iconClassName} />
       )}

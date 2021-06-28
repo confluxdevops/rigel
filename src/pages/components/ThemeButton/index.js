@@ -6,7 +6,13 @@ function LanguageButton() {
   const {value: isDarkMode, toggle} = useTheme()
 
   return (
-    <WrapIcon type="square" className="md:ml-3" size="w-7 h-7" onClick={toggle}>
+    <WrapIcon
+      id="theme"
+      type="square"
+      className="md:ml-3"
+      size="w-7 h-7"
+      onClick={toggle}
+    >
       {isDarkMode ? (
         <Moon className="text-gray-80" />
       ) : (

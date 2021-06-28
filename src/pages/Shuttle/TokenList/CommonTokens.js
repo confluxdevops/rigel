@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {useCommonTokens} from '../../../hooks/useTokenList'
 
-function CommonToken({token, selectedToken, onClick}) {
+function CommonToken({token, selectedToken, onClick, ...props}) {
   const getSelectedStyle = () => {
     if (_.isEqual(token, selectedToken)) {
       return 'bg-primary border border-primary text-white'
@@ -17,6 +17,7 @@ function CommonToken({token, selectedToken, onClick}) {
       className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer ${getSelectedStyle()}`}
       onClick={() => onClick && onClick(token)}
       aria-hidden="true"
+      {...props}
     >
       {display_symbol}
     </div>
@@ -42,6 +43,7 @@ function CommonTokens({fromChain, toChain, selectedToken, onSelect}) {
             return (
               <CommonToken
                 key={index}
+                id={`commonToken_${index}`}
                 onClick={onSelect}
                 token={token}
                 selectedToken={selectedToken}

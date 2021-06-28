@@ -24,12 +24,6 @@
   "all": "全部",
   "app": "应用",
   "connect": "连接",
-  "error": {
-    "inputValidAmount": "请输入数字",
-    "mustGtVal": "值必须大于等于{{value}}",
-    "mustLsMax": "值需要小于等于 {{value}}",
-    "addressInvalid": "Address is invalid"
-  },
   "balance": "余额",
   "max": "最大",
   "receiveAs": "Receive as",
@@ -39,6 +33,21 @@
   "asset": "Asset",
   "destination": "Destination",
   "shuttleFee": "Shuttle Fee",
+  "checkboxLabel": "I’m clear the above description",
+  "approve": "Approve {{tokenSymbol}}",
+  "send": "Send",
+  "pleaseWait": "Please Wait Patiently",
+  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+  "copiedSuccess": "Copied success!",
+  "noPendingTxs": "Pending transactions will appear here",
+  "shuttleRecordItem": "{{tokenSymbol}} from {{fromChain}} to {{toChain}}",
+  "approveRecordItem": "Approve {{tokenSymbol}}",
+  "error": {
+    "inputValidAmount": "请输入数字",
+    "mustGtVal": "值必须大于等于{{value}}",
+    "mustLsMax": "值需要小于等于 {{value}}",
+    "addressInvalid": "Address is invalid"
+  },
   "tips": {
     "mustKnow": "You must kown",
     "notice": "Notice",
@@ -56,17 +65,11 @@
     "shuttlePaused": "Shuttle paused",
     "shuttlePausedDescription": "From {{fromChain}} to {{toChain}}, token captain stop service."
   },
-  "checkboxLabel": "I’m clear the above description",
-  "approve": "Approve {{tokenSymbol}}",
-  "send": "Send",
   "home": {
     "subTitle": "Lighting Fast Interoperable Protocol",
     "shuttleFlow": "ShuttleFlow App",
     "lightPaper": "LightPaper"
   },
-  "pleaseWait": "Please Wait Patiently",
-  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
-  "copiedSuccess": "Copied success!",
   "maintenance": {
     "underMaint": "Under maintenance",
     "maintDesc1": "We are currently undergoing maintenance. We will be back shortly.",

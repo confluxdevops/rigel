@@ -21,13 +21,13 @@ function ConfirmTips({fromChain, toChain, ...props}) {
         {isBtcChain ? t('tips.toBtcAddressTip') : t('tips.addressTip')}
       </span>
       {!isBtcChain && (
-        <span className="flex items-center">
+        <span className="flex items-center whitespace-pre">
           <Circle />
           <Trans i18nKey="tips.forbiddenAddressTip" />
         </span>
       )}
       {!isBtcChain && (
-        <span className="flex items-center">
+        <span className="flex items-center whitespace-pre">
           <Circle />
           <Trans
             i18nKey="tips.gasTip"
@@ -48,6 +48,7 @@ function ConfirmTips({fromChain, toChain, ...props}) {
         </span>
       )}
       <Checkbox
+        id="checkBox"
         className="mt-4 mb-6"
         checked={checked}
         onChange={() => {

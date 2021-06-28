@@ -46,7 +46,9 @@ function Header() {
             <DarkLogo className="mr-8" />
           ))}
         {isMobile && (!isDarkMode ? <MobileLogo /> : <DarkMobileLogo />)}
-        <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
+        <HeaderLink id="shuttle" to="/shuttle">
+          {t('app')}
+        </HeaderLink>
       </div>
       {!isMobile && (
         <div className="flex items-center">
@@ -62,7 +64,7 @@ function Header() {
   )
 }
 
-function HeaderLink({to, children, disabled = false}) {
+function HeaderLink({to, children, disabled = false, ...props}) {
   const getStyle = () => {
     if (disabled) return 'text-gray-40'
     return 'text-gray-60'
@@ -71,6 +73,7 @@ function HeaderLink({to, children, disabled = false}) {
     <NavLink
       className={`text-base mr-6 w-8 h-6 flex items-center justify-center ${getStyle()}`}
       to={to}
+      {...props}
     >
       {children}
     </NavLink>

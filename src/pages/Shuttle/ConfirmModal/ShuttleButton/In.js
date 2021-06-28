@@ -182,13 +182,19 @@ function ShuttleInButton({
   return (
     <>
       {approveShown && (
-        <Button onClick={onApprove} disabled={disabled} size="large">
+        <Button
+          onClick={onApprove}
+          disabled={disabled}
+          size="large"
+          id="approve"
+        >
           {isApproving && <Loading size="w-6 h-6" />}
           {!isApproving && t('approve', {tokenSymbol: display_symbol})}
         </Button>
       )}
       {!approveShown && (
         <Button
+          id="shuttleIn"
           startIcon={<Send />}
           onClick={onSubmit}
           disabled={disabled}
