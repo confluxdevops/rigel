@@ -5,10 +5,10 @@ import {ChainItem} from '../../components'
 import {WrapIcon} from '../../../components'
 import {BgArrowRight} from '../../../assets/svg'
 
-const SelectedChain = ({chain, type}) => {
+const SelectedChain = ({chain, type, ...props}) => {
   const {t} = useTranslation()
   return (
-    <div className="flex-1 px-4 py-3">
+    <div className="flex-1 px-4 py-3" {...props}>
       {type === 'from' && (
         <span className="text-gray-40 text-xs mb-2 inline-block">
           {t('fromChain')}
@@ -38,11 +38,11 @@ SelectedChain.propTypes = {
 function SelectedChains({fromChain, toChain}) {
   return (
     <div className="w-full border border-gray-10 flex items-center">
-      <SelectedChain type="from" chain={fromChain} />
+      <SelectedChain id="selectedFromChain" type="from" chain={fromChain} />
       <WrapIcon size="w-7 h-7" className="mx-6" type="circle">
         <BgArrowRight className="text-gray-40" />
       </WrapIcon>
-      <SelectedChain type="to" chain={toChain} />
+      <SelectedChain id="selectedToChain" type="to" chain={toChain} />
     </div>
   )
 }

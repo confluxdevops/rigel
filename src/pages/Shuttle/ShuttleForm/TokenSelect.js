@@ -6,7 +6,7 @@ import {TokenIcon} from '../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {useIsBtcChain} from '../../../hooks'
 
-function TokenSelect({token, onClick, type, fromChain, toChain}) {
+function TokenSelect({token, onClick, type, fromChain, toChain, ...props}) {
   const isFromBtcChain = useIsBtcChain(fromChain)
   const isToBtcChain = useIsBtcChain(toChain)
   const chain = type === 'from' ? fromChain : toChain
@@ -21,6 +21,7 @@ function TokenSelect({token, onClick, type, fromChain, toChain}) {
       className={`flex items-center ${type === 'from' ? 'cursor-pointer' : ''}`}
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
+      {...props}
     >
       <TokenIcon token={token} chain={chain} size="small" />
       <span className={`ml-1 ${style}`}>{display_symbol}</span>

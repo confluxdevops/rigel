@@ -8,7 +8,7 @@ import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../../hooks'
 
-function TokenItem({chain, token, selectedToken, onClick}) {
+function TokenItem({chain, token, selectedToken, onClick, ...props}) {
   const {address, display_symbol, display_name} = token
   const {addToken, success} = useAddTokenToMetamask(token)
   const isCfxChain = useIsCfxChain(chain)
@@ -32,6 +32,7 @@ function TokenItem({chain, token, selectedToken, onClick}) {
       aria-hidden="true"
       onClick={() => onClick && onClick(token)}
       className={`px-6 flex justify-between items-center w-full h-14 flex-shrink-0 cursor-pointer ${getSelectedStyle()}`}
+      {...props}
     >
       <div className="flex items-center">
         <TokenIcon size="large" chain={chain} token={token} showAlarm={true} />

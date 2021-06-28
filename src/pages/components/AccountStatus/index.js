@@ -4,7 +4,7 @@ import {SupportedChains} from '../../../constants/chainConfig'
 import {useWallet} from '../../../hooks/useWallet'
 import {Account, ConnectWallet} from '../index'
 
-function AccountStatus({chain, className, size = 'medium'}) {
+function AccountStatus({chain, size = 'medium', id}) {
   const {address} = useWallet(chain)
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
@@ -16,25 +16,22 @@ function AccountStatus({chain, className, size = 'medium'}) {
     if (size === 'large') return 'mr-2 !w-4 !h-4'
   }, [size])
 
-  return (
-    <div className={`${className}`}>
-      {address ? (
-        <Account
-          chain={chain}
-          showIcon={true}
-          className={accountCompStyle}
-          iconClassName={iconStyle}
-        />
-      ) : (
-        <ConnectWallet chain={chain} size={size} />
-      )}
-    </div>
+  return address ? (
+    <Account
+      id={`${id}_account`}
+      chain={chain}
+      showIcon={true}
+      className={accountCompStyle}
+      iconClassName={iconStyle}
+    />
+  ) : (
+    <ConnectWallet id={`${id}_connectWallet`} chain={chain} size={size} />
   )
 }
 
 AccountStatus.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
-  className: PropTypes.string,
   size: PropTypes.oneOf(['medium', 'large']),
+  id: PropTypes.string,
 }
 export default AccountStatus

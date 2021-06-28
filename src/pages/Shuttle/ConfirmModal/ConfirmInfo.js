@@ -13,7 +13,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
   const shuttleFee = useShuttleFee(chainOfContract, fromToken, toChain)
 
   return (
-    <div className="flex flex-col w-full">
+    <div id="confirmInfo" className="flex flex-col w-full">
       <div className="flex items-center justify-between mt-4">
         <span className="text-gray-40">{t('asset')}</span>
         <div className="flex">

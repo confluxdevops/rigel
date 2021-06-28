@@ -50,6 +50,7 @@ function TokenList({fromChain, toChain, selectedToken, onSelectToken, onBack}) {
           {tokenList.map((token, index) => (
             <TokenItem
               key={index}
+              id={`token_${index}`}
               token={token}
               chain={fromChain}
               selectedToken={selectedToken}

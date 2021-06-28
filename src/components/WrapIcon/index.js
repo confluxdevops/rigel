@@ -1,12 +1,20 @@
 import PropTypes from 'prop-types'
 import {CircleBg, SquareBg} from '../../assets/svg'
 
-function WrapIcon({type, size = 'w-4 h-4', children, className = '', onClick}) {
+function WrapIcon({
+  type,
+  size = 'w-4 h-4',
+  children,
+  className = '',
+  onClick,
+  ...props
+}) {
   return (
     <div
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
       className={`${size} relative flex justify-center items-center cursor-pointer ${className}`}
+      {...props}
     >
       {type === 'circle' && <CircleBg className={size} />}
       {type === 'square' && <SquareBg className={size} />}

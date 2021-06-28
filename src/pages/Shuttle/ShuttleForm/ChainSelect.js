@@ -13,7 +13,7 @@ import {Menu, Dropdown} from '../../../components'
 import {ArrowDownFilled} from '../../../assets/svg'
 import {ChainItem} from '../../components'
 
-function ChainSelect({type, chain, fromChain, onClick}) {
+function ChainSelect({type, chain, fromChain, onClick, ...props}) {
   const chainsData = useChainsData(type, chain, fromChain)
   const onClickHandler = key => {
     onClick && onClick(key, type)
@@ -40,6 +40,7 @@ function ChainSelect({type, chain, fromChain, onClick}) {
       <div
         className="w-26.5 h-24.5 rounded bg-gray-10 p-3 mr-3 flex items-end justify-between cursor-pointer"
         aria-hidden="true"
+        {...props}
       >
         <ChainItem chain={chain} />
         <ArrowDownFilled className="w-4 h-4 text-gray-40" />

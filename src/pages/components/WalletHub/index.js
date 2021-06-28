@@ -33,14 +33,20 @@ function WalletHub({connectData, pendingTransactions = []}) {
   let children
   if (length === 0) {
     children = (
-      <div className="h-8 px-3 flex items-center border rounded-full border-primary text-primary cursor-pointer">
+      <div
+        id="walletHub"
+        className="h-8 px-3 flex items-center border rounded-full border-primary text-primary cursor-pointer"
+      >
         <NotConnected className="w-2 h-2 mr-1" />
         <span>{t('connectWallet')}</span>
       </div>
     )
   } else if (length === 1) {
     children = (
-      <div className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative cursor-pointer">
+      <div
+        id="walletHub"
+        className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative cursor-pointer"
+      >
         {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet].icon()}
         <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
@@ -62,7 +68,10 @@ function WalletHub({connectData, pendingTransactions = []}) {
     )
   } else if (length === 2) {
     children = (
-      <div className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer">
+      <div
+        id="walletHub"
+        className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer"
+      >
         <Connected className="w-2 h-2 mr-1" />
         {WalletConfig[KeyOfPortal].icon()}
         {WalletConfig[KeyOfMetaMask].icon('ml-0.5')}
@@ -123,6 +132,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
         <div className="flex justify-between">
           <span className="text-gray-40 text-xs">{t('accounts')}</span>
           <Close
+            id="closePopup"
             className="w-4 h-4 text-gray-40"
             onClick={() => {
               onClick && onClick()
@@ -132,11 +142,12 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
         </div>
         <div className="pt-3 flex flex-col">
           <AccountStatus
+            id="metamask"
             chain={metamaskData.chain}
             size="large"
             className="mb-3"
           />
-          <AccountStatus chain={portalData.chain} size="large" />
+          <AccountStatus id="portal" chain={portalData.chain} size="large" />
         </div>
       </div>
       <div className="p-3 bg-gray-10 flex flex-col">

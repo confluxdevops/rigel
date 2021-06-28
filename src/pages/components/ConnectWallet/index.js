@@ -11,7 +11,7 @@ import {ConnectWalletModal} from '../../components'
 import {Button, Tag} from '../../../components'
 import {TypeConnectWallet} from '../../../constants'
 
-function ConnectWallet({size = 'medium', chain, className = ''}) {
+function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
   const {t} = useTranslation()
   const [open, setOpen] = useState(false)
   const {type, setType, tryActivate} = useWallet(chain)
@@ -35,7 +35,12 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
   return (
     <>
       {size === 'medium' && (
-        <Tag className={className} onClick={onConnect} icon={walletIcon}>
+        <Tag
+          className={className}
+          onClick={onConnect}
+          icon={walletIcon}
+          {...props}
+        >
           {t('connect')}
         </Tag>
       )}
@@ -47,6 +52,7 @@ function ConnectWallet({size = 'medium', chain, className = ''}) {
           onClick={onConnect}
           variant="outlined"
           startIcon={walletIcon}
+          {...props}
         >
           {`${t('connect')} ${walletConfig?.name}`}
         </Button>
