@@ -25,7 +25,7 @@ function Header() {
     {type: 'approve', tokenSymbol: 'UNI'},
   ]
 
-  if (pathname === '/maintenance' || pathname === '/404') {
+  if (pathname === '/maintenance' || pathname === '/notfound') {
     return null
   }
   if (pathname === '/') {

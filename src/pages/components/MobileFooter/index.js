@@ -15,7 +15,11 @@ function MobileFooter() {
     {type: 'approve', tokenSymbol: 'UNI'},
   ]
 
-  if (pathname === '/' || pathname === '/maintenance' || pathname === '/404') {
+  if (
+    pathname === '/' ||
+    pathname === '/maintenance' ||
+    pathname === '/notfound'
+  ) {
     return null
   }
   return (
