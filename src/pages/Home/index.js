@@ -50,7 +50,9 @@ function Home() {
       <div className="w-360">
         <div className="ml-24">
           <img className="w-160 pt-24" src={ShuttleFlow} alt="title" />
-          <p className="text-gray-400 mt-9 text-xl">{t('home.subTitle')}</p>
+          <span className="inline-block text-gray-400 mt-9 text-xl">
+            {t('home.subTitle')}
+          </span>
           <div className="mt-9 flex">
             <Button className="mr-5" onClick={() => onOpenApp()}>
               {t('home.shuttleFlow')}
