@@ -25,6 +25,9 @@ function Header() {
     {type: 'approve', tokenSymbol: 'UNI'},
   ]
 
+  if (pathname === '/maintenance') {
+    return null
+  }
   if (pathname === '/') {
     return (
       <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
@@ -32,8 +35,6 @@ function Header() {
         <LanguageButton />
       </div>
     )
-  } else if (pathname === '/maintenance') {
-    return null
   } else {
     return (
       <div className="h-12 md:h-16 px-3 md:px-8 bg-transparent flex justify-between items-center w-full">
