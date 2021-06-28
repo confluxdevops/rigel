@@ -21,11 +21,7 @@ function Maintenance() {
         <span className="inline-block mt-8 text-gray-100 text-2lg font-medium">
           {t('notfound.notFound')}
         </span>
-        <Button
-          className="mt-6 px-6.5"
-          size="large"
-          onClick={() => onOpenHome()}
-        >
+        <Button className="mt-6 w-40" size="large" onClick={() => onOpenHome()}>
           {t('notfound.goBack')}
         </Button>
       </div>
