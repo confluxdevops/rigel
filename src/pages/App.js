@@ -4,6 +4,7 @@ import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
 import Home from '../pages/Home'
 import Maintenance from '../pages/Maintenance'
+import Notfound from '../pages/Notfound'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
 import Example from './Example'
 import {useIsMobile} from '../hooks'
@@ -34,6 +35,9 @@ function App() {
                 </Route>
                 <Route path="/maintenance" exact>
                   <Maintenance />
+                </Route>
+                <Route path="/notfound" exact>
+                  <Notfound />
                 </Route>
               </Switch>
             </Web3ReactManager>
