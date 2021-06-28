@@ -25,7 +25,7 @@ function Header() {
     {type: 'approve', tokenSymbol: 'UNI'},
   ]
 
-  if (pathname === '/maintenance') {
+  if (pathname === '/maintenance' || pathname === '/404') {
     return null
   }
   if (pathname === '/') {
@@ -35,32 +35,31 @@ function Header() {
         <LanguageButton />
       </div>
     )
-  } else {
-    return (
-      <div className="h-12 md:h-16 px-3 md:px-8 bg-transparent flex justify-between items-center w-full">
-        <div className="flex items-center justify-between w-full md:w-auto md:justify-start">
-          {!isMobile &&
-            (!isDarkMode ? (
-              <Logo className="mr-8" />
-            ) : (
-              <DarkLogo className="mr-8" />
-            ))}
-          {isMobile && (!isDarkMode ? <MobileLogo /> : <DarkMobileLogo />)}
-          <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
-        </div>
-        {!isMobile && (
-          <div className="flex items-center">
-            <WalletHub
-              connectData={connectData}
-              pendingTransactions={pendingTransactions}
-            />
-            <ThemeButton />
-            <LanguageButton />
-          </div>
-        )}
-      </div>
-    )
   }
+  return (
+    <div className="h-12 md:h-16 px-3 md:px-8 bg-transparent flex justify-between items-center w-full">
+      <div className="flex items-center justify-between w-full md:w-auto md:justify-start">
+        {!isMobile &&
+          (!isDarkMode ? (
+            <Logo className="mr-8" />
+          ) : (
+            <DarkLogo className="mr-8" />
+          ))}
+        {isMobile && (!isDarkMode ? <MobileLogo /> : <DarkMobileLogo />)}
+        <HeaderLink to="/shuttle">{t('app')}</HeaderLink>
+      </div>
+      {!isMobile && (
+        <div className="flex items-center">
+          <WalletHub
+            connectData={connectData}
+            pendingTransactions={pendingTransactions}
+          />
+          <ThemeButton />
+          <LanguageButton />
+        </div>
+      )}
+    </div>
+  )
 }
 
 function HeaderLink({to, children, disabled = false}) {
