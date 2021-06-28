@@ -42,3 +42,10 @@ export function calculateGasMargin(value) {
 export function getExponent(decimals) {
   return `1e${decimals}`
 }
+
+export function isChainIdRight(chain, chainId) {
+  const {wallet, supportedChainIds} = ChainConfig[chain]
+  return (
+    wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET']
+  )
+}

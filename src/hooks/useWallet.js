@@ -12,12 +12,13 @@ import {
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
 import {BigNumZero} from '../constants/index'
+import {isChainIdRight} from '../utils'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
   const connectObjWeb3 = useConnectWeb3()
   let connectObj = {}
-  switch (ChainConfig[chain].wallet) {
+  switch (ChainConfig[chain]?.wallet) {
     case KeyOfMetaMask:
       connectObj = connectObjWeb3
       break
@@ -64,14 +65,14 @@ export function useContractState(chain, tokenAddress, method, params) {
     if (isNativeToken) {
       setData(null)
     } else {
-      contract &&
-        contract[method](...params)
-          .then(res => {
+      try {
+        contract &&
+          contract[method](...params).then(res => {
             setData(res)
           })
-          .catch(() => {
-            setData(null)
-          })
+      } catch (error) {
+        setData(null)
+      }
     }
     //TODO: Array dependency always call?
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,4 +136,22 @@ export function useIsNativeToken(chain, tokenAddress) {
     () => ChainConfig[chain].tokenName?.toLowerCase() === tokenAddress,
     [chain, tokenAddress],
   )
+}
+
+export function useIsChainInRightNetwork(chain) {
+  const {address, chainId} = useWallet(chain)
+  return useMemo(() => {
+    if (ChainConfig[chain]?.wallet) {
+      //this chain require wallet
+      if (address) {
+        return isChainIdRight(chain, chainId)
+      } else {
+        // this chian must use connect wallet,but the use has not already connected the wallet
+        return false
+      }
+    } else {
+      //this chain do not require the wallet
+      return true
+    }
+  }, [address, chain, chainId])
 }

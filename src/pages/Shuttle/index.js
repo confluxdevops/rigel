@@ -1,9 +1,10 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useDeepCompareEffect} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import {useFromToken, useToToken} from '../../hooks/useTokenList'
+import {useIsChainInRightNetwork} from '../../hooks/useWallet'
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
 import {
@@ -32,6 +33,8 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
+  const isFromChainInRightNetwork = useIsChainInRightNetwork(fromChain)
+  const isToChainInRightNetwork = useIsChainInRightNetwork(toChain)
   const {address} = tokenFromBackend
   let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
   if (address === fromTokenAddress) fromToken = tokenFromBackend
@@ -138,6 +141,17 @@ function Shuttle() {
     history.push(pathWithQuery)
     setValue('')
   }
+
+  /**
+   * If the user has already in the shuttle process, and need wallet to interact with this chain
+   * In this case, if you uninstalled the wallet or the the chainid is wrong, you must go back the main router: shuttle
+   */
+  useEffect(() => {
+    if (!isFromChainInRightNetwork || !isToChainInRightNetwork) {
+      setTokenListShow(false)
+      setConfirmModalShow(false)
+    }
+  }, [isFromChainInRightNetwork, isToChainInRightNetwork])
 
   if (!fromChain) return null
   return (

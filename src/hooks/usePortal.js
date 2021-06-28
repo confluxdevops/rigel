@@ -16,7 +16,7 @@ export function useAddress() {
 export function useConnectWalletType() {}
 
 export function useConnect() {
-  const {portalInstalled, address, login, error} = useConfluxPortal()
+  const {portalInstalled, address, login, error, chainId} = useConfluxPortal()
   const [type, setType] = useState(TypeConnectWallet.uninstalled)
   const tryActivate = () => {
     login()
@@ -36,7 +36,7 @@ export function useConnect() {
       }
     }
   }, [portalInstalled, address, error])
-  return {type, setType, tryActivate, error, address}
+  return {type, setType, tryActivate, error, address, chainId}
 }
 
 export function useContract(address, ABI) {
@@ -52,7 +52,7 @@ export function useContract(address, ABI) {
 }
 
 export function useTokenContract(tokenAddress) {
-  return useContract(tokenAddress, ERC20_ABI)
+  return useContract(tokenAddress || '', ERC20_ABI)
 }
 
 /**

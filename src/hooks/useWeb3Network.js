@@ -123,8 +123,7 @@ export function useAddress() {
 }
 
 export function useConnect() {
-  const {error, account, activate} = useWeb3React()
-  //TODO: unsupported chain id error
+  const {error, account, activate, chainId} = useWeb3React()
   const isInstalled = useInstalled
   const [type, setType] = useState(TypeConnectWallet.uninstalled)
   useEffect(() => {
@@ -154,7 +153,7 @@ export function useConnect() {
       })
     }
   }
-  return {type, setType, tryActivate, error, address: account}
+  return {type, setType, tryActivate, error, address: account, chainId}
 }
 
 /**
