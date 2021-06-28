@@ -10,6 +10,7 @@ function TokenSearch({value, onChange}) {
       value={value || ''}
       onChange={e => onChange && onChange(e.target.value)}
       placeholder={t('searchTokenPlaceholder')}
+      className="!bg-transparent"
     />
   )
 }

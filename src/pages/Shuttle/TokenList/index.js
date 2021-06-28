@@ -27,7 +27,7 @@ function TokenList({fromChain, toChain, selectedToken, onSelectToken, onBack}) {
   }
 
   return (
-    <div className="flex flex-col items-center bg-gray-0 w-110 rounded-2.5xl py-6 shadow-common">
+    <div className="flex flex-col items-center bg-gray-0 w-full md:w-110 rounded-2.5xl py-6 shadow-common">
       <div className="flex justify-center items-center relative w-full mb-4 px-6">
         <ArrowLeft
           className="text-gray-40 absolute left-6 w-6 h-6"
