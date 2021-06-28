@@ -120,9 +120,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
   const noPending = (
     <div className="flex flex-col items-center mt-1">
       <NoPending className="mb-1" />
-      <span className="text-xs text-gray-40">
-        Pending transactions will appear here
-      </span>
+      <span className="text-xs text-gray-40">{t('noPendingTxs')}</span>
     </div>
   )
   const displayPendingTransactions = pendingTransactions.slice(0, 5)
@@ -170,8 +168,14 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
                     <Loading className="mr-1 !w-3 !h-3" />
                     <span className="text-gray-80 text-xs">
                       {type === 'shuttle' &&
-                        `${tokenSymbol} From ${ChainConfig[fromChain].shortName} To ${ChainConfig[toChain].shortName}`}
-                      {type === 'approve' && `Approve ${tokenSymbol}`}
+                        t('shuttleRecordItem', {
+                          tokenSymbol,
+                          fromChain: ChainConfig[fromChain].shortName,
+                          toChain: ChainConfig[toChain].shortName,
+                        })}
+
+                      {type === 'approve' &&
+                        t('approveRecordItem', {tokenSymbol})}
                     </span>
                   </div>
                 )
