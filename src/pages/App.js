@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
 import Home from '../pages/Home'
+import Maintenance from '../pages/Maintenance'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
 import Example from './Example'
 import {useIsMobile} from '../hooks'
@@ -29,8 +30,10 @@ function App() {
                   <History />
                 </Route>
                 <Route path="/" exact>
-                  {/* TODO home page */}
                   <Home />
+                </Route>
+                <Route path="/maintenance" exact>
+                  <Maintenance />
                 </Route>
               </Switch>
             </Web3ReactManager>
