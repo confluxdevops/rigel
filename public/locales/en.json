@@ -81,5 +81,9 @@
     "confirm": "Be sure to confirm: You know the risks of the selected token, at your own risk.",
     "continue": "Continue",
     "checkboxLabel": "I understand"
+  },
+  "notfound": {
+    "notFound": "Page not found",
+    "goBack": "Go Back Home"
   }
 }
