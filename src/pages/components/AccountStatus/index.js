@@ -25,6 +25,7 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
           showIcon={true}
           className={accountCompStyle}
           iconClassName={iconStyle}
+          address={address}
         />
       ) : (
         <ConnectWallet id={`${id}_connectWallet`} chain={chain} size={size} />

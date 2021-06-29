@@ -1,4 +1,4 @@
-import {useEffect, useState, useMemo} from 'react'
+import {useMemo, useState, useEffect} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
 import {ERC20_ABI} from '../abi'
@@ -13,14 +13,9 @@ export function useAddress() {
   return address
 }
 
-export function useConnectWalletType() {}
-
-export function useConnect() {
-  const {portalInstalled, address, login, error, chainId} = useConfluxPortal()
+export function useConnectWalletType(portalInstalled, address, error) {
   const [type, setType] = useState(TypeConnectWallet.uninstalled)
-  const tryActivate = () => {
-    login()
-  }
+
   useEffect(() => {
     if (error) {
       setType(TypeConnectWallet.error)
@@ -35,8 +30,22 @@ export function useConnect() {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [portalInstalled, address, error])
-  return {type, setType, tryActivate, error, address, chainId}
+  }, [address, error, portalInstalled])
+
+  return [type, setType]
+}
+
+export function useConnect() {
+  const {portalInstalled, address, error, login} = useConfluxPortal()
+  const [type, setType] = useConnectWalletType(portalInstalled, address, error)
+
+  return {
+    type,
+    tryActivate: login,
+    setType,
+    error,
+    address,
+  }
 }
 
 export function useContract(address, ABI) {
