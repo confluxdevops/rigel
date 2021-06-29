@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import {useState, useMemo, useEffect, useCallback} from 'react'
-import {useDeepCompareEffect, useAsync, useEffectOnce} from 'react-use'
+import {useState, useMemo, useCallback} from 'react'
+import {useDeepCompareEffect, useEffectOnce} from 'react-use'
 import Big from 'big.js'
 import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {

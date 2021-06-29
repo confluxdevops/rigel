@@ -1,5 +1,4 @@
 import {useMemo, useState, useEffect} from 'react'
-// import {useEffectOnce} from 'react-use'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
 import {ERC20_ABI} from '../abi'
@@ -27,10 +26,12 @@ export function useConnect() {
       if (portalInstalled) {
         if (!address) {
           setType(TypeConnectWallet.loading)
+        } else {
+          setType(TypeConnectWallet.success)
         }
-        setType(TypeConnectWallet.success)
+      } else {
+        setType(TypeConnectWallet.uninstalled)
       }
-      setType(TypeConnectWallet.uninstalled)
     }
   }, [address, error, portalInstalled])
 
