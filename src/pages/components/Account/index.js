@@ -4,7 +4,6 @@ import {
   WalletIcon,
   ChainConfig,
 } from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
 import {shortenAddress} from '../../../utils/address'
 import {useIsBtcChain} from '../../../hooks'
 import {useShuttleState} from '../../../state'
@@ -14,9 +13,9 @@ function Account({
   className,
   iconClassName,
   showIcon = false,
+  address,
   ...props
 }) {
-  const {address} = useWallet(chain)
   const walletKey = ChainConfig[chain].wallet
   const isBtcChain = useIsBtcChain(chain)
   const {toBtcAddress} = useShuttleState()
@@ -37,5 +36,6 @@ Account.propTypes = {
   className: PropTypes.string,
   iconClassName: PropTypes.string,
   showIcon: PropTypes.bool,
+  address: PropTypes.string,
 }
 export default Account

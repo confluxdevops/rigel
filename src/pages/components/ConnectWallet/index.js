@@ -14,18 +14,13 @@ import {TypeConnectWallet} from '../../../constants'
 function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
   const {t} = useTranslation()
   const [open, setOpen] = useState(false)
-  const {type, setType, tryActivate} = useWallet(chain)
+  const {type, tryActivate, setType} = useWallet(chain)
   const walletConfig = WalletConfig[ChainConfig[chain]?.wallet]
   const walletIcon = walletConfig?.icon(`${className} !w-3 !h-3`)
   const onConnect = () => {
+    setType(TypeConnectWallet.loading)
     setOpen(true)
-    if (type === TypeConnectWallet.loading) {
-      tryActivate()
-    }
-    if (type === TypeConnectWallet.error) {
-      setType(TypeConnectWallet.loading)
-      tryActivate()
-    }
+    tryActivate()
   }
 
   const onClose = () => {
@@ -57,14 +52,12 @@ function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
           {`${t('connect')} ${walletConfig?.name}`}
         </Button>
       )}
-      {open && (
-        <ConnectWalletModal
-          type={type}
-          chain={chain}
-          open={open}
-          onClose={onClose}
-        />
-      )}
+      <ConnectWalletModal
+        type={type}
+        chain={chain}
+        open={open}
+        onClose={onClose}
+      />
     </>
   )
 }

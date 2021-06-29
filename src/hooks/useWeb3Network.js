@@ -175,8 +175,10 @@ export function useNativeTokenBalance(
       library &&
         library
           .getBalance(address)
-          .then(balance => {
-            setBalance(new Big(balance.toString(10)))
+          .then(newBalance => {
+            if (!balance.eq(newBalance)) {
+              setBalance(new Big(newBalance.toString(10)))
+            }
           })
           .catch(() => {
             setBalance(BigNumZero)
