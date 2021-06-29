@@ -34,15 +34,13 @@ export function useConnect() {
     }
   }, [address, error, portalInstalled])
 
-  return useMemo(() => {
-    return {
-      type,
-      tryActivate: login,
-      setType,
-      error,
-      address,
-    }
-  }, [type, error, address, login])
+  return {
+    type,
+    tryActivate: login,
+    setType,
+    error,
+    address,
+  }
 }
 
 export function useContract(address, ABI) {

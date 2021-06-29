@@ -2,7 +2,11 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 
 import {Modal, Loading, Button} from '../../../components'
-import {ChainConfig, SupportedChains} from '../../../constants/chainConfig'
+import {
+  ChainConfig,
+  SupportedChains,
+  WalletConfig,
+} from '../../../constants/chainConfig'
 import {TypeConnectWallet} from '../../../constants'
 import {ErrorOutlined} from '../../../assets/svg'
 import {useWallet} from '../../../hooks/useWallet'
@@ -10,7 +14,7 @@ import {useWallet} from '../../../hooks/useWallet'
 function ConnectWalletModal({open = false, type, chain, onClose}) {
   const {t} = useTranslation()
   const {tryActivate} = useWallet(chain)
-  const walletConfig = ChainConfig[chain].wallet
+  const walletConfig = WalletConfig[ChainConfig[chain].wallet]
   const walletName = walletConfig.name
   const onInstall = () => {
     window.open(walletConfig.website, '_blank')
@@ -23,7 +27,7 @@ function ConnectWalletModal({open = false, type, chain, onClose}) {
     content = (
       <div className="flex flex-col items-center">
         <div className="font-bold text-gray-100 text-base mb-2">
-          {t('installWallet')}
+          {t('installWallet', {walletName})}
         </div>
         <div className="text-gray-60 leading-5">
           <div>{t('installTipOne', {walletName})}</div>
