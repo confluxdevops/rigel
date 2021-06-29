@@ -16,16 +16,14 @@ import {BigNumZero} from '../constants/index'
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
   const connectObjWeb3 = useConnectWeb3()
-  let connectObj = {}
-  switch (ChainConfig[chain].wallet) {
-    case KeyOfMetaMask:
-      connectObj = connectObjWeb3
-      break
-    case KeyOfPortal:
-      connectObj = connectObjPortal
-      break
-  }
-  return connectObj
+  return useMemo(() => {
+    switch (ChainConfig[chain].wallet) {
+      case KeyOfMetaMask:
+        return connectObjWeb3
+      case KeyOfPortal:
+        return connectObjPortal
+    }
+  }, [connectObjPortal, connectObjWeb3, chain])
 }
 
 /**

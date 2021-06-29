@@ -6,6 +6,7 @@ import {Account, ConnectWallet} from '../index'
 
 function AccountStatus({chain, size = 'medium', className = '', id}) {
   const {address} = useWallet(chain)
+  console.log(address)
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
@@ -25,6 +26,7 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
           showIcon={true}
           className={accountCompStyle}
           iconClassName={iconStyle}
+          address={address}
         />
       ) : (
         <ConnectWallet id={`${id}_connectWallet`} chain={chain} size={size} />

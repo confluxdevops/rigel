@@ -9,23 +9,17 @@ import {
 import {useWallet} from '../../../hooks/useWallet'
 import {ConnectWalletModal} from '../../components'
 import {Button, Tag} from '../../../components'
-import {TypeConnectWallet} from '../../../constants'
+// import {TypeConnectWallet} from '../../../constants'
 
 function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
   const {t} = useTranslation()
   const [open, setOpen] = useState(false)
-  const {type, setType, tryActivate} = useWallet(chain)
+  const {type, tryActivate} = useWallet(chain)
   const walletConfig = WalletConfig[ChainConfig[chain]?.wallet]
   const walletIcon = walletConfig?.icon(`${className} !w-3 !h-3`)
   const onConnect = () => {
     setOpen(true)
-    if (type === TypeConnectWallet.loading) {
-      tryActivate()
-    }
-    if (type === TypeConnectWallet.error) {
-      setType(TypeConnectWallet.loading)
-      tryActivate()
-    }
+    tryActivate()
   }
 
   const onClose = () => {
