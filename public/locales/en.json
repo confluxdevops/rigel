@@ -24,12 +24,6 @@
   "all": "All",
   "app": "App",
   "connect": "Connect",
-  "error": {
-    "inputValidAmount": "Please type a valid amount",
-    "mustGtVal": "The amount must be greater than {{value}}",
-    "mustLsMax": "The amount must be less than {{value}}",
-    "addressInvalid": "Address is invalid"
-  },
   "balance": "Balance",
   "max": "Max",
   "receiveAs": "Receive as",
@@ -39,6 +33,21 @@
   "asset": "Asset",
   "destination": "Destination",
   "shuttleFee": "Shuttle Fee",
+  "checkboxLabel": "I’m clear the above description",
+  "approve": "Approve {{tokenSymbol}}",
+  "send": "Send",
+  "pleaseWait": "Please Wait Patiently",
+  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+  "copiedSuccess": "Copied success!",
+  "noPendingTxs": "Pending transactions will appear here",
+  "shuttleRecordItem": "{{tokenSymbol}} from {{fromChain}} to {{toChain}}",
+  "approveRecordItem": "Approve {{tokenSymbol}}",
+  "error": {
+    "inputValidAmount": "Please type a valid amount",
+    "mustGtVal": "The amount must be greater than {{value}}",
+    "mustLsMax": "The amount must be less than {{value}}",
+    "addressInvalid": "Address is invalid"
+  },
   "tips": {
     "mustKnow": "You must kown",
     "notice": "Notice",
@@ -56,17 +65,11 @@
     "shuttlePaused": "Shuttle paused",
     "shuttlePausedDescription": "From {{fromChain}} to {{toChain}}, token captain stop service."
   },
-  "checkboxLabel": "I’m clear the above description",
-  "approve": "Approve {{tokenSymbol}}",
-  "send": "Send",
   "home": {
     "subTitle": "Lighting Fast Interoperable Protocol",
     "shuttleFlow": "ShuttleFlow App",
     "lightPaper": "LightPaper"
   },
-  "pleaseWait": "Please Wait Patiently",
-  "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
-  "copiedSuccess": "Copied success!",
   "maintenance": {
     "underMaint": "Under maintenance",
     "maintDesc1": "We are currently undergoing maintenance. We will be back shortly.",
@@ -81,5 +84,9 @@
     "confirm": "Be sure to confirm: You know the risks of the selected token, at your own risk.",
     "continue": "Continue",
     "checkboxLabel": "I understand"
+  },
+  "notfound": {
+    "notFound": "Page not found",
+    "goBack": "Go Back Home"
   }
 }

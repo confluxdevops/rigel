@@ -116,16 +116,15 @@ function ShuttleOutButton({
     return null
   }
   return (
-    <>
-      <Button
-        startIcon={<Send />}
-        onClick={onSubmit}
-        disabled={disabled}
-        size="large"
-      >
-        {t('send')}
-      </Button>
-    </>
+    <Button
+      startIcon={<Send />}
+      onClick={onSubmit}
+      disabled={disabled}
+      size="large"
+      id="shuttleOut"
+    >
+      {t('send')}
+    </Button>
   )
 }
 

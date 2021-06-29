@@ -198,6 +198,7 @@ function ShuttleForm({
           chain={fromChain || DefaultFromChain}
           type="from"
           onClick={onChangeChain}
+          id="fromToken"
         />
         <FromToken
           fromChain={fromChain}
@@ -220,6 +221,7 @@ function ShuttleForm({
         size="w-8 h-8"
         className="my-4"
         onClick={onInvertChain}
+        id="exchangeChain"
       >
         <BgChange />
       </WrapIcon>
@@ -229,6 +231,7 @@ function ShuttleForm({
           type="to"
           onClick={onChangeChain}
           fromChain={fromChain || DefaultFromChain}
+          id="toChain"
         />
         <ToToken fromChain={fromChain} toChain={toChain} toToken={toToken} />
       </div>
@@ -246,6 +249,7 @@ function ShuttleForm({
           size="large"
           disabled={btnDisabled}
           onClick={onNextBtnClick}
+          id="next"
         >
           {t('next')}
         </Button>

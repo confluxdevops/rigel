@@ -22,16 +22,18 @@ function FromToken({
     <div className="flex flex-col flex-1 border border-gray-10 rounded px-3 py-4 justify-between">
       <div className="flex justify-between">
         <TokenSelect
+          id="fromToken"
           token={fromToken}
           type="from"
           fromChain={fromChain}
           toChain={toChain}
           onClick={() => onChooseToken && onChooseToken()}
         />
-        <AccountStatus chain={fromChain} size="medium" />
+        <AccountStatus id="fromToken" chain={fromChain} size="medium" />
       </div>
       <div className="flex justify-between items-center">
         <Input
+          id="shuttleAmount"
           bordered={false}
           value={value}
           onChange={onInputChange}
@@ -41,12 +43,13 @@ function FromToken({
         />
         <div className="flex flex-col items-end">
           {fromAddress && (
-            <span className="text-gray-40 text-xs inline-block mb-1">{`${t(
-              'balance',
-            )} ${formatAmount(balanceVal)}`}</span>
+            <span
+              className="text-gray-40 text-xs inline-block mb-1"
+              id="balance"
+            >{`${t('balance')} ${formatAmount(balanceVal)}`}</span>
           )}
           {fromAddress && (
-            <Tag size="small" onClick={onMaxClick}>
+            <Tag size="small" onClick={onMaxClick} id="max">
               {t('max')}
             </Tag>
           )}

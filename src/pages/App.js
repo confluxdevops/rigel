@@ -1,18 +1,30 @@
 import {Suspense} from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom'
 import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
 import Home from '../pages/Home'
 import Maintenance from '../pages/Maintenance'
+import Notfound from '../pages/Notfound'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
-import Example from './Example'
+import {Loading} from '../components'
 import {useIsMobile} from '../hooks'
 
 function App() {
   const isMobile = useIsMobile()
 
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className="w-full h-full flex items-center justify-center">
+          <Loading className="w-20 h-20" />
+        </div>
+      }
+    >
       <Router>
         <div className="flex flex-col h-full relative overflow-y-hidden">
           <Header />
@@ -22,18 +34,20 @@ function App() {
                 <Route path="/shuttle">
                   <Shuttle />
                 </Route>
-                {/* TODO: Remove */}
-                <Route path="/example">
-                  <Example />
-                </Route>
                 <Route path="/history">
                   <History />
                 </Route>
                 <Route path="/" exact>
                   <Home />
                 </Route>
-                <Route path="/maintenance" exact>
+                <Route path="/maintenance">
                   <Maintenance />
+                </Route>
+                <Route path="/notfound">
+                  <Notfound />
+                </Route>
+                <Route path="*">
+                  <Redirect to="/notfound" />
                 </Route>
               </Switch>
             </Web3ReactManager>

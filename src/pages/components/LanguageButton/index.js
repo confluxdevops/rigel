@@ -14,6 +14,7 @@ function LanguageButton() {
   }
   return (
     <WrapIcon
+      id="language"
       type="square"
       className="ml-3"
       size="w-7 h-7"

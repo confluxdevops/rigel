@@ -57,7 +57,7 @@ function ConfirmModal({
       open={open}
       content={content}
       onClose={onClose}
-      className="!pb-0 !px-0"
+      className="!pb-0 !px-0 !bg-gray-0"
     />
   )
 }
