@@ -13,10 +13,7 @@ export function useAddress() {
   return address
 }
 
-export function useConnectWalletType() {}
-
-export function useConnect() {
-  const {portalInstalled, address, error, login} = useConfluxPortal()
+export function useConnectWalletType(portalInstalled, address, error) {
   const [type, setType] = useState(TypeConnectWallet.uninstalled)
 
   useEffect(() => {
@@ -34,6 +31,13 @@ export function useConnect() {
       }
     }
   }, [address, error, portalInstalled])
+
+  return [type, setType]
+}
+
+export function useConnect() {
+  const {portalInstalled, address, error, login} = useConfluxPortal()
+  const [type, setType] = useConnectWalletType(portalInstalled, address, error)
 
   return {
     type,
