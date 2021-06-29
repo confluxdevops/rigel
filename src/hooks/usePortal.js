@@ -1,4 +1,4 @@
-import {useMemo, useCallback} from 'react'
+import {useMemo, useState, useEffect} from 'react'
 // import {useEffectOnce} from 'react-use'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
@@ -17,30 +17,32 @@ export function useAddress() {
 export function useConnectWalletType() {}
 
 export function useConnect() {
-  const {portalInstalled, address, login, error} = useConfluxPortal()
-  const tryActivate = useCallback(() => login(), [login])
-  const type = useMemo(() => {
+  const {portalInstalled, address, error, login} = useConfluxPortal()
+  const [type, setType] = useState(TypeConnectWallet.uninstalled)
+
+  useEffect(() => {
     if (error) {
-      return TypeConnectWallet.error
+      setType(TypeConnectWallet.error)
     } else {
       if (portalInstalled) {
         if (!address) {
-          return TypeConnectWallet.loading
+          setType(TypeConnectWallet.loading)
         }
-        return TypeConnectWallet.success
+        setType(TypeConnectWallet.success)
       }
-      return TypeConnectWallet.uninstalled
+      setType(TypeConnectWallet.uninstalled)
     }
   }, [address, error, portalInstalled])
 
   return useMemo(() => {
     return {
       type,
-      tryActivate,
+      tryActivate: login,
+      setType,
       error,
       address,
     }
-  }, [type, tryActivate, error, address])
+  }, [type, error, address, login])
 }
 
 export function useContract(address, ABI) {
