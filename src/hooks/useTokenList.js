@@ -87,7 +87,7 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
   )
   const searchTokensFromBackend = useMemo(
     () => (data ? [data].map(token => mapToken(token, isFromCfxChain)) : []),
-    [`${data}`, isFromCfxChain],
+    [convertJsonToString(data), isFromCfxChain],
   )
   useEffect(() => {
     if (searchTokensFromBackend.length === 1) {
