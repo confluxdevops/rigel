@@ -1267,10 +1267,10 @@
     "@cfxjs/bytes" "0.0.2"
     bn.js "^5.2.0"
 
-"@cfxjs/react-hooks@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@cfxjs/react-hooks/-/react-hooks-2.2.0.tgz#e87de0037c38c8a5b97d1ad83a2b07f75431dc21"
-  integrity sha512-vvGDT7RY3gqQ+6t66yzXyOlljpszLBtW9PVfl4Ghba4OjUBw1EEpq9xU6zqgGuYWJSYDSVeczrLzYhp0Z4ZXDw==
+"@cfxjs/react-hooks@^2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@cfxjs/react-hooks/-/react-hooks-2.3.2.tgz#d3ee0cf843ac85f4ed8bb82efb31e8dfbabcd77c"
+  integrity sha512-kButidtSu6sW6WlFEi0xdBVFHCM60b1TU65zy9MRe0t+NTQOwdJVVN5Lnj+nJcwVV3X6PlBoR2ydzlxiH+dWyg==
   dependencies:
     big.js "^6.0.1"
     react-use "^15.3.4"
