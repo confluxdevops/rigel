@@ -7,7 +7,7 @@
     "@cfxjs/account": "^0.0.2",
     "@cfxjs/base32-address": "^0.0.4",
     "@cfxjs/data-format": "^0.0.3",
-    "@cfxjs/react-hooks": "^2.2.0",
+    "@cfxjs/react-hooks": "^2.3.0",
     "@craco/craco": "^6.1.1",
     "@ethersproject/address": "^5.3.0",
     "@ethersproject/bignumber": "^5.3.0",

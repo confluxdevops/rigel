@@ -1,6 +1,7 @@
 import {useState, useMemo, useCallback} from 'react'
 import {useDeepCompareEffect, useEffectOnce} from 'react-use'
 import Big from 'big.js'
+import {UnsupportedChainIdError} from '@web3-react/core'
 import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {
   useConnect as useConnectPortal,
@@ -12,7 +13,7 @@ import {
   useTokenContract as useTokenContractWeb3,
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
-import {BigNumZero, IntervalTime} from '../constants'
+import {BigNumZero, IntervalTime, TypeAccountStatus} from '../constants'
 import {isChainIdRight} from '../utils'
 
 export function useWallet(chain) {
@@ -20,11 +21,13 @@ export function useWallet(chain) {
   const connectObjWeb3 = useConnectWeb3()
 
   return useMemo(() => {
-    switch (ChainConfig[chain].wallet) {
+    switch (ChainConfig[chain]?.wallet) {
       case KeyOfMetaMask:
         return connectObjWeb3
       case KeyOfPortal:
         return connectObjPortal
+      default:
+        return {}
     }
   }, [connectObjPortal, connectObjWeb3, chain])
 }
@@ -94,7 +97,6 @@ export function useContractState(
       return () => clearInterval(timeInterval)
     }
   })
-
   return data
 }
 
@@ -175,4 +177,33 @@ export function useIsChainInRightNetwork(chain) {
       return true
     }
   }, [address, chain, chainId])
+}
+
+export function useAccountStatus(chain) {
+  const {address, chainId, error} = useWallet(chain)
+  return useMemo(() => {
+    const wallet = ChainConfig[chain]?.wallet
+    if (wallet) {
+      if (address) {
+        if (isChainIdRight(chain, chainId)) {
+          return {type: TypeAccountStatus.success}
+        }
+        //error:wrong network
+        return {type: TypeAccountStatus.error, errorType: 2}
+      } else {
+        if (error) {
+          if (error instanceof UnsupportedChainIdError) {
+            //error:wrong network
+            return {type: TypeAccountStatus.error, errorType: 2}
+          }
+          //other error
+          return {type: TypeAccountStatus.error, errorType: 1}
+        }
+        return {type: TypeAccountStatus.unconnected}
+      }
+    } else {
+      //it means that this chain do not require the wallet, for example: btc
+      return {type: TypeAccountStatus.success}
+    }
+  }, [address, chain, chainId, error])
 }

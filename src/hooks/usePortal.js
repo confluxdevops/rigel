@@ -36,7 +36,7 @@ export function useConnectWalletType(portalInstalled, address, error) {
 }
 
 export function useConnect() {
-  const {portalInstalled, address, error, login} = useConfluxPortal()
+  const {portalInstalled, address, error, login, chainId} = useConfluxPortal()
   const [type, setType] = useConnectWalletType(portalInstalled, address, error)
 
   return {
@@ -45,6 +45,7 @@ export function useConnect() {
     setType,
     error,
     address,
+    chainId,
   }
 }
 

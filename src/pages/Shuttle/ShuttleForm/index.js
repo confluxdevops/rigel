@@ -81,8 +81,12 @@ function ShuttleForm({
   const minimalVal = useMemo(
     () =>
       isFromChainCfx
-        ? minimal_out_value?.toNumber()
-        : minimal_in_value?.toNumber(),
+        ? minimal_out_value
+          ? minimal_out_value.toNumber()
+          : 0
+        : minimal_in_value
+        ? minimal_in_value.toNumber()
+        : 0,
     [isFromChainCfx, minimal_in_value, minimal_out_value],
   )
 
