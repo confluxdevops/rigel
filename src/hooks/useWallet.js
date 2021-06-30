@@ -70,7 +70,8 @@ export function useContractState(
     if (isNativeToken) {
       return null
     } else {
-      contract &&
+      return (
+        contract &&
         contract[method](...params)
           .then(res => {
             return res
@@ -78,6 +79,7 @@ export function useContractState(
           .catch(() => {
             return null
           })
+      )
     }
   }, [contract, method, params, isNativeToken])
 
