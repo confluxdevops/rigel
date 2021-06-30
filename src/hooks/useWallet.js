@@ -67,7 +67,7 @@ export function useContractState(
 ) {
   const contract = useTokenContract(chain, tokenAddress)
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
-  const [data, setData] = useState(BigNumZero)
+  const [data, setData] = useState(null)
 
   const getContractData = useCallback(
     params => {
