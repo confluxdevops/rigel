@@ -1,5 +1,5 @@
-import {useState, useMemo, useCallback} from 'react'
-import {useDeepCompareEffect, useEffectOnce} from 'react-use'
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useState, useMemo, useCallback, useEffect} from 'react'
 import Big from 'big.js'
 import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {
@@ -17,15 +17,16 @@ import {BigNumZero, IntervalTime} from '../constants'
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
   const connectObjWeb3 = useConnectWeb3()
-
-  return useMemo(() => {
-    switch (ChainConfig[chain].wallet) {
-      case KeyOfMetaMask:
-        return connectObjWeb3
-      case KeyOfPortal:
-        return connectObjPortal
-    }
-  }, [connectObjPortal, connectObjWeb3, chain])
+  let data = null
+  switch (ChainConfig[chain].wallet) {
+    case KeyOfMetaMask:
+      data = connectObjWeb3
+      break
+    case KeyOfPortal:
+      data = connectObjPortal
+      break
+  }
+  return data
 }
 
 /**
@@ -65,36 +66,34 @@ export function useContractState(
 ) {
   const contract = useTokenContract(chain, tokenAddress)
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
-  const [data, setData] = useState(null)
-  const getContractData = useCallback(() => {
-    if (isNativeToken) {
-      return null
-    } else {
-      return (
-        contract &&
-        contract[method](...params)
+  const [data, setData] = useState(BigNumZero)
+
+  const getContractData = useCallback(
+    params => {
+      if (isNativeToken || !params[0] || !contract) {
+        setData(null)
+      } else {
+        return contract[method](...params)
           .then(res => {
-            return res
+            setData(res)
           })
           .catch(() => {
-            return null
+            setData(null)
           })
-      )
-    }
-  }, [contract, method, params, isNativeToken])
+      }
+    },
+    [isNativeToken, contract?.toString(), method],
+  )
 
-  useDeepCompareEffect(() => {
-    setData(getContractData())
-  }, [contract, method, params, isNativeToken, getContractData])
-
-  useEffectOnce(() => {
+  useEffect(() => {
     if (interval) {
-      const timeInterval = setInterval(() => {
-        setData(getContractData())
-      }, interval)
+      getContractData(params)
+      const timeInterval = setInterval(() => getContractData(params), interval)
       return () => clearInterval(timeInterval)
+    } else {
+      getContractData(params)
     }
-  })
+  }, [params.toString(), getContractData, interval])
 
   return data
 }
@@ -107,7 +106,10 @@ export function useTokenBalance(chain, tokenAddress, params) {
     params,
     IntervalTime.fetchBalance,
   )
-  return useMemo(() => (balance ? new Big(balance) : BigNumZero), [balance])
+  return useMemo(
+    () => (balance ? new Big(balance) : BigNumZero),
+    [balance?.toString()],
+  )
 }
 
 export function useTokenAllowance(chain, tokenAddress, params) {
@@ -126,7 +128,7 @@ export function useNativeTokenBalance(chain, address) {
       case KeyOfPortal:
         return balancePortal
     }
-  }, [address, balancePortal, balanceWeb3, chain])
+  }, [address, balancePortal?.toString(), balanceWeb3?.toString(), chain])
 }
 
 /**
@@ -143,7 +145,7 @@ export function useBalance(chain, address, tokenAddress, params) {
   const tokenBalance = useTokenBalance(chain, tokenAddress, params)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [isNativeToken, nativeTokenBalance, tokenBalance],
+    [isNativeToken, nativeTokenBalance?.toString(), tokenBalance.toString()],
   )
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * data about shuttle, mainly various contract params
  */
@@ -92,7 +93,7 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [contract, contractAddress, dicimalsNum, isCfxChain, origin])
+  }, [contract?.toString(), contractAddress, dicimalsNum, isCfxChain, origin])
   return contractData
 }
 
@@ -133,7 +134,7 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [contract, contractAddress, origin])
+  }, [contract?.toString(), contractAddress, origin])
   return contractData
 }
 
@@ -149,6 +150,6 @@ export function useShuttleFee(chainOfContract, token, toChain) {
         : out_fee
         ? out_fee.toString(10)
         : 0,
-    [in_fee, isToChainCfx, out_fee],
+    [in_fee?.toString(), isToChainCfx, out_fee?.toString()],
   )
 }

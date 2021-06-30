@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo, useEffect} from 'react'
 import useSWR from 'swr'
 import {requestAllTokenList, requestToken} from '../utils/api'
@@ -40,7 +41,7 @@ export function useDisplayTokenList(fromChain, toChain) {
 
   return useMemo(
     () => tokenList.filter(ChainConfig[fromChain].displayFilter),
-    [fromChain, tokenList],
+    [fromChain, tokenList?.toString()],
   )
 }
 
@@ -59,7 +60,7 @@ export function useMapTokenList(fromChain, toChain) {
           token => token?.origin === toChain || token?.to_chain === toChain,
         )
         .map(token => mapToken(token, isFromCfxChain)),
-    [tokenList, isFromCfxChain, fromChain, toChain],
+    [tokenList?.toString(), isFromCfxChain, fromChain, toChain],
   )
 }
 
@@ -85,13 +86,13 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
   )
   const searchTokensFromBackend = useMemo(
     () => (data ? [data].map(token => mapToken(token, isFromCfxChain)) : []),
-    [data, isFromCfxChain],
+    [data?.toString(), isFromCfxChain],
   )
   useEffect(() => {
     if (searchTokensFromBackend.length === 1) {
       setTokenFromBackend(searchTokensFromBackend[0])
     }
-  }, [searchTokensFromBackend, setTokenFromBackend])
+  }, [searchTokensFromBackend?.toString(), setTokenFromBackend?.toString()])
   return searchTokensFromBackend
 }
 
@@ -107,7 +108,7 @@ function useSearchAddressFromList(fromChain, toChain, search) {
             return obj?.address === search
           })
         : [],
-    [isValidAddress, tokenList, search],
+    [isValidAddress, tokenList?.toString(), search],
   )
 }
 
@@ -123,7 +124,7 @@ function useSearchNameFromList(fromChain, toChain, search) {
           obj?.display_name?.toLowerCase().indexOf(search) > -1
         )
       }),
-    [search, tokenList],
+    [search, tokenList?.toString()],
   )
 }
 
@@ -166,7 +167,7 @@ export function useFromToken(fromChain, toChain, fromTokenAddress) {
 
   const data = useMemo(
     () => tokenList.filter(token => token.address === fromTokenAddress),
-    [tokenList, fromTokenAddress],
+    [tokenList?.toString(), fromTokenAddress],
   )
 
   return (data && data[0]) || {}
@@ -184,7 +185,7 @@ export function useToToken(fromChain, toChain, fromTokenAddress) {
           (token.address === token.reference &&
             token.ctoken === fromTokenAddress),
       ),
-    [tokenList, fromTokenAddress],
+    [tokenList?.toString(), fromTokenAddress],
   )
 
   return (data && data[0]) || {}
@@ -194,6 +195,6 @@ export function useTokenAddress(token, isCfxChain) {
   const {ctoken, reference} = token
   return useMemo(
     () => (!token ? '' : isCfxChain ? ctoken : reference),
-    [ctoken, reference, isCfxChain, token],
+    [ctoken?.toString(), reference, isCfxChain, token?.toString()],
   ) // address may be string, such as 'eth', 'cfx'
 }

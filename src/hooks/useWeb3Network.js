@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * For the chain based on Ethereum: multiple connectors
  * But only support MetaMask now
@@ -141,7 +142,7 @@ export function useConnect() {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [account, error, isInstalled])
+  }, [account, error?.toString(), isInstalled])
 
   const tryActivate = () => {
     if (isInstalled && !account) {
@@ -204,7 +205,7 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
     } catch (error) {
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, ABI.toString(), library.toString(), withSignerIfPossible, account])
 }
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {

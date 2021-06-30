@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
@@ -66,7 +67,7 @@ function ShuttleForm({
 
   const balanceVal = useMemo(
     () => convertDecimal(balance, 'divide', decimal),
-    [balance, decimal],
+    [balance?.toString(), decimal],
   )
 
   const maxAmount = useMemo(
@@ -75,7 +76,7 @@ function ShuttleForm({
         ? getMaxAmount(fromChain, balanceVal)
         : balanceVal
       ).toString(10),
-    [balanceVal, fromChain, isNativeToken],
+    [balanceVal?.toString(), fromChain, isNativeToken],
   )
 
   const minimalVal = useMemo(
@@ -83,7 +84,7 @@ function ShuttleForm({
       isFromChainCfx
         ? minimal_out_value?.toNumber()
         : minimal_in_value?.toNumber(),
-    [isFromChainCfx, minimal_in_value, minimal_out_value],
+    [isFromChainCfx, minimal_in_value?.toString(), minimal_out_value?.toString()],
   )
 
   const shuttlePaused = useMemo(() => {
@@ -95,7 +96,7 @@ function ShuttleForm({
     } catch (error) {
       return false
     }
-  }, [fromChain, safe_sponsor_amount, sponsorValue, toChain])
+  }, [fromChain, safe_sponsor_amount?.toString(), sponsorValue?.toString(), toChain])
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
