@@ -142,7 +142,7 @@ export function useConnect() {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [account, error?.toString(), isInstalled])
+  }, [account, `${error}`, isInstalled])
 
   const tryActivate = () => {
     if (isInstalled && !account) {
@@ -205,7 +205,7 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
     } catch (error) {
       return null
     }
-  }, [address, ABI.toString(), library.toString(), withSignerIfPossible, account])
+  }, [address, `${ABI}`, `${library}`, withSignerIfPossible, account])
 }
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {

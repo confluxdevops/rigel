@@ -70,7 +70,7 @@ function ShuttleInButton({
     return () => {
       setDidMount(false)
     }
-  }, [decimals, tokenAllownace?.toString(), value, isNativeToken])
+  }, [decimals, `${tokenAllownace}`, value, isNativeToken])
 
   function contractApprove(tokenContract, value, gas) {
     tokenContract

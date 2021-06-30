@@ -31,7 +31,7 @@ export function useConnectWalletType(portalInstalled, address, error) {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [address, error?.toString(), portalInstalled])
+  }, [address, `${error}`, portalInstalled])
 
   return [type, setType]
 }
@@ -58,7 +58,7 @@ export function useContract(address, ABI) {
     } catch (error) {
       return null
     }
-  }, [address, ABI?.toString(), confluxJS?.toString()])
+  }, [address, ` ${ABI}`, `${confluxJS}`])
 }
 
 export function useTokenContract(tokenAddress) {

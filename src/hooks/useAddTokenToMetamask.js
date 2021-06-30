@@ -38,7 +38,7 @@ export default function useAddTokenToMetamask(token) {
     } else {
       setSuccess(false)
     }
-  }, [library?.toString(), token?.toString()])
+  }, [`${library}`, `${token}`])
 
   return {addToken, success}
 }

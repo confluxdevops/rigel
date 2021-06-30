@@ -82,7 +82,7 @@ export function useContractState(
           })
       }
     },
-    [isNativeToken, contract?.toString(), method],
+    [isNativeToken, `${contract}`, method],
   )
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export function useContractState(
     } else {
       getContractData(params)
     }
-  }, [params.toString(), getContractData, interval])
+  }, [`${params}`, getContractData, interval])
 
   return data
 }
@@ -108,7 +108,7 @@ export function useTokenBalance(chain, tokenAddress, params) {
   )
   return useMemo(
     () => (balance ? new Big(balance) : BigNumZero),
-    [balance?.toString()],
+    [`${balance}`],
   )
 }
 
@@ -128,7 +128,7 @@ export function useNativeTokenBalance(chain, address) {
       case KeyOfPortal:
         return balancePortal
     }
-  }, [address, balancePortal?.toString(), balanceWeb3?.toString(), chain])
+  }, [address, `${balancePortal}`, `${balanceWeb3}`, chain])
 }
 
 /**
@@ -145,7 +145,7 @@ export function useBalance(chain, address, tokenAddress, params) {
   const tokenBalance = useTokenBalance(chain, tokenAddress, params)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [isNativeToken, nativeTokenBalance?.toString(), tokenBalance.toString()],
+    [isNativeToken, `${nativeTokenBalance}`, `${tokenBalance}`],
   )
 }
 

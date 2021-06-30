@@ -67,7 +67,7 @@ function ShuttleForm({
 
   const balanceVal = useMemo(
     () => convertDecimal(balance, 'divide', decimal),
-    [balance?.toString(), decimal],
+    [`${balance}`, decimal],
   )
 
   const maxAmount = useMemo(
@@ -76,7 +76,7 @@ function ShuttleForm({
         ? getMaxAmount(fromChain, balanceVal)
         : balanceVal
       ).toString(10),
-    [balanceVal?.toString(), fromChain, isNativeToken],
+    [`${balanceVal}`, fromChain, isNativeToken],
   )
 
   const minimalVal = useMemo(
@@ -84,7 +84,7 @@ function ShuttleForm({
       isFromChainCfx
         ? minimal_out_value?.toNumber()
         : minimal_in_value?.toNumber(),
-    [isFromChainCfx, minimal_in_value?.toString(), minimal_out_value?.toString()],
+    [isFromChainCfx, `${minimal_in_value}`, `${minimal_out_value}`],
   )
 
   const shuttlePaused = useMemo(() => {
@@ -96,7 +96,7 @@ function ShuttleForm({
     } catch (error) {
       return false
     }
-  }, [fromChain, safe_sponsor_amount?.toString(), sponsorValue?.toString(), toChain])
+  }, [fromChain, `${safe_sponsor_amount}`, `${sponsorValue}`, toChain])
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)

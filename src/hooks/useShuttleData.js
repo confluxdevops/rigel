@@ -93,7 +93,7 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [contract?.toString(), contractAddress, dicimalsNum, isCfxChain, origin])
+  }, [`${contract}`, contractAddress, dicimalsNum, isCfxChain, origin])
   return contractData
 }
 
@@ -134,7 +134,7 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [contract?.toString(), contractAddress, origin])
+  }, [`${contract}`, contractAddress, origin])
   return contractData
 }
 
@@ -150,6 +150,6 @@ export function useShuttleFee(chainOfContract, token, toChain) {
         : out_fee
         ? out_fee.toString(10)
         : 0,
-    [in_fee?.toString(), isToChainCfx, out_fee?.toString()],
+    [`${in_fee}`, isToChainCfx, `${out_fee}`],
   )
 }
