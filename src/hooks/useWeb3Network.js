@@ -12,7 +12,6 @@ import {injected, getContract} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
 import {isMobile} from 'react-device-detect'
 import {ERC20_ABI} from '../abi'
-import {convertJsonToString} from '../utils'
 
 /**
  * doc: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#useweb3react
@@ -78,7 +77,7 @@ export function useInactiveListener(suppress = false) {
       }
     }
     return undefined
-  }, [active, convertJsonToString(error), suppress, activate])
+  }, [active, Boolean(error), suppress, activate])
 }
 
 export function useEagerConnect() {
@@ -142,7 +141,7 @@ export function useConnect() {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [account, convertJsonToString(error), isInstalled])
+  }, [account, Boolean(error), isInstalled])
 
   const tryActivate = () => {
     if (isInstalled && !account) {
@@ -205,13 +204,7 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
     } catch (error) {
       return null
     }
-  }, [
-    address,
-    convertJsonToString(ABI),
-    convertJsonToString(library),
-    withSignerIfPossible,
-    account,
-  ])
+  }, [address, Boolean(library), withSignerIfPossible, account])
 }
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {

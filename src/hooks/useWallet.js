@@ -13,7 +13,6 @@ import {
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
 import {BigNumZero, IntervalTime} from '../constants'
-import {convertJsonToString} from '../utils'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -83,7 +82,7 @@ export function useContractState(
           })
       }
     },
-    [isNativeToken, convertJsonToString(contract), method],
+    [isNativeToken, chain, tokenAddress, method],
   )
 
   useEffect(() => {
@@ -94,7 +93,7 @@ export function useContractState(
     } else {
       getContractData(params)
     }
-  }, [convertJsonToString(params), getContractData, interval])
+  }, [...params, getContractData, interval])
 
   return data
 }
@@ -107,10 +106,7 @@ export function useTokenBalance(chain, tokenAddress, params) {
     params,
     IntervalTime.fetchBalance,
   )
-  return useMemo(
-    () => (balance ? new Big(balance) : BigNumZero),
-    [convertJsonToString(balance)],
-  )
+  return balance ? new Big(balance) : BigNumZero
 }
 
 export function useTokenAllowance(chain, tokenAddress, params) {
@@ -129,12 +125,7 @@ export function useNativeTokenBalance(chain, address) {
       case KeyOfPortal:
         return balancePortal
     }
-  }, [
-    address,
-    convertJsonToString(balancePortal),
-    convertJsonToString(balanceWeb3),
-    chain,
-  ])
+  }, [address, balancePortal.toString(), balanceWeb3.toString(), chain])
 }
 
 /**
@@ -151,11 +142,7 @@ export function useBalance(chain, address, tokenAddress, params) {
   const tokenBalance = useTokenBalance(chain, tokenAddress, params)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [
-      isNativeToken,
-      convertJsonToString(nativeTokenBalance),
-      convertJsonToString(tokenBalance),
-    ],
+    [isNativeToken, nativeTokenBalance.toString(), tokenBalance.toString()],
   )
 }
 

@@ -6,7 +6,6 @@ import {ProxyUrlPrefix, IntervalTime} from '../constants'
 import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 import {useShuttleState} from '../state'
-import {convertJsonToString} from '../utils'
 
 function mapToken(token, isCfxChain) {
   if (!token) return {}
@@ -42,7 +41,7 @@ export function useDisplayTokenList(fromChain, toChain) {
 
   return useMemo(
     () => tokenList.filter(ChainConfig[fromChain].displayFilter),
-    [fromChain, convertJsonToString(tokenList)],
+    [fromChain, tokenList.toString()],
   )
 }
 
@@ -61,7 +60,7 @@ export function useMapTokenList(fromChain, toChain) {
           token => token?.origin === toChain || token?.to_chain === toChain,
         )
         .map(token => mapToken(token, isFromCfxChain)),
-    [convertJsonToString(tokenList), isFromCfxChain, fromChain, toChain],
+    [tokenList.toString(), isFromCfxChain, fromChain, toChain],
   )
 }
 
@@ -87,16 +86,13 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
   )
   const searchTokensFromBackend = useMemo(
     () => (data ? [data].map(token => mapToken(token, isFromCfxChain)) : []),
-    [convertJsonToString(data), isFromCfxChain],
+    [data.reference, isFromCfxChain],
   )
   useEffect(() => {
     if (searchTokensFromBackend.length === 1) {
       setTokenFromBackend(searchTokensFromBackend[0])
     }
-  }, [
-    convertJsonToString(searchTokensFromBackend),
-    convertJsonToString(setTokenFromBackend),
-  ])
+  }, [searchTokensFromBackend[0].address])
   return searchTokensFromBackend
 }
 
@@ -112,7 +108,7 @@ function useSearchAddressFromList(fromChain, toChain, search) {
             return obj?.address === search
           })
         : [],
-    [isValidAddress, convertJsonToString(tokenList), search],
+    [isValidAddress, tokenList.toString(), search],
   )
 }
 
@@ -128,7 +124,7 @@ function useSearchNameFromList(fromChain, toChain, search) {
           obj?.display_name?.toLowerCase().indexOf(search) > -1
         )
       }),
-    [search, convertJsonToString(tokenList)],
+    [search, tokenList.toString()],
   )
 }
 
@@ -171,7 +167,7 @@ export function useFromToken(fromChain, toChain, fromTokenAddress) {
 
   const data = useMemo(
     () => tokenList.filter(token => token.address === fromTokenAddress),
-    [convertJsonToString(tokenList), fromTokenAddress],
+    [tokenList.toString(), fromTokenAddress],
   )
 
   return (data && data[0]) || {}
@@ -189,7 +185,7 @@ export function useToToken(fromChain, toChain, fromTokenAddress) {
           (token.address === token.reference &&
             token.ctoken === fromTokenAddress),
       ),
-    [convertJsonToString(tokenList), fromTokenAddress],
+    [tokenList.toString(), fromTokenAddress],
   )
 
   return (data && data[0]) || {}
@@ -199,11 +195,6 @@ export function useTokenAddress(token, isCfxChain) {
   const {ctoken, reference} = token
   return useMemo(
     () => (!token ? '' : isCfxChain ? ctoken : reference),
-    [
-      convertJsonToString(ctoken),
-      reference,
-      isCfxChain,
-      convertJsonToString(token),
-    ],
+    [ctoken, reference, isCfxChain, Boolean(token)],
   ) // address may be string, such as 'eth', 'cfx'
 }

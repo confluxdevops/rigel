@@ -10,7 +10,7 @@ import {KeyOfBtc, KeyOfCfx} from '../constants/chainConfig'
 import {ZeroAddrHex} from '../constants'
 import {useIsCfxChain} from '../hooks'
 import {useTokenAddress} from '../hooks/useTokenList'
-import {getExponent, convertJsonToString} from '../utils'
+import {getExponent} from '../utils'
 
 export function useShuttleData() {}
 
@@ -94,7 +94,8 @@ export function useCustodianData(chainOfContract, token) {
         setContractData({})
       })
   }, [
-    convertJsonToString(contract),
+    isCfxChain,
+    chainOfContract,
     contractAddress,
     dicimalsNum,
     isCfxChain,
@@ -140,7 +141,7 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [convertJsonToString(contract), contractAddress, origin])
+  }, [chainOfContract, isCfxChain, contractAddress, origin])
   return contractData
 }
 
@@ -156,6 +157,6 @@ export function useShuttleFee(chainOfContract, token, toChain) {
         : out_fee
         ? out_fee.toString(10)
         : 0,
-    [convertJsonToString(in_fee), isToChainCfx, convertJsonToString(out_fee)],
+    [in_fee.toString(), isToChainCfx, out_fee.toString()],
   )
 }

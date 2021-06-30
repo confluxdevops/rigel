@@ -3,7 +3,6 @@ import {useMemo, useState, useEffect} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
 import {ERC20_ABI} from '../abi'
-import {convertJsonToString} from '../utils'
 
 export function useInstalled() {
   const {portalInstalled} = useConfluxPortal()
@@ -32,7 +31,7 @@ export function useConnectWalletType(portalInstalled, address, error) {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [address, convertJsonToString(error), portalInstalled])
+  }, [address, Boolean(error), portalInstalled])
 
   return [type, setType]
 }
@@ -59,7 +58,7 @@ export function useContract(address, ABI) {
     } catch (error) {
       return null
     }
-  }, [address, convertJsonToString(ABI), convertJsonToString(confluxJS)])
+  }, [address, Boolean(confluxJS)])
 }
 
 export function useTokenContract(tokenAddress) {

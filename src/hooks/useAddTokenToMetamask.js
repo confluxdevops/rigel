@@ -4,7 +4,6 @@
  */
 import {useCallback, useState} from 'react'
 import {useActiveWeb3React} from './useWeb3Network'
-import {convertJsonToString} from '../utils'
 
 export default function useAddTokenToMetamask(token) {
   const {library} = useActiveWeb3React()
@@ -39,7 +38,12 @@ export default function useAddTokenToMetamask(token) {
     } else {
       setSuccess(false)
     }
-  }, [convertJsonToString(library), convertJsonToString(token)])
+  }, [
+    Boolean(library),
+    Boolean(library.provider.isMetaMask),
+    Boolean(library.provider.request),
+    token.address,
+  ])
 
   return {addToken, success}
 }
