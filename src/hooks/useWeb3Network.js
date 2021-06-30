@@ -78,7 +78,7 @@ export function useInactiveListener(suppress = false) {
       }
     }
     return undefined
-  }, [active, error, suppress, activate])
+  }, [active, convertJsonToString(error), suppress, activate])
 }
 
 export function useEagerConnect() {
@@ -142,7 +142,7 @@ export function useConnect() {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [account, `${error}`, isInstalled])
+  }, [account, convertJsonToString(error), isInstalled])
 
   const tryActivate = () => {
     if (isInstalled && !account) {
