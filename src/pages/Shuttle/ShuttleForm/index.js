@@ -16,7 +16,7 @@ import {
 import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
-import {getMaxAmount} from '../../../utils'
+import {getMaxAmount, convertJsonToString} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
@@ -67,7 +67,7 @@ function ShuttleForm({
 
   const balanceVal = useMemo(
     () => convertDecimal(balance, 'divide', decimal),
-    [`${balance}`, decimal],
+    [convertJsonToString(balance), decimal],
   )
 
   const maxAmount = useMemo(
@@ -76,7 +76,7 @@ function ShuttleForm({
         ? getMaxAmount(fromChain, balanceVal)
         : balanceVal
       ).toString(10),
-    [`${balanceVal}`, fromChain, isNativeToken],
+    [convertJsonToString(balanceVal), fromChain, isNativeToken],
   )
 
   const minimalVal = useMemo(
@@ -84,7 +84,11 @@ function ShuttleForm({
       isFromChainCfx
         ? minimal_out_value?.toNumber()
         : minimal_in_value?.toNumber(),
-    [isFromChainCfx, `${minimal_in_value}`, `${minimal_out_value}`],
+    [
+      isFromChainCfx,
+      convertJsonToString(minimal_in_value),
+      convertJsonToString(minimal_out_value),
+    ],
   )
 
   const shuttlePaused = useMemo(() => {
@@ -96,7 +100,12 @@ function ShuttleForm({
     } catch (error) {
       return false
     }
-  }, [fromChain, `${safe_sponsor_amount}`, `${sponsorValue}`, toChain])
+  }, [
+    fromChain,
+    convertJsonToString(safe_sponsor_amount),
+    convertJsonToString(sponsorValue),
+    toChain,
+  ])
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)

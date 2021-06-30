@@ -24,7 +24,11 @@ import {
   useWallet,
 } from '../../../../hooks/useWallet'
 import {useTokenContract} from '../../../../hooks/useWeb3Network'
-import {calculateGasMargin, getExponent} from '../../../../utils'
+import {
+  calculateGasMargin,
+  getExponent,
+  convertJsonToString,
+} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 
 function ShuttleInButton({
@@ -70,7 +74,7 @@ function ShuttleInButton({
     return () => {
       setDidMount(false)
     }
-  }, [decimals, `${tokenAllownace}`, value, isNativeToken])
+  }, [decimals, convertJsonToString(tokenAllownace), value, isNativeToken])
 
   function contractApprove(tokenContract, value, gas) {
     tokenContract

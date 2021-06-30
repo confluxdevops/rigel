@@ -42,3 +42,9 @@ export function calculateGasMargin(value) {
 export function getExponent(decimals) {
   return `1e${decimals}`
 }
+
+export function convertJsonToString(data) {
+  if (typeof data !== 'object') return data
+  if (data === null) return ''
+  return JSON.stringify(data)
+}

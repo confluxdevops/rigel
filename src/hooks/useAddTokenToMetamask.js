@@ -4,6 +4,7 @@
  */
 import {useCallback, useState} from 'react'
 import {useActiveWeb3React} from './useWeb3Network'
+import {convertJsonToString} from '../utils'
 
 export default function useAddTokenToMetamask(token) {
   const {library} = useActiveWeb3React()
@@ -38,7 +39,7 @@ export default function useAddTokenToMetamask(token) {
     } else {
       setSuccess(false)
     }
-  }, [`${library}`, `${token}`])
+  }, [convertJsonToString(library), convertJsonToString(token)])
 
   return {addToken, success}
 }

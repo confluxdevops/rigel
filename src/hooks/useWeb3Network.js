@@ -8,11 +8,11 @@ import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
 import {useInterval} from 'react-use'
 import Big from 'big.js'
 import {NetworkContextName, IntervalTime, BigNumZero} from '../constants'
-import {injected} from '../utils/web3'
+import {injected, getContract} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
 import {isMobile} from 'react-device-detect'
-import {getContract} from '../utils/web3'
 import {ERC20_ABI} from '../abi'
+import {convertJsonToString} from '../utils'
 
 /**
  * doc: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#useweb3react
@@ -205,7 +205,13 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
     } catch (error) {
       return null
     }
-  }, [address, `${ABI}`, `${library}`, withSignerIfPossible, account])
+  }, [
+    address,
+    convertJsonToString(ABI),
+    convertJsonToString(library),
+    withSignerIfPossible,
+    account,
+  ])
 }
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
