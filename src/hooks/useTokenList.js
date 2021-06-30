@@ -128,7 +128,7 @@ function useSearchNameFromList(fromChain, toChain, search) {
           obj?.display_name?.toLowerCase().indexOf(search) > -1
         )
       }),
-    [search, `${tokenList}`],
+    [search, convertJsonToString(tokenList)],
   )
 }
 
