@@ -74,7 +74,7 @@ export function useContractState(
       if (isNativeToken || !params[0] || !contract) {
         setData(null)
       } else {
-        return contract[method](...params)
+        contract[method](...params)
           .then(res => {
             setData(res)
           })
