@@ -161,24 +161,6 @@ export function useIsNativeToken(chain, tokenAddress) {
   )
 }
 
-export function useIsChainInRightNetwork(chain) {
-  const {address, chainId} = useWallet(chain)
-  return useMemo(() => {
-    if (ChainConfig[chain]?.wallet) {
-      //this chain require wallet
-      if (address) {
-        return isChainIdRight(chain, chainId)
-      } else {
-        // this chian must use connect wallet,but the use has not already connected the wallet
-        return false
-      }
-    } else {
-      //this chain do not require the wallet
-      return true
-    }
-  }, [address, chain, chainId])
-}
-
 export function useAccountStatus(chain) {
   const {address, chainId, error} = useWallet(chain)
   return useMemo(() => {
