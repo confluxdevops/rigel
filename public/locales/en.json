@@ -43,10 +43,16 @@
   "shuttleRecordItem": "{{tokenSymbol}} from {{fromChain}} to {{toChain}}",
   "approveRecordItem": "Approve {{tokenSymbol}}",
   "error": {
+    "index": "Error",
     "inputValidAmount": "Please type a valid amount",
     "mustGtVal": "The amount must be greater than {{value}}",
     "mustLsMax": "The amount must be less than {{value}}",
-    "addressInvalid": "Address is invalid"
+    "addressInvalid": "Address is invalid",
+    "wrongNetwork": "Wrong Network",
+    "unspoortedNetwork": "Network Unsupported",
+    "unspoortedNetworkContent": "Please switch the network to {{network}} in {{ walletName}}",
+    "connecting": "Error Connecting",
+    "connectingContent": "Try refreshing the page"
   },
   "tips": {
     "mustKnow": "You must kown",
@@ -88,5 +94,7 @@
   "notfound": {
     "notFound": "Page not found",
     "goBack": "Go Back Home"
-  }
+  },
+  "testnet": "Testnet",
+  "mainnet": "Mainnet"
 }

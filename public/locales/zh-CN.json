@@ -43,10 +43,16 @@
   "shuttleRecordItem": "{{tokenSymbol}} from {{fromChain}} to {{toChain}}",
   "approveRecordItem": "Approve {{tokenSymbol}}",
   "error": {
-    "inputValidAmount": "请输入数字",
-    "mustGtVal": "值必须大于等于{{value}}",
-    "mustLsMax": "值需要小于等于 {{value}}",
-    "addressInvalid": "Address is invalid"
+    "index": "Error",
+    "inputValidAmount": "Please type a valid amount",
+    "mustGtVal": "The amount must be greater than {{value}}",
+    "mustLsMax": "The amount must be less than {{value}}",
+    "addressInvalid": "Address is invalid",
+    "wrongNetwork": "Wrong Network",
+    "unspoortedNetwork": "Network Unsupported",
+    "unspoortedNetworkContent": "Please switch the network to {{network}} in {{ walletName}}",
+    "connecting": "连接错误",
+    "connectingContent": "刷新页面重试"
   },
   "tips": {
     "mustKnow": "You must kown",
@@ -88,5 +94,7 @@
   "notfound": {
     "notFound": "Page not found",
     "goBack": "Go Back Home"
-  }
+  },
+  "testnet": "测试网",
+  "mainnet": "主网"
 }

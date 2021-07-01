@@ -23,10 +23,10 @@ export const ScanUrlEth = IS_DEV
   : 'https://etherscan.io'
 export const ChainIdEth = {
   MAINNET: 1,
-  ROPSTEN: 3,
-  RINKEBY: 4,
-  GÖRLI: 5,
-  KOVAN: 42,
+  TESTNET: 4, // shuttle use Rinkeby network as testnet
+  // ROPSTEN: 3,
+  // GÖRLI: 5,
+  // KOVAN: 42,
 }
 
 /**
@@ -119,7 +119,7 @@ export const ChainConfig = {
     // TODO
     // commonTokens: ['ETH', 'USDT', 'eCFX'],
     commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
-    supportedChainIds: [ChainIdEth.MAINNET, ChainIdEth.RINKEBY],
+    supportedChainIds: ChainIdEth,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.15, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
   },
@@ -138,7 +138,7 @@ export const ChainConfig = {
     scanTokenUrl: ScanUrlBsc + '/token/',
     // TODO
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
-    supportedChainIds: Object.values(ChainIdBsc),
+    supportedChainIds: ChainIdBsc,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.002,
   },
@@ -157,7 +157,7 @@ export const ChainConfig = {
     scanTokenUrl: ScanUrlOec + '/tokenAddr/',
     // TODO
     commonTokens: ['OKT'],
-    supportedChainIds: Object.values(ChainIdOec),
+    supportedChainIds: ChainIdOec,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.001,
   },
@@ -176,7 +176,7 @@ export const ChainConfig = {
     scanTokenUrl: ScanUrlCfx + '/address/',
     // TODO
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
-    supportedChainIds: Object.values(ChainIdCfx),
+    supportedChainIds: ChainIdCfx,
     wallet: KeyOfPortal,
     remainderAmount: 1,
   },
@@ -210,8 +210,9 @@ export const SupportedWallets = Object.keys(WalletConfig)
 export const DefaultFromChain = KeyOfEth
 export const DefaultToChain = KeyOfCfx
 export const SupportedChainIdsWeb3 = [
-  ...ChainConfig[KeyOfEth].supportedChainIds,
-  ...ChainConfig[KeyOfBsc].supportedChainIds,
+  ...Object.values(ChainConfig[KeyOfEth].supportedChainIds),
+  ...Object.values(ChainConfig[KeyOfBsc].supportedChainIds),
+  ...Object.values(ChainConfig[KeyOfOec].supportedChainIds),
 ]
 
 const DefaultChainIconSize = 'w-10 h-10'

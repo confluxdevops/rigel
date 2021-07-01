@@ -1,11 +1,13 @@
 import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
-import {Account, ConnectWallet} from '../index'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {Account, ConnectWallet, AccountError} from '../index'
+import {TypeAccountStatus} from '../../../constants'
 
 function AccountStatus({chain, size = 'medium', className = '', id}) {
   const {address} = useWallet(chain)
+  const {type: accountType, errorType} = useAccountStatus(chain)
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
@@ -18,7 +20,7 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
 
   return (
     <div className={`${className}`}>
-      {address ? (
+      {accountType === TypeAccountStatus.success && (
         <Account
           id={`${id}_account`}
           chain={chain}
@@ -27,8 +29,12 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
           iconClassName={iconStyle}
           address={address}
         />
-      ) : (
+      )}
+      {accountType === TypeAccountStatus.unconnected && (
         <ConnectWallet id={`${id}_connectWallet`} chain={chain} size={size} />
+      )}
+      {accountType === TypeAccountStatus.error && (
+        <AccountError chain={chain} errorType={errorType} />
       )}
     </div>
   )

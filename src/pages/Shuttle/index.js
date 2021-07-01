@@ -1,9 +1,10 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useDeepCompareEffect} from 'react-use'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import {useFromToken, useToToken} from '../../hooks/useTokenList'
+import {useAccountStatus} from '../../hooks/useWallet'
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
 import {
@@ -14,7 +15,7 @@ import {
   KeyOfCfx,
   KeyOfBtc,
 } from '../../constants/chainConfig'
-import {TxReceiptModalType} from '../../constants'
+import {TxReceiptModalType, TypeAccountStatus} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
@@ -32,6 +33,8 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
+  const {type: fromAccountType} = useAccountStatus(fromChain)
+  const {type: toAccountType} = useAccountStatus(toChain)
   const {address} = tokenFromBackend
   let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
   if (address === fromTokenAddress) fromToken = tokenFromBackend
@@ -138,6 +141,20 @@ function Shuttle() {
     history.push(pathWithQuery)
     setValue('')
   }
+
+  /**
+   * If the user has already in the shuttle process, and need wallet to interact with this chain
+   * In this case, if you uninstalled the wallet or the the chainid is wrong, you must go back the main router: shuttle
+   */
+  useEffect(() => {
+    if (
+      fromAccountType !== TypeAccountStatus.success ||
+      toAccountType !== TypeAccountStatus.success
+    ) {
+      setTokenListShow(false)
+      setConfirmModalShow(false)
+    }
+  }, [fromAccountType, toAccountType])
 
   if (!fromChain) return null
   return (
