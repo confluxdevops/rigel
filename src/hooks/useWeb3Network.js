@@ -124,7 +124,7 @@ export function useAddress() {
 
 export function useConnect() {
   const {error, account, activate, chainId} = useWeb3React()
-  const isInstalled = useInstalled
+  const isInstalled = useInstalled()
   const [type, setType] = useState(TypeConnectWallet.uninstalled)
   useEffect(() => {
     if (error) {

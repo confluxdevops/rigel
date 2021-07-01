@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useMemo, useCallback} from 'react'
 import {useDeepCompareEffect, useEffectOnce} from 'react-use'
 import Big from 'big.js'
@@ -196,6 +197,6 @@ export function useIsChainIdRight(chain, chainId) {
   return useMemo(
     () =>
       wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'],
-    [chainId, supportedChainIds, wallet],
+    [chain, chainId, supportedChainIds, Boolean(wallet), IS_DEV],
   )
 }

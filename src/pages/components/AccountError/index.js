@@ -29,18 +29,16 @@ function AccountError({chain, errorType}) {
   }
   const onClick = () => {
     Notification.open({
-      title: `${notiTitle}`,
+      title: notiTitle,
       type: 'warning',
-      content: <div>{notiContent}</div>,
+      content: notiContent,
       duration: 0,
     })
   }
   return (
-    <>
-      <Tag onClick={onClick} color="error">
-        {text}
-      </Tag>
-    </>
+    <Tag onClick={onClick} color="error">
+      {text}
+    </Tag>
   )
 }
 AccountError.propTypes = {
