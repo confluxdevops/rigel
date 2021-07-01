@@ -197,6 +197,6 @@ export function useIsChainIdRight(chain, chainId) {
   return useMemo(
     () =>
       wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'],
-    [chain, chainId, supportedChainIds, Boolean(wallet), IS_DEV],
+    [chain, chainId, IS_DEV],
   )
 }
