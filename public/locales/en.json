@@ -72,7 +72,7 @@
     "shuttlePausedDescription": "From {{fromChain}} to {{toChain}}, token captain stop service."
   },
   "home": {
-    "subTitle": "Lighting Fast Interoperable Protocol",
+    "subTitle": "Lightning Fast Interoperable Protocol",
     "shuttleFlow": "Launch App",
     "lightPaper": "LightPaper"
   },
