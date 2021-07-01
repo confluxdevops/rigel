@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * For the chain based on Ethereum: multiple connectors
  * But only support MetaMask now
@@ -7,10 +8,9 @@ import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
 import {useInterval} from 'react-use'
 import Big from 'big.js'
 import {NetworkContextName, IntervalTime, BigNumZero} from '../constants'
-import {injected} from '../utils/web3'
+import {injected, getContract} from '../utils/web3'
 import {TypeConnectWallet} from '../constants/index'
 import {isMobile} from 'react-device-detect'
-import {getContract} from '../utils/web3'
 import {ERC20_ABI} from '../abi'
 
 /**
@@ -77,7 +77,7 @@ export function useInactiveListener(suppress = false) {
       }
     }
     return undefined
-  }, [active, error, suppress, activate])
+  }, [active, Boolean(error), suppress, activate])
 }
 
 export function useEagerConnect() {
@@ -140,7 +140,7 @@ export function useConnect() {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [account, error, isInstalled])
+  }, [account, Boolean(error), isInstalled])
 
   const tryActivate = () => {
     if (isInstalled && !account) {
@@ -203,7 +203,7 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
     } catch (error) {
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, Boolean(library), withSignerIfPossible, account])
 }
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {

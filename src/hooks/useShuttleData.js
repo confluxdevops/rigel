@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * data about shuttle, mainly various contract params
  */
-import {useState, useEffect, useMemo} from 'react'
+import {useState, useEffect} from 'react'
 import Big from 'big.js'
 import {useShuttleContract} from './useShuttleContract'
 import {ContractType} from '../constants/contractConfig'
@@ -92,7 +93,7 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [contract, contractAddress, dicimalsNum, isCfxChain, origin])
+  }, [isCfxChain, chainOfContract, contractAddress, dicimalsNum, origin])
   return contractData
 }
 
@@ -133,22 +134,18 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [contract, contractAddress, origin])
+  }, [chainOfContract, isCfxChain, contractAddress, origin])
   return contractData
 }
 
 export function useShuttleFee(chainOfContract, token, toChain) {
   const isToChainCfx = useIsCfxChain(toChain)
   const {in_fee, out_fee} = useCustodianData(chainOfContract, token)
-  return useMemo(
-    () =>
-      isToChainCfx
-        ? in_fee
-          ? in_fee.toString(10)
-          : 0
-        : out_fee
-        ? out_fee.toString(10)
-        : 0,
-    [in_fee, isToChainCfx, out_fee],
-  )
+  return isToChainCfx
+    ? in_fee
+      ? in_fee.toNumber()
+      : 0
+    : out_fee
+    ? out_fee.toNumber()
+    : 0
 }

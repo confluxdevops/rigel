@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
@@ -69,7 +70,7 @@ function ShuttleInButton({
     return () => {
       setDidMount(false)
     }
-  }, [decimals, tokenAllownace, value, isNativeToken])
+  }, [decimals, tokenAllownace.toString(), value, isNativeToken])
 
   function contractApprove(tokenContract, value, gas) {
     tokenContract

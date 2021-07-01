@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * For the chain based on Ethereum: add one token to MetaMask quickly
  */
@@ -37,7 +38,12 @@ export default function useAddTokenToMetamask(token) {
     } else {
       setSuccess(false)
     }
-  }, [library, token])
+  }, [
+    Boolean(library),
+    Boolean(library.provider.isMetaMask),
+    Boolean(library.provider.request),
+    token.address,
+  ])
 
   return {addToken, success}
 }

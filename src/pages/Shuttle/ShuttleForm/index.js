@@ -1,4 +1,5 @@
-import {useState, useEffect, useMemo} from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {convertDecimal} from '@cfxjs/data-format'
@@ -64,33 +65,17 @@ function ShuttleForm({
     useCustodianData(chainOfContract, toToken)
   const {sponsorValue} = useSponsorData(chainOfContract, toToken)
 
-  const balanceVal = useMemo(
-    () => convertDecimal(balance, 'divide', decimal),
-    [balance, decimal],
-  )
+  const balanceVal = convertDecimal(balance, 'divide', decimal)
 
-  const maxAmount = useMemo(
-    () =>
-      (isNativeToken
-        ? getMaxAmount(fromChain, balanceVal)
-        : balanceVal
-      ).toString(10),
-    [balanceVal, fromChain, isNativeToken],
-  )
+  const maxAmount = (
+    isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal
+  )?.toString(10)
 
-  const minimalVal = useMemo(
-    () =>
-      isFromChainCfx
-        ? minimal_out_value
-          ? minimal_out_value.toNumber()
-          : 0
-        : minimal_in_value
-        ? minimal_in_value.toNumber()
-        : 0,
-    [isFromChainCfx, minimal_in_value, minimal_out_value],
-  )
+  const minimalVal = isFromChainCfx
+    ? minimal_out_value?.toNumber()
+    : minimal_in_value?.toNumber()
 
-  const shuttlePaused = useMemo(() => {
+  const shuttlePaused = () => {
     try {
       return (
         !(fromChain === KeyOfBtc || toChain === KeyOfBtc) &&
@@ -99,7 +84,7 @@ function ShuttleForm({
     } catch (error) {
       return false
     }
-  }, [fromChain, safe_sponsor_amount, sponsorValue, toChain])
+  }
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -246,7 +231,7 @@ function ShuttleForm({
           onAddressInputChange={onAddressInputChange}
         />
       )}
-      {!shuttlePaused && supported !== 0 && (
+      {!shuttlePaused() && supported !== 0 && (
         <Button
           className="mt-6"
           fullWidth
@@ -269,7 +254,7 @@ function ShuttleForm({
           </span>
         </div>
       )}
-      {shuttlePaused && (
+      {shuttlePaused() && (
         <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
           <span className="flex items-center font-medium">
             <AlertTriangle className="mr-1 w-4 h-4" />

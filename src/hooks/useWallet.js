@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState, useMemo, useCallback} from 'react'
-import {useDeepCompareEffect, useEffectOnce} from 'react-use'
+import {useState, useMemo, useCallback, useEffect} from 'react'
 import Big from 'big.js'
 import {UnsupportedChainIdError} from '@web3-react/core'
 import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
@@ -20,17 +19,16 @@ import {IS_DEV} from '../utils'
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
   const connectObjWeb3 = useConnectWeb3()
-
-  return useMemo(() => {
-    switch (ChainConfig[chain]?.wallet) {
-      case KeyOfMetaMask:
-        return connectObjWeb3
-      case KeyOfPortal:
-        return connectObjPortal
-      default:
-        return {}
-    }
-  }, [connectObjPortal, connectObjWeb3, chain])
+  let data = {}
+  switch (ChainConfig[chain]?.wallet) {
+    case KeyOfMetaMask:
+      data = connectObjWeb3
+      break
+    case KeyOfPortal:
+      data = connectObjPortal
+      break
+  }
+  return data
 }
 
 /**
@@ -42,8 +40,8 @@ export function useWallet(chain) {
 export function useTokenContract(chain, tokenAddress) {
   const dataPortal = useTokenContractPortal(tokenAddress)
   const dataWeb3 = useTokenContractWeb3(tokenAddress)
-  let data = null
-  switch (ChainConfig[chain].wallet) {
+  let data = {}
+  switch (ChainConfig[chain]?.wallet) {
     case KeyOfMetaMask:
       data = dataWeb3
       break
@@ -71,33 +69,34 @@ export function useContractState(
   const contract = useTokenContract(chain, tokenAddress)
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
   const [data, setData] = useState(null)
-  const getContractData = useCallback(() => {
-    if (isNativeToken) {
-      return null
-    } else {
-      contract &&
+
+  const getContractData = useCallback(
+    params => {
+      if (isNativeToken || !params[0] || !contract) {
+        setData(null)
+      } else {
         contract[method](...params)
           .then(res => {
-            return res
+            setData(res)
           })
           .catch(() => {
-            return null
+            setData(null)
           })
-    }
-  }, [contract, method, params, isNativeToken])
+      }
+    },
+    [isNativeToken, chain, tokenAddress, method],
+  )
 
-  useDeepCompareEffect(() => {
-    setData(getContractData())
-  }, [contract, method, params, isNativeToken, getContractData])
-
-  useEffectOnce(() => {
+  useEffect(() => {
     if (interval) {
-      const timeInterval = setInterval(() => {
-        setData(getContractData())
-      }, interval)
+      getContractData(params)
+      const timeInterval = setInterval(() => getContractData(params), interval)
       return () => clearInterval(timeInterval)
+    } else {
+      getContractData(params)
     }
-  })
+  }, [...params, getContractData, interval])
+
   return data
 }
 
@@ -109,7 +108,7 @@ export function useTokenBalance(chain, tokenAddress, params) {
     params,
     IntervalTime.fetchBalance,
   )
-  return useMemo(() => (balance ? new Big(balance) : BigNumZero), [balance])
+  return balance ? new Big(balance) : BigNumZero
 }
 
 export function useTokenAllowance(chain, tokenAddress, params) {
@@ -122,13 +121,15 @@ export function useNativeTokenBalance(chain, address) {
   const balanceWeb3 = useNativeTokenBalanceWeb3(address)
   return useMemo(() => {
     if (!chain || !address) return BigNumZero
-    switch (ChainConfig[chain].wallet) {
+    switch (ChainConfig[chain]?.wallet) {
       case KeyOfMetaMask:
         return balanceWeb3
       case KeyOfPortal:
         return balancePortal
+      default:
+        return BigNumZero
     }
-  }, [address, balancePortal, balanceWeb3, chain])
+  }, [address, balancePortal.toString(), balanceWeb3.toString(), chain])
 }
 
 /**
@@ -145,7 +146,7 @@ export function useBalance(chain, address, tokenAddress, params) {
   const tokenBalance = useTokenBalance(chain, tokenAddress, params)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [isNativeToken, nativeTokenBalance, tokenBalance],
+    [isNativeToken, nativeTokenBalance.toString(), tokenBalance.toString()],
   )
 }
 
