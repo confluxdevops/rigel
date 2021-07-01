@@ -118,7 +118,7 @@ export function useTokenBalance(chain, tokenAddress, params) {
 
 export function useTokenAllowance(chain, tokenAddress, params) {
   const allowance = useContractState(chain, tokenAddress, 'allowance', params)
-  return allowance
+  return allowance || BigNumZero
 }
 
 export function useNativeTokenBalance(chain, address) {

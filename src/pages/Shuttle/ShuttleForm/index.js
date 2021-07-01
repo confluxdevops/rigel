@@ -2,7 +2,7 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
-import {convertDecimal} from '@cfxjs/data-format'
+import {convertDecimal, formatAmount} from '@cfxjs/data-format'
 import Big from 'big.js'
 
 import {WrapIcon, Button} from '../../../components'
@@ -72,8 +72,8 @@ function ShuttleForm({
   )?.toString(10)
 
   const minimalVal = isFromChainCfx
-    ? minimal_out_value?.toNumber()
-    : minimal_in_value?.toNumber()
+    ? minimal_out_value?.toString(10)
+    : minimal_in_value?.toString(10)
 
   const shuttlePaused = () => {
     try {
@@ -88,7 +88,7 @@ function ShuttleForm({
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
-    const error = validateData(value)
+    const error = validateData(maxAmount)
     setErrorMsg(error)
   }
 
@@ -122,18 +122,17 @@ function ShuttleForm({
 
   function validateData(value) {
     if (!isFromChainBtc && !fromAddress) return ''
-    const val = Number(value)
     let error = ''
-    if (!isNaN(val)) {
-      const valBig = new Big(val)
+    if (!isNaN(Number(value))) {
+      const valBig = new Big(value || 0)
       if (valBig.gte(minimalVal)) {
         //must be greater than zero
-        if (!isFromChainBtc && !valBig.lte(maxAmount)) {
+        if (!isFromChainBtc && valBig.gt(maxAmount)) {
           //must be less than Max value
-          error = t('error.mustLsMax', {value: maxAmount})
+          error = t('error.mustLsMax', {value: formatAmount(maxAmount)})
         }
       } else {
-        error = t('error.mustGtVal', {value: minimalVal})
+        error = t('error.mustGtVal', {value: formatAmount(minimalVal)})
       }
     } else {
       //not a valid number
