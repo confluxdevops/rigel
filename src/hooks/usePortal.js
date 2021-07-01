@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
-import {useConnectWalletType} from './useWallet'
+import {useConnectWalletStatus} from './useWallet'
 import {ERC20_ABI} from '../abi'
 
 export function useInstalled() {
@@ -15,8 +15,12 @@ export function useAddress() {
 }
 
 export function useConnect() {
-  const {portalInstalled, address, error, login} = useConfluxPortal()
-  const [type, setType] = useConnectWalletType(portalInstalled, address, error)
+  const {portalInstalled, address, error, login, chainId} = useConfluxPortal()
+  const [type, setType] = useConnectWalletStatus(
+    portalInstalled,
+    address,
+    error,
+  )
 
   return {
     type,
@@ -24,6 +28,7 @@ export function useConnect() {
     setType,
     error,
     address,
+    chainId,
   }
 }
 
@@ -40,7 +45,7 @@ export function useContract(address, ABI) {
 }
 
 export function useTokenContract(tokenAddress) {
-  return useContract(tokenAddress, ERC20_ABI)
+  return useContract(tokenAddress || '', ERC20_ABI)
 }
 
 /**

@@ -14,7 +14,7 @@ import {
   TypeConnectWallet,
 } from '../constants'
 import {injected, getContract} from '../utils/web3'
-import {useConnectWalletType} from './useWallet'
+import {useConnectWalletStatus} from './useWallet'
 import {isMobile} from 'react-device-detect'
 import {ERC20_ABI} from '../abi'
 
@@ -128,11 +128,10 @@ export function useAddress() {
 }
 
 export function useConnect() {
-  const {error, account, activate} = useWeb3React()
+  const {error, account, activate, chainId} = useWeb3React()
   const isInstalled = useInstalled()
-  const [type, setType] = useConnectWalletType(isInstalled, account, error)
+  const [type, setType] = useConnectWalletStatus(isInstalled, account, error)
 
-  //TODO: unsupported chain id error
   const tryActivate = () => {
     if (isInstalled && !account) {
       activate(injected, undefined, true).catch(error => {
@@ -144,7 +143,7 @@ export function useConnect() {
       })
     }
   }
-  return {type, setType, tryActivate, error, address: account}
+  return {type, setType, tryActivate, error, address: account, chainId}
 }
 
 /**

@@ -6,8 +6,11 @@ import {KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 export function useShuttleContract(contractType, chain) {
   const contractObj = ContractConfig[contractType]
   const {abi, wallet} = contractObj
-  const addressOfChain = contractObj?.address?.[chain]
-  const address = addressOfChain ? addressOfChain : contractObj?.address
+  const addressOfChain = contractObj?.address
+  const address =
+    typeof addressOfChain === 'object'
+      ? addressOfChain[chain] || ''
+      : addressOfChain
   const contractPortal = useContractPortal(address, abi)
   const contractWeb3 = useContractWeb3(address, abi)
   let contract = {}
