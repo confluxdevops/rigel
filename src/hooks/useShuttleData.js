@@ -143,9 +143,9 @@ export function useShuttleFee(chainOfContract, token, toChain) {
   const {in_fee, out_fee} = useCustodianData(chainOfContract, token)
   return isToChainCfx
     ? in_fee
-      ? in_fee.toNumber()
-      : 0
+      ? in_fee.toString(10)
+      : '0'
     : out_fee
-    ? out_fee.toNumber()
-    : 0
+    ? out_fee.toString(10)
+    : '0'
 }

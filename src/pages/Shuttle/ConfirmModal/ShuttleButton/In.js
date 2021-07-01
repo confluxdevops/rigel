@@ -58,7 +58,7 @@ function ShuttleInButton({
     setDidMount(true)
     if (!isNativeToken) {
       if (
-        new Big(tokenAllownace ? tokenAllownace.toString(10) : 0).lt(
+        new Big(tokenAllownace.toString(10)).lt(
           new Big(value).times(getExponent(decimals)),
         )
       ) {
