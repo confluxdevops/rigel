@@ -93,14 +93,7 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [
-    isCfxChain,
-    chainOfContract,
-    contractAddress,
-    dicimalsNum,
-    isCfxChain,
-    origin,
-  ])
+  }, [isCfxChain, chainOfContract, contractAddress, dicimalsNum, origin])
   return contractData
 }
 
