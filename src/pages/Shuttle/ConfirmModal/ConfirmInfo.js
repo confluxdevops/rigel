@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
+import {formatAmount} from '@cfxjs/data-format'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon, Account} from '../../components'
 import {useIsCfxChain} from '../../../hooks'
@@ -32,7 +33,9 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
       </div>
       <div className="flex items-center justify-between mt-4">
         <span className="text-gray-40">{t('shuttleFee')}</span>
-        <span className="text-gray-100">{`${shuttleFee} ${display_symbol}`}</span>
+        <span className="text-gray-100">{`${formatAmount(
+          shuttleFee,
+        )} ${display_symbol}`}</span>
       </div>
     </div>
   )
