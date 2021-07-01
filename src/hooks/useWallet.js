@@ -14,7 +14,7 @@ import {
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
 import {BigNumZero, IntervalTime, TypeAccountStatus} from '../constants'
-import {isChainIdRight} from '../utils'
+import {IS_DEV} from '../utils'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -163,11 +163,12 @@ export function useIsNativeToken(chain, tokenAddress) {
 
 export function useAccountStatus(chain) {
   const {address, chainId, error} = useWallet(chain)
+  const isChainIdRight = useIsChainIdRight(chain, chainId)
   return useMemo(() => {
     const wallet = ChainConfig[chain]?.wallet
     if (wallet) {
       if (address) {
-        if (isChainIdRight(chain, chainId)) {
+        if (isChainIdRight) {
           return {type: TypeAccountStatus.success}
         }
         //error:wrong network
@@ -187,5 +188,14 @@ export function useAccountStatus(chain) {
       //it means that this chain do not require the wallet, for example: btc
       return {type: TypeAccountStatus.success}
     }
-  }, [address, chain, chainId, error])
+  }, [address, chain, error, isChainIdRight])
+}
+
+export function useIsChainIdRight(chain, chainId) {
+  const {wallet, supportedChainIds} = ChainConfig[chain]
+  return useMemo(
+    () =>
+      wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'],
+    [chainId, supportedChainIds, wallet],
+  )
 }
