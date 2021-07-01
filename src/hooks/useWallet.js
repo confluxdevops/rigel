@@ -20,6 +20,8 @@ import {
   TypeAccountStatus,
 } from '../constants'
 import {IS_DEV} from '../utils'
+import {checkCfxTokenAddress} from '../utils/address'
+import {useIsCfxChain} from '../hooks'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -74,6 +76,7 @@ export function useContractState(
   const contract = useTokenContract(chain, tokenAddress)
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
   const [data, setData] = useState(null)
+  const {errorType} = useAccountStatus(chain)
 
   const getContractData = useCallback(
     params => {
@@ -93,12 +96,17 @@ export function useContractState(
   )
 
   useEffect(() => {
-    if (interval) {
-      getContractData(params)
-      const timeInterval = setInterval(() => getContractData(params), interval)
-      return () => clearInterval(timeInterval)
-    } else {
-      getContractData(params)
+    if (!errorType) {
+      if (interval) {
+        getContractData(params)
+        const timeInterval = setInterval(
+          () => getContractData(params),
+          interval,
+        )
+        return () => clearInterval(timeInterval)
+      } else {
+        getContractData(params)
+      }
     }
   }, [...params, getContractData, interval])
 
@@ -217,14 +225,24 @@ export function useAccountStatus(chain) {
       //it means that this chain do not require the wallet, for example: btc
       return {type: TypeAccountStatus.success}
     }
-  }, [address, chain, Boolean(error), isChainIdRight])
+  }, [Boolean(address), chain, Boolean(error), isChainIdRight])
 }
 
 export function useIsChainIdRight(chain, chainId) {
+  const {address} = useWallet(chain)
   const {wallet, supportedChainIds} = ChainConfig[chain] || {}
-  return useMemo(
-    () =>
-      wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'],
-    [chain, chainId, IS_DEV],
-  )
+  const isCfxChain = useIsCfxChain(chain)
+  return useMemo(() => {
+    if (isCfxChain) {
+      return (
+        wallet &&
+        chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'] &&
+        checkCfxTokenAddress(address, 'user')
+      )
+    }
+
+    return (
+      wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET']
+    )
+  }, [chain, chainId, IS_DEV, address])
 }
