@@ -152,11 +152,11 @@ export function useShuttleFee(chainOfContract, token, toChain) {
     () =>
       isToChainCfx
         ? in_fee
-          ? in_fee.toString(10)
+          ? in_fee.toNumber()
           : 0
         : out_fee
-        ? out_fee.toString(10)
+        ? out_fee.toNumber()
         : 0,
-    [in_fee.toString(), isToChainCfx, out_fee.toString()],
+    [in_fee.toNumber(), isToChainCfx, out_fee.toNumber()],
   )
 }
