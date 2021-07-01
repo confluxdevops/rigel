@@ -134,7 +134,7 @@ export function useNativeTokenBalance(chain, address) {
       default:
         return BigNumZero
     }
-  }, [address, balancePortal.toString(), balanceWeb3.toString(), chain])
+  }, [address, balancePortal.toString(10), balanceWeb3.toString(10), chain])
 }
 
 /**
@@ -151,7 +151,7 @@ export function useBalance(chain, address, tokenAddress, params) {
   const tokenBalance = useTokenBalance(chain, tokenAddress, params)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [isNativeToken, nativeTokenBalance.toString(), tokenBalance.toString()],
+    [isNativeToken, nativeTokenBalance.toString(10), tokenBalance.toString(10)],
   )
 }
 
@@ -221,7 +221,7 @@ export function useAccountStatus(chain) {
 }
 
 export function useIsChainIdRight(chain, chainId) {
-  const {wallet, supportedChainIds} = ChainConfig[chain]
+  const {wallet, supportedChainIds} = ChainConfig[chain] || {}
   return useMemo(
     () =>
       wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'],
