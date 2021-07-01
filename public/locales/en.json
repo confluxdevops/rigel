@@ -59,7 +59,7 @@
     "notice": "Notice",
     "addressTip": "Please make sure the address is correct.",
     "toBtcAddressTip": "Please make sure the address entered is correct.",
-    "forbiddenAddressTip": "<strong>Don’t use</strong> contract account or the deposit address given by CEX.",
+    "forbiddenAddressTip": "<strong>Don’t use</strong> contract account or the deposit address given by exchanges.",
     "gasTip": "You need to pay the gas fee of the <strong>{{fromChain}}</strong> network.",
     "toBtcGasTip": "You need to pay the miner fees of the Bitcoin network.",
     "btcWaitLongTip": "Please wait patinently Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
@@ -72,8 +72,8 @@
     "shuttlePausedDescription": "From {{fromChain}} to {{toChain}}, token captain stop service."
   },
   "home": {
-    "subTitle": "Lighting Fast Interoperable Protocol",
-    "shuttleFlow": "ShuttleFlow App",
+    "subTitle": "Lightning Fast Interoperable Protocol",
+    "shuttleFlow": "Launch App",
     "lightPaper": "LightPaper"
   },
   "maintenance": {
