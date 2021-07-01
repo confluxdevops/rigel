@@ -13,6 +13,7 @@ import {
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
 import {BigNumZero, IntervalTime} from '../constants'
+import {TypeConnectWallet} from '../constants'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -157,4 +158,26 @@ export function useIsNativeToken(chain, tokenAddress) {
     () => ChainConfig[chain].tokenName?.toLowerCase() === tokenAddress,
     [chain, tokenAddress],
   )
+}
+
+export function useConnectWalletType(installed, address, error) {
+  const [type, setType] = useState(TypeConnectWallet.uninstalled)
+
+  useEffect(() => {
+    if (error) {
+      setType(TypeConnectWallet.error)
+    } else {
+      if (installed) {
+        if (!address) {
+          setType(TypeConnectWallet.loading)
+        } else {
+          setType(TypeConnectWallet.success)
+        }
+      } else {
+        setType(TypeConnectWallet.uninstalled)
+      }
+    }
+  }, [address, Boolean(error), installed])
+
+  return [type, setType]
 }

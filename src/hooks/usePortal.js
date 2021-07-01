@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useMemo, useState, useEffect} from 'react'
+import {useMemo} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
-import {TypeConnectWallet} from '../constants/index'
+import {useConnectWalletType} from './useWallet'
 import {ERC20_ABI} from '../abi'
 
 export function useInstalled() {
@@ -12,28 +12,6 @@ export function useInstalled() {
 export function useAddress() {
   const {address} = useConfluxPortal()
   return address
-}
-
-export function useConnectWalletType(portalInstalled, address, error) {
-  const [type, setType] = useState(TypeConnectWallet.uninstalled)
-
-  useEffect(() => {
-    if (error) {
-      setType(TypeConnectWallet.error)
-    } else {
-      if (portalInstalled) {
-        if (!address) {
-          setType(TypeConnectWallet.loading)
-        } else {
-          setType(TypeConnectWallet.success)
-        }
-      } else {
-        setType(TypeConnectWallet.uninstalled)
-      }
-    }
-  }, [address, Boolean(error), portalInstalled])
-
-  return [type, setType]
 }
 
 export function useConnect() {
