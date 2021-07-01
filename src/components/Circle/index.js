@@ -8,7 +8,7 @@ function Circle({
 }) {
   return (
     <div
-      className={`h-4.5 w-4 flex items-center justify-center ${containerClassName}`}
+      className={`h-4.5 w-4 flex items-center justify-center flex-shrink-0 ${containerClassName}`}
     >
       <div
         className={`rounded-full flex-shrink-0 ${color} ${size} ${className}`}
