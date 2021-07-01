@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo, useState, useEffect} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
 import {TypeConnectWallet} from '../constants/index'
@@ -30,7 +31,7 @@ export function useConnectWalletType(portalInstalled, address, error) {
         setType(TypeConnectWallet.uninstalled)
       }
     }
-  }, [address, error, portalInstalled])
+  }, [address, Boolean(error), portalInstalled])
 
   return [type, setType]
 }
@@ -57,7 +58,7 @@ export function useContract(address, ABI) {
     } catch (error) {
       return null
     }
-  }, [address, ABI, confluxJS])
+  }, [address, Boolean(confluxJS)])
 }
 
 export function useTokenContract(tokenAddress) {
