@@ -128,7 +128,7 @@ export const ChainConfig = {
     icon(className) {
       return <ChainIcon className={className} chain={KeyOfBsc} />
     },
-    fullName: 'Binance Smart Contract',
+    fullName: 'Binance Smart Chain',
     shortName: 'BSC',
     tokenName: 'BNB',
     checkAddress: checkHexAddress,

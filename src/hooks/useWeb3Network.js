@@ -7,9 +7,14 @@ import {useEffect, useState, useMemo} from 'react'
 import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
 import {useInterval} from 'react-use'
 import Big from 'big.js'
-import {NetworkContextName, IntervalTime, BigNumZero} from '../constants'
+import {
+  NetworkContextName,
+  IntervalTime,
+  BigNumZero,
+  TypeConnectWallet,
+} from '../constants'
 import {injected, getContract} from '../utils/web3'
-import {TypeConnectWallet} from '../constants/index'
+import {useConnectWalletStatus} from './useWallet'
 import {isMobile} from 'react-device-detect'
 import {ERC20_ABI} from '../abi'
 
@@ -125,22 +130,7 @@ export function useAddress() {
 export function useConnect() {
   const {error, account, activate, chainId} = useWeb3React()
   const isInstalled = useInstalled()
-  const [type, setType] = useState(TypeConnectWallet.uninstalled)
-  useEffect(() => {
-    if (error) {
-      setType(TypeConnectWallet.error)
-    } else {
-      if (isInstalled) {
-        if (!account) {
-          setType(TypeConnectWallet.loading)
-        } else {
-          setType(TypeConnectWallet.success)
-        }
-      } else {
-        setType(TypeConnectWallet.uninstalled)
-      }
-    }
-  }, [account, Boolean(error), isInstalled])
+  const [type, setType] = useConnectWalletStatus(isInstalled, account, error)
 
   const tryActivate = () => {
     if (isInstalled && !account) {

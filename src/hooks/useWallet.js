@@ -13,7 +13,12 @@ import {
   useTokenContract as useTokenContractWeb3,
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
-import {BigNumZero, IntervalTime, TypeAccountStatus} from '../constants'
+import {
+  BigNumZero,
+  IntervalTime,
+  TypeConnectWallet,
+  TypeAccountStatus,
+} from '../constants'
 import {IS_DEV} from '../utils'
 
 export function useWallet(chain) {
@@ -129,7 +134,7 @@ export function useNativeTokenBalance(chain, address) {
       default:
         return BigNumZero
     }
-  }, [address, balancePortal.toString(), balanceWeb3.toString(), chain])
+  }, [address, balancePortal.toString(10), balanceWeb3.toString(10), chain])
 }
 
 /**
@@ -146,7 +151,7 @@ export function useBalance(chain, address, tokenAddress, params) {
   const tokenBalance = useTokenBalance(chain, tokenAddress, params)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [isNativeToken, nativeTokenBalance.toString(), tokenBalance.toString()],
+    [isNativeToken, nativeTokenBalance.toString(10), tokenBalance.toString(10)],
   )
 }
 
@@ -161,6 +166,28 @@ export function useIsNativeToken(chain, tokenAddress) {
     () => ChainConfig[chain].tokenName?.toLowerCase() === tokenAddress,
     [chain, tokenAddress],
   )
+}
+
+export function useConnectWalletStatus(installed, address, error) {
+  const [type, setType] = useState(TypeConnectWallet.uninstalled)
+
+  useEffect(() => {
+    if (error) {
+      setType(TypeConnectWallet.error)
+    } else {
+      if (installed) {
+        if (!address) {
+          setType(TypeConnectWallet.loading)
+        } else {
+          setType(TypeConnectWallet.success)
+        }
+      } else {
+        setType(TypeConnectWallet.uninstalled)
+      }
+    }
+  }, [address, Boolean(error), installed])
+
+  return [type, setType]
 }
 
 export function useAccountStatus(chain) {
@@ -190,11 +217,11 @@ export function useAccountStatus(chain) {
       //it means that this chain do not require the wallet, for example: btc
       return {type: TypeAccountStatus.success}
     }
-  }, [address, chain, error, isChainIdRight])
+  }, [address, chain, Boolean(error), isChainIdRight])
 }
 
 export function useIsChainIdRight(chain, chainId) {
-  const {wallet, supportedChainIds} = ChainConfig[chain]
+  const {wallet, supportedChainIds} = ChainConfig[chain] || {}
   return useMemo(
     () =>
       wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'],
