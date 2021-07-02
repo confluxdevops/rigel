@@ -52,12 +52,14 @@ function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
           {`${t('connect')} ${walletConfig?.name}`}
         </Button>
       )}
-      <ConnectWalletModal
-        type={type}
-        chain={chain}
-        open={open}
-        onClose={onClose}
-      />
+      {open && (
+        <ConnectWalletModal
+          type={type}
+          chain={chain}
+          open={open}
+          onClose={onClose}
+        />
+      )}
     </>
   )
 }

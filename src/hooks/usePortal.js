@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo} from 'react'
 import {useConfluxPortal} from '@cfxjs/react-hooks'
-import {useConnectWalletStatus} from './useWallet'
+import {useConnectWalletStatus, useIsChainIdRight, useWallet} from './useWallet'
 import {ERC20_ABI} from '../abi'
+import {KeyOfCfx} from '../constants/chainConfig'
 
 export function useInstalled() {
   const {portalInstalled} = useConfluxPortal()
@@ -34,8 +35,10 @@ export function useConnect() {
 
 export function useContract(address, ABI) {
   const {confluxJS} = useConfluxPortal()
+  const {chainId} = useWallet(KeyOfCfx)
+  const isChainIdRight = useIsChainIdRight(KeyOfCfx, chainId)
   return useMemo(() => {
-    if (!ABI || !confluxJS) return null
+    if (!ABI || !confluxJS || !isChainIdRight) return null
     try {
       return confluxJS.Contract({abi: ABI, address})
     } catch (error) {
@@ -53,6 +56,7 @@ export function useTokenContract(tokenAddress) {
  * @returns balance of account
  */
 export function useNativeTokenBalance() {
-  const {balances} = useConfluxPortal()
-  return balances && balances[0]
+  // const {balances} = useConfluxPortal()
+  // return balances && balances[0]
+  return '0'
 }

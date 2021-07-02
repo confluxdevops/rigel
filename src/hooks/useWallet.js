@@ -77,13 +77,14 @@ export function useContractState(
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
   const [data, setData] = useState(null)
   const {errorType} = useAccountStatus(chain)
+  const {chainId} = useWallet(chain)
+  const isChainIdRight = useIsChainIdRight(chain, chainId)
 
   const getContractData = useCallback(
     params => {
-      if (isNativeToken || !params[0] || !contract) {
+      if (isNativeToken || !params[0] || !contract || !isChainIdRight) {
         setData(null)
       } else {
-        console.log('click me')
         contract[method](...params)
           .then(res => {
             setData(res)
@@ -201,9 +202,7 @@ export function useConnectWalletStatus(installed, address, error) {
 
 export function useAccountStatus(chain) {
   const {address, chainId, error} = useWallet(chain)
-  console.log('useWallet', address, chainId, error)
   const isChainIdRight = useIsChainIdRight(chain, chainId)
-  console.log('isChainIdRight', isChainIdRight)
   return useMemo(() => {
     const wallet = ChainConfig[chain]?.wallet
     if (wallet) {

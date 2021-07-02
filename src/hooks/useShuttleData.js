@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable */
 /**
  * data about shuttle, mainly various contract params
  */
@@ -37,6 +37,7 @@ export function useCustodianData(chainOfContract, token) {
     chainOfContract,
   )
   const contract = isCfxChain ? reverseContract : obverseContract
+  if (!contract) return {}
   const dicimalsNum = getExponent(decimals)
   const [contractData, setContractData] = useState({})
   useEffect(() => {
@@ -113,6 +114,7 @@ export function useSponsorData(chainOfContract, token) {
     chainOfContract,
   )
   const contract = isCfxChain ? reverseData : obverseData
+  if (!contract) return {}
   const [contractData, setContractData] = useState({})
   useEffect(() => {
     if (!origin) {
