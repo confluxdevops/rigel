@@ -7,7 +7,9 @@ import {TypeAccountStatus} from '../../../constants'
 
 function AccountStatus({chain, size = 'medium', className = '', id}) {
   const {address} = useWallet(chain)
+  console.log('account status address', address)
   const {type: accountType, errorType} = useAccountStatus(chain)
+  console.log('account status type', accountType, errorType)
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
