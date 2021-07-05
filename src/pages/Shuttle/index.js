@@ -18,6 +18,7 @@ import {TxReceiptModalType, TypeAccountStatus} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
+import {getChainIdRight} from '../../utils'
 
 function Shuttle() {
   const location = useLocation()
@@ -32,10 +33,34 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  const {address: fromAddress} = useWallet(fromChain)
-  const {address: toAddress} = useWallet(toChain)
-  const {type: fromAccountType} = useAccountStatus(fromChain)
-  const {type: toAccountType} = useAccountStatus(toChain)
+  const {
+    address: fromAddress,
+    error: fromChainError,
+    chainId: fromChainId,
+  } = useWallet(fromChain)
+  const {
+    address: toAddress,
+    error: toChainError,
+    chainId: toChainId,
+  } = useWallet(toChain)
+  const isFromChainIdRight = getChainIdRight(
+    fromChain,
+    fromChainId,
+    fromAddress,
+  )
+  const isToChainIdRight = getChainIdRight(toChain, toChainId, toAddress)
+  const {type: fromAccountType} = useAccountStatus(
+    fromChain,
+    fromAddress,
+    fromChainError,
+    isFromChainIdRight,
+  )
+  const {type: toAccountType} = useAccountStatus(
+    toChain,
+    toAddress,
+    toChainError,
+    isToChainIdRight,
+  )
   const {address} = tokenFromBackend
   let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
   if (address === fromTokenAddress) fromToken = tokenFromBackend
@@ -171,6 +196,8 @@ function Shuttle() {
           onInvertChain={onInvertChain}
           fromAddress={fromAddress}
           toAddress={toAddress}
+          fromAccountType={fromAccountType}
+          toAccountType={toAccountType}
         />
       )}
       {tokenListShow && (

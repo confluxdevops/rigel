@@ -12,6 +12,7 @@ import {
   SupportedChains,
   KeyOfBtc,
 } from '../../../constants/chainConfig'
+import {TypeAccountStatus} from '../../../constants'
 
 import {useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
@@ -40,6 +41,8 @@ function ShuttleForm({
   onInvertChain,
   fromAddress,
   toAddress,
+  fromAccountType,
+  toAccountType,
 }) {
   const {t} = useTranslation()
   const [errorMsg, setErrorMsg] = useState('')
@@ -147,11 +150,18 @@ function ShuttleForm({
 
   useEffect(() => {
     setBtnDisabled(true)
+    console.log(fromAccountType, toAccountType)
     if (
       (!isFromChainBtc && isToChainCfx) ||
       (isFromChainCfx && !isToChainBtc)
     ) {
-      if (fromAddress && value && !errorMsg) {
+      if (
+        fromAddress &&
+        value &&
+        !errorMsg &&
+        fromAccountType === TypeAccountStatus.success &&
+        toAccountType === TypeAccountStatus.success
+      ) {
         setBtnDisabled(false)
       }
     } else {
@@ -181,6 +191,8 @@ function ShuttleForm({
     isToChainCfx,
     toAddress,
     btnDisabled,
+    fromAccountType,
+    toAccountType,
   ])
 
   return (
@@ -286,6 +298,8 @@ ShuttleForm.propTypes = {
   onInvertChain: PropTypes.func,
   fromAddress: PropTypes.string,
   toAddress: PropTypes.string,
+  fromAccountType: PropTypes.string,
+  toAccountType: PropTypes.string,
 }
 
 export default ShuttleForm
