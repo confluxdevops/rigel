@@ -36,17 +36,17 @@ function useChainNetId() {
 
 export function useConnect() {
   const [address, setAddress] = useState(null)
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const {chainId} = useChainNetId()
 
   useEffectOnce(() => {
     window?.conflux
-      ?.send({method: 'cfx_accounts'})
+      ?.send('cfx_accounts')
       .then(accounts => {
         if (validAccounts(accounts) && accounts[0] !== address) {
           setAddress(accounts[0])
         } else {
-          if (address !== null && address !== undefined) {
+          if (address !== null) {
             setAddress(null)
           }
         }
@@ -54,33 +54,44 @@ export function useConnect() {
       .catch(error => setError(error))
   })
 
-  useEffectOnce(() => {
-    const accountsLinstener = newAccounts => {
-      if (validAccounts(newAccounts)) {
-        setAddress(newAccounts[0])
+  // listen when user disconnect
+  const accountsLinstener = useCallback(
+    accounts => {
+      if (validAccounts(accounts)) {
+        setAddress(accounts[0])
       } else {
-        if (address !== null) setAddress(null)
+        if (address !== null) {
+          setAddress(null)
+        }
       }
-    }
+    },
+    [address],
+  )
+
+  useEffect(() => {
     // 监听账户变化
     window?.conflux?.on('accountsChanged', accountsLinstener)
     return () => {
       window?.conflux?.off?.('accountsChanged', accountsLinstener)
     }
-  })
+  }, [address, accountsLinstener])
 
   const login = useCallback(() => {
     if (!address) {
       if (window?.conflux)
         window.conflux
-          .send({method: 'cfx_requestAccounts'})
-          .then(accounts => validAccounts(accounts) && setAddress(accounts[0]))
+          .send('cfx_requestAccounts')
+          .then(accounts => {
+            if (validAccounts(accounts)) {
+              setAddress(accounts[0])
+            }
+          })
           .catch(err => {
             setError(err)
             if (err.code === 4001) {
               // EIP-1193 userRejectedRequest error
               // If this happens, the user rejected the connection request.
-              console.error('Please connect to MetaMask.')
+              console.error('Please connect to ConfluxPortal.')
             } else {
               console.error(err)
             }
@@ -135,7 +146,7 @@ export function useNativeTokenBalance() {
   const isChainIdRight = useIsChainIdRight(KeyOfCfx, chainId)
 
   useEffect(() => {
-    if (!isChainIdRight) {
+    if (!isChainIdRight || !address) {
       setBalance(BigNumZero)
     } else {
       window?.confluxJS.getBalance(address).then(result => {
@@ -143,6 +154,6 @@ export function useNativeTokenBalance() {
         setBalance(result)
       })
     }
-  }, [address])
+  }, [address, isChainIdRight])
   return balance
 }
