@@ -44,7 +44,7 @@ export function getExponent(decimals) {
   return `1e${decimals}`
 }
 
-export function getChainIdRight(chain, chainId, address) {
+export function getChainIdRight(chain, chainId, address, addrType = 'user') {
   const {wallet, supportedChainIds} = ChainConfig[chain] || {}
   const isCfxChain = chain === KeyOfCfx
 
@@ -52,7 +52,7 @@ export function getChainIdRight(chain, chainId, address) {
     return (
       wallet &&
       chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'] &&
-      checkCfxTokenAddress(address, 'user')
+      checkCfxTokenAddress(address, addrType)
     )
   }
 
