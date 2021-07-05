@@ -112,7 +112,8 @@ export function useConnect() {
 export function useContract(address, ABI) {
   const confluxJS = window?.confluxJS
   const {chainId} = useConnect(KeyOfCfx)
-  const isChainIdRight = getChainIdRight(KeyOfCfx, chainId, address, 'contract')
+  const isChainIdRight =
+    getChainIdRight(KeyOfCfx, chainId, address, 'contract') || !address
   return useMemo(
     () => {
       if (!ABI || !confluxJS || !isChainIdRight) return null
