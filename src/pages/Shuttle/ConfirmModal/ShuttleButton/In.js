@@ -18,18 +18,13 @@ import {
 } from '../../../../constants/contractConfig'
 
 import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
-import {
-  useIsNativeToken,
-  useTokenAllowance,
-  useWallet,
-} from '../../../../hooks/useWallet'
+import {useIsNativeToken, useTokenAllowance} from '../../../../hooks/useWallet'
 import {useTokenContract} from '../../../../hooks/useWeb3Network'
 import {calculateGasMargin, getExponent} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 
 function ShuttleInButton({
   fromChain,
-  toChain,
   fromToken,
   value,
   onClose,
@@ -37,22 +32,22 @@ function ShuttleInButton({
   setTxModalType,
   setTxModalShow,
   setTxHash,
+  fromAddress,
+  toAddress,
 }) {
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [didMount, setDidMount] = useState(false)
   const {address, decimals, display_symbol} = fromToken
-  const {address: fromAccountAddress} = useWallet(fromChain)
-  const {address: toAccountAddress} = useWallet(toChain)
   const isNativeToken = useIsNativeToken(fromChain, address)
   const drContractAddress =
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
   const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
   const tokenContract = useTokenContract(address)
   const tokenAllownace = useTokenAllowance(fromChain, address, [
-    fromAccountAddress,
-    drContractAddress,
+    fromAddress,
+    toAddress,
   ])
   useEffect(() => {
     setDidMount(true)
@@ -118,7 +113,7 @@ function ShuttleInButton({
   const onSubmit = async () => {
     if (isNativeToken) {
       let params = [
-        format.hexAddress(toAccountAddress),
+        format.hexAddress(toAddress),
         ZeroAddrHex,
         {
           value: convertDecimal(value, 'multiply', decimals),
@@ -145,7 +140,7 @@ function ShuttleInButton({
     } else {
       let params = [
         address,
-        format.hexAddress(toAccountAddress),
+        format.hexAddress(toAddress),
         ZeroAddrHex,
         convertDecimal(value, 'multiply', decimals),
         {
@@ -210,7 +205,6 @@ function ShuttleInButton({
 
 ShuttleInButton.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
-  toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
@@ -218,6 +212,8 @@ ShuttleInButton.propTypes = {
   setTxModalType: PropTypes.func,
   setTxHash: PropTypes.func,
   setTxModalShow: PropTypes.func,
+  fromAddress: PropTypes.string,
+  toAddress: PropTypes.string,
 }
 
 export default ShuttleInButton

@@ -1,7 +1,8 @@
-import {ChainConfig} from '../constants/chainConfig'
+import {ChainConfig, KeyOfCfx} from '../constants/chainConfig'
 import Big from 'big.js'
 import {BigNumber} from '@ethersproject/bignumber'
 import {BigNumZero} from '../constants'
+import {checkCfxTokenAddress} from './address'
 
 export const IS_DEV =
   window.location.hostname === 'localhost' ||
@@ -41,4 +42,21 @@ export function calculateGasMargin(value) {
 
 export function getExponent(decimals) {
   return `1e${decimals}`
+}
+
+export function getChainIdRight(chain, chainId, address) {
+  const {wallet, supportedChainIds} = ChainConfig[chain] || {}
+  const isCfxChain = chain === KeyOfCfx
+
+  if (isCfxChain) {
+    return (
+      wallet &&
+      chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'] &&
+      checkCfxTokenAddress(address, 'user')
+    )
+  }
+
+  return (
+    wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET']
+  )
 }

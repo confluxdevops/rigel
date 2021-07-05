@@ -13,7 +13,7 @@ import {
   KeyOfBtc,
 } from '../../../constants/chainConfig'
 
-import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
+import {useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
 import {getMaxAmount} from '../../../utils'
@@ -38,14 +38,14 @@ function ShuttleForm({
   value,
   onChangeChain,
   onInvertChain,
+  fromAddress,
+  toAddress,
 }) {
   const {t} = useTranslation()
   const [errorMsg, setErrorMsg] = useState('')
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
-  const {address: fromAddress} = useWallet(fromChain)
-  const {address: toAddress} = useWallet(toChain)
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
   const isFromChainCfx = useIsCfxChain(fromChain)
   const isToChainCfx = useIsCfxChain(toChain)
@@ -280,6 +280,8 @@ ShuttleForm.propTypes = {
   value: PropTypes.string,
   onChangeChain: PropTypes.func,
   onInvertChain: PropTypes.func,
+  fromAddress: PropTypes.string,
+  toAddress: PropTypes.string,
 }
 
 export default ShuttleForm

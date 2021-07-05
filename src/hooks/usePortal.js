@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo, useState, useCallback, useEffect} from 'react'
 import {useEffectOnce} from 'react-use'
-import {useIsChainIdRight, useWallet} from './useWallet'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
 import {BigNumZero, TypeConnectWallet} from '../constants'
+import {getChainIdRight} from '../utils'
 
 function validAccounts(accounts) {
   return Array.isArray(accounts) && accounts.length
@@ -12,16 +12,15 @@ function validAccounts(accounts) {
 
 const isPortalInstalled = () => window?.conflux?.isConfluxPortal
 
-// const chainId = window?.conflux?.chainId
-
 function useChainNetId() {
-  const [chainId, setChainId] = useState(window?.conflux?.chainId)
+  // const [chainId, setChainId] = useState(window?.conflux?.chainId)
   // const [networkId, setNetworkId] = useState(parseInt(window?.conflux?.networkVersion, 10) || null);
 
   useEffectOnce(() => {
-    const chainListener = chainId => {
-      console.log(chainId)
-      chainId !== '0xNaN' && setChainId(chainId)
+    const chainListener = newChainId => {
+      if (newChainId !== '0xNaN' && newChainId !== window.location.chainId) {
+        window.location.chainId = newChainId
+      }
     }
     // const networkListener = (networkId) => {
     //   setNetworkId(parseInt(networkId, 10) || null);
@@ -33,8 +32,7 @@ function useChainNetId() {
       // window?.conflux?.off("networkChanged", networkListener);
     }
   })
-
-  return {chainId}
+  return {chainId: window.location.chainId}
 }
 
 export function useConnect() {
@@ -112,16 +110,20 @@ export function useConnect() {
 
 export function useContract(address, ABI) {
   const confluxJS = window?.confluxJS
-  const {chainId} = useWallet(KeyOfCfx)
-  const isChainIdRight = useIsChainIdRight(KeyOfCfx, chainId)
-  return useMemo(() => {
-    if (!ABI || !confluxJS || !isChainIdRight) return null
-    try {
-      return confluxJS.Contract({abi: ABI, address})
-    } catch (error) {
-      return null
-    }
-  }, [address, Boolean(confluxJS)])
+  const {chainId} = useConnect(KeyOfCfx)
+  const isChainIdRight = getChainIdRight(KeyOfCfx, chainId, address)
+  return useMemo(
+    () => {
+      if (!ABI || !confluxJS || !isChainIdRight) return null
+      try {
+        return confluxJS.Contract({abi: ABI, address})
+      } catch (error) {
+        return null
+      }
+    },
+    [address, Boolean(confluxJS)],
+    isChainIdRight,
+  )
 }
 
 export function useTokenContract(tokenAddress) {
@@ -132,11 +134,10 @@ export function useTokenContract(tokenAddress) {
  * get CFX balance from Conflux Network
  * @returns balance of account
  */
-export function useNativeTokenBalance() {
-  const {address} = useConnect()
+export function useNativeTokenBalance(address) {
   const [balance, setBalance] = useState(BigNumZero)
   const {chainId} = useChainNetId()
-  const isChainIdRight = useIsChainIdRight(KeyOfCfx, chainId)
+  const isChainIdRight = getChainIdRight(KeyOfCfx, chainId, address)
 
   useEffect(() => {
     if (!isChainIdRight || !address) {

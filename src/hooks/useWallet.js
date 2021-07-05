@@ -14,9 +14,7 @@ import {
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
 import {BigNumZero, IntervalTime, TypeAccountStatus} from '../constants'
-import {IS_DEV} from '../utils'
-import {checkCfxTokenAddress} from '../utils/address'
-import {useIsCfxChain} from '../hooks'
+import {getChainIdRight} from '../utils'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -71,9 +69,9 @@ export function useContractState(
   const contract = useTokenContract(chain, tokenAddress)
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
   const [data, setData] = useState(null)
-  const {errorType} = useAccountStatus(chain)
-  const {chainId} = useWallet(chain)
-  const isChainIdRight = useIsChainIdRight(chain, chainId)
+  const {chainId, address, error} = useWallet(chain)
+  const isChainIdRight = getChainIdRight(chain, chainId, address)
+  const {errorType} = useAccountStatus(chain, address, error, isChainIdRight)
 
   const getContractData = useCallback(
     params => {
@@ -89,7 +87,7 @@ export function useContractState(
           })
       }
     },
-    [isNativeToken, chain, tokenAddress, method],
+    [isNativeToken, chain, tokenAddress, method, isChainIdRight],
   )
 
   useEffect(() => {
@@ -127,7 +125,7 @@ export function useTokenAllowance(chain, tokenAddress, params) {
 }
 
 export function useNativeTokenBalance(chain, address) {
-  const balancePortal = useNativeTokenBalancePortal()
+  const balancePortal = useNativeTokenBalancePortal(address)
   const balanceWeb3 = useNativeTokenBalanceWeb3(address)
   return useMemo(() => {
     if (!chain || !address) return BigNumZero
@@ -173,9 +171,7 @@ export function useIsNativeToken(chain, tokenAddress) {
   )
 }
 
-export function useAccountStatus(chain) {
-  const {address, chainId, error} = useWallet(chain)
-  const isChainIdRight = useIsChainIdRight(chain, chainId)
+export function useAccountStatus(chain, address, error, isChainIdRight) {
   return useMemo(() => {
     const wallet = ChainConfig[chain]?.wallet
     if (wallet) {
@@ -201,23 +197,4 @@ export function useAccountStatus(chain) {
       return {type: TypeAccountStatus.success}
     }
   }, [Boolean(address), chain, Boolean(error), isChainIdRight])
-}
-
-export function useIsChainIdRight(chain, chainId) {
-  const {address} = useWallet(chain)
-  const {wallet, supportedChainIds} = ChainConfig[chain] || {}
-  const isCfxChain = useIsCfxChain(chain)
-  return useMemo(() => {
-    if (isCfxChain) {
-      return (
-        wallet &&
-        chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'] &&
-        checkCfxTokenAddress(address, 'user')
-      )
-    }
-
-    return (
-      wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET']
-    )
-  }, [chain, chainId, IS_DEV, address])
 }

@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import {useFromToken, useToToken} from '../../hooks/useTokenList'
-import {useAccountStatus} from '../../hooks/useWallet'
+import {useAccountStatus, useWallet} from '../../hooks/useWallet'
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
 import {
@@ -32,6 +32,8 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
+  const {address: fromAddress} = useWallet(fromChain)
+  const {address: toAddress} = useWallet(toChain)
   const {type: fromAccountType} = useAccountStatus(fromChain)
   const {type: toAccountType} = useAccountStatus(toChain)
   const {address} = tokenFromBackend
@@ -167,6 +169,8 @@ function Shuttle() {
           value={value}
           onChangeChain={onChangeChain}
           onInvertChain={onInvertChain}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
         />
       )}
       {tokenListShow && (
@@ -190,6 +194,8 @@ function Shuttle() {
           setTxModalType={setTxModalType}
           setTxModalShow={setTxModalShow}
           setTxHash={setTxHash}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
         />
       )}
       {txModalShow && (
