@@ -72,8 +72,12 @@ function ShuttleForm({
   )?.toString(10)
 
   const minimalVal = isFromChainCfx
-    ? minimal_out_value?.toString(10)
-    : minimal_in_value?.toString(10)
+    ? minimal_out_value
+      ? minimal_out_value.toString(10)
+      : 0
+    : minimal_in_value
+    ? minimal_in_value.toString(10)
+    : 0
 
   const shuttlePaused = () => {
     try {

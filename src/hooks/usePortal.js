@@ -15,6 +15,7 @@ const isPortalInstalled = () => window?.conflux?.isConfluxPortal
 function useChainNetId() {
   // const [chainId, setChainId] = useState(window?.conflux?.chainId)
   // const [networkId, setNetworkId] = useState(parseInt(window?.conflux?.networkVersion, 10) || null);
+  window.location.chainId = window?.conflux?.chainId
 
   useEffectOnce(() => {
     const chainListener = newChainId => {
