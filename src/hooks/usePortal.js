@@ -1,22 +1,95 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useMemo} from 'react'
-import {useConfluxPortal} from '@cfxjs/react-hooks'
+import {useMemo, useState, useCallback, useEffect} from 'react'
+import {useEffectOnce} from 'react-use'
 import {useConnectWalletStatus, useIsChainIdRight, useWallet} from './useWallet'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
+import {BigNumZero} from '../constants'
 
-export function useInstalled() {
-  const {portalInstalled} = useConfluxPortal()
-  return portalInstalled
+function validAccounts(accounts) {
+  return Array.isArray(accounts) && accounts.length
 }
 
-export function useAddress() {
-  const {address} = useConfluxPortal()
-  return address
+const isPortalInstalled = () => window?.conflux?.isConfluxPortal
+
+function useChainNetId() {
+  const [chainId, setChainId] = useState(window?.conflux?.chainId)
+  // const [networkId, setNetworkId] = useState(parseInt(window?.conflux?.networkVersion, 10) || null);
+
+  useEffectOnce(() => {
+    const chainListener = chainId => {
+      setChainId(chainId)
+    }
+    // const networkListener = (networkId) => {
+    //   setNetworkId(parseInt(networkId, 10) || null);
+    // };
+    window?.conflux?.on('chainIdChanged', chainListener)
+    // window?.conflux?.on("networkChanged", networkListener);
+    return () => {
+      window?.conflux?.off('chainIdChanged', chainListener)
+      // window?.conflux?.off("networkChanged", networkListener);
+    }
+  })
+
+  return {chainId}
 }
 
 export function useConnect() {
-  const {portalInstalled, address, error, login, chainId} = useConfluxPortal()
+  const [address, setAddress] = useState(null)
+  const [error, setError] = useState({})
+  const {chainId} = useChainNetId()
+
+  useEffectOnce(() => {
+    window?.conflux
+      ?.send({method: 'cfx_accounts'})
+      .then(accounts => {
+        if (validAccounts(accounts) && accounts[0] !== address) {
+          setAddress(accounts[0])
+        } else {
+          if (address !== null && address !== undefined) {
+            setAddress(null)
+          }
+        }
+      })
+      .catch(error => setError(error))
+  })
+
+  useEffectOnce(() => {
+    const accountsLinstener = newAccounts => {
+      if (validAccounts(newAccounts)) {
+        setAddress(newAccounts[0])
+      } else {
+        if (address !== null) setAddress(null)
+      }
+    }
+    // 监听账户变化
+    window?.conflux?.on('accountsChanged', accountsLinstener)
+    return () => {
+      window?.conflux?.off?.('accountsChanged', accountsLinstener)
+    }
+  })
+
+  const login = useCallback(() => {
+    if (!address) {
+      if (window?.conflux)
+        window.conflux
+          .send({method: 'cfx_requestAccounts'})
+          .then(accounts => validAccounts(accounts) && setAddress(accounts[0]))
+          .catch(err => {
+            setError(err)
+            if (err.code === 4001) {
+              // EIP-1193 userRejectedRequest error
+              // If this happens, the user rejected the connection request.
+              console.error('Please connect to MetaMask.')
+            } else {
+              console.error(err)
+            }
+          })
+    }
+  }, [address])
+
+  const portalInstalled = isPortalInstalled()
+
   const [type, setType] = useConnectWalletStatus(
     portalInstalled,
     address,
@@ -34,7 +107,7 @@ export function useConnect() {
 }
 
 export function useContract(address, ABI) {
-  const {confluxJS} = useConfluxPortal()
+  const confluxJS = window?.confluxJS
   const {chainId} = useWallet(KeyOfCfx)
   const isChainIdRight = useIsChainIdRight(KeyOfCfx, chainId)
   return useMemo(() => {
@@ -56,7 +129,20 @@ export function useTokenContract(tokenAddress) {
  * @returns balance of account
  */
 export function useNativeTokenBalance() {
-  // const {balances} = useConfluxPortal()
-  // return balances && balances[0]
-  return '0'
+  const {address} = useConnect()
+  const [balance, setBalance] = useState(BigNumZero)
+  const {chainId} = useChainNetId()
+  const isChainIdRight = useIsChainIdRight(KeyOfCfx, chainId)
+
+  useEffect(() => {
+    if (!isChainIdRight) {
+      setBalance(BigNumZero)
+    } else {
+      window?.confluxJS.getBalance(address).then(result => {
+        // console.log('balance drip', balance.toString())
+        setBalance(result)
+      })
+    }
+  }, [address])
+  return balance
 }

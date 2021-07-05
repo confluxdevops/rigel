@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
-import {useConfluxPortal} from '@cfxjs/react-hooks'
 import Big from 'big.js'
 
 import {Button} from '../../../../components'
@@ -42,7 +41,7 @@ function ShuttleOutButton({
     'out',
   )
   const tokenBaseContract = useShuttleContract(ContractType.tokenBase)
-  const {confluxJS} = useConfluxPortal()
+  const confluxJS = window?.confluxJS
   const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
