@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo, useState, useCallback, useEffect} from 'react'
 import {useEffectOnce} from 'react-use'
-import {useConnectWalletStatus, useIsChainIdRight, useWallet} from './useWallet'
+import {useIsChainIdRight, useWallet} from './useWallet'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
-import {BigNumZero} from '../constants'
+import {BigNumZero, TypeConnectWallet} from '../constants'
 
 function validAccounts(accounts) {
   return Array.isArray(accounts) && accounts.length
@@ -12,13 +12,16 @@ function validAccounts(accounts) {
 
 const isPortalInstalled = () => window?.conflux?.isConfluxPortal
 
+// const chainId = window?.conflux?.chainId
+
 function useChainNetId() {
   const [chainId, setChainId] = useState(window?.conflux?.chainId)
   // const [networkId, setNetworkId] = useState(parseInt(window?.conflux?.networkVersion, 10) || null);
 
   useEffectOnce(() => {
     const chainListener = chainId => {
-      setChainId(chainId)
+      console.log(chainId)
+      chainId !== '0xNaN' && setChainId(chainId)
     }
     // const networkListener = (networkId) => {
     //   setNetworkId(parseInt(networkId, 10) || null);
@@ -38,6 +41,10 @@ export function useConnect() {
   const [address, setAddress] = useState(null)
   const [error, setError] = useState(null)
   const {chainId} = useChainNetId()
+  const portalInstalled = isPortalInstalled()
+  const [type, setType] = useState(
+    portalInstalled ? TypeConnectWallet.uninstalled : TypeConnectWallet.success,
+  )
 
   useEffectOnce(() => {
     window?.conflux
@@ -45,48 +52,43 @@ export function useConnect() {
       .then(accounts => {
         if (validAccounts(accounts) && accounts[0] !== address) {
           setAddress(accounts[0])
-        } else {
-          if (address !== null) {
-            setAddress(null)
-          }
         }
       })
       .catch(error => setError(error))
   })
 
-  // listen when user disconnect
-  const accountsLinstener = useCallback(
-    accounts => {
-      if (validAccounts(accounts)) {
+  useEffectOnce(() => {
+    // listen when user disconnect
+    const accountsLinstener = accounts => {
+      if (validAccounts(accounts) && accounts[0] !== address) {
         setAddress(accounts[0])
-      } else {
-        if (address !== null) {
-          setAddress(null)
-        }
       }
-    },
-    [address],
-  )
+      if (accounts.length === 0) {
+        setAddress(null)
+      }
+    }
 
-  useEffect(() => {
     // 监听账户变化
     window?.conflux?.on('accountsChanged', accountsLinstener)
     return () => {
       window?.conflux?.off?.('accountsChanged', accountsLinstener)
     }
-  }, [address, accountsLinstener])
+  })
 
   const login = useCallback(() => {
+    setType(TypeConnectWallet.loading)
     if (!address) {
       if (window?.conflux)
         window.conflux
           .send('cfx_requestAccounts')
           .then(accounts => {
+            setType(TypeConnectWallet.success)
             if (validAccounts(accounts)) {
               setAddress(accounts[0])
             }
           })
           .catch(err => {
+            setType(TypeConnectWallet.error)
             setError(err)
             if (err.code === 4001) {
               // EIP-1193 userRejectedRequest error
@@ -99,18 +101,9 @@ export function useConnect() {
     }
   }, [address])
 
-  const portalInstalled = isPortalInstalled()
-
-  const [type, setType] = useConnectWalletStatus(
-    portalInstalled,
-    address,
-    error,
-  )
-
   return {
     type,
     tryActivate: login,
-    setType,
     error,
     address,
     chainId,

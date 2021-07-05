@@ -13,12 +13,7 @@ import {
   useTokenContract as useTokenContractWeb3,
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
 } from './useWeb3Network'
-import {
-  BigNumZero,
-  IntervalTime,
-  TypeConnectWallet,
-  TypeAccountStatus,
-} from '../constants'
+import {BigNumZero, IntervalTime, TypeAccountStatus} from '../constants'
 import {IS_DEV} from '../utils'
 import {checkCfxTokenAddress} from '../utils/address'
 import {useIsCfxChain} from '../hooks'
@@ -176,28 +171,6 @@ export function useIsNativeToken(chain, tokenAddress) {
     () => ChainConfig[chain].tokenName?.toLowerCase() === tokenAddress,
     [chain, tokenAddress],
   )
-}
-
-export function useConnectWalletStatus(installed, address, error) {
-  const [type, setType] = useState(TypeConnectWallet.uninstalled)
-
-  useEffect(() => {
-    if (error) {
-      setType(TypeConnectWallet.error)
-    } else {
-      if (installed) {
-        if (!address) {
-          setType(TypeConnectWallet.loading)
-        } else {
-          setType(TypeConnectWallet.success)
-        }
-      } else {
-        setType(TypeConnectWallet.uninstalled)
-      }
-    }
-  }, [address, Boolean(error), installed])
-
-  return [type, setType]
 }
 
 export function useAccountStatus(chain) {
