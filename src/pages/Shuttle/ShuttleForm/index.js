@@ -48,7 +48,7 @@ function ShuttleForm({
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
-  const {address, decimal, supported} = fromToken
+  const {address, decimals, supported} = fromToken
   const isNativeToken = useIsNativeToken(fromChain, address)
   const isFromChainCfx = useIsCfxChain(fromChain)
   const isToChainCfx = useIsCfxChain(toChain)
@@ -68,7 +68,7 @@ function ShuttleForm({
     useCustodianData(chainOfContract, toToken)
   const {sponsorValue} = useSponsorData(chainOfContract, toToken)
 
-  const balanceVal = convertDecimal(balance, 'divide', decimal)
+  const balanceVal = convertDecimal(balance, 'divide', decimals)
 
   const maxAmount = (
     isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal

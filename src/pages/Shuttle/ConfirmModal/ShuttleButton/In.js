@@ -187,7 +187,7 @@ function ShuttleInButton({
           size="large"
           id="approve"
         >
-          {isApproving && <Loading size="w-6 h-6" />}
+          {isApproving && <Loading className="!w-6 !h-6" />}
           {!isApproving && t('approve', {tokenSymbol: display_symbol})}
         </Button>
       )}
