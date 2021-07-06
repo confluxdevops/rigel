@@ -15,12 +15,12 @@ function validAccounts(accounts) {
 const isPortalInstalled = () => window?.conflux?.isConfluxPortal
 
 function useChainNetId() {
-  window.location.chainId = window?.conflux?.chainId
+  const [chainId, setChainid] = useState(window?.conflux?.chainId)
 
   useEffectOnce(() => {
     const chainListener = newChainId => {
       if (newChainId !== '0xNaN' && newChainId !== window.location.chainId) {
-        window.location.chainId = newChainId
+        setChainid(chainId)
       }
     }
     window?.conflux?.on('chainIdChanged', chainListener)
@@ -28,7 +28,7 @@ function useChainNetId() {
       window?.conflux?.off('chainIdChanged', chainListener)
     }
   })
-  return {chainId: window.location.chainId}
+  return {chainId}
 }
 
 export function useConnect() {
@@ -39,6 +39,9 @@ export function useConnect() {
   const [type, setType] = useState(
     portalInstalled ? TypeConnectWallet.uninstalled : TypeConnectWallet.success,
   )
+
+  if (window && window.conflux && window.conflux.autoRefreshOnNetworkChange)
+    window.conflux.autoRefreshOnNetworkChange = false
 
   useEffectOnce(() => {
     window?.conflux
