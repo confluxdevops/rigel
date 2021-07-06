@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useMemo, useState, useCallback} from 'react'
 import {useEffectOnce} from 'react-use'
-import {useBalance} from '@cfxjs/react-hooks'
+import {useBalance as usePortalBalance} from '@cfxjs/react-hooks'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
 import {BigNumZero, TypeConnectWallet} from '../constants'
@@ -131,18 +131,25 @@ export function useTokenContract(tokenAddress) {
  * @returns balance of account
  */
 export function useNativeTokenBalance(address) {
-  const [balance] = useBalance(address, [])
+  const [balance] = usePortalBalance(address, [])
   return balance ? balance : BigNumZero
 }
 
-export function useTokenBalance(tokenAddress, address) {
+export function useTokenBalance(address, tokenAddress) {
   console.log(tokenAddress, address)
   // eslint-disable-next-line no-unused-vars
-  const [balance, tokenBalance] = useBalance(
+  const [balance, tokenBalance] = usePortalBalance(
     address,
     tokenAddress && checkCfxTokenAddress(tokenAddress, 'contract')
       ? [tokenAddress]
       : [],
   )
   return tokenBalance ? tokenBalance : BigNumZero
+}
+
+export function useBalance(address, tokenAddress) {
+  const isNativeToken = !checkCfxTokenAddress(tokenAddress, 'contract')
+  const tokenBalance = useTokenBalance(address, tokenAddress) || BigNumZero
+  const nativeTokenBalance = useNativeTokenBalance(address) || BigNumZero
+  return isNativeToken ? nativeTokenBalance : tokenBalance
 }

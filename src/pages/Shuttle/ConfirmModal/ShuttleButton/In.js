@@ -18,8 +18,11 @@ import {
 } from '../../../../constants/contractConfig'
 
 import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
-import {useIsNativeToken, useTokenAllowance} from '../../../../hooks/useWallet'
-import {useTokenContract} from '../../../../hooks/useWeb3Network'
+import {useIsNativeToken} from '../../../../hooks/useWallet'
+import {
+  useTokenContract,
+  useTokenAllowance,
+} from '../../../../hooks/useWeb3Network'
 import {calculateGasMargin, getExponent} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 

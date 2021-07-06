@@ -1,21 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState, useMemo, useCallback, useEffect} from 'react'
+import {useMemo} from 'react'
 import {UnsupportedChainIdError} from '@web3-react/core'
 import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {
   useConnect as useConnectPortal,
-  useTokenContract as useTokenContractPortal,
-  useNativeTokenBalance as useNativeTokenBalancePortal,
-  useTokenBalance as useTokenBalancePortal,
+  useBalance as useBalancePortal,
 } from './usePortal'
 import {
   useConnect as useConnectWeb3,
-  useTokenContract as useTokenContractWeb3,
-  useNativeTokenBalance as useNativeTokenBalanceWeb3,
-  useTokenBalance as useTokenBalanceWeb3,
+  useBalance as useBalanceWeb3,
 } from './useWeb3Network'
 import {BigNumZero, TypeAccountStatus} from '../constants'
-import {getChainIdRight} from '../utils'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -33,125 +28,6 @@ export function useWallet(chain) {
 }
 
 /**
- * erc20/crc20 contract
- * @param {*} chain
- * @param {*} address
- * @returns
- */
-export function useTokenContract(chain, tokenAddress) {
-  const dataPortal = useTokenContractPortal(tokenAddress)
-  const dataWeb3 = useTokenContractWeb3(tokenAddress)
-  let data = {}
-  switch (ChainConfig[chain]?.wallet) {
-    case KeyOfMetaMask:
-      data = dataWeb3
-      break
-    case KeyOfPortal:
-      data = dataPortal
-      break
-  }
-  return data
-}
-
-/**
- * call some method from contract and get the value
- * @param {*} contract
- * @param {*} method
- * @param {*} params
- * @returns
- */
-export function useContractState(
-  chain,
-  tokenAddress,
-  method,
-  params,
-  interval,
-) {
-  const contract = useTokenContract(chain, tokenAddress)
-  const isNativeToken = useIsNativeToken(chain, tokenAddress)
-  const [data, setData] = useState(null)
-  const {chainId, address, error} = useWallet(chain)
-  const isChainIdRight = getChainIdRight(chain, chainId, address)
-  const {errorType} = useAccountStatus(chain, address, error, isChainIdRight)
-
-  const getContractData = useCallback(
-    params => {
-      if (isNativeToken || !params[0] || !contract || !isChainIdRight) {
-        setData(null)
-      } else {
-        contract[method](...params)
-          .then(res => {
-            setData(res)
-          })
-          .catch(() => {
-            setData(null)
-          })
-      }
-    },
-    [isNativeToken, chain, tokenAddress, method, isChainIdRight],
-  )
-
-  useEffect(() => {
-    if (!errorType) {
-      if (interval) {
-        getContractData(params)
-        const timeInterval = setInterval(
-          () => getContractData(params),
-          interval,
-        )
-        return () => clearInterval(timeInterval)
-      } else {
-        getContractData(params)
-      }
-    }
-  }, [...params, getContractData, interval])
-
-  return data
-}
-
-export function useTokenBalance(chain, tokenAddress, address) {
-  const balancePortal = useTokenBalancePortal(tokenAddress, address)
-  const balanceWeb3 = useTokenBalanceWeb3(chain, tokenAddress, [address])
-  return useMemo(() => {
-    if (!chain || !tokenAddress) return BigNumZero
-    switch (ChainConfig[chain]?.wallet) {
-      case KeyOfMetaMask:
-        return balanceWeb3
-      case KeyOfPortal:
-        return balancePortal
-      default:
-        return BigNumZero
-    }
-  }, [
-    chain,
-    balancePortal.toString(10),
-    balanceWeb3.toString(10),
-    Boolean(tokenAddress),
-  ])
-}
-
-export function useTokenAllowance(chain, tokenAddress, params) {
-  const allowance = useContractState(chain, tokenAddress, 'allowance', params)
-  return allowance || BigNumZero
-}
-
-export function useNativeTokenBalance(chain, address) {
-  const balancePortal = useNativeTokenBalancePortal(address)
-  const balanceWeb3 = useNativeTokenBalanceWeb3(address)
-  return useMemo(() => {
-    if (!chain || !address) return BigNumZero
-    switch (ChainConfig[chain]?.wallet) {
-      case KeyOfMetaMask:
-        return balanceWeb3
-      case KeyOfPortal:
-        return balancePortal
-      default:
-        return BigNumZero
-    }
-  }, [address, balancePortal.toString(10), balanceWeb3.toString(10), chain])
-}
-
-/**
  * get balance of native token(for example:eth) or token balance(for example:usdt)
  * @param {*} chain
  * @param {*} address
@@ -160,13 +36,17 @@ export function useNativeTokenBalance(chain, address) {
  * @returns
  */
 export function useBalance(chain, address, tokenAddress) {
-  const isNativeToken = useIsNativeToken(chain, tokenAddress)
-  const nativeTokenBalance = useNativeTokenBalance(chain, address)
-  const tokenBalance = useTokenBalance(chain, tokenAddress, address)
-  return useMemo(
-    () => (isNativeToken ? nativeTokenBalance : tokenBalance),
-    [isNativeToken, nativeTokenBalance.toString(10), tokenBalance.toString(10)],
-  )
+  const balancePortal = useBalancePortal(address, tokenAddress)
+  const balanceWeb3 = useBalanceWeb3(address, tokenAddress)
+  if (!chain || !address) return BigNumZero
+  switch (ChainConfig[chain]?.wallet) {
+    case KeyOfMetaMask:
+      return balanceWeb3
+    case KeyOfPortal:
+      return balancePortal
+    default:
+      return BigNumZero
+  }
 }
 
 /**
