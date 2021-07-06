@@ -36,6 +36,7 @@ function ConfirmModal({
           fromChain={fromChain}
           toChain={toChain}
           fromToken={fromToken}
+          {...props}
         />
       </div>
       {fromIsBtcChain && <BtcConfirmTips />}
