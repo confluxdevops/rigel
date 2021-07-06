@@ -5,6 +5,7 @@
  */
 import {useEffect, useState, useMemo} from 'react'
 import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
+import {isMobile} from 'react-device-detect'
 import {useInterval} from 'react-use'
 import Big from 'big.js'
 import {
@@ -14,8 +15,7 @@ import {
   TypeConnectWallet,
 } from '../constants'
 import {injected, getContract} from '../utils/web3'
-import {useConnectWalletStatus} from './useWallet'
-import {isMobile} from 'react-device-detect'
+import {checkHexAddress} from '../utils/address'
 import {ERC20_ABI} from '../abi'
 
 /**
@@ -130,9 +130,12 @@ export function useAddress() {
 export function useConnect() {
   const {error, account, activate, chainId} = useWeb3React()
   const isInstalled = useInstalled()
-  const [type, setType] = useConnectWalletStatus(isInstalled, account, error)
+  const [type, setType] = useState(
+    isInstalled ? TypeConnectWallet.success : TypeConnectWallet.uninstalled,
+  )
 
   const tryActivate = () => {
+    setType(TypeConnectWallet.loading)
     if (isInstalled && !account) {
       activate(injected, undefined, true).catch(error => {
         if (error instanceof UnsupportedChainIdError) {
@@ -182,7 +185,7 @@ export function useNativeTokenBalance(
 export function useContract(address, ABI, withSignerIfPossible = true) {
   const {library, account} = useActiveWeb3React()
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!address || !ABI || !library || !checkHexAddress(address)) return null
     try {
       return getContract(
         address,
@@ -198,4 +201,60 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+}
+
+export function useTokenAllowance(chain, tokenAddress, params) {
+  const allowance = useContractState(chain, tokenAddress, 'allowance', params)
+  return allowance || BigNumZero
+}
+
+/**
+ * call some method from contract and get the value
+ * @param {*} contract
+ * @param {*} method
+ * @param {*} params
+ * @returns
+ */
+export function useContractState(tokenAddress, method, params, interval) {
+  const contract = useTokenContract(tokenAddress)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const getContractData = params => {
+      contract?.[method](...params)
+        .then(res => {
+          setData(res)
+        })
+        .catch(() => {
+          setData(null)
+        })
+    }
+
+    if (interval) {
+      getContractData(params)
+      const timeInterval = setInterval(() => getContractData(params), interval)
+      return () => clearInterval(timeInterval)
+    } else {
+      getContractData(params)
+    }
+  }, [...params, interval])
+
+  return data
+}
+
+export function useTokenBalance(tokenAddress, params) {
+  const balance = useContractState(
+    tokenAddress,
+    'balanceOf',
+    params,
+    IntervalTime.fetchBalance,
+  )
+  return balance ? new Big(balance) : BigNumZero
+}
+
+export function useBalance(address, tokenAddress) {
+  const tokenBalance = useTokenBalance(tokenAddress, [address]) || BigNumZero
+  const nativeTokenBalance = useNativeTokenBalance(address) || BigNumZero
+  const isNativeToken = !checkHexAddress(tokenAddress)
+  return isNativeToken ? nativeTokenBalance : tokenBalance
 }

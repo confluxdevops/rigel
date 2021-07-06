@@ -40,7 +40,7 @@ export function useCustodianData(chainOfContract, token) {
   const dicimalsNum = getExponent(decimals)
   const [contractData, setContractData] = useState({})
   useEffect(() => {
-    if (!origin) {
+    if (!origin || !contract) {
       setContractData({})
       return
     }
@@ -93,7 +93,14 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [isCfxChain, chainOfContract, contractAddress, dicimalsNum, origin])
+  }, [
+    isCfxChain,
+    chainOfContract,
+    contractAddress,
+    dicimalsNum,
+    origin,
+    Boolean(contract),
+  ])
   return contractData
 }
 
@@ -115,7 +122,7 @@ export function useSponsorData(chainOfContract, token) {
   const contract = isCfxChain ? reverseData : obverseData
   const [contractData, setContractData] = useState({})
   useEffect(() => {
-    if (!origin) {
+    if (!origin || !contract) {
       setContractData({})
       return
     }
@@ -134,7 +141,7 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [chainOfContract, isCfxChain, contractAddress, origin])
+  }, [chainOfContract, isCfxChain, contractAddress, origin, Boolean(contract)])
   return contractData
 }
 

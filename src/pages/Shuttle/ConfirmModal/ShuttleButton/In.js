@@ -18,14 +18,15 @@ import {
 } from '../../../../constants/contractConfig'
 
 import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
+import {useIsNativeToken} from '../../../../hooks/useWallet'
 import {
-  useIsNativeToken,
+  useTokenContract,
   useTokenAllowance,
-  useWallet,
-} from '../../../../hooks/useWallet'
-import {useTokenContract} from '../../../../hooks/useWeb3Network'
+} from '../../../../hooks/useWeb3Network'
 import {calculateGasMargin, getExponent} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
+import {useIsCfxChain} from '../../../../hooks'
+import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 
 function ShuttleInButton({
   fromChain,
@@ -37,23 +38,25 @@ function ShuttleInButton({
   setTxModalType,
   setTxModalShow,
   setTxHash,
+  fromAddress,
+  toAddress,
 }) {
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [didMount, setDidMount] = useState(false)
-  const {address, decimals, display_symbol} = fromToken
-  const {address: fromAccountAddress} = useWallet(fromChain)
-  const {address: toAccountAddress} = useWallet(toChain)
+  const {address, decimals, display_symbol, origin} = fromToken
+  const isCfxChain = useIsCfxChain(origin)
   const isNativeToken = useIsNativeToken(fromChain, address)
   const drContractAddress =
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
   const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
   const tokenContract = useTokenContract(address)
   const tokenAllownace = useTokenAllowance(fromChain, address, [
-    fromAccountAddress,
+    fromAddress,
     drContractAddress,
   ])
+  const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
   useEffect(() => {
     setDidMount(true)
     if (!isNativeToken) {
@@ -116,9 +119,10 @@ function ShuttleInButton({
   }
 
   const onSubmit = async () => {
+    setTxModalType(TxReceiptModalType.ongoing)
     if (isNativeToken) {
       let params = [
-        format.hexAddress(toAccountAddress),
+        format.hexAddress(toAddress),
         ZeroAddrHex,
         {
           value: convertDecimal(value, 'multiply', decimals),
@@ -143,35 +147,47 @@ function ShuttleInButton({
           setTxModalType(TxReceiptModalType.error)
         })
     } else {
-      let params = [
-        address,
-        format.hexAddress(toAccountAddress),
-        ZeroAddrHex,
-        convertDecimal(value, 'multiply', decimals),
-        {
-          value: BigNumber.from(0),
-        },
-      ]
-      let gasDt = await drContract.estimateGas.depositToken(
-        params[0],
-        params[1],
-        params[2],
-        params[3],
-        params[4],
-      )
-      setTxModalShow(true)
-      drContract
-        .depositToken(params[0], params[1], params[2], params[3], {
-          ...params[4],
-          gasLimit: calculateGasMargin(gasDt),
-        })
-        .then(data => {
-          setTxHash(data.hash)
+      if (!isCfxChain) {
+        let params = [
+          address,
+          format.hexAddress(toAddress),
+          ZeroAddrHex,
+          convertDecimal(value, 'multiply', decimals),
+          {
+            value: BigNumber.from(0),
+          },
+        ]
+        let gasDt = await drContract.estimateGas.depositToken(
+          params[0],
+          params[1],
+          params[2],
+          params[3],
+          params[4],
+        )
+        setTxModalShow(true)
+        drContract
+          .depositToken(params[0], params[1], params[2], params[3], {
+            ...params[4],
+            gasLimit: calculateGasMargin(gasDt),
+          })
+          .then(data => {
+            setTxHash(data?.hash)
+            setTxModalType(TxReceiptModalType.success)
+          })
+          .catch(() => {
+            setTxModalType(TxReceiptModalType.error)
+          })
+      } else {
+        const amountVal = convertDecimal(value, 'multiply', decimals)
+        setTxModalShow(true)
+        try {
+          const data = await tokenContract.transfer(shuttleAddress, amountVal)
+          setTxHash(data?.hash)
           setTxModalType(TxReceiptModalType.success)
-        })
-        .catch(() => {
+        } catch {
           setTxModalType(TxReceiptModalType.error)
-        })
+        }
+      }
     }
     onClose && onClose()
   }
@@ -189,7 +205,7 @@ function ShuttleInButton({
           size="large"
           id="approve"
         >
-          {isApproving && <Loading size="w-6 h-6" />}
+          {isApproving && <Loading className="!w-6 !h-6" />}
           {!isApproving && t('approve', {tokenSymbol: display_symbol})}
         </Button>
       )}
@@ -218,6 +234,8 @@ ShuttleInButton.propTypes = {
   setTxModalType: PropTypes.func,
   setTxHash: PropTypes.func,
   setTxModalShow: PropTypes.func,
+  fromAddress: PropTypes.string,
+  toAddress: PropTypes.string,
 }
 
 export default ShuttleInButton

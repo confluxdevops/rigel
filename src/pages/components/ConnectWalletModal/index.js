@@ -9,11 +9,9 @@ import {
 } from '../../../constants/chainConfig'
 import {TypeConnectWallet} from '../../../constants'
 import {ErrorOutlined} from '../../../assets/svg'
-import {useWallet} from '../../../hooks/useWallet'
 
-function ConnectWalletModal({open = false, type, chain, onClose}) {
+function ConnectWalletModal({open = false, type, chain, onClose, tryActivate}) {
   const {t} = useTranslation()
-  const {tryActivate} = useWallet(chain)
   const walletConfig = WalletConfig[ChainConfig[chain].wallet]
   const walletName = walletConfig.name
   const onInstall = () => {
@@ -101,6 +99,7 @@ ConnectWalletModal.propTypes = {
   type: PropTypes.oneOf(Object.values(TypeConnectWallet)).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   onClose: PropTypes.func,
+  tryActivate: PropTypes.func,
 }
 
 export default ConnectWalletModal

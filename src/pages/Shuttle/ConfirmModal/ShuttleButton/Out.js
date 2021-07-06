@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
-import {useConfluxPortal} from '@cfxjs/react-hooks'
 import Big from 'big.js'
 
 import {Button} from '../../../../components'
@@ -9,7 +8,6 @@ import {Send} from '../../../../assets/svg'
 import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
-import {useWallet} from '../../../../hooks/useWallet'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {ContractType} from '../../../../constants/contractConfig'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
@@ -27,13 +25,13 @@ function ShuttleOutButton({
   setTxModalType,
   setTxModalShow,
   setTxHash,
+  fromAddress,
+  toAddress,
 }) {
   const {t} = useTranslation()
   const {origin, decimals, ctoken} = toToken
   const isCfxChain = useIsCfxChain(origin)
   const isToChainBtc = useIsBtcChain(toChain)
-  const {address: fromAddress} = useWallet(fromChain)
-  const {address: toAddress} = useWallet(toChain)
   const [outAddress, setOutAddress] = useState('')
   const shuttleAddress = useShuttleAddress(
     outAddress,
@@ -42,7 +40,7 @@ function ShuttleOutButton({
     'out',
   )
   const tokenBaseContract = useShuttleContract(ContractType.tokenBase)
-  const {confluxJS} = useConfluxPortal()
+  const confluxJS = window?.confluxJS
   const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
@@ -139,6 +137,8 @@ ShuttleOutButton.propTypes = {
   setTxModalType: PropTypes.func,
   setTxHash: PropTypes.func,
   setTxModalShow: PropTypes.func,
+  fromAddress: PropTypes.string,
+  toAddress: PropTypes.string,
 }
 
 export default ShuttleOutButton

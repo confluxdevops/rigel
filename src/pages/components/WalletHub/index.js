@@ -30,6 +30,11 @@ function WalletHub({connectData, pendingTransactions = []}) {
     if (visible) setArrow('top')
     if (!visible) setArrow('down')
   }
+  const pendingTransactionsIcon = pendingTransactions.length > 0 && (
+    <div className="flex items-center justify-center w-4 h-4 absolute -top-1 -right-1 rounded-full bg-error text-xs text-gray-0">
+      {pendingTransactions.length > 99 ? '99+' : pendingTransactions.length}
+    </div>
+  )
   let children
   if (length === 0) {
     children = (
@@ -57,20 +62,14 @@ function WalletHub({connectData, pendingTransactions = []}) {
             {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
           </WrapIcon>
         </div>
-        {pendingTransactions.length > 0 && (
-          <div className="flex items-center justify-center w-4 h-4 absolute top-0 right-0 rounded-full bg-error text-xs text-gray-0">
-            {pendingTransactions.length > 99
-              ? '99+'
-              : pendingTransactions.length}
-          </div>
-        )}
+        {pendingTransactionsIcon}
       </div>
     )
   } else if (length === 2) {
     children = (
       <div
         id="walletHub"
-        className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer"
+        className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer relative"
       >
         <Connected className="w-2 h-2 mr-1" />
         {WalletConfig[KeyOfPortal].icon()}
@@ -78,6 +77,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
         <WrapIcon type="circle" className="ml-1">
           {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
         </WrapIcon>
+        {pendingTransactionsIcon}
       </div>
     )
   }

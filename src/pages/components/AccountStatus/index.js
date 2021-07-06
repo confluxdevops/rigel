@@ -4,10 +4,17 @@ import {SupportedChains} from '../../../constants/chainConfig'
 import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
 import {Account, ConnectWallet, AccountError} from '../../components'
 import {TypeAccountStatus} from '../../../constants'
+import {getChainIdRight} from '../../../utils'
 
 function AccountStatus({chain, size = 'medium', className = '', id}) {
-  const {address} = useWallet(chain)
-  const {type: accountType, errorType} = useAccountStatus(chain)
+  const {address, error, chainId, type, tryActivate} = useWallet(chain)
+  const isChainIdRight = getChainIdRight(chain, chainId, address)
+  const {type: accountType, errorType} = useAccountStatus(
+    chain,
+    address,
+    error,
+    isChainIdRight,
+  )
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
@@ -31,7 +38,13 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
         />
       )}
       {accountType === TypeAccountStatus.unconnected && (
-        <ConnectWallet id={`${id}_connectWallet`} chain={chain} size={size} />
+        <ConnectWallet
+          id={`${id}_connectWallet`}
+          chain={chain}
+          size={size}
+          type={type}
+          tryActivate={tryActivate}
+        />
       )}
       {accountType === TypeAccountStatus.error && (
         <AccountError chain={chain} errorType={errorType} />
