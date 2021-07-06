@@ -30,7 +30,6 @@ import {useCustodianData, useSponsorData} from '../../../hooks/useShuttleData'
 function ShuttleForm({
   fromChain,
   toChain,
-  fromTokenAddress,
   fromToken,
   toToken,
   onChooseToken,
@@ -49,7 +48,8 @@ function ShuttleForm({
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
-  const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
+  const {address, decimal, supported} = fromToken
+  const isNativeToken = useIsNativeToken(fromChain, address)
   const isFromChainCfx = useIsCfxChain(fromChain)
   const isToChainCfx = useIsCfxChain(toChain)
   const isFromChainBtc = useIsBtcChain(fromChain)
@@ -60,8 +60,8 @@ function ShuttleForm({
     toChain,
     isFromChainCfx ? 'out' : 'in',
   )
-  const {address, decimal, supported} = fromToken
-  const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
+
+  const balance = useBalance(fromChain, fromAddress, address)
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
   const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
   const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
@@ -287,7 +287,6 @@ function ShuttleForm({
 ShuttleForm.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromTokenAddress: PropTypes.string,
   fromToken: PropTypes.object,
   toToken: PropTypes.object,
   onChooseToken: PropTypes.func,

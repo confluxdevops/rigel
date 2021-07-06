@@ -1,19 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useMemo, useCallback, useEffect} from 'react'
-import Big from 'big.js'
 import {UnsupportedChainIdError} from '@web3-react/core'
 import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {
   useConnect as useConnectPortal,
   useTokenContract as useTokenContractPortal,
   useNativeTokenBalance as useNativeTokenBalancePortal,
+  useTokenBalance as useTokenBalancePortal,
 } from './usePortal'
 import {
   useConnect as useConnectWeb3,
   useTokenContract as useTokenContractWeb3,
   useNativeTokenBalance as useNativeTokenBalanceWeb3,
+  useTokenBalance as useTokenBalanceWeb3,
 } from './useWeb3Network'
-import {BigNumZero, IntervalTime, TypeAccountStatus} from '../constants'
+import {BigNumZero, TypeAccountStatus} from '../constants'
 import {getChainIdRight} from '../utils'
 
 export function useWallet(chain) {
@@ -108,15 +109,25 @@ export function useContractState(
   return data
 }
 
-export function useTokenBalance(chain, tokenAddress, params) {
-  const balance = useContractState(
+export function useTokenBalance(chain, tokenAddress, address) {
+  const balancePortal = useTokenBalancePortal(tokenAddress, address)
+  const balanceWeb3 = useTokenBalanceWeb3(chain, tokenAddress, [address])
+  return useMemo(() => {
+    if (!chain || !tokenAddress) return BigNumZero
+    switch (ChainConfig[chain]?.wallet) {
+      case KeyOfMetaMask:
+        return balanceWeb3
+      case KeyOfPortal:
+        return balancePortal
+      default:
+        return BigNumZero
+    }
+  }, [
     chain,
-    tokenAddress,
-    'balanceOf',
-    params,
-    IntervalTime.fetchBalance,
-  )
-  return balance ? new Big(balance) : BigNumZero
+    balancePortal.toString(10),
+    balanceWeb3.toString(10),
+    Boolean(tokenAddress),
+  ])
 }
 
 export function useTokenAllowance(chain, tokenAddress, params) {
@@ -148,10 +159,10 @@ export function useNativeTokenBalance(chain, address) {
  * @param {*} params
  * @returns
  */
-export function useBalance(chain, address, tokenAddress, params) {
+export function useBalance(chain, address, tokenAddress) {
   const isNativeToken = useIsNativeToken(chain, tokenAddress)
   const nativeTokenBalance = useNativeTokenBalance(chain, address)
-  const tokenBalance = useTokenBalance(chain, tokenAddress, params)
+  const tokenBalance = useTokenBalance(chain, tokenAddress, address)
   return useMemo(
     () => (isNativeToken ? nativeTokenBalance : tokenBalance),
     [isNativeToken, nativeTokenBalance.toString(10), tokenBalance.toString(10)],

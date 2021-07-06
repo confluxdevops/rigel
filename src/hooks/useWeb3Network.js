@@ -16,6 +16,7 @@ import {
 import {injected, getContract} from '../utils/web3'
 import {isMobile} from 'react-device-detect'
 import {ERC20_ABI} from '../abi'
+import {useContractState} from './useWallet'
 
 /**
  * doc: https://github.com/NoahZinsmeister/web3-react/tree/v6/docs#useweb3react
@@ -200,4 +201,15 @@ export function useContract(address, ABI, withSignerIfPossible = true) {
 
 export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+}
+
+export function useTokenBalance(chain, tokenAddress, params) {
+  const balance = useContractState(
+    chain,
+    tokenAddress,
+    'balanceOf',
+    params,
+    IntervalTime.fetchBalance,
+  )
+  return balance ? new Big(balance) : BigNumZero
 }

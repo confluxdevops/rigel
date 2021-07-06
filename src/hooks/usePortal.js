@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useMemo, useState, useCallback, useEffect} from 'react'
+import {useMemo, useState, useCallback} from 'react'
 import {useEffectOnce} from 'react-use'
+import {useBalance} from '@cfxjs/react-hooks'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
 import {BigNumZero, TypeConnectWallet} from '../constants'
 import {getChainIdRight} from '../utils'
+import {checkCfxTokenAddress} from '../utils/address'
 
 function validAccounts(accounts) {
   return Array.isArray(accounts) && accounts.length
@@ -13,8 +15,6 @@ function validAccounts(accounts) {
 const isPortalInstalled = () => window?.conflux?.isConfluxPortal
 
 function useChainNetId() {
-  // const [chainId, setChainId] = useState(window?.conflux?.chainId)
-  // const [networkId, setNetworkId] = useState(parseInt(window?.conflux?.networkVersion, 10) || null);
   window.location.chainId = window?.conflux?.chainId
 
   useEffectOnce(() => {
@@ -23,14 +23,9 @@ function useChainNetId() {
         window.location.chainId = newChainId
       }
     }
-    // const networkListener = (networkId) => {
-    //   setNetworkId(parseInt(networkId, 10) || null);
-    // };
     window?.conflux?.on('chainIdChanged', chainListener)
-    // window?.conflux?.on("networkChanged", networkListener);
     return () => {
       window?.conflux?.off('chainIdChanged', chainListener)
-      // window?.conflux?.off("networkChanged", networkListener);
     }
   })
   return {chainId: window.location.chainId}
@@ -57,7 +52,7 @@ export function useConnect() {
   })
 
   useEffectOnce(() => {
-    // listen when user disconnect
+    // listen when account change
     const accountsLinstener = accounts => {
       if (validAccounts(accounts) && accounts[0] !== address) {
         setAddress(accounts[0])
@@ -67,7 +62,6 @@ export function useConnect() {
       }
     }
 
-    // 监听账户变化
     window?.conflux?.on('accountsChanged', accountsLinstener)
     return () => {
       window?.conflux?.off?.('accountsChanged', accountsLinstener)
@@ -137,19 +131,18 @@ export function useTokenContract(tokenAddress) {
  * @returns balance of account
  */
 export function useNativeTokenBalance(address) {
-  const [balance, setBalance] = useState(BigNumZero)
-  const {chainId} = useChainNetId()
-  const isChainIdRight = getChainIdRight(KeyOfCfx, chainId, address)
+  const [balance] = useBalance(address, [])
+  return balance ? balance : BigNumZero
+}
 
-  useEffect(() => {
-    if (!isChainIdRight || !address) {
-      setBalance(BigNumZero)
-    } else {
-      window?.confluxJS.getBalance(address).then(result => {
-        // console.log('balance drip', balance.toString())
-        setBalance(result)
-      })
-    }
-  }, [address, isChainIdRight])
-  return balance
+export function useTokenBalance(tokenAddress, address) {
+  console.log(tokenAddress, address)
+  // eslint-disable-next-line no-unused-vars
+  const [balance, tokenBalance] = useBalance(
+    address,
+    tokenAddress && checkCfxTokenAddress(tokenAddress, 'contract')
+      ? [tokenAddress]
+      : [],
+  )
+  return tokenBalance ? tokenBalance : BigNumZero
 }

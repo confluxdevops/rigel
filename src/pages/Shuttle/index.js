@@ -185,7 +185,6 @@ function Shuttle() {
         <ShuttleForm
           fromChain={fromChain}
           toChain={toChain}
-          fromTokenAddress={fromTokenAddress}
           fromToken={fromToken}
           toToken={toToken}
           onChooseToken={() => setTokenListShow(true)}
