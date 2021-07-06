@@ -50,7 +50,7 @@ function ShuttleInButton({
   const tokenContract = useTokenContract(address)
   const tokenAllownace = useTokenAllowance(fromChain, address, [
     fromAddress,
-    toAddress,
+    drContractAddress,
   ])
   useEffect(() => {
     setDidMount(true)

@@ -5,6 +5,7 @@ import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon, Account} from '../../components'
 import {useIsCfxChain} from '../../../hooks'
 import {useShuttleFee} from '../../../hooks/useShuttleData'
+import {useWallet} from '../../../hooks/useWallet'
 
 function ConfirmInfo({fromChain, toChain, fromToken}) {
   const {display_symbol} = fromToken
@@ -12,6 +13,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
   const isFromChainCfx = useIsCfxChain(fromChain)
   const chainOfContract = isFromChainCfx ? toChain : fromChain
   const shuttleFee = useShuttleFee(chainOfContract, fromToken, toChain)
+  const {address} = useWallet(toChain)
 
   return (
     <div id="confirmInfo" className="flex flex-col w-full">
@@ -29,6 +31,7 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
           chain={toChain}
           className="text-gray-100"
           iconClassName="mr-1 !w-5 !h-5"
+          address={address}
         />
       </div>
       <div className="flex items-center justify-between mt-4">
