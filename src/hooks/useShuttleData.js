@@ -93,7 +93,14 @@ export function useCustodianData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [isCfxChain, chainOfContract, contractAddress, dicimalsNum, origin])
+  }, [
+    isCfxChain,
+    chainOfContract,
+    contractAddress,
+    dicimalsNum,
+    origin,
+    Boolean(contract),
+  ])
   return contractData
 }
 
@@ -134,7 +141,7 @@ export function useSponsorData(chainOfContract, token) {
       .catch(() => {
         setContractData({})
       })
-  }, [chainOfContract, isCfxChain, contractAddress, origin])
+  }, [chainOfContract, isCfxChain, contractAddress, origin, Boolean(contract)])
   return contractData
 }
 
