@@ -52,7 +52,7 @@ function ShuttleInButton({
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
   const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
   const tokenContract = useTokenContract(address)
-  const tokenAllownace = useTokenAllowance(fromChain, address, [
+  const tokenAllownace = useTokenAllowance(address, [
     fromAddress,
     drContractAddress,
   ])

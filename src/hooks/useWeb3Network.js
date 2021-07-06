@@ -203,8 +203,8 @@ export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useTokenAllowance(chain, tokenAddress, params) {
-  const allowance = useContractState(chain, tokenAddress, 'allowance', params)
+export function useTokenAllowance(tokenAddress, params) {
+  const allowance = useContractState(tokenAddress, 'allowance', params)
   return allowance || BigNumZero
 }
 
@@ -237,7 +237,7 @@ export function useContractState(tokenAddress, method, params, interval) {
     } else {
       getContractData(params)
     }
-  }, [...params, interval])
+  }, [...params, interval, Boolean(contract)])
 
   return data
 }
