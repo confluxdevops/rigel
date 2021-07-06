@@ -45,14 +45,19 @@ function ShuttleInButton({
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [didMount, setDidMount] = useState(false)
-  const {address, decimals, display_symbol, origin} = fromToken
+  const {
+    address: fromTokenAddress,
+    decimals,
+    display_symbol,
+    origin,
+  } = fromToken
   const isCfxChain = useIsCfxChain(origin)
-  const isNativeToken = useIsNativeToken(fromChain, address)
+  const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
   const drContractAddress =
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
   const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
-  const tokenContract = useTokenContract(address)
-  const tokenAllownace = useTokenAllowance(fromChain, address, [
+  const tokenContract = useTokenContract(fromTokenAddress)
+  const tokenAllownace = useTokenAllowance(fromTokenAddress, [
     fromAddress,
     drContractAddress,
   ])
@@ -149,7 +154,7 @@ function ShuttleInButton({
     } else {
       if (!isCfxChain) {
         let params = [
-          address,
+          fromTokenAddress,
           format.hexAddress(toAddress),
           ZeroAddrHex,
           convertDecimal(value, 'multiply', decimals),
