@@ -25,9 +25,12 @@ import {
 } from '../../../../hooks/useWeb3Network'
 import {calculateGasMargin, getExponent} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
+import {useIsCfxChain} from '../../../../hooks'
+import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 
 function ShuttleInButton({
   fromChain,
+  toChain,
   fromToken,
   value,
   onClose,
@@ -42,7 +45,8 @@ function ShuttleInButton({
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [didMount, setDidMount] = useState(false)
-  const {address, decimals, display_symbol} = fromToken
+  const {address, decimals, display_symbol, origin} = fromToken
+  const isCfxChain = useIsCfxChain(origin)
   const isNativeToken = useIsNativeToken(fromChain, address)
   const drContractAddress =
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
@@ -52,6 +56,7 @@ function ShuttleInButton({
     fromAddress,
     drContractAddress,
   ])
+  const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
   useEffect(() => {
     setDidMount(true)
     if (!isNativeToken) {
@@ -114,6 +119,7 @@ function ShuttleInButton({
   }
 
   const onSubmit = async () => {
+    setTxModalType(TxReceiptModalType.ongoing)
     if (isNativeToken) {
       let params = [
         format.hexAddress(toAddress),
@@ -141,35 +147,47 @@ function ShuttleInButton({
           setTxModalType(TxReceiptModalType.error)
         })
     } else {
-      let params = [
-        address,
-        format.hexAddress(toAddress),
-        ZeroAddrHex,
-        convertDecimal(value, 'multiply', decimals),
-        {
-          value: BigNumber.from(0),
-        },
-      ]
-      let gasDt = await drContract.estimateGas.depositToken(
-        params[0],
-        params[1],
-        params[2],
-        params[3],
-        params[4],
-      )
-      setTxModalShow(true)
-      drContract
-        .depositToken(params[0], params[1], params[2], params[3], {
-          ...params[4],
-          gasLimit: calculateGasMargin(gasDt),
-        })
-        .then(data => {
-          setTxHash(data.hash)
+      if (!isCfxChain) {
+        let params = [
+          address,
+          format.hexAddress(toAddress),
+          ZeroAddrHex,
+          convertDecimal(value, 'multiply', decimals),
+          {
+            value: BigNumber.from(0),
+          },
+        ]
+        let gasDt = await drContract.estimateGas.depositToken(
+          params[0],
+          params[1],
+          params[2],
+          params[3],
+          params[4],
+        )
+        setTxModalShow(true)
+        drContract
+          .depositToken(params[0], params[1], params[2], params[3], {
+            ...params[4],
+            gasLimit: calculateGasMargin(gasDt),
+          })
+          .then(data => {
+            setTxHash(data?.hash)
+            setTxModalType(TxReceiptModalType.success)
+          })
+          .catch(() => {
+            setTxModalType(TxReceiptModalType.error)
+          })
+      } else {
+        const amountVal = convertDecimal(value, 'multiply', decimals)
+        setTxModalShow(true)
+        try {
+          const data = await tokenContract.transfer(shuttleAddress, amountVal)
+          setTxHash(data?.hash)
           setTxModalType(TxReceiptModalType.success)
-        })
-        .catch(() => {
+        } catch {
           setTxModalType(TxReceiptModalType.error)
-        })
+        }
+      }
     }
     onClose && onClose()
   }
@@ -208,6 +226,7 @@ function ShuttleInButton({
 
 ShuttleInButton.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
