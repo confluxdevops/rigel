@@ -139,7 +139,6 @@ export function useNativeTokenBalance(address) {
 }
 
 export function useTokenBalance(address, tokenAddress) {
-  console.log(tokenAddress, address)
   // eslint-disable-next-line no-unused-vars
   const [balance, tokenBalance] = usePortalBalance(
     address,

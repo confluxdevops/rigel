@@ -150,7 +150,6 @@ function ShuttleForm({
 
   useEffect(() => {
     setBtnDisabled(true)
-    console.log(fromAccountType, toAccountType)
     if (
       (!isFromChainBtc && isToChainCfx) ||
       (isFromChainCfx && !isToChainBtc)
