@@ -76,7 +76,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
             >
               <animateMotion
-                dur="5s"
+                dur="10s"
                 repeatCount="indefinite"
                 path="M0,160 Q110,118 200,25 Q110,118 0,160"
               />
@@ -87,7 +87,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
             >
               <animateMotion
-                dur="6s"
+                dur="11s"
                 repeatCount="indefinite"
                 path="M0,160 Q110,118 200,25 Q110,118 0,160"
               />
@@ -98,7 +98,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
             >
               <animateMotion
-                dur="7s"
+                dur="12s"
                 repeatCount="indefinite"
                 path="M0,160 Q110,118 200,25 Q110,118 0,160"
               />
@@ -124,7 +124,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
             >
               <animateMotion
-                dur="7s"
+                dur="10s"
                 repeatCount="indefinite"
                 path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60 "
               />
@@ -135,7 +135,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
             >
               <animateMotion
-                dur="6s"
+                dur="11s"
                 repeatCount="indefinite"
                 path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
               />
@@ -146,7 +146,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
             >
               <animateMotion
-                dur="5s"
+                dur="12s"
                 repeatCount="indefinite"
                 path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
               />
@@ -164,19 +164,19 @@ function Home() {
           <div className="absolute left-302 -top-6 animate-bounce">
             <img src={TokenRight} alt="token" />
           </div>
-          <div className="absolute left-40 top-52 animate-pulse">
+          <div className="absolute left-40 top-52 animate-pulse-fast">
             <img src={LightLeft} alt="light" />
           </div>
-          <div className="absolute left-154 -top-1 animate-pulse">
+          <div className="absolute left-154 -top-1 animate-pulse-fast">
             <img src={LightCenter} alt="light" />
           </div>
-          <div className="absolute left-293 -top-1 animate-pulse">
+          <div className="absolute left-293 -top-1 animate-pulse-fast">
             <img src={LightRight} alt="light" />
           </div>
-          <div className="absolute left-158 top-60 animate-pulse">
+          <div className="absolute left-158 top-60 animate-pulse-fast">
             <img src={LightTunnel1} alt="light" />
           </div>
-          <div className="absolute left-280 top-34 animate-pulse">
+          <div className="absolute left-280 top-34 animate-pulse-fast">
             <img src={LightTunnel2} alt="light" />
           </div>
           <div className="absolute left-116 top-64">
