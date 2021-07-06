@@ -127,6 +127,7 @@ module.exports = {
         'move-left': 'move-left 0.2s ease-in-out 1',
         'move-down': 'move-down 0.2s ease-in-out 1',
         'move-up': 'move-up 0.2s ease-in-out 1',
+        'pulse-fast': 'pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       inset: {
         0.5: '0.125rem',
