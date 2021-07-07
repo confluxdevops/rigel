@@ -37,7 +37,10 @@ SelectedChain.propTypes = {
 
 function SelectedChains({fromChain, toChain}) {
   return (
-    <div className="w-full border border-gray-10 flex items-center">
+    <div
+      id="selectedChains"
+      className="w-full border border-gray-10 flex items-center"
+    >
       <SelectedChain id="selectedFromChain" type="from" chain={fromChain} />
       <WrapIcon size="w-7 h-7" className="mx-6" type="circle">
         <BgArrowRight className="text-gray-40" />

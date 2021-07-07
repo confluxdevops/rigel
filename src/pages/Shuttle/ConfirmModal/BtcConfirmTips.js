@@ -11,7 +11,10 @@ function BtcConfirmTips() {
   const {fromBtcAddress} = useShuttleState()
   const [copied, setCopied] = useState(false)
   return (
-    <div className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs relative">
+    <div
+      id="btcConfirmTips"
+      className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs relative"
+    >
       <span className="flex items-center">
         <Circle />
         {t('tips.btcWalletTip')}
