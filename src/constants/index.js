@@ -33,7 +33,7 @@ export const TxReceiptModalType = {
 }
 export const MobileBreakpoint = 768
 
-export const Decimal18 = '1e18'
+export const Decimal18 = '18'
 
 export const TypeAccountStatus = {
   unconnected: 'unconnected',
