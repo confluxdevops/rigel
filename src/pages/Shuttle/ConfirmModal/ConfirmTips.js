@@ -14,7 +14,10 @@ function ConfirmTips({fromChain, toChain, ...props}) {
   let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
 
   return (
-    <div className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs">
+    <div
+      id="confirmTips"
+      className="flex w-full flex-col mt-6 bg-gray-10 px-6 pb-6 pt-4 text-gray-80 text-xs"
+    >
       <span className="text-sm">{t('tips.mustKnow')}</span>
       <span className="flex items-center">
         <Circle />
