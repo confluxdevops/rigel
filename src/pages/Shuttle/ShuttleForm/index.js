@@ -12,7 +12,7 @@ import {
   SupportedChains,
   KeyOfBtc,
 } from '../../../constants/chainConfig'
-import {TypeAccountStatus} from '../../../constants'
+import {TypeAccountStatus, Decimal18} from '../../../constants'
 
 import {useBalance, useIsNativeToken} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
@@ -67,8 +67,11 @@ function ShuttleForm({
   const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
     useCustodianData(chainOfContract, toToken)
   const {sponsorValue} = useSponsorData(chainOfContract, toToken)
-
-  const balanceVal = convertDecimal(balance, 'divide', decimals)
+  const balanceVal = convertDecimal(
+    balance,
+    'divide',
+    isFromChainCfx ? Decimal18 : decimals,
+  )
 
   const maxAmount = (
     isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal
