@@ -131,7 +131,9 @@ html {
 }
 
 .home {
+  --color-gray-20: #666666;
+  --color-gray-40: #a9abb2;
+  --color-gray-60: #3d3f4c;
   --color-gray-80: #eaecef;
-  --color-gray-20: #3d3f4c;
   @apply bg-home;
 }

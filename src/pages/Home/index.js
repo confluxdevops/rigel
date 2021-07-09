@@ -8,7 +8,6 @@ import {
   TokenLeft,
   SfCenter,
   TokenRight,
-  CopyRight,
   Twitter,
   Telegram,
   Discord,
@@ -23,6 +22,8 @@ import {
   PipleRight,
   TunnelLeft,
   TunnelRight,
+  BaseMobile,
+  ShuttleFlowMobile,
 } from '../../assets/img'
 import {Button} from '../../components'
 
@@ -46,14 +47,23 @@ function Home() {
     )
   }
   return (
-    <div className="w-full h-screen relative">
-      <div className="w-360">
-        <div className="ml-24">
-          <img className="w-160 pt-24" src={ShuttleFlow} alt="title" />
-          <span className="inline-block text-gray-400 mt-9 text-xl">
+    <div className="w-full relative md:h-full md:min-h-220">
+      <div className="md:w-360">
+        <div className="ml-5">
+          <img
+            className="w-72 mt-15 md:hidden"
+            src={ShuttleFlowMobile}
+            alt="title"
+          />
+          <img
+            className="hidden md:block w-160 pt-24"
+            src={ShuttleFlow}
+            alt="title"
+          />
+          <span className="inline-block text-gray-40 mt-2 text-base md:mt-9 md:text-xl">
             {t('home.subTitle')}
           </span>
-          <div className="mt-9 flex">
+          <div className="flex mt-11 md:mt-9">
             <Button className="mr-5" onClick={() => onOpenApp()}>
               {t('home.shuttleFlow')}
             </Button>
@@ -62,7 +72,8 @@ function Home() {
             </Button>
           </div>
         </div>
-        <div className="relative">
+        <img className="mt-8 w-full md:hidden" src={BaseMobile} alt="base" />
+        <div className="hidden md:block relative -ml-24">
           <div className="absolute left-240 top-30">
             <img className="w-64" src={TunnelRight} alt="tunnel" />
           </div>
@@ -107,7 +118,7 @@ function Home() {
           <div className="absolute left-136 top-9">
             <img className="w-168" src={BaseCenter} alt="base" />
           </div>
-          <div className="absolute left-260 top-2.5">
+          <div className="absolute left-256 -top-0.5">
             <img className="w-110" src={BaseRight} alt="base" />
           </div>
           <div className="absolute left-65 top-60">
@@ -187,9 +198,11 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-16 w-full flex justify-between py-4 border-solid border-t-2 border-gray-20">
-        <img src={CopyRight} alt="copyright" />
-        <div className="flex">
+      <div className="fixed bottom-0 w-full border-t-0 ml-5 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:py-4 md:border-t border-solid border-gray-60">
+        <span className="inline-block text-gray-20 text-xs py-3 md:py-0">
+          © 2021 ShuttleFlow. All Rights Reserved.
+        </span>
+        <div className="flex border-solid border-b border-gray-60 pb-4 md:border-b-0 md:pb-0">
           <a
             className="mr-5"
             href="https://twitter.com/@Conflux_Network"
@@ -223,7 +236,7 @@ function Home() {
             <img src={Medium} alt="medium" />
           </a>
           <a
-            className="mr-5"
+            className="-mr-9"
             href="https://github.com/conflux-chain"
             rel="noreferrer"
             target="_blank"
