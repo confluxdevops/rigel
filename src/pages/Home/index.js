@@ -236,7 +236,6 @@ function Home() {
             <img src={Medium} alt="medium" />
           </a>
           <a
-            className="-mr-9"
             href="https://github.com/conflux-chain"
             rel="noreferrer"
             target="_blank"
