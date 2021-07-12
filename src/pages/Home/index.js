@@ -60,7 +60,7 @@ function Home() {
             src={ShuttleFlow}
             alt="title"
           />
-          <span className="inline-block text-gray-40 mt-2 text-base md:mt-9 md:text-xl">
+          <span className="inline-block text-gray-60 mt-2 text-base md:mt-9 md:text-xl">
             {t('home.subTitle')}
           </span>
           <div className="flex mt-11 md:mt-9">
@@ -198,11 +198,11 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 w-full border-t-0 ml-5 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:py-4 md:border-t border-solid border-gray-60">
-        <span className="inline-block text-gray-20 text-xs py-3 md:py-0">
+      <div className="fixed bottom-0 w-full border-t-0 ml-5 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:py-4 md:border-t border-solid border-gray-20">
+        <span className="inline-block text-gray-40 text-xs py-3 md:py-0">
           © 2021 ShuttleFlow. All Rights Reserved.
         </span>
-        <div className="flex border-solid border-b border-gray-60 pb-4 md:border-b-0 md:pb-0">
+        <div className="flex border-solid border-b border-gray-20 pb-4 md:border-b-0 md:pb-0">
           <a
             className="mr-5"
             href="https://twitter.com/@Conflux_Network"
