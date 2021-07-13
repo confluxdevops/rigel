@@ -13,7 +13,7 @@ import {Menu, Dropdown} from '../../../components'
 import {ArrowDownFilled} from '../../../assets/svg'
 import {ChainItem} from '../../components'
 
-function ChainSelect({type, chain, fromChain, onClick, ...props}) {
+function ChainSelect({type, chain, fromChain, onClick, id, ...props}) {
   const chainsData = useChainsData(type, chain, fromChain)
   const onClickHandler = key => {
     onClick && onClick(key, type)
@@ -36,7 +36,12 @@ function ChainSelect({type, chain, fromChain, onClick, ...props}) {
   )
 
   return (
-    <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+    <Dropdown
+      id={`${id}-dropdown`}
+      overlay={menu}
+      placement="bottomLeft"
+      trigger={['click']}
+    >
       <div
         className="w-26.5 h-24.5 rounded bg-gray-10 p-3 mr-3 flex items-end justify-between cursor-pointer"
         aria-hidden="true"
@@ -54,6 +59,7 @@ ChainSelect.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   fromChain: PropTypes.oneOf(SupportedChains), // only when type === to need the value
   onClick: PropTypes.func,
+  id: PropTypes.string,
 }
 
 export default ChainSelect

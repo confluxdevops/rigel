@@ -25,6 +25,7 @@ function RiskModal({open, onClose, onConfirm}) {
         {t('riskModal.confirm')}
       </span>
       <Checkbox
+        id="riskCheckbox"
         checked={checked}
         onChange={() => {
           setChecked(!checked)
@@ -37,12 +38,19 @@ function RiskModal({open, onClose, onConfirm}) {
 
   return (
     <Modal
+      id="riskModal"
       size="medium"
       open={open}
       title={t('riskModal.title')}
       onClose={() => onClose && onClose()}
       actions={
-        <Button size="large" fullWidth disabled={!checked} onClick={onConfirm}>
+        <Button
+          id="riskConfirmButton"
+          size="large"
+          fullWidth
+          disabled={!checked}
+          onClick={onConfirm}
+        >
           {t('riskModal.continue')}
         </Button>
       }
