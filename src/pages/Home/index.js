@@ -204,7 +204,7 @@ function Home() {
         </span>
         <div className="flex border-solid border-b border-gray-20 pb-6 md:border-b-0 md:pb-0">
           <a
-            className="mr-5"
+            className="mr-4"
             href="https://twitter.com/@Conflux_Network"
             rel="noreferrer"
             target="_blank"
@@ -212,7 +212,7 @@ function Home() {
             <img src={Twitter} alt="twitter" />
           </a>
           <a
-            className="mr-5"
+            className="mr-4"
             href="https://t.me/Conflux_English"
             rel="noreferrer"
             target="_blank"
@@ -220,7 +220,7 @@ function Home() {
             <img src={Telegram} alt="telegram" />
           </a>
           <a
-            className="mr-5"
+            className="mr-4"
             href="https://discord.com/invite/aCZkf2C"
             rel="noreferrer"
             target="_blank"
@@ -228,7 +228,7 @@ function Home() {
             <img src={Discord} alt="discord" />
           </a>
           <a
-            className="mr-5"
+            className="mr-4"
             href="https://medium.com/@ConfluxNetwork"
             rel="noreferrer"
             target="_blank"
