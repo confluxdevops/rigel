@@ -198,8 +198,8 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 w-full px-4 border-t-0 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:py-4 md:px-0 md:border-t border-solid border-gray-20">
-        <span className="inline-block text-gray-40 text-xs py-4 md:py-0">
+      <div className="fixed bottom-0 w-full px-4 border-t-0 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:items-center md:py-3 md:px-0 md:border-t border-solid border-gray-20">
+        <span className="inline-block text-gray-40 text-xs py-4 md:py-0 md:h-4">
           © 2021 ShuttleFlow. All Rights Reserved.
         </span>
         <div className="flex border-solid border-b border-gray-20 pb-6 md:border-b-0 md:pb-0">
