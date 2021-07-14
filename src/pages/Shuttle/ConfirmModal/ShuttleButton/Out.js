@@ -11,9 +11,14 @@ import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {ContractType} from '../../../../constants/contractConfig'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
-import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
+import {
+  ZeroAddrHex,
+  TxReceiptModalType,
+  TypeTransaction,
+} from '../../../../constants'
 import {useShuttleState} from '../../../../state'
 import {getExponent} from '../../../../utils'
+import {useTxState} from '../../../../state/transaction'
 
 function ShuttleOutButton({
   fromChain,
@@ -44,6 +49,7 @@ function ShuttleOutButton({
   const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
+  const {addTx} = useTxState()
 
   useEffect(() => {
     setDidMount(true)
@@ -57,6 +63,20 @@ function ShuttleOutButton({
     }
   }, [isToChainBtc, toAddress, toBtcAddress])
 
+  function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
+    const data = {
+      hash: hash,
+      fromChain,
+      toChain,
+      fromAddress,
+      toAddress,
+      amount: value,
+      toToken,
+      type,
+    }
+    return data
+  }
+
   const onSubmit = async () => {
     setTxModalShow(true)
     setTxModalType(TxReceiptModalType.ongoing)
@@ -69,6 +89,7 @@ function ShuttleOutButton({
             to: shuttleAddress,
             value: amountVal,
           })
+          addTx(getShuttleStatusData(data))
           setTxHash(data)
           setTxModalType(TxReceiptModalType.success)
         } catch {
@@ -82,6 +103,7 @@ function ShuttleOutButton({
               from: fromAddress,
               to: ctoken,
             })
+          addTx(getShuttleStatusData(data))
           setTxHash(data)
           setTxModalType(TxReceiptModalType.success)
         } catch {
@@ -101,6 +123,7 @@ function ShuttleOutButton({
           from: fromAddress,
           to: ctoken,
         })
+        addTx(getShuttleStatusData(data))
         setTxHash(data)
         setTxModalType(TxReceiptModalType.success)
       } catch {
