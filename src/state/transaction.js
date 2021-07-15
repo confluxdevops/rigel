@@ -1,6 +1,7 @@
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
 import {TypeTransaction, StatusShuttleTx} from '../constants'
+import {containsValueBy} from '../utils'
 
 let Store = null
 
@@ -33,7 +34,8 @@ export const createStore = () =>
         transactions: [],
         addTx: tx => {
           let trans = get().transactions
-          trans?.unshift(mergeData(tx))
+          if (!containsValueBy(trans, 'nonce_or_txid', tx?.hash))
+            trans?.unshift(mergeData(tx)) //do not unshift the duplicate data to array
           set({transactions: trans || []})
         },
       }),
@@ -50,3 +52,8 @@ export const useTxState = () => {
   const state = useStore()
   return state
 }
+
+//update the local data intervally
+export const useUpdateData = () => {}
+
+export const useTxData = () => {}
