@@ -120,6 +120,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onChangeChain = (chain, type) => {
@@ -148,6 +149,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onInvertChain = () => {

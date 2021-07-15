@@ -121,6 +121,11 @@ function ShuttleForm({
   }
 
   const onNextBtnClick = () => {
+    const error = validateData(value)
+    if (error) {
+      setErrorMsg(error)
+      return
+    }
     if (isFromChainBtc) {
       setFromBtcAddress(shuttleAddress)
     }
