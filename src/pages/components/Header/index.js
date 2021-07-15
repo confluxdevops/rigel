@@ -30,7 +30,7 @@ function Header() {
   }
   if (pathname === '/') {
     return (
-      <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
+      <div className="h-16 px-3 md:px-8 bg-transparent flex justify-between items-center w-full">
         {!isMobile ? <DarkLogo /> : <DarkMobileLogo />}
         <LanguageButton />
       </div>
