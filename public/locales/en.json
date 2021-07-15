@@ -96,5 +96,20 @@
     "goBack": "Go Back Home"
   },
   "testnet": "Testnet",
-  "mainnet": "Mainnet"
+  "mainnet": "Mainnet",
+  "history": {
+    "title": "Recently 24h Cross-Chain Records",
+    "chainDescription": "From {{fromChain}} to {{toChain}}",
+    "pending": "Pending",
+    "waiting": "Waiting",
+    "success": "Success",
+    "error": "Error",
+    "fromBtcAddress": "Bitcoin Address",
+    "progress": {
+      "stepOne": "Initiate cross-chain",
+      "stepTwo": "Confirm on {{fromChain}} {{fromChainId}}",
+      "stepThree": "Confirm on ShuttleFlow",
+      "stepFour": "Confirm on {{toChain}} {{toChainId}}"
+    }
+  }
 }

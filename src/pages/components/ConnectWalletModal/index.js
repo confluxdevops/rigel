@@ -15,7 +15,7 @@ function ConnectWalletModal({open = false, type, chain, onClose, tryActivate}) {
   const walletConfig = WalletConfig[ChainConfig[chain].wallet]
   const walletName = walletConfig.name
   const onInstall = () => {
-    window.open(walletConfig.website, '_blank')
+    window.open(walletConfig.website)
   }
   const onTry = () => {
     tryActivate()

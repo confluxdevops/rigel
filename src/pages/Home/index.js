@@ -47,7 +47,7 @@ function Home() {
     )
   }
   return (
-    <div className="w-full relative md:h-screen md:min-h-220">
+    <div className="w-full relative md:h-screen md:min-h-220 flex justify-center">
       <div className="md:w-360">
         <div className="ml-5">
           <img
