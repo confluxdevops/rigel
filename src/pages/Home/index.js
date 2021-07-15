@@ -253,7 +253,7 @@ function Home() {
       {!isMobile ? (
         <div className="absolute bottom-0 w-full">
           {line}
-          <div className="flex flex-row justify-between items-center py-3 px-0">
+          <div className="flex justify-between items-center py-3 px-0">
             {copyright}
             {icon}
           </div>
