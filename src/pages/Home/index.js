@@ -26,6 +26,7 @@ import {
   ShuttleFlowMobile,
 } from '../../assets/img'
 import {Button} from '../../components'
+import {useIsMobile} from '../../hooks'
 
 function Home() {
   useEffectOnce(() => {
@@ -46,6 +47,57 @@ function Home() {
         : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf',
     )
   }
+  const isMobile = useIsMobile()
+  const copyright = (
+    <span className="inline-block text-gray-40 text-xs py-4 md:py-0 md:h-4">
+      © 2021 ShuttleFlow. All Rights Reserved.
+    </span>
+  )
+  const icon = (
+    <div className="flex pb-6 md:pb-0">
+      <a
+        className="mr-4"
+        href="https://twitter.com/@Conflux_Network"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Twitter} alt="twitter" />
+      </a>
+      <a
+        className="mr-4"
+        href="https://t.me/Conflux_English"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Telegram} alt="telegram" />
+      </a>
+      <a
+        className="mr-4"
+        href="https://discord.com/invite/aCZkf2C"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Discord} alt="discord" />
+      </a>
+      <a
+        className="mr-4"
+        href="https://medium.com/@ConfluxNetwork"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Medium} alt="medium" />
+      </a>
+      <a
+        href="https://github.com/conflux-chain"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={GitHub} alt="github" />
+      </a>
+    </div>
+  )
+  const line = <div className="border-solid border-t border-gray-20" />
+
   return (
     <div className="w-full relative md:h-screen md:min-h-220">
       <div className="md:w-360 mx-auto">
@@ -198,52 +250,21 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 w-full px-4 border-t-0 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:items-center md:py-3 md:px-0 md:border-t border-solid border-gray-20">
-        <span className="inline-block text-gray-40 text-xs py-4 md:py-0 md:h-4">
-          © 2021 ShuttleFlow. All Rights Reserved.
-        </span>
-        <div className="flex border-solid border-b border-gray-20 pb-6 md:border-b-0 md:pb-0">
-          <a
-            className="mr-4"
-            href="https://twitter.com/@Conflux_Network"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Twitter} alt="twitter" />
-          </a>
-          <a
-            className="mr-4"
-            href="https://t.me/Conflux_English"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Telegram} alt="telegram" />
-          </a>
-          <a
-            className="mr-4"
-            href="https://discord.com/invite/aCZkf2C"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Discord} alt="discord" />
-          </a>
-          <a
-            className="mr-4"
-            href="https://medium.com/@ConfluxNetwork"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Medium} alt="medium" />
-          </a>
-          <a
-            href="https://github.com/conflux-chain"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={GitHub} alt="github" />
-          </a>
+      {!isMobile ? (
+        <div className="absolute bottom-0 w-full">
+          {line}
+          <div className="flex flex-row justify-between items-center py-3 px-0">
+            {copyright}
+            {icon}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="fixed bottom-0 w-full px-4">
+          {icon}
+          {line}
+          {copyright}
+        </div>
+      )}
     </div>
   )
 }
