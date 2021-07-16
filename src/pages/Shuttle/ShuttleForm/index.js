@@ -155,9 +155,9 @@ function ShuttleForm({
     let error = ''
     if (!isNaN(Number(value))) {
       const valBig = new Big(value || 0)
-      if (!isFromChainBtc && valBig.gte(minimalVal)) {
+      if (valBig.gte(minimalVal)) {
         //must be greater than zero
-        if (valBig.gt(balanceVal)) {
+        if (!isFromChainBtc && valBig.gt(balanceVal)) {
           //must be less than Max value
           error = t('error.mustLsMax', {value: formatAmount(balanceVal)})
         }
