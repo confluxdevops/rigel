@@ -24,14 +24,13 @@ import Progress from './Progress'
 function TokenInfo({toToken, fromChain, toChain}) {
   const {symbol, address} = toToken
   const isNativeToken = useIsNativeToken(toChain, address)
-  const {addToken, success} = useAddTokenToMetamask(toToken)
+  const {addToken} = useAddTokenToMetamask(toToken)
   const isToChainCfx = useIsCfxChain(toChain)
   const {t} = useTranslation()
   const [copied, setCopied] = useState(false)
 
   const onAddToken = e => {
     e.stopPropagation()
-    if (success) return
     addToken()
   }
 

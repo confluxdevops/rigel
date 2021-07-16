@@ -14,7 +14,7 @@ import {useIsNativeToken} from '../../../hooks/useWallet'
 
 function TokenItem({chain, token, selectedToken, onClick, ...props}) {
   const {address, display_symbol, display_name} = token
-  const {addToken, success} = useAddTokenToMetamask(token)
+  const {addToken} = useAddTokenToMetamask(token)
   const isCfxChain = useIsCfxChain(chain)
   const isNativeToken = useIsNativeToken(chain, token)
   const tokenAddress = shortenAddress(chain, address, 'contract')
@@ -30,7 +30,6 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
 
   const onAddToken = e => {
     e.stopPropagation()
-    if (success) return
     addToken()
   }
 
