@@ -12,7 +12,9 @@ const useTransactionNotification = () => {
       type: 'success',
       content: (
         <div>
-          <Link className="!justify-start">View in history</Link>
+          <Link className="!justify-start" href="/history">
+            View in history
+          </Link>
         </div>
       ),
       duration: 0,
