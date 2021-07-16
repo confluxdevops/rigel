@@ -59,6 +59,7 @@ function ShuttleOutButton({
 
   const onSubmit = async () => {
     setTxModalShow(true)
+    onClose && onClose()
     setTxModalType(TxReceiptModalType.ongoing)
     if (isCfxChain) {
       const amountVal = Big(value).mul(getExponent(decimals))
@@ -107,7 +108,6 @@ function ShuttleOutButton({
         setTxModalType(TxReceiptModalType.error)
       }
     }
-    onClose && onClose()
   }
 
   if (!didMount) {

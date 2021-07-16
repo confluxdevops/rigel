@@ -9,7 +9,7 @@ function TokenSearch({value, onChange}) {
       id="searchValue"
       width="w-full"
       value={value || ''}
-      onChange={e => onChange && onChange(e.target.value)}
+      onChange={e => onChange && onChange(e.target.value.trim())}
       placeholder={t('searchTokenPlaceholder')}
       className="!bg-transparent"
     />

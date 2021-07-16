@@ -43,7 +43,7 @@ function App() {
       toChain: 'cfx',
       toToken: {
         symbol: 'cETH',
-        address: 'cfxtest:aas9dt3vyzrv3pewr7mzg5xpd2ch353z26u67czbza',
+        address: 'cfxtest:acepe88unk7fvs18436178up33hb4zkuf62a9dk1gv',
         icon: '',
         origin: 'eth',
         in_token_list: 1,

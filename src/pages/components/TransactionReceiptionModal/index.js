@@ -28,7 +28,6 @@ function TransactionReceiptionModal({
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   let content
   const onAddToken = () => {
-    if (success) return
     addToken()
   }
   if (type === 'ongoing') {

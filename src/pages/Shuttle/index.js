@@ -124,6 +124,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onChangeChain = (chain, type) => {
@@ -152,6 +153,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onInvertChain = () => {
@@ -212,7 +214,7 @@ function Shuttle() {
           onBack={() => setTokenListShow(false)}
         />
       )}
-      {true && (
+      {confirmModalShow && (
         <ConfirmModal
           open={confirmModalShow}
           onClose={() => setConfirmModalShow(false)}

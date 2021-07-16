@@ -6,7 +6,6 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useWeb3React, UnsupportedChainIdError} from '@web3-react/core'
 import {isMobile} from 'react-device-detect'
-import {useInterval} from 'react-use'
 import Big from 'big.js'
 import {
   NetworkContextName,
@@ -162,8 +161,9 @@ export function useNativeTokenBalance(
 ) {
   const [balance, setBalance] = useState(BigNumZero)
   const {account, library} = useWeb3React()
-  useInterval(
-    () => {
+
+  useEffect(() => {
+    const getBalance = () => {
       library &&
         library
           .getBalance(address)
@@ -175,9 +175,13 @@ export function useNativeTokenBalance(
           .catch(() => {
             setBalance(BigNumZero)
           })
-    },
-    account ? delay : null,
-  )
+    }
+    getBalance()
+    if (delay && account) {
+      const timeInterval = setInterval(() => getBalance(), delay)
+      return () => clearInterval(timeInterval)
+    }
+  }, [delay, Boolean(account)])
   return balance
 }
 
