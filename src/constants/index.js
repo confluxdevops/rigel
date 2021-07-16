@@ -41,7 +41,7 @@ export const TypeAccountStatus = {
   error: 'error',
 }
 
-export const shuttleStatus = {
+export const ShuttleStatus = {
   success: 'success',
   waiting: 'waiting',
   error: 'error',

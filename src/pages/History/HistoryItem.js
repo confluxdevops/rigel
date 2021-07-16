@@ -18,7 +18,7 @@ import {
   PendingFilled,
   ArrowUp,
 } from '../../assets/svg'
-import {shuttleStatus} from '../../constants'
+import {ShuttleStatus} from '../../constants'
 import Progress from './Progress'
 
 function TokenInfo({toToken, fromChain, toChain, toAddress}) {
@@ -129,7 +129,7 @@ function Status({status}) {
 }
 
 Status.propTypes = {
-  status: PropTypes.oneOf(Object.keys(shuttleStatus)),
+  status: PropTypes.oneOf(Object.keys(ShuttleStatus)),
 }
 function HistoryItem({historyItemData}) {
   const {

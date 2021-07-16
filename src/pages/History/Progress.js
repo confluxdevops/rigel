@@ -70,7 +70,11 @@ function Progress({progress, fromChain, toChain}) {
             {t('history.progress.stepOne')}
           </span>
           {!isFromBtcChain && (
-            <JumpIcon url={ChainConfig[fromChain].scanTxUrl + nonce_or_txid} />
+            <JumpIcon
+              url={
+                ChainConfig[fromChain].scanTxUrl + nonce_or_txid.split('_')[0]
+              }
+            />
           )}
         </div>
         <div className="flex justify-between">
