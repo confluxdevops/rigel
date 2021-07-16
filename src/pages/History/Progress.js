@@ -92,7 +92,11 @@ function Progress({progress, fromChain, toChain}) {
             })}
           </span>
           {!isFromBtcChain && (
-            <JumpIcon url={ChainConfig[fromChain].scanTxUrl + nonce_or_txid} />
+            <JumpIcon
+              url={
+                ChainConfig[fromChain].scanTxUrl + nonce_or_txid.split('_')[0]
+              }
+            />
           )}
         </div>
         <div className="flex justify-between">
@@ -104,7 +108,9 @@ function Progress({progress, fromChain, toChain}) {
             {t('history.progress.stepThree')}
           </span>
           {!isToBtcChain && (
-            <JumpIcon url={ChainConfig[toChain].scanTxUrl + nonce_or_txid} />
+            <JumpIcon
+              url={ChainConfig[toChain].scanTxUrl + nonce_or_txid.split('_')[0]}
+            />
           )}
         </div>
         <div className="flex justify-between">
@@ -122,7 +128,9 @@ function Progress({progress, fromChain, toChain}) {
             })}
           </span>
           {!isToBtcChain && (
-            <JumpIcon url={ChainConfig[toChain].scanTxUrl + nonce_or_txid} />
+            <JumpIcon
+              url={ChainConfig[toChain].scanTxUrl + nonce_or_txid.split('_')[0]}
+            />
           )}
         </div>
       </div>
