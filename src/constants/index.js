@@ -40,3 +40,10 @@ export const TypeAccountStatus = {
   success: 'success',
   error: 'error',
 }
+
+export const ShuttleStatus = {
+  success: 'success',
+  waiting: 'waiting',
+  error: 'error',
+  pending: 'pending',
+}

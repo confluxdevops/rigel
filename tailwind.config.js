@@ -122,12 +122,33 @@ module.exports = {
             transform: 'translateY(100%)',
           },
         },
+        'slice-down': {
+          '0%': {
+            transform: 'scale(1, 0)',
+          },
+          '100%': {
+            transform: 'scale(1, 1)',
+          },
+        },
+        'slice-up': {
+          '0%': {
+            transform: 'scale(1, 1)',
+          },
+          '100%': {
+            transform: 'scale(1, 0)',
+          },
+        },
       },
       animation: {
         'move-left': 'move-left 0.2s ease-in-out 1',
         'move-down': 'move-down 0.2s ease-in-out 1',
         'move-up': 'move-up 0.2s ease-in-out 1',
+        'slice-down': 'slice-down 0.3s ease-in 1',
+        'slice-up': 'slice-up 0.3s ease-in 1',
         'pulse-fast': 'pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      transitionProperty: {
+        maxHeight: 'maxHeight',
       },
       inset: {
         0.5: '0.125rem',

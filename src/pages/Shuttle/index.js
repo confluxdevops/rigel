@@ -23,7 +23,7 @@ import {getChainIdRight} from '../../utils'
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const {tokenFromBackend} = useShuttleState()
+  const {tokenFromBackend, error} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [value, setValue] = useState('')
@@ -107,6 +107,10 @@ function Shuttle() {
     history.push(pathWithQuery)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, btcTokenPair.address])
+
+  useEffect(() => {
+    if (error) history.push('/maintenance')
+  }, [error, history])
 
   const onSelectToken = token => {
     setTokenListShow(false)

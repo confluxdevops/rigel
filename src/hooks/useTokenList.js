@@ -66,10 +66,12 @@ export function useMapTokenList(fromChain, toChain) {
 
 // get all token list from backend
 export function useAllTokenList() {
-  const {data} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
+  const {data, error} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
     refreshInterval: IntervalTime.fetchTokenList,
     suspense: true,
   })
+  const {setError} = useShuttleState()
+  if (error) setError(error)
   return data ? data : []
 }
 
