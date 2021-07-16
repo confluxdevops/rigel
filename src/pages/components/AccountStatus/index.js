@@ -1,9 +1,9 @@
 import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {Account, ConnectWallet, AccountError} from '../../components'
-import {TypeAccountStatus, TypeConnectWallet} from '../../../constants'
 import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {Account, ConnectWallet, AccountError} from '../../components'
+import {TypeAccountStatus} from '../../../constants'
 import {getChainIdRight} from '../../../utils'
 
 function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
@@ -59,10 +59,5 @@ AccountStatus.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   onClose: PropTypes.func,
-  tryActivate: PropTypes.func,
-  type: PropTypes.oneOf(Object.values(TypeConnectWallet)),
-  accountType: PropTypes.oneOf(Object.values(TypeAccountStatus)),
-  errorType: PropTypes.number,
-  address: PropTypes.string,
 }
 export default AccountStatus
