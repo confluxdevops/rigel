@@ -152,7 +152,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div className="flex items-center">
-            <Link size="small" to="/history">
+            <Link size="small" href="/history">
               {t('all')}
             </Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
