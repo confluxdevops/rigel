@@ -21,7 +21,7 @@ import {
 import {ShuttleStatus} from '../../constants'
 import Progress from './Progress'
 
-function TokenInfo({toToken, fromChain, toChain, toAddress}) {
+function TokenInfo({toToken, fromChain, toChain}) {
   const {symbol, address} = toToken
   const isNativeToken = useIsNativeToken(toChain, address)
   const {addToken, success} = useAddTokenToMetamask(toToken)
@@ -52,7 +52,7 @@ function TokenInfo({toToken, fromChain, toChain, toAddress}) {
           )}
           {isToChainCfx && (
             <WrapIcon type="circle" className="ml-1 cursor-pointer relative">
-              <CopyToClipboard text={toAddress} onCopy={() => setCopied(true)}>
+              <CopyToClipboard text={address} onCopy={() => setCopied(true)}>
                 <BgCopy />
               </CopyToClipboard>
               <Toast
@@ -60,7 +60,7 @@ function TokenInfo({toToken, fromChain, toChain, toAddress}) {
                 open={copied}
                 type="line"
                 onClose={() => setCopied(false)}
-                className="top-10 right-10"
+                className="top-5 -right-5"
               />
             </WrapIcon>
           )}
@@ -80,7 +80,6 @@ TokenInfo.propTypes = {
   toToken: PropTypes.object,
   fromChain: PropTypes.oneOf(SupportedChains),
   toChain: PropTypes.oneOf(SupportedChains),
-  toAddress: PropTypes.string,
 }
 
 function Status({status}) {
@@ -154,12 +153,7 @@ function HistoryItem({historyItemData}) {
         className="w-full h-16 flex items-center justify-between px-6 mt-2 cursor-pointer"
         onClick={() => setDetailShow(true)}
       >
-        <TokenInfo
-          fromChain={fromChain}
-          toChain={toChain}
-          toToken={toToken}
-          toAddress={toAddress}
-        />
+        <TokenInfo fromChain={fromChain} toChain={toChain} toToken={toToken} />
         <div className="flex flex-col">
           <span className="text-base text-gray-100 text-right">
             {formatAmount(amount)}
