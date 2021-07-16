@@ -21,9 +21,9 @@ export const KeyOfEth = 'eth'
 export const ScanUrlEth = IS_DEV
   ? 'https://rinkeby.etherscan.io'
   : 'https://etherscan.io'
-export const ChainIdEth = {
-  MAINNET: 1,
-  TESTNET: 4, // shuttle use Rinkeby network as testnet
+export const ChainIdsEth = {
+  MAINNET: {id: 1, name: 'Mainnet'},
+  TESTNET: {id: 4, name: 'Rinkeby'}, // shuttle use Rinkeby network as testnet
   // ROPSTEN: 3,
   // GÖRLI: 5,
   // KOVAN: 42,
@@ -36,9 +36,9 @@ export const KeyOfBsc = 'bsc'
 export const ScanUrlBsc = IS_DEV
   ? 'https://testnet.bscscan.com'
   : 'https://bscscan.com'
-export const ChainIdBsc = {
-  MAINNET: 56,
-  TESTNET: 97,
+export const ChainIdsBsc = {
+  MAINNET: {id: 56, name: 'Mainnet'},
+  TESTNET: {id: 97, name: 'Testnet'},
 }
 
 /**
@@ -49,9 +49,9 @@ export const KeyOfOec = 'oec'
 export const ScanUrlOec = IS_DEV
   ? 'https://www.oklink.com/okexchain'
   : 'https://www.oklink.com/okexchain-test'
-export const ChainIdOec = {
-  MAINNET: 66,
-  TESTNET: 65,
+export const ChainIdsOec = {
+  MAINNET: {id: 66, name: 'Mainnet'},
+  TESTNET: {id: 65, name: 'Testnet'},
 }
 
 /**
@@ -61,9 +61,9 @@ export const KeyOfCfx = 'cfx'
 export const ScanUrlCfx = IS_DEV
   ? 'https://testnet.confluxscan.io'
   : 'https://confluxscan.io'
-export const ChainIdCfx = {
-  MAINNET: 1029,
-  TESTNET: 1,
+export const ChainIdsCfx = {
+  MAINNET: {id: 1029, name: 'Tethys'},
+  TESTNET: {id: 1, name: 'Testnet'},
 }
 
 /**
@@ -95,6 +95,11 @@ export const WalletConfig = {
   },
 }
 
+export const ChainIdsBtc = {
+  MAINNET: {name: 'Mainnet'},
+  TESTNET: {name: 'Testnet'},
+}
+
 export const displayFilter = obj => {
   return obj?.supported === 1 && obj?.in_token_list === 1
 }
@@ -119,7 +124,7 @@ export const ChainConfig = {
     // TODO
     // commonTokens: ['ETH', 'USDT', 'eCFX'],
     commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
-    supportedChainIds: ChainIdEth,
+    supportedChainIds: ChainIdsEth,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.15, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
   },
@@ -138,7 +143,7 @@ export const ChainConfig = {
     scanTokenUrl: ScanUrlBsc + '/token/',
     // TODO
     commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
-    supportedChainIds: ChainIdBsc,
+    supportedChainIds: ChainIdsBsc,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.002,
   },
@@ -157,7 +162,7 @@ export const ChainConfig = {
     scanTokenUrl: ScanUrlOec + '/tokenAddr/',
     // TODO
     commonTokens: ['OKT'],
-    supportedChainIds: ChainIdOec,
+    supportedChainIds: ChainIdsOec,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.001,
   },
@@ -176,7 +181,7 @@ export const ChainConfig = {
     scanTokenUrl: ScanUrlCfx + '/address/',
     // TODO
     commonTokens: ['CFX', 'cUSDT', 'cETH'],
-    supportedChainIds: ChainIdCfx,
+    supportedChainIds: ChainIdsCfx,
     wallet: KeyOfPortal,
     remainderAmount: 1,
   },
@@ -198,6 +203,7 @@ export const ChainConfig = {
     scanUrl: ScanUrlBtc,
     scanTxUrl: ScanUrlBtc + '/tx/',
     commonTokens: [],
+    supportedChainIds: ChainIdsBtc,
     remainderAmount: 0,
   },
 }
@@ -210,9 +216,15 @@ export const SupportedWallets = Object.keys(WalletConfig)
 export const DefaultFromChain = KeyOfEth
 export const DefaultToChain = KeyOfCfx
 export const SupportedChainIdsWeb3 = [
-  ...Object.values(ChainConfig[KeyOfEth].supportedChainIds),
-  ...Object.values(ChainConfig[KeyOfBsc].supportedChainIds),
-  ...Object.values(ChainConfig[KeyOfOec].supportedChainIds),
+  ...Object.values(ChainConfig[KeyOfEth].supportedChainIds).map(
+    chain => chain.id,
+  ),
+  ...Object.values(ChainConfig[KeyOfBsc].supportedChainIds).map(
+    chain => chain.id,
+  ),
+  ...Object.values(ChainConfig[KeyOfOec].supportedChainIds).map(
+    chain => chain.id,
+  ),
 ]
 
 const DefaultChainIconSize = 'w-10 h-10'

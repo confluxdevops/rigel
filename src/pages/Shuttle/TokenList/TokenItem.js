@@ -7,11 +7,13 @@ import {BgPlus} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../../hooks'
+import {useIsNativeToken} from '../../../hooks/useWallet'
 
 function TokenItem({chain, token, selectedToken, onClick, ...props}) {
   const {address, display_symbol, display_name} = token
   const {addToken, success} = useAddTokenToMetamask(token)
   const isCfxChain = useIsCfxChain(chain)
+  const isNativeToken = useIsNativeToken(chain, token)
   const tokenAddress = shortenAddress(chain, address, 'contract')
 
   const getSelectedStyle = () => {
@@ -45,7 +47,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
         {tokenAddress && (
           <span className="text-xs text-primary">{tokenAddress}</span>
         )}
-        {!isCfxChain && (
+        {!isCfxChain && !isNativeToken && (
           <WrapIcon
             type="circle"
             className="ml-1 cursor-pointer"
