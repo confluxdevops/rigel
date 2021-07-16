@@ -5,9 +5,6 @@ import {SupportedChains} from '../../../constants/chainConfig'
 import {Input, Tag} from '../../../components'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
-import {TypeAccountStatus} from '../../../constants'
-import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
-import {getChainIdRight} from '../../../utils'
 
 function FromToken({
   fromChain,
@@ -19,16 +16,9 @@ function FromToken({
   value,
   onInputChange,
   onMaxClick,
+  errorNetwork,
 }) {
   const {t} = useTranslation()
-  const {address, error, chainId} = useWallet(fromChain)
-  const isChainIdRight = getChainIdRight(fromChain, chainId, address)
-  const {type: accountType} = useAccountStatus(
-    fromChain,
-    address,
-    error,
-    isChainIdRight,
-  )
 
   return (
     <div className="flex flex-col flex-1 border border-gray-10 rounded px-3 py-4 justify-between">
@@ -56,17 +46,13 @@ function FromToken({
           width="w-32"
         />
         <div className="flex flex-col items-end">
-          {fromAddress && (
+          {fromAddress && !errorNetwork && (
             <span
               className="text-gray-40 text-xs inline-block mb-1"
               id="balance"
-            >{`${t('balance')} ${
-              accountType === TypeAccountStatus.success
-                ? formatAmount(balanceVal)
-                : '--'
-            }`}</span>
+            >{`${t('balance')} ${formatAmount(balanceVal)}`}</span>
           )}
-          {fromAddress && (
+          {fromAddress && !errorNetwork && (
             <Tag size="small" onClick={onMaxClick} id="max">
               {t('max')}
             </Tag>
@@ -87,6 +73,7 @@ FromToken.propTypes = {
   onChooseToken: PropTypes.func,
   onInputChange: PropTypes.func,
   onMaxClick: PropTypes.func,
+  errorNetwork: PropTypes.bool,
 }
 
 export default FromToken

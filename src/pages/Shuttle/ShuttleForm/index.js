@@ -14,10 +14,15 @@ import {
 } from '../../../constants/chainConfig'
 import {TypeAccountStatus, Decimal18} from '../../../constants'
 
-import {useBalance, useIsNativeToken} from '../../../hooks/useWallet'
+import {
+  useBalance,
+  useIsNativeToken,
+  useWallet,
+  useAccountStatus,
+} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
-import {getMaxAmount} from '../../../utils'
+import {getMaxAmount, getChainIdRight} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
@@ -60,6 +65,16 @@ function ShuttleForm({
     toChain,
     isFromChainCfx ? 'out' : 'in',
   )
+
+  const {error, chainId} = useWallet(fromChain)
+  const isChainIdRight = getChainIdRight(fromChain, chainId, fromAddress)
+  const {type: accountType} = useAccountStatus(
+    fromChain,
+    fromAddress,
+    error,
+    isChainIdRight,
+  )
+  const errorNetwork = accountType !== TypeAccountStatus.success
 
   const balance = useBalance(fromChain, fromAddress, address)
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
@@ -136,11 +151,11 @@ function ShuttleForm({
   }
 
   function validateData(value) {
-    if (!isFromChainBtc && !fromAddress) return ''
+    if ((!isFromChainBtc && !fromAddress) || errorNetwork) return ''
     let error = ''
     if (!isNaN(Number(value))) {
       const valBig = new Big(value || 0)
-      if (valBig.gte(minimalVal)) {
+      if (!isFromChainBtc && valBig.gte(minimalVal)) {
         //must be greater than zero
         if (valBig.gt(balanceVal)) {
           //must be less than Max value
@@ -221,6 +236,7 @@ function ShuttleForm({
           onMaxClick={onMaxClick}
           onChooseToken={onChooseToken}
           onInputChange={onInputChange}
+          errorNetwork={errorNetwork}
         />
       </div>
       <div className="flex w-full">
