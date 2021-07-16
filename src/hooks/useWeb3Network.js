@@ -182,10 +182,6 @@ export function useNativeTokenBalance(
       return () => clearInterval(timeInterval)
     }
   }, [delay, Boolean(account)])
-  // useInterval(
-  //   getBalance(),
-  //   account ? delay : null,
-  // )
   return balance
 }
 
