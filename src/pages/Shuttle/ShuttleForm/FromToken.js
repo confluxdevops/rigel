@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {formatAmount} from '@cfxjs/data-format'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
 import {Input, Tag} from '../../../components'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
-import {getChainIdRight} from '../../../utils'
 import {TypeAccountStatus} from '../../../constants'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {getChainIdRight} from '../../../utils'
 
 function FromToken({
   fromChain,
@@ -21,14 +21,15 @@ function FromToken({
   onMaxClick,
 }) {
   const {t} = useTranslation()
-  const {address, error, chainId, type, tryActivate} = useWallet(fromChain)
+  const {address, error, chainId} = useWallet(fromChain)
   const isChainIdRight = getChainIdRight(fromChain, chainId, address)
-  const {type: accountType, errorType} = useAccountStatus(
+  const {type: accountType} = useAccountStatus(
     fromChain,
     address,
     error,
     isChainIdRight,
   )
+
   return (
     <div className="flex flex-col flex-1 border border-gray-10 rounded px-3 py-4 justify-between">
       <div className="flex justify-between">
@@ -41,16 +42,7 @@ function FromToken({
           onClick={() => onChooseToken && onChooseToken()}
         />
         <div className="h-6 flex items-center">
-          <AccountStatus
-            id="fromToken"
-            chain={fromChain}
-            size="medium"
-            tryActivate={tryActivate}
-            type={type}
-            accountType={accountType}
-            errorType={errorType}
-            address={address}
-          />
+          <AccountStatus id="fromToken" chain={fromChain} size="medium" />
         </div>
       </div>
       <div className="flex justify-between items-center">

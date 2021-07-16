@@ -3,19 +3,18 @@ import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {Account, ConnectWallet, AccountError} from '../../components'
 import {TypeAccountStatus, TypeConnectWallet} from '../../../constants'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {getChainIdRight} from '../../../utils'
 
-function AccountStatus({
-  chain,
-  size = 'medium',
-  className = '',
-  id,
-  onClose,
-  tryActivate,
-  type,
-  accountType,
-  errorType,
-  address,
-}) {
+function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
+  const {address, error, chainId, type, tryActivate} = useWallet(chain)
+  const isChainIdRight = getChainIdRight(chain, chainId, address)
+  const {type: accountType, errorType} = useAccountStatus(
+    chain,
+    address,
+    error,
+    isChainIdRight,
+  )
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
