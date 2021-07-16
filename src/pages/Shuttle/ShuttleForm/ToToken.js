@@ -1,18 +1,39 @@
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains} from '../../../constants/chainConfig'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
 import {Forbidden} from '../../../assets/svg'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
+import {getChainIdRight} from '../../../utils'
 
 function ToToken({fromChain, toChain, toToken}) {
   const {t} = useTranslation()
+  const {address, error, chainId, type, tryActivate} = useWallet(toChain)
+  const isChainIdRight = getChainIdRight(toChain, chainId, address)
+  const {type: accountType, errorType} = useAccountStatus(
+    toChain,
+    address,
+    error,
+    isChainIdRight,
+  )
 
   return (
     <div className="flex flex-col flex-1 border border-gray-10 rounded px-3 py-4 justify-between">
-      <div className="flex flex-1 justify-between items-center">
+      <div className="flex justify-between items-center">
         <span className="text-gray-40 text-xs">{t('receiveAs')}</span>
-        <AccountStatus id="toToken" chain={toChain} size="medium" />
+        <div className="h-6 flex items-center">
+          <AccountStatus
+            id="toToken"
+            chain={toChain}
+            size="medium"
+            tryActivate={tryActivate}
+            type={type}
+            accountType={accountType}
+            errorType={errorType}
+            address={address}
+          />
+        </div>
       </div>
       <div className="flex">
         {Object.keys(toToken).length === 0 ? (

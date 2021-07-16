@@ -142,9 +142,9 @@ function ShuttleForm({
       const valBig = new Big(value || 0)
       if (valBig.gte(minimalVal)) {
         //must be greater than zero
-        if (!isFromChainBtc && valBig.gt(maxAmount)) {
+        if (valBig.gt(balanceVal)) {
           //must be less than Max value
-          error = t('error.mustLsMax', {value: formatAmount(maxAmount)})
+          error = t('error.mustLsMax', {value: formatAmount(balanceVal)})
         }
       } else {
         error = t('error.mustGtVal', {value: formatAmount(minimalVal)})

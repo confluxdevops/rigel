@@ -214,7 +214,7 @@ function Shuttle() {
           onBack={() => setTokenListShow(false)}
         />
       )}
-      {true && (
+      {confirmModalShow && (
         <ConfirmModal
           open={confirmModalShow}
           onClose={() => setConfirmModalShow(false)}

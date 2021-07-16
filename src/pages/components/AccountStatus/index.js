@@ -1,20 +1,21 @@
 import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
 import {Account, ConnectWallet, AccountError} from '../../components'
-import {TypeAccountStatus} from '../../../constants'
-import {getChainIdRight} from '../../../utils'
+import {TypeAccountStatus, TypeConnectWallet} from '../../../constants'
 
-function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
-  const {address, error, chainId, type, tryActivate} = useWallet(chain)
-  const isChainIdRight = getChainIdRight(chain, chainId, address)
-  const {type: accountType, errorType} = useAccountStatus(
-    chain,
-    address,
-    error,
-    isChainIdRight,
-  )
+function AccountStatus({
+  chain,
+  size = 'medium',
+  className = '',
+  id,
+  onClose,
+  tryActivate,
+  type,
+  accountType,
+  errorType,
+  address,
+}) {
   const accountCompStyle = useMemo(() => {
     if (size === 'medium') return 'text-xs text-gray-80'
     if (size === 'large') return 'text-sm text-gray-80'
@@ -59,5 +60,10 @@ AccountStatus.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   onClose: PropTypes.func,
+  tryActivate: PropTypes.func,
+  type: PropTypes.oneOf(Object.values(TypeConnectWallet)),
+  accountType: PropTypes.oneOf(Object.values(TypeAccountStatus)),
+  errorType: PropTypes.number,
+  address: PropTypes.string,
 }
 export default AccountStatus
