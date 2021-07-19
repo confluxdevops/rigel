@@ -26,6 +26,7 @@ import {
   ShuttleFlowMobile,
 } from '../../assets/img'
 import {Button} from '../../components'
+import {useIsMobile} from '../../hooks'
 
 function Home() {
   useEffectOnce(() => {
@@ -46,12 +47,63 @@ function Home() {
         : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf',
     )
   }
+  const isMobile = useIsMobile()
+  const copyright = (
+    <span className="inline-block text-gray-40 text-xs py-4 md:py-0 md:h-4">
+      © 2021 ShuttleFlow. All Rights Reserved.
+    </span>
+  )
+  const icon = (
+    <div className="flex pb-6 md:pb-0">
+      <a
+        className="mr-4"
+        href="https://twitter.com/@Conflux_Network"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Twitter} alt="twitter" />
+      </a>
+      <a
+        className="mr-4"
+        href="https://t.me/Conflux_English"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Telegram} alt="telegram" />
+      </a>
+      <a
+        className="mr-4"
+        href="https://discord.com/invite/aCZkf2C"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Discord} alt="discord" />
+      </a>
+      <a
+        className="mr-4"
+        href="https://medium.com/@ConfluxNetwork"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={Medium} alt="medium" />
+      </a>
+      <a
+        href="https://github.com/conflux-chain"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <img src={GitHub} alt="github" />
+      </a>
+    </div>
+  )
+  const line = <div className="border-solid border-t border-gray-20" />
+
   return (
     <div className="w-full relative md:h-screen md:min-h-220">
-      <div className="md:w-360">
-        <div className="ml-5">
+      <div className="md:w-360 mx-auto">
+        <div className="ml-4 md:ml-20">
           <img
-            className="w-72 mt-15 md:hidden"
+            className="mt-14 md:hidden"
             src={ShuttleFlowMobile}
             alt="title"
           />
@@ -64,7 +116,7 @@ function Home() {
             {t('home.subTitle')}
           </span>
           <div className="flex mt-11 md:mt-9">
-            <Button className="mr-5" onClick={() => onOpenApp()}>
+            <Button className="mr-6" onClick={() => onOpenApp()}>
               {t('home.shuttleFlow')}
             </Button>
             <Button onClick={() => onOpenPaper()}>
@@ -73,7 +125,7 @@ function Home() {
           </div>
         </div>
         <img className="mt-8 w-full md:hidden" src={BaseMobile} alt="base" />
-        <div className="hidden md:block relative -ml-24">
+        <div className="hidden md:block relative">
           <div className="absolute left-240 top-30">
             <img className="w-64" src={TunnelRight} alt="tunnel" />
           </div>
@@ -118,7 +170,7 @@ function Home() {
           <div className="absolute left-136 top-9">
             <img className="w-168" src={BaseCenter} alt="base" />
           </div>
-          <div className="absolute left-256 -top-0.5">
+          <div className="absolute left-260 top-2.5">
             <img className="w-110" src={BaseRight} alt="base" />
           </div>
           <div className="absolute left-65 top-60">
@@ -198,52 +250,21 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 w-full border-t-0 ml-5 flex flex-col-reverse md:absolute md:flex-row md:justify-between md:py-4 md:border-t border-solid border-gray-20">
-        <span className="inline-block text-gray-40 text-xs py-3 md:py-0">
-          © 2021 ShuttleFlow. All Rights Reserved.
-        </span>
-        <div className="flex border-solid border-b border-gray-20 pb-4 md:border-b-0 md:pb-0">
-          <a
-            className="mr-5"
-            href="https://twitter.com/@Conflux_Network"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Twitter} alt="twitter" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://t.me/Conflux_English"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Telegram} alt="telegram" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://discord.com/invite/aCZkf2C"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Discord} alt="discord" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://medium.com/@ConfluxNetwork"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Medium} alt="medium" />
-          </a>
-          <a
-            href="https://github.com/conflux-chain"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={GitHub} alt="github" />
-          </a>
+      {!isMobile ? (
+        <div className="absolute bottom-0 w-full">
+          {line}
+          <div className="flex justify-between items-center py-3 px-0">
+            {copyright}
+            {icon}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="fixed bottom-0 w-full px-4">
+          {icon}
+          {line}
+          {copyright}
+        </div>
+      )}
     </div>
   )
 }

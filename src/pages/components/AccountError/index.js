@@ -5,7 +5,7 @@ import {Tag, Notification} from '../../../components'
 import {ChainConfig, WalletConfig} from '../../../constants/chainConfig'
 import {IS_DEV} from '../../../utils'
 
-function AccountError({chain, errorType}) {
+function AccountError({chain, errorType, onClose}) {
   const {t} = useTranslation()
   const chainObject = ChainConfig[chain]
   const isWrongNetwork = errorType === 2
@@ -28,12 +28,15 @@ function AccountError({chain, errorType}) {
     notiContent = t('error.connectingContent')
   }
   const onClick = () => {
-    Notification.open({
-      title: notiTitle,
-      type: 'warning',
-      content: notiContent,
-      duration: 0,
-    })
+    onClose && onClose()
+    setTimeout(() => {
+      Notification.open({
+        title: notiTitle,
+        type: 'warning',
+        content: notiContent,
+        duration: 0,
+      })
+    }, 300)
   }
   return (
     <Tag onClick={onClick} color="error">
@@ -44,5 +47,6 @@ function AccountError({chain, errorType}) {
 AccountError.propTypes = {
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   errorType: PropTypes.number,
+  onClose: PropTypes.func,
 }
 export default AccountError

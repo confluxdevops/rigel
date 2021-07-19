@@ -24,7 +24,7 @@ import {useFilterData} from '../../hooks/useTransaction'
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const {tokenFromBackend} = useShuttleState()
+  const {tokenFromBackend, error} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [value, setValue] = useState('')
@@ -110,6 +110,10 @@ function Shuttle() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, btcTokenPair.address])
 
+  useEffect(() => {
+    if (error) history.push('/maintenance')
+  }, [error, history])
+
   const onSelectToken = token => {
     setTokenListShow(false)
     const pathWithQuery = queryString.stringifyUrl({
@@ -122,6 +126,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onChangeChain = (chain, type) => {
@@ -150,6 +155,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onInvertChain = () => {
@@ -210,7 +216,7 @@ function Shuttle() {
           onBack={() => setTokenListShow(false)}
         />
       )}
-      {true && (
+      {confirmModalShow && (
         <ConfirmModal
           open={confirmModalShow}
           onClose={() => setConfirmModalShow(false)}

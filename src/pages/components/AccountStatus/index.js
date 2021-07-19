@@ -6,7 +6,7 @@ import {Account, ConnectWallet, AccountError} from '../../components'
 import {TypeAccountStatus} from '../../../constants'
 import {getChainIdRight} from '../../../utils'
 
-function AccountStatus({chain, size = 'medium', className = '', id}) {
+function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
   const {address, error, chainId, type, tryActivate} = useWallet(chain)
   const isChainIdRight = getChainIdRight(chain, chainId, address)
   const {type: accountType, errorType} = useAccountStatus(
@@ -47,7 +47,7 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
         />
       )}
       {accountType === TypeAccountStatus.error && (
-        <AccountError chain={chain} errorType={errorType} />
+        <AccountError chain={chain} errorType={errorType} onClose={onClose} />
       )}
     </div>
   )
@@ -58,5 +58,6 @@ AccountStatus.propTypes = {
   size: PropTypes.oneOf(['medium', 'large']),
   className: PropTypes.string,
   id: PropTypes.string,
+  onClose: PropTypes.func,
 }
 export default AccountStatus

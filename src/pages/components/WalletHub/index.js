@@ -124,6 +124,10 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
     </div>
   )
   const displayPendingTransactions = pendingTransactions.slice(0, 5)
+  const onClose = () => {
+    onClick && onClick()
+    onClickHandler && onClickHandler()
+  }
   return (
     <div className="w-60 shadow-common rounded flex flex-col">
       <div className="p-3 bg-gray-0 flex flex-col">
@@ -132,10 +136,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           <Close
             id="closePopup"
             className="w-4 h-4 text-gray-40"
-            onClick={() => {
-              onClick && onClick()
-              onClickHandler && onClickHandler()
-            }}
+            onClick={onClose}
           />
         </div>
         <div className="pt-3 flex flex-col">
@@ -144,15 +145,21 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
             chain={metamaskData.chain}
             size="large"
             className="mb-3"
+            onClose={onClose}
           />
-          <AccountStatus id="portal" chain={portalData.chain} size="large" />
+          <AccountStatus
+            id="portal"
+            chain={portalData.chain}
+            size="large"
+            onClose={onClose}
+          />
         </div>
       </div>
       <div className="p-3 bg-gray-10 flex flex-col">
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div className="flex items-center">
-            <Link size="small" to="/history">
+            <Link size="small" href="/history">
               {t('all')}
             </Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />

@@ -8,7 +8,7 @@ import {useWallet} from '../hooks/useWallet'
 import {
   StatusOperation,
   Millisecond,
-  StatusShuttleTx,
+  ShuttleStatus,
   TypeTransaction,
 } from '../constants'
 import {KeyOfCfx, KeyOfBtc, KeyOfEth} from '../constants/chainConfig'
@@ -65,8 +65,8 @@ export const useFilterData = () => {
     // .filter((tx) => tx?.timestamp >= currentTimestamp - Millisecond.day)// recent 24 hours
     // .filter(
     //   (tx) =>
-    //     tx?.status === StatusShuttleTx.pending ||
-    //     tx?.status === StatusShuttleTx.waiting
+    //     tx?.status === ShuttleStatus.pending ||
+    //     tx?.status === ShuttleStatus.waiting
     // )
 
     //when tx type is approve transaction
@@ -74,14 +74,14 @@ export const useFilterData = () => {
       item => item.tx_type === TypeTransaction.approve,
     )
     const pendingApproveTxs = approveTxs.filter(
-      item => item.status === StatusShuttleTx.pending,
+      item => item.status === ShuttleStatus.pending,
     )
     if (library) {
       pendingApproveTxs.forEach(item => {
         const {hash} = item
         library.getTransactionReceipt(hash).then(res => {
           if (res?.status) {
-            updateTx(hash, {status: StatusShuttleTx.success})
+            updateTx(hash, {status: ShuttleStatus.success})
           }
         })
       })
@@ -89,15 +89,14 @@ export const useFilterData = () => {
 
     // when tx type is common transacton
     let proArr = []
-    debugger
     const commonTxs = transactions.filter(
       item => item.tx_type === TypeTransaction.transaction,
     )
     const filteredTxs = commonTxs
       .filter(
         item =>
-          item.status === StatusShuttleTx.success ||
-          item.status === StatusShuttleTx.error,
+          item.status === ShuttleStatus.success ||
+          item.status === ShuttleStatus.error,
       )
       .map(item => {
         removeTx(item?.hash)
@@ -105,8 +104,8 @@ export const useFilterData = () => {
       })
     const pendingCommonTxs = commonTxs.filter(
       item =>
-        item.status === StatusShuttleTx.pending ||
-        item.status === StatusShuttleTx.waiting,
+        item.status === ShuttleStatus.pending ||
+        item.status === ShuttleStatus.waiting,
     )
     pendingCommonTxs.forEach(item => {
       const {hash, in_or_out: type, fromChain, toChain, toToken} = item
@@ -164,9 +163,9 @@ function mapData(item = {}, tokenList) {
   data.toToken = JSON.parse(JSON.stringify(tokenInfo))
   data.response = item
   data.decimals = tokenInfo?.decimals
-  data.status = StatusShuttleTx.pending
+  data.status = ShuttleStatus.pending
   if (item.status === 'confirming' || item.status === 'doing') {
-    data.status = StatusShuttleTx.pending
+    data.status = ShuttleStatus.pending
   }
   if (item.status === 'finished') {
     data.status = 'success'
@@ -197,8 +196,8 @@ export const useTxData = () => {
     )
     .filter(
       tx =>
-        tx?.status === StatusShuttleTx.pending ||
-        tx?.status === StatusShuttleTx.waiting,
+        tx?.status === ShuttleStatus.pending ||
+        tx?.status === ShuttleStatus.waiting,
     )
     .forEach(item => {
       const {type, hash} = item
@@ -206,7 +205,7 @@ export const useTxData = () => {
       if (library && type === TypeTransaction.approve) {
         library.getTransactionReceipt(hash).then(res => {
           if (res?.status) {
-            updateTx(hash, {status: StatusShuttleTx.success})
+            updateTx(hash, {status: ShuttleStatus.success})
           }
         })
       }

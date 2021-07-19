@@ -1,7 +1,7 @@
 import {isHexAddress} from '@cfxjs/account'
 import {validateBase32Address} from '@cfxjs/base32-address'
 import {validate} from 'bitcoin-address-validation'
-import {ChainIdCfx, KeyOfCfx, KeyOfBtc} from '../constants/chainConfig'
+import {ChainIdsCfx, KeyOfCfx, KeyOfBtc} from '../constants/chainConfig'
 import {getEllipsStr, IS_DEV} from '../utils'
 
 export function checkHexAddress(address) {
@@ -11,7 +11,7 @@ export function checkHexAddress(address) {
 export function checkCfxTokenAddress(address, type) {
   return validateBase32Address(
     address,
-    IS_DEV ? ChainIdCfx.TESTNET : ChainIdCfx.MAINNET,
+    IS_DEV ? ChainIdsCfx.TESTNET.id : ChainIdsCfx.MAINNET.id,
     type,
   )
 }

@@ -52,7 +52,7 @@ export const TypeTransaction = {
 /**
  * Status of shuttle transaction, mainly for local environment
  */
-export const StatusShuttleTx = {
+export const ShuttleStatus = {
   pending: 'pending',
   waiting: 'waiting',
   success: 'success',

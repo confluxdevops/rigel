@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
@@ -132,16 +131,16 @@ function ShuttleInButton({
     setIsApproving(true)
     //MaxUint256
     tokenContract.estimateGas
-      .approve(drContractAddress, 0)
+      .approve(drContractAddress, MaxUint256)
       .then(gas => {
-        contractApprove(tokenContract, 0, gas)
+        contractApprove(tokenContract, MaxUint256, gas)
       })
       .catch(error => {
         if (
           error.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT ||
           (error.data && error.data.code === -32000)
         ) {
-          contractApprove(tokenContract, 0)
+          contractApprove(tokenContract, MaxUint256)
         } else {
           setIsApproving(false)
         }
@@ -149,6 +148,8 @@ function ShuttleInButton({
   }
 
   const onSubmit = async () => {
+    setTxModalShow(true)
+    onClose && onClose()
     setTxModalType(TxReceiptModalType.ongoing)
     if (isNativeToken) {
       let params = [
@@ -163,7 +164,6 @@ function ShuttleInButton({
         params[1],
         params[2],
       )
-      setTxModalShow(true)
       drContract
         .deposit(params[0], params[1], {
           ...params[2],
@@ -195,7 +195,6 @@ function ShuttleInButton({
           params[3],
           params[4],
         )
-        setTxModalShow(true)
         drContract
           .depositToken(params[0], params[1], params[2], params[3], {
             ...params[4],
@@ -211,7 +210,6 @@ function ShuttleInButton({
           })
       } else {
         const amountVal = convertDecimal(value, 'multiply', decimals)
-        setTxModalShow(true)
         try {
           const data = await tokenContract.transfer(shuttleAddress, amountVal)
           unshiftTx(getShuttleStatusData(data?.hash))
@@ -222,7 +220,6 @@ function ShuttleInButton({
         }
       }
     }
-    onClose && onClose()
   }
 
   if (!didMount) {

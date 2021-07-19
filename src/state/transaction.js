@@ -1,7 +1,7 @@
 /* eslint-disable no-debugger */
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
-import {TypeTransaction, StatusShuttleTx} from '../constants'
+import {TypeTransaction, ShuttleStatus} from '../constants'
 import {KeyOfCfx} from '../constants/chainConfig'
 
 let Store = null
@@ -23,7 +23,7 @@ const mergeData = data => {
   const infoData = {
     timestamp: Date.now(),
     tx_type: TypeTransaction.transaction,
-    status: StatusShuttleTx.pending,
+    status: ShuttleStatus.pending,
     in_or_out: isToChainCfx ? 'in' : 'out',
   }
   const mergedData = {...infoData, ...data}

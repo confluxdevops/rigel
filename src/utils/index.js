@@ -51,13 +51,13 @@ export function getChainIdRight(chain, chainId, address, addrType = 'user') {
   if (isCfxChain) {
     return (
       wallet &&
-      chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'] &&
+      chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'].id &&
       checkCfxTokenAddress(address, addrType)
     )
   }
 
   return (
-    wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET']
+    wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'].id
   )
 }
 

@@ -10,9 +10,11 @@ function ToToken({fromChain, toChain, toToken}) {
 
   return (
     <div className="flex flex-col flex-1 border border-gray-10 rounded px-3 py-4 justify-between">
-      <div className="flex flex-1 justify-between items-center">
+      <div className="flex justify-between items-center">
         <span className="text-gray-40 text-xs">{t('receiveAs')}</span>
-        <AccountStatus id="toToken" chain={toChain} size="medium" />
+        <div className="h-6 flex items-center">
+          <AccountStatus id="toToken" chain={toChain} size="medium" />
+        </div>
       </div>
       <div className="flex">
         {Object.keys(toToken).length === 0 ? (

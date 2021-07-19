@@ -28,7 +28,6 @@ function TransactionReceiptionModal({
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   let content
   const onAddToken = () => {
-    if (success) return
     addToken()
   }
   if (type === 'ongoing') {
@@ -48,6 +47,7 @@ function TransactionReceiptionModal({
     )
     return (
       <Modal
+        id="waitingModal"
         open={open}
         icon={<Loading />}
         title={t('waiting')}
@@ -85,6 +85,7 @@ function TransactionReceiptionModal({
     )
     return (
       <Modal
+        id="successModal"
         open={open}
         title={t('submitted')}
         icon={<SuccessOutlined />}
@@ -100,6 +101,7 @@ function TransactionReceiptionModal({
     )
     return (
       <Modal
+        id="rejectModal"
         open={open}
         icon={<ErrorOutlined />}
         content={content}
