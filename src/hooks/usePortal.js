@@ -37,7 +37,7 @@ export function useConnect() {
   const {chainId} = useChainNetId()
   const portalInstalled = isPortalInstalled()
   const [type, setType] = useState(
-    portalInstalled ? TypeConnectWallet.uninstalled : TypeConnectWallet.success,
+    portalInstalled ? TypeConnectWallet.success : TypeConnectWallet.uninstalled,
   )
 
   if (window && window.conflux && window.conflux.autoRefreshOnNetworkChange)
@@ -72,28 +72,30 @@ export function useConnect() {
   })
 
   const login = useCallback(() => {
-    setType(TypeConnectWallet.loading)
-    if (!address) {
-      if (window?.conflux)
-        window.conflux
-          .send('cfx_requestAccounts')
-          .then(accounts => {
-            setType(TypeConnectWallet.success)
-            if (validAccounts(accounts)) {
-              setAddress(accounts[0])
-            }
-          })
-          .catch(err => {
-            setType(TypeConnectWallet.error)
-            setError(err)
-            if (err.code === 4001) {
-              // EIP-1193 userRejectedRequest error
-              // If this happens, the user rejected the connection request.
-              console.error('Please connect to ConfluxPortal.')
-            } else {
-              console.error(err)
-            }
-          })
+    if (portalInstalled) {
+      setType(TypeConnectWallet.loading)
+      if (!address) {
+        if (window?.conflux)
+          window.conflux
+            .send('cfx_requestAccounts')
+            .then(accounts => {
+              setType(TypeConnectWallet.success)
+              if (validAccounts(accounts)) {
+                setAddress(accounts[0])
+              }
+            })
+            .catch(err => {
+              setType(TypeConnectWallet.error)
+              setError(err)
+              if (err.code === 4001) {
+                // EIP-1193 userRejectedRequest error
+                // If this happens, the user rejected the connection request.
+                console.error('Please connect to ConfluxPortal.')
+              } else {
+                console.error(err)
+              }
+            })
+      }
     }
   }, [address])
 

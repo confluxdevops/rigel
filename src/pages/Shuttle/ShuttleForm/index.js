@@ -95,10 +95,10 @@ function ShuttleForm({
   const minimalVal = isFromChainCfx
     ? minimal_out_value
       ? minimal_out_value.toString(10)
-      : 0
+      : '0'
     : minimal_in_value
     ? minimal_in_value.toString(10)
-    : 0
+    : '0'
 
   const shuttlePaused = () => {
     try {
@@ -155,7 +155,7 @@ function ShuttleForm({
     let error = ''
     if (!isNaN(Number(value))) {
       const valBig = new Big(value || 0)
-      if (valBig.gte(minimalVal)) {
+      if (valBig.gte(minimalVal) && valBig.gt('0')) {
         //must be greater than zero
         if (!isFromChainBtc && valBig.gt(balanceVal)) {
           //must be less than Max value

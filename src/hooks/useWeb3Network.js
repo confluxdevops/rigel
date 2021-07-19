@@ -134,18 +134,20 @@ export function useConnect() {
   )
 
   const tryActivate = () => {
-    setType(TypeConnectWallet.loading)
-    if (isInstalled && !account) {
-      activate(injected, undefined, true).catch(error => {
-        if (error instanceof UnsupportedChainIdError) {
-          activate(injected)
-        } else {
-          setType(TypeConnectWallet.error)
-        }
-      })
+    if (isInstalled) {
+      setType(TypeConnectWallet.loading)
+      if (!account) {
+        activate(injected, undefined, true).catch(error => {
+          if (error instanceof UnsupportedChainIdError) {
+            activate(injected)
+          } else {
+            setType(TypeConnectWallet.error)
+          }
+        })
+      }
     }
   }
-  return {type, setType, tryActivate, error, address: account, chainId}
+  return {type, tryActivate, error, address: account, chainId}
 }
 
 /**
