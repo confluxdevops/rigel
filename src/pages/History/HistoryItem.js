@@ -49,7 +49,7 @@ function TokenInfo({toToken, fromChain, toChain}) {
               <BgPlus />
             </WrapIcon>
           )}
-          {isToChainCfx && (
+          {!isNativeToken && isToChainCfx && (
             <WrapIcon type="circle" className="ml-1 cursor-pointer relative">
               <CopyToClipboard text={address} onCopy={() => setCopied(true)}>
                 <BgCopy />
