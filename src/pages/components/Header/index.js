@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import {NavLink} from 'react-router-dom'
-import {useLocation} from 'react-use'
+import {useLocation, useSearchParam} from 'react-use'
 import {useTranslation} from 'react-i18next'
 import {Logo, DarkLogo, MobileLogo, DarkMobileLogo} from '../../../assets/svg'
-import {useIsMobile, useConnectData} from '../../../hooks'
+import {useIsMobile, useConnectData, useIsCfxChain} from '../../../hooks'
 import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
@@ -11,10 +11,14 @@ import './header.css'
 function Header() {
   const {t} = useTranslation()
   const {pathname} = useLocation()
+  const fromChain = useSearchParam('fromChain')
+  const toChain = useSearchParam('toChain')
+  const isFromChainCfx = useIsCfxChain(fromChain)
+
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
 
-  const connectData = useConnectData()
+  const connectData = useConnectData(isFromChainCfx ? toChain : fromChain)
   const pendingTransactions = [
     {
       type: 'shuttle',

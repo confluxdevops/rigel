@@ -52,7 +52,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
         id="walletHub"
         className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative cursor-pointer"
       >
-        {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet].icon()}
+        {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet]?.icon()}
         <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
           <span className="mr-1 text-gray-100">
@@ -140,13 +140,15 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           />
         </div>
         <div className="pt-3 flex flex-col">
-          <AccountStatus
-            id="metamask"
-            chain={metamaskData.chain}
-            size="large"
-            className="mb-3"
-            onClose={onClose}
-          />
+          {metamaskData && (
+            <AccountStatus
+              id="metamask"
+              chain={metamaskData.chain}
+              size="large"
+              className="mb-3"
+              onClose={onClose}
+            />
+          )}
           <AccountStatus
             id="portal"
             chain={portalData.chain}
