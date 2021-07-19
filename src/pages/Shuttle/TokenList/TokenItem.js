@@ -16,7 +16,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
   const {address, display_symbol, display_name} = token
   const {addToken} = useAddTokenToMetamask(token)
   const isCfxChain = useIsCfxChain(chain)
-  const isNativeToken = useIsNativeToken(chain, token)
+  const isNativeToken = useIsNativeToken(chain, address)
   const tokenAddress = shortenAddress(chain, address, 'contract')
   const {t} = useTranslation()
   const [copied, setCopied] = useState(false)

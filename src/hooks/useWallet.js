@@ -73,7 +73,7 @@ export function useAccountStatus(chain, address, error, isChainIdRight) {
         //error:wrong network
         return {type: TypeAccountStatus.error, errorType: 2}
       } else {
-        if (error) {
+        if (error && error.code !== 4001) {
           if (error instanceof UnsupportedChainIdError) {
             //error:wrong network
             return {type: TypeAccountStatus.error, errorType: 2}
