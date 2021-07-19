@@ -60,7 +60,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
             <BgPlus />
           </WrapIcon>
         )}
-        {isCfxChain && (
+        {isCfxChain && !isNativeToken && (
           <WrapIcon
             type="circle"
             className="ml-1 cursor-pointer relative"
