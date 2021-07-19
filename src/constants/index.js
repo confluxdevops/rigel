@@ -59,3 +59,12 @@ export const StatusShuttleTx = {
   error: 'error',
   skip: 'skip',
 }
+
+export const StatusOperation = {
+  doing: 'doing',
+  finished: 'finished',
+}
+
+export const Millisecond = {
+  day: 24 * 60 * 60 * 1000,
+}

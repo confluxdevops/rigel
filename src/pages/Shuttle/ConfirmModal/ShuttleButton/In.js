@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
@@ -68,7 +69,7 @@ function ShuttleInButton({
     drContractAddress,
   ])
   const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
-  const {addTx} = useTxState()
+  const {unshiftTx} = useTxState()
   useEffect(() => {
     setDidMount(true)
     if (!isNativeToken) {
@@ -96,7 +97,7 @@ function ShuttleInButton({
       toAddress,
       amount: value,
       toToken,
-      type,
+      tx_type: type,
     }
     return data
   }
@@ -107,7 +108,9 @@ function ShuttleInButton({
         gasLimit: gas ? calculateGasMargin(gas) : undefined,
       })
       .then(txResponse => {
-        addTx(getShuttleStatusData(txResponse?.hash, TypeTransaction.approve))
+        unshiftTx(
+          getShuttleStatusData(txResponse?.hash, TypeTransaction.approve),
+        )
         txResponse &&
           txResponse
             .wait()
@@ -129,9 +132,9 @@ function ShuttleInButton({
     setIsApproving(true)
     //MaxUint256
     tokenContract.estimateGas
-      .approve(drContractAddress, MaxUint256)
+      .approve(drContractAddress, 0)
       .then(gas => {
-        contractApprove(tokenContract, MaxUint256, gas)
+        contractApprove(tokenContract, 0, gas)
       })
       .catch(error => {
         if (
@@ -167,7 +170,7 @@ function ShuttleInButton({
           gasLimit: calculateGasMargin(gas),
         })
         .then(data => {
-          addTx(getShuttleStatusData(data?.hash))
+          unshiftTx(getShuttleStatusData(data?.hash))
           setTxHash(data?.hash)
           setTxModalType(TxReceiptModalType.success)
         })
@@ -199,7 +202,7 @@ function ShuttleInButton({
             gasLimit: calculateGasMargin(gasDt),
           })
           .then(data => {
-            addTx(getShuttleStatusData(data?.hash))
+            unshiftTx(getShuttleStatusData(data?.hash))
             setTxHash(data?.hash)
             setTxModalType(TxReceiptModalType.success)
           })
@@ -211,7 +214,7 @@ function ShuttleInButton({
         setTxModalShow(true)
         try {
           const data = await tokenContract.transfer(shuttleAddress, amountVal)
-          addTx(getShuttleStatusData(data?.hash))
+          unshiftTx(getShuttleStatusData(data?.hash))
           setTxHash(data?.hash)
           setTxModalType(TxReceiptModalType.success)
         } catch {

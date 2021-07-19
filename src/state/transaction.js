@@ -1,7 +1,8 @@
+/* eslint-disable no-debugger */
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
 import {TypeTransaction, StatusShuttleTx} from '../constants'
-import {containsValueBy} from '../utils'
+import {KeyOfCfx} from '../constants/chainConfig'
 
 let Store = null
 
@@ -18,10 +19,12 @@ let Store = null
 // }, get, api)
 
 const mergeData = data => {
+  const isToChainCfx = data?.toChain === KeyOfCfx
   const infoData = {
-    local_timestamp: Date.now(),
-    type: TypeTransaction.transaction,
+    timestamp: Date.now(),
+    tx_type: TypeTransaction.transaction,
     status: StatusShuttleTx.pending,
+    in_or_out: isToChainCfx ? 'in' : 'out',
   }
   const mergedData = {...infoData, ...data}
   return mergedData
@@ -32,10 +35,29 @@ export const createStore = () =>
     persist(
       (set, get) => ({
         transactions: [],
-        addTx: tx => {
+        //add to top
+        unshiftTx: tx => {
           let trans = get().transactions
-          if (!containsValueBy(trans, 'nonce_or_txid', tx?.hash))
-            trans?.unshift(mergeData(tx)) //do not unshift the duplicate data to array
+          trans?.unshift(mergeData(tx))
+          set({transactions: trans || []})
+        },
+        updateTx: (hash, data) => {
+          let trans = get().transactions
+          const index = trans.findIndex(tran => tran.hash == hash)
+          trans[index] = {...trans[index], ...data}
+          set({transactions: trans})
+        },
+        //remove by key: hash
+        removeTx: hash => {
+          let trans = get().transactions
+          const index = trans.findIndex(tran => tran.hash == hash)
+          trans.splice(index, 1)
+          set({transactions: trans})
+        },
+        //add to last
+        appendTx: tx => {
+          let trans = get().transactions
+          trans?.push(tx)
           set({transactions: trans || []})
         },
       }),
@@ -52,8 +74,3 @@ export const useTxState = () => {
   const state = useStore()
   return state
 }
-
-//update the local data intervally
-export const useUpdateData = () => {}
-
-export const useTxData = () => {}

@@ -49,7 +49,7 @@ function ShuttleOutButton({
   const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
-  const {addTx} = useTxState()
+  const {unshiftTx} = useTxState()
 
   useEffect(() => {
     setDidMount(true)
@@ -72,7 +72,7 @@ function ShuttleOutButton({
       toAddress,
       amount: value,
       toToken,
-      type,
+      tx_type: type,
     }
     return data
   }
@@ -89,7 +89,7 @@ function ShuttleOutButton({
             to: shuttleAddress,
             value: amountVal,
           })
-          addTx(getShuttleStatusData(data))
+          unshiftTx(getShuttleStatusData(data))
           setTxHash(data)
           setTxModalType(TxReceiptModalType.success)
         } catch {
@@ -103,7 +103,7 @@ function ShuttleOutButton({
               from: fromAddress,
               to: ctoken,
             })
-          addTx(getShuttleStatusData(data))
+          unshiftTx(getShuttleStatusData(data))
           setTxHash(data)
           setTxModalType(TxReceiptModalType.success)
         } catch {
@@ -123,7 +123,7 @@ function ShuttleOutButton({
           from: fromAddress,
           to: ctoken,
         })
-        addTx(getShuttleStatusData(data))
+        unshiftTx(getShuttleStatusData(data))
         setTxHash(data)
         setTxModalType(TxReceiptModalType.success)
       } catch {

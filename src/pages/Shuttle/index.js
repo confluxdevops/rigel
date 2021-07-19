@@ -19,6 +19,7 @@ import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
 import {getChainIdRight} from '../../utils'
+import {useFilterData} from '../../hooks/useTransaction'
 
 function Shuttle() {
   const location = useLocation()
@@ -33,6 +34,7 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
+  useFilterData()
   const {
     address: fromAddress,
     error: fromChainError,
