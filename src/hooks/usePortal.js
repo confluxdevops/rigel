@@ -20,7 +20,7 @@ function useChainNetId() {
   useEffectOnce(() => {
     const chainListener = newChainId => {
       if (newChainId !== '0xNaN' && newChainId !== chainId) {
-        setChainid(chainId)
+        setChainid(newChainId)
       }
     }
     window?.conflux?.on('chainIdChanged', chainListener)

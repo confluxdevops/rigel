@@ -1,6 +1,6 @@
 import {useWindowSize} from 'react-use'
 import {useMemo} from 'react'
-import {KeyOfCfx, KeyOfBtc, KeyOfEth} from '../constants/chainConfig'
+import {KeyOfCfx, KeyOfBtc} from '../constants/chainConfig'
 import {MobileBreakpoint} from '../constants'
 import {useWallet} from '../hooks/useWallet'
 
@@ -20,18 +20,18 @@ export function useIsMobile() {
   return false
 }
 
-export function useConnectData() {
+export function useConnectData(otherChain) {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
-  const {address: ethAddress} = useWallet(KeyOfEth)
+  const {address: ethAddress} = useWallet(otherChain)
   const connectData = useMemo(
     () => [
       {
         chain: KeyOfCfx,
         address: cfxAddress,
       },
-      {chain: KeyOfEth, address: ethAddress},
+      {chain: otherChain, address: ethAddress},
     ],
-    [cfxAddress, ethAddress],
+    [cfxAddress, ethAddress, otherChain],
   )
 
   return connectData

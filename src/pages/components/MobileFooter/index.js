@@ -1,10 +1,13 @@
-import {useLocation} from 'react-use'
+import {useLocation, useSearchParam} from 'react-use'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
-import {useConnectData} from '../../../hooks'
+import {useConnectData, useIsCfxChain} from '../../../hooks'
 
 function MobileFooter() {
   const {pathname} = useLocation()
-  const connectData = useConnectData()
+  const fromChain = useSearchParam('fromChain')
+  const toChain = useSearchParam('toChain')
+  const isFromChainCfx = useIsCfxChain(fromChain)
+  const connectData = useConnectData(isFromChainCfx ? toChain : fromChain)
   const pendingTransactions = [
     {
       type: 'shuttle',
