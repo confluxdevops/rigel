@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
-import {useCallback, useEffect} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import useSWR from 'swr'
-import {ProxyUrlPrefix} from '../constants'
+import {convertDecimal} from '@cfxjs/data-format'
+import {ProxyUrlPrefix, BigNumZero, Decimal18} from '../constants'
 import {useWallet} from '../hooks/useWallet'
 import {
   StatusOperation,
@@ -19,6 +20,8 @@ import {
 import {useTxState} from '../state/transaction'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList} from '../hooks/useTokenList'
+import {useBalance} from '../hooks/usePortal'
+import {Big} from 'big.js'
 
 //update the local data intervally
 export const useUpdateData = () => {
@@ -60,6 +63,8 @@ export const useFilterData = () => {
   )
   const currentTimestamp = Date.now()
   const tokenList = useAllTokenList()
+  const [pendingItem, setPendingItem] = useState({})
+  //   useUpdateWaiting(pendingItem)
   useEffect(() => {
     // let doingTxs=transactions
     // .filter((tx) => tx?.timestamp >= currentTimestamp - Millisecond.day)// recent 24 hours
@@ -92,7 +97,7 @@ export const useFilterData = () => {
     const commonTxs = transactions.filter(
       item => item.tx_type === TypeTransaction.transaction,
     )
-    const filteredTxs = commonTxs
+    commonTxs
       .filter(
         item =>
           item.status === ShuttleStatus.success ||
@@ -102,24 +107,37 @@ export const useFilterData = () => {
         removeTx(item?.hash)
         return item
       })
+
     const pendingCommonTxs = commonTxs.filter(
       item =>
         item.status === ShuttleStatus.pending ||
         item.status === ShuttleStatus.waiting,
     )
     pendingCommonTxs.forEach(item => {
-      const {hash, in_or_out: type, fromChain, toChain, toToken} = item
-      const {origin} = toToken
+      const {
+        hash,
+        in_or_out: type,
+        fromChain,
+        toChain,
+        toToken,
+        shuttleAddress,
+      } = item
+      const {origin, ctoken} = toToken
       const isOriginCfx = origin === KeyOfCfx
-      proArr.push(
-        requestUserOperationByHash(
-          ProxyUrlPrefix.shuttleflow,
-          hash,
-          type,
-          origin,
-          isOriginCfx && toChain === KeyOfCfx ? fromChain : KeyOfCfx,
-        ),
-      )
+      if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
+        //native token on Conflux chain shuttle out
+        setPendingItem(item)
+      } else {
+        proArr.push(
+          requestUserOperationByHash(
+            ProxyUrlPrefix.shuttleflow,
+            hash,
+            type,
+            origin,
+            isOriginCfx && toChain === KeyOfCfx ? fromChain : KeyOfCfx,
+          ),
+        )
+      }
     })
     Promise.all(proArr).then(response => {
       response.forEach((item, index) => {
@@ -144,7 +162,30 @@ export const useFilterData = () => {
     })
     // const {data:listData}=useSWR(cfxAddress?[ProxyUrlPrefix.shuttleflow,null,cfxAddress,Object.values(StatusOperation),null,null,10000]:null)
     // console.log('listData',listData)
-  }, [cfxAddress, transactions])
+  }, [cfxAddress])
+}
+
+const useUpdateWaiting = item => {
+  const {address: cfxAddress} = useWallet(KeyOfCfx)
+  const {updateTx} = useTxState(useCallback(state => state.transactions, []))
+  const [address, setAddress] = useState('')
+  const [cToken, setCToken] = useState('')
+  const balance = useBalance(address, cToken)
+  useEffect(() => {
+    const {toToken = {}, shuttleAddress, hash} = item
+    const {ctoken} = toToken
+    setAddress(shuttleAddress)
+    setCToken(ctoken)
+    if (new Big(balance || 0)?.gt(BigNumZero)) {
+      console.log(
+        'newAmount',
+        convertDecimal(balance?.toString(10), 'divide', Decimal18),
+      )
+      // updateTx(hash,{amount:convertDecimal(balance?.toString(10),'divide',Decimal18)})
+    } else {
+      // updateTx(hash,{amount:0})
+    }
+  }, [cfxAddress, JSON.stringify(item)])
 }
 
 /**

@@ -20,10 +20,16 @@ let Store = null
 
 const mergeData = data => {
   const isToChainCfx = data?.toChain === KeyOfCfx
+  const {fromChain, toToken} = data
+  let status = ShuttleStatus.pending
+  if (fromChain === KeyOfCfx && toToken?.origin === KeyOfCfx) {
+    // conflux native token shuttle out
+    status = ShuttleStatus.waiting
+  }
   const infoData = {
     timestamp: Date.now(),
     tx_type: TypeTransaction.transaction,
-    status: ShuttleStatus.pending,
+    status,
     in_or_out: isToChainCfx ? 'in' : 'out',
   }
   const mergedData = {...infoData, ...data}
@@ -38,7 +44,18 @@ export const createStore = () =>
         //add to top
         unshiftTx: tx => {
           let trans = get().transactions
-          trans?.unshift(mergeData(tx))
+          const {fromChain, shuttleAddress, toToken = {}} = tx
+          const {origin, ctoken} = toToken
+          const isCfxChainOut = fromChain === KeyOfCfx && origin === KeyOfCfx
+          const waitingCfxOutTrans = trans.filter(
+            tran =>
+              tran?.shuttleAddress === shuttleAddress &&
+              tran?.toToken?.ctoken === ctoken &&
+              tran?.status === ShuttleStatus.waiting,
+          )
+          if (!(isCfxChainOut && waitingCfxOutTrans.length > 0)) {
+            trans?.unshift(mergeData(tx))
+          }
           set({transactions: trans || []})
         },
         updateTx: (hash, data) => {

@@ -73,6 +73,7 @@ function ShuttleOutButton({
       amount: value,
       toToken,
       tx_type: type,
+      shuttleAddress: shuttleAddress,
     }
     return data
   }
