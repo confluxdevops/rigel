@@ -240,7 +240,10 @@ function Shuttle() {
           toToken={toToken}
           value={value}
           txHash={txHash}
-          onClose={() => setTxModalShow(false)}
+          onClose={() => {
+            setTxModalShow(false)
+            setValue('')
+          }}
         />
       )}
     </div>
