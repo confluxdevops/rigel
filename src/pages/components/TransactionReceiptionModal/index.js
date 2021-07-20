@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
+import {formatAmount} from '@cfxjs/data-format'
 import {Modal, Loading, Button, Link} from '../../../components'
 import {
   SupportedChains,
@@ -36,7 +37,10 @@ function TransactionReceiptionModal({
     content = (
       <div className="flex flex-col items-center">
         <span>
-          <Trans i18nKey="shuttleInfo" values={{value, tokenSymbol, chain}} />
+          <Trans
+            i18nKey="shuttleInfo"
+            values={{value: formatAmount(value), tokenSymbol, chain}}
+          />
         </span>
         <div className="bg-warning-10 text-warning-dark w-full px-6 pt-3 pb-6 mt-4 text-center">
           {t('confirm', {
