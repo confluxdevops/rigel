@@ -159,10 +159,12 @@ function ShuttleForm({
         //must be greater than zero
         if (!isFromChainBtc && valBig.gt(balanceVal)) {
           //must be less than Max value
-          error = t('error.mustLsMax', {value: formatAmount(balanceVal)})
+          error = t('error.mustLteMax')
         }
+      } else if (valBig.lte('0')) {
+        error = t('error.mustGtZero', {value: formatAmount(minimalVal)})
       } else {
-        error = t('error.mustGtVal', {value: formatAmount(minimalVal)})
+        error = t('error.mustGteMin', {value: formatAmount(minimalVal)})
       }
     } else {
       //not a valid number
