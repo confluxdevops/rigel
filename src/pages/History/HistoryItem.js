@@ -12,7 +12,6 @@ import {WrapIcon, Toast} from '../../components'
 import {
   BgPlus,
   BgCopy,
-  BgArrowRight,
   ErrorFilled,
   SuccessFilled,
   PendingFilled,
@@ -130,18 +129,10 @@ Status.propTypes = {
   status: PropTypes.oneOf(Object.keys(ShuttleStatus)),
 }
 function HistoryItem({historyItemData}) {
-  const {
-    toToken,
-    fromChain,
-    toChain,
-    amount,
-    status,
-    fromAddress,
-    toAddress,
-    progress,
-  } = historyItemData
+  const {toToken, fromChain, toChain, amount, status, toAddress, progress} =
+    historyItemData
 
-  const t = useTranslation()
+  const {t} = useTranslation()
 
   const [detailShow, setDetailShow] = useState(false)
 
@@ -169,19 +160,7 @@ function HistoryItem({historyItemData}) {
       >
         <div className="flex flex-col items-start w-full">
           <div className="flex items-center py-4">
-            {fromAddress ? (
-              <Account
-                chain={fromChain}
-                address={fromAddress}
-                iconClassName="w-5 h-5 mr-1"
-                showIcon
-              />
-            ) : (
-              t('history.fromBtcAddress')
-            )}
-            <WrapIcon type="circle" size="w-6 h-6" className="mx-2">
-              <BgArrowRight />
-            </WrapIcon>
+            <span className="text-gray-60 mr-2">{t('destination')}</span>
             <Account
               chain={toChain}
               address={toAddress}
