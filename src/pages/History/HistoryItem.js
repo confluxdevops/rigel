@@ -129,7 +129,7 @@ Status.propTypes = {
   status: PropTypes.oneOf(Object.keys(ShuttleStatus)),
 }
 function HistoryItem({historyItemData}) {
-  const {toToken, fromChain, toChain, amount, status, toAddress, progress} =
+  const {toToken, fromChain, toChain, amount, status, toAddress, response} =
     historyItemData
 
   const {t} = useTranslation()
@@ -168,9 +168,9 @@ function HistoryItem({historyItemData}) {
               showIcon
             />
           </div>
-          {progress && (
+          {response && (
             <Progress
-              progress={progress}
+              progress={response}
               fromChain={fromChain}
               toChain={toChain}
             />
