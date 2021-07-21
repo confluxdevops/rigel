@@ -140,7 +140,7 @@ function HistoryItem({historyItemData}) {
     <>
       <div
         aria-hidden="true"
-        className="w-full h-16 flex items-center justify-between px-6 mt-2 cursor-pointer"
+        className="w-full h-16 flex items-center justify-between px-6 mt-2 cursor-pointer flex-shrink-0"
         onClick={() => setDetailShow(true)}
       >
         <TokenInfo fromChain={fromChain} toChain={toChain} toToken={toToken} />
@@ -161,12 +161,7 @@ function HistoryItem({historyItemData}) {
         <div className="flex flex-col items-start w-full">
           <div className="flex items-center py-4">
             <span className="text-gray-60 mr-2">{t('destination')}</span>
-            <Account
-              chain={toChain}
-              address={toAddress}
-              iconClassName="w-5 h-5 mr-1"
-              showIcon
-            />
+            <Account chain={toChain} address={toAddress} size="large" />
           </div>
           {response && (
             <Progress

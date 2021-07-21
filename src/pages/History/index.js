@@ -17,9 +17,11 @@ function History() {
       <span className="inline-block mb-2 text-gray-100 text-base">
         {t('history.title')}
       </span>
-      {historyData.map((item, index) => (
-        <HistoryItem key={index} historyItemData={item} />
-      ))}
+      <div className="flex flex-col w-full overflow-y-auto">
+        {historyData.map((item, index) => (
+          <HistoryItem key={index} historyItemData={item} />
+        ))}
+      </div>
     </div>
   )
 }
