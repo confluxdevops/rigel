@@ -245,6 +245,7 @@ function mapData(item = {}, tokenList) {
     in_or_out,
     nonce_or_txid,
     to_addr,
+    amount,
   } = item
   const isCfxChain = from_chain === KeyOfCfx
   const newList = tokenList
@@ -287,6 +288,7 @@ function mapData(item = {}, tokenList) {
   data.toAddress = to_addr
   data.tx_type = TypeTransaction.transaction
   data.hash = nonce_or_txid?.split('_')[0]
+  data.amount = amount
   return data
 }
 

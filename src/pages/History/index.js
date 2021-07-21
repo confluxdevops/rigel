@@ -1,8 +1,16 @@
-import PropTypes from 'prop-types'
 import HistoryItem from './HistoryItem'
 import {useTranslation} from 'react-i18next'
+import {useTxData} from '../../hooks/useTransaction'
+import {ShuttleStatus} from '../../constants'
 
-function History({historyData}) {
+function History() {
+  const historyData = useTxData([
+    ShuttleStatus.pending,
+    ShuttleStatus.waiting,
+    ShuttleStatus.success,
+    ShuttleStatus.error,
+  ])
+  console.log('historyData', historyData)
   const {t} = useTranslation()
   return (
     <div className="flex flex-col items-center bg-gray-0 w-full md:w-110 rounded-2.5xl py-6 shadow-common">
@@ -14,10 +22,6 @@ function History({historyData}) {
       ))}
     </div>
   )
-}
-
-History.propTypes = {
-  historyData: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
 export default History
