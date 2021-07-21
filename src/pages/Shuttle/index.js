@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -14,12 +15,16 @@ import {
   KeyOfCfx,
   KeyOfBtc,
 } from '../../constants/chainConfig'
-import {TxReceiptModalType, TypeAccountStatus} from '../../constants'
+import {
+  TxReceiptModalType,
+  TypeAccountStatus,
+  ShuttleStatus,
+} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
 import {getChainIdRight} from '../../utils'
-import {useFilterData} from '../../hooks/useTransaction'
+import {useTxData, useUpdateTxs} from '../../hooks/useTransaction'
 
 function Shuttle() {
   const location = useLocation()
@@ -34,7 +39,7 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  useFilterData()
+  useUpdateTxs()
   const {
     address: fromAddress,
     error: fromChainError,

@@ -77,6 +77,11 @@ export const createStore = () =>
           trans?.push(tx)
           set({transactions: trans || []})
         },
+        appendTxs: txs => {
+          let trans = get().transactions
+          trans = trans?.concat(txs)
+          set({transactions: trans || []})
+        },
       }),
       {
         name: 'transactions', // unique name

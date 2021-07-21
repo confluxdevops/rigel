@@ -2,7 +2,6 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 import {useCallback, useEffect, useState} from 'react'
-import useSWR from 'swr'
 import {convertDecimal} from '@cfxjs/data-format'
 import {ProxyUrlPrefix, BigNumZero, Decimal18} from '../constants'
 import {useWallet} from '../hooks/useWallet'
@@ -20,182 +19,233 @@ import {
 import {useTxState} from '../state/transaction'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList} from '../hooks/useTokenList'
-import {useBalance} from '../hooks/usePortal'
+import {useMultipleBalance} from '../hooks/usePortal'
 import {Big} from 'big.js'
 
 //update the local data intervally
-export const useUpdateData = () => {
-  const {address: cfxAddress} = useWallet(KeyOfCfx)
-  const {data: btcData} = useSWR(
-    cfxAddress
-      ? [
-          ProxyUrlPrefix.shuttleflow,
-          'in',
-          cfxAddress,
-          Object.values(StatusOperation),
-          KeyOfBtc,
-          KeyOfCfx,
-        ]
-      : null,
-    requestUserOperationList,
-  )
-  const {data: cfxData} = useSWR(
-    cfxAddress
-      ? [
-          ProxyUrlPrefix.shuttleflow,
-          'out',
-          cfxAddress,
-          Object.values(StatusOperation),
-          KeyOfCfx,
-          null,
-        ]
-      : null,
-    requestUserOperationList,
-  )
-  return {}
-}
+// export const useUpdateData = () => {
+//   const {address: cfxAddress} = useWallet(KeyOfCfx)
+//   const {data: btcData} = useSWR(
+//     cfxAddress
+//       ? [
+//           ProxyUrlPrefix.shuttleflow,
+//           'in',
+//           cfxAddress,
+//           Object.values(StatusOperation),
+//           KeyOfBtc,
+//           KeyOfCfx,
+//         ]
+//       : null,
+//     requestUserOperationList,
+//   )
+//   const {data: cfxData} = useSWR(
+//     cfxAddress
+//       ? [
+//           ProxyUrlPrefix.shuttleflow,
+//           'out',
+//           cfxAddress,
+//           Object.values(StatusOperation),
+//           KeyOfCfx,
+//           null,
+//         ]
+//       : null,
+//     requestUserOperationList,
+//   )
+//   return {}
+// }
 
-export const useFilterData = () => {
+export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {library} = useActiveWeb3React()
-  const {transactions, removeTx, appendTx, updateTx} = useTxState(
+  const {transactions, removeTx, updateTx, appendTxs} = useTxState(
     useCallback(state => state.transactions, []),
   )
-  const currentTimestamp = Date.now()
   const tokenList = useAllTokenList()
-  const [pendingItem, setPendingItem] = useState({})
-  //   useUpdateWaiting(pendingItem)
+  const [waitingTxs, setWaitingTxs] = useState({})
+  useUpdateWaiting(waitingTxs)
   useEffect(() => {
-    // let doingTxs=transactions
-    // .filter((tx) => tx?.timestamp >= currentTimestamp - Millisecond.day)// recent 24 hours
-    // .filter(
-    //   (tx) =>
-    //     tx?.status === ShuttleStatus.pending ||
-    //     tx?.status === ShuttleStatus.waiting
-    // )
+    const update = () => {
+      //when tx type is approve transaction
+      const approveTxs = transactions.filter(
+        item => item.tx_type === TypeTransaction.approve,
+      )
+      const pendingApproveTxs = approveTxs.filter(
+        item => item.status === ShuttleStatus.pending,
+      )
+      if (library) {
+        pendingApproveTxs.forEach(item => {
+          const {hash} = item
+          library.getTransactionReceipt(hash).then(res => {
+            if (res?.status) {
+              updateTx(hash, {status: ShuttleStatus.success})
+            }
+          })
+        })
+      }
 
-    //when tx type is approve transaction
-    const approveTxs = transactions.filter(
-      item => item.tx_type === TypeTransaction.approve,
-    )
-    const pendingApproveTxs = approveTxs.filter(
-      item => item.status === ShuttleStatus.pending,
-    )
-    if (library) {
-      pendingApproveTxs.forEach(item => {
-        const {hash} = item
-        library.getTransactionReceipt(hash).then(res => {
-          if (res?.status) {
-            updateTx(hash, {status: ShuttleStatus.success})
+      // when tx type is common transacton
+      let proArr = []
+      const commonTxs = transactions.filter(
+        item => item.tx_type === TypeTransaction.transaction,
+      )
+      commonTxs
+        .filter(
+          item =>
+            item.status === ShuttleStatus.success ||
+            item.status === ShuttleStatus.error,
+        )
+        .map(item => {
+          removeTx(item?.hash)
+          return item
+        })
+
+      const pendingCommonTxs = commonTxs.filter(
+        item =>
+          item.status === ShuttleStatus.pending ||
+          item.status === ShuttleStatus.waiting,
+      )
+      const pendingTxs = {}
+      pendingCommonTxs.forEach(item => {
+        const {
+          hash,
+          in_or_out: type,
+          fromChain,
+          toChain,
+          toToken,
+          status,
+        } = item
+        const {origin} = toToken
+        const isOriginCfx = origin === KeyOfCfx
+        if (
+          fromChain === KeyOfCfx &&
+          isOriginCfx &&
+          type === 'out' &&
+          status === ShuttleStatus.waiting
+        ) {
+          //native token on Conflux chain shuttle out
+          pendingTxs[hash] = item
+          setWaitingTxs({
+            ...waitingTxs,
+            ...pendingTxs,
+          })
+        } else {
+          proArr.push(
+            requestUserOperationByHash(
+              ProxyUrlPrefix.shuttleflow,
+              hash,
+              type,
+              origin,
+              isOriginCfx && toChain === KeyOfCfx ? fromChain : KeyOfCfx,
+            ),
+          )
+        }
+      })
+      Promise.all(proArr).then(response => {
+        response.forEach((item, index) => {
+          if (item) {
+            removeTx(pendingCommonTxs[index]?.hash)
+          }
+        })
+        requestUserOperationList(
+          ProxyUrlPrefix.shuttleflow,
+          null,
+          cfxAddress,
+          Object.values(StatusOperation),
+          null,
+          null,
+          10000,
+        ).then(list => {
+          if (list) {
+            const newList = list.map(item => mapData(item, tokenList))
+            appendTxs(newList)
           }
         })
       })
     }
-
-    // when tx type is common transacton
-    let proArr = []
-    const commonTxs = transactions.filter(
-      item => item.tx_type === TypeTransaction.transaction,
-    )
-    commonTxs
-      .filter(
-        item =>
-          item.status === ShuttleStatus.success ||
-          item.status === ShuttleStatus.error,
-      )
-      .map(item => {
-        removeTx(item?.hash)
-        return item
-      })
-
-    const pendingCommonTxs = commonTxs.filter(
-      item =>
-        item.status === ShuttleStatus.pending ||
-        item.status === ShuttleStatus.waiting,
-    )
-    pendingCommonTxs.forEach(item => {
-      const {
-        hash,
-        in_or_out: type,
-        fromChain,
-        toChain,
-        toToken,
-        shuttleAddress,
-      } = item
-      const {origin, ctoken} = toToken
-      const isOriginCfx = origin === KeyOfCfx
-      if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
-        //native token on Conflux chain shuttle out
-        setPendingItem(item)
-      } else {
-        proArr.push(
-          requestUserOperationByHash(
-            ProxyUrlPrefix.shuttleflow,
-            hash,
-            type,
-            origin,
-            isOriginCfx && toChain === KeyOfCfx ? fromChain : KeyOfCfx,
-          ),
-        )
-      }
-    })
-    Promise.all(proArr).then(response => {
-      response.forEach((item, index) => {
-        if (item) {
-          removeTx(pendingCommonTxs[index]?.hash)
-        }
-      })
-      requestUserOperationList(
-        ProxyUrlPrefix.shuttleflow,
-        null,
-        cfxAddress,
-        Object.values(StatusOperation),
-        null,
-        null,
-        10000,
-      ).then(list => {
-        if (list) {
-          const newList = list.map(item => mapData(item, tokenList))
-          newList.map(item => appendTx(item))
-        }
-      })
-    })
-    // const {data:listData}=useSWR(cfxAddress?[ProxyUrlPrefix.shuttleflow,null,cfxAddress,Object.values(StatusOperation),null,null,10000]:null)
-    // console.log('listData',listData)
+    update()
+    // if (cfxAddress) {
+    //   const timeInterval = setInterval(() => update(), 30000)
+    //   return () => clearInterval(timeInterval)
+    // }
   }, [cfxAddress])
 }
 
-const useUpdateWaiting = item => {
-  const {address: cfxAddress} = useWallet(KeyOfCfx)
-  const {updateTx} = useTxState(useCallback(state => state.transactions, []))
-  const [address, setAddress] = useState('')
-  const [cToken, setCToken] = useState('')
-  const balance = useBalance(address, cToken)
-  useEffect(() => {
-    const {toToken = {}, shuttleAddress, hash} = item
-    const {ctoken} = toToken
-    setAddress(shuttleAddress)
-    setCToken(ctoken)
-    if (new Big(balance || 0)?.gt(BigNumZero)) {
-      console.log(
-        'newAmount',
-        convertDecimal(balance?.toString(10), 'divide', Decimal18),
-      )
-      // updateTx(hash,{amount:convertDecimal(balance?.toString(10),'divide',Decimal18)})
+const useUpdateWaiting = txs => {
+  console.log('txs', txs)
+  const waitingItems = Object.values(txs)
+  console.log('waitingItems', waitingItems)
+  let hasNativeToken = false
+  const tokenArr = []
+  const newWaitingArr = []
+  let nativeItem = {}
+  let shuttleAddress = ''
+  waitingItems.forEach(item => {
+    console.log('item', item)
+    const {toToken = {}, shuttleAddress: address} = item
+    shuttleAddress = address
+    if (toToken.ctoken === KeyOfCfx) {
+      hasNativeToken = true
+      nativeItem = item
     } else {
-      // updateTx(hash,{amount:0})
+      hasNativeToken = false
+      tokenArr.push(toToken.ctoken)
+      newWaitingArr.push(item)
     }
-  }, [cfxAddress, JSON.stringify(item)])
+  })
+
+  if (hasNativeToken) {
+    newWaitingArr.unshift(nativeItem)
+  }
+  console.log('tokenArr', tokenArr)
+  const {address: cfxAddress} = useWallet(KeyOfCfx)
+  const {updateTx} = useTxState()
+  console.log('shuttleAddress', shuttleAddress)
+  const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
+  console.log('balance', balance)
+  console.log('tokenBalances', tokenBalances)
+
+  useEffect(() => {
+    newWaitingArr.forEach((item, index) => {
+      let amount = 0
+      if (hasNativeToken) {
+        if (index === 0) {
+          amount = getComparedBalance(balance)
+        } else {
+          amount = getComparedBalance(tokenBalances[index - 1])
+        }
+      } else {
+        amount = getComparedBalance(tokenBalances[index])
+      }
+      console.log('amount', amount)
+      updateTx(item?.hash, {amount: amount})
+    })
+  }, [cfxAddress, JSON.stringify(tokenBalances)])
+}
+
+function getComparedBalance(balance) {
+  if (new Big(balance || 0)?.gt(BigNumZero)) {
+    return convertDecimal(balance?.toString(10), 'divide', Decimal18)
+  }
+  return 0
 }
 
 /**
  * Get tokenInfo from tokenList by token address
- * Transfer api data to local data
+ * Merge api data to local data
  */
 function mapData(item = {}, tokenList) {
   const data = {}
   if (!item) return {}
-  const {from_chain, to_chain, token} = item
+  const {
+    from_chain,
+    to_chain,
+    token,
+    status,
+    timestamp,
+    in_or_out,
+    nonce_or_txid,
+    to_addr,
+  } = item
   const isCfxChain = from_chain === KeyOfCfx
   const newList = tokenList
     .filter(item => token === (isCfxChain ? item.ctoken : item.reference))
@@ -205,56 +255,70 @@ function mapData(item = {}, tokenList) {
   data.response = item
   data.decimals = tokenInfo?.decimals
   data.status = ShuttleStatus.pending
-  if (item.status === 'confirming' || item.status === 'doing') {
+  if (status === 'confirming' || status === 'doing') {
     data.status = ShuttleStatus.pending
   }
-  if (item.status === 'finished') {
+  if (status === 'finished') {
     data.status = 'success'
   }
-  if (item.status === 'invalid') {
+  if (status === 'invalid') {
     data.status = 'error'
   }
-  data.timestamp = item.timestamp
-  data.in_or_out = item.in_or_out
+  data.timestamp = timestamp
+  data.in_or_out = in_or_out
+  if (in_or_out === 'in') {
+    if (from_chain === KeyOfCfx) {
+      data.fromChain = to_chain
+      data.toChain = from_chain
+    } else {
+      data.fromChain = from_chain
+      data.toChain = to_chain
+    }
+  }
+  if (in_or_out === 'out') {
+    if (from_chain === KeyOfCfx) {
+      data.fromChain = from_chain
+      data.toChain = to_chain
+    } else {
+      data.fromChain = to_chain
+      data.toChain = from_chain
+    }
+  }
+  data.toAddress = to_addr
   data.tx_type = TypeTransaction.transaction
-  data.hash = item.nonce_or_txid?.split('_')[0]
+  data.hash = nonce_or_txid?.split('_')[0]
   return data
 }
 
-export const useTxData = () => {
-  const {transactions, updateTx} = useTxState()
+export const useTxData = multipleOrderedStatus => {
+  const {transactions} = useTxState()
   const {address: cfxAddress} = useWallet(KeyOfCfx)
-  const {address: web3Address} = useWallet(KeyOfEth)
-  const {library} = useActiveWeb3React()
-  const currentTimestamp = Date.now()
-  let filteredTxs = transactions
-    .filter(tx => tx?.local_timestamp >= currentTimestamp - Millisecond.day) // recent 24 hours
-    .filter(
-      tx =>
-        tx?.fromAddress === cfxAddress ||
-        tx?.fromAddress === web3Address ||
-        (tx?.fromChain === KeyOfBtc && tx?.toAddress === cfxAddress),
-    )
-    .filter(
-      tx =>
-        tx?.status === ShuttleStatus.pending ||
-        tx?.status === ShuttleStatus.waiting,
-    )
-    .forEach(item => {
-      const {type, hash} = item
-      //only the chain based on ethereum need approve
-      if (library && type === TypeTransaction.approve) {
-        library.getTransactionReceipt(hash).then(res => {
-          if (res?.status) {
-            updateTx(hash, {status: ShuttleStatus.success})
-          }
-        })
-      }
-      if (type === TypeTransaction.transaction) {
-        //
-      }
-    })
+  const [arr, setArr] = useState([])
 
-  //approve, transaction: common uncommon
-  return filteredTxs
+  const currentTimestamp = Date.now()
+  useEffect(() => {
+    let filteredTxs = transactions.filter(
+      tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
+    ) // recent 24 hours
+    let newArr = []
+    multipleOrderedStatus.forEach(status => {
+      let groupedArr = []
+      if (status === ShuttleStatus.waiting) {
+        groupedArr = filteredTxs
+          .filter(tx => tx?.status === status)
+          .filter(tx => tx?.amount != 0)
+      } else {
+        groupedArr = filteredTxs.filter(tx => tx?.status === status)
+      }
+      console.log('groupedArr', groupedArr)
+      groupedArr.sort(function (a, b) {
+        return b.timestamp - a.timestamp
+      })
+      newArr = newArr.concat(groupedArr)
+      console.log('newArr', newArr)
+    })
+    setArr(newArr)
+    console.log('arr', arr.length)
+  }, [transactions])
+  return arr
 }
