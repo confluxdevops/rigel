@@ -95,6 +95,7 @@ function ShuttleInButton({
       fromAddress,
       toAddress,
       amount: value,
+      fromToken,
       toToken,
       tx_type: type,
     }

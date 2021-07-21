@@ -23,6 +23,7 @@ import {useTxState} from '../../../../state/transaction'
 function ShuttleOutButton({
   fromChain,
   toChain,
+  fromToken,
   toToken,
   value,
   onClose,
@@ -71,6 +72,7 @@ function ShuttleOutButton({
       fromAddress,
       toAddress,
       amount: value,
+      fromToken,
       toToken,
       tx_type: type,
       shuttleAddress: shuttleAddress,

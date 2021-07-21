@@ -18,7 +18,7 @@ import {
 } from '../utils/api'
 import {useTxState} from '../state/transaction'
 import {useActiveWeb3React} from './useWeb3Network'
-import {useAllTokenList} from '../hooks/useTokenList'
+import {useAllTokenList, mapToken} from '../hooks/useTokenList'
 import {useMultipleBalance} from '../hooks/usePortal'
 import {Big} from 'big.js'
 
@@ -96,9 +96,7 @@ export const useUpdateTxs = () => {
         )
         .map(item => {
           removeTx(item?.hash)
-          return item
         })
-
       const pendingCommonTxs = commonTxs.filter(
         item =>
           item.status === ShuttleStatus.pending ||
@@ -163,24 +161,21 @@ export const useUpdateTxs = () => {
       })
     }
     update()
-    if (cfxAddress) {
-      const timeInterval = setInterval(() => update(), 30000)
-      return () => clearInterval(timeInterval)
-    }
+    // if (cfxAddress) {
+    //   const timeInterval = setInterval(() => update(), 30000)
+    //   return () => clearInterval(timeInterval)
+    // }
   }, [cfxAddress])
 }
 
 const useUpdateWaiting = txs => {
-  console.log('txs', txs)
   const waitingItems = Object.values(txs)
-  console.log('waitingItems', waitingItems)
   let hasNativeToken = false
   const tokenArr = []
   const newWaitingArr = []
   let nativeItem = {}
   let shuttleAddress = ''
   waitingItems.forEach(item => {
-    console.log('item', item)
     const {toToken = {}, shuttleAddress: address} = item
     shuttleAddress = address
     if (toToken.ctoken === KeyOfCfx) {
@@ -192,18 +187,12 @@ const useUpdateWaiting = txs => {
       newWaitingArr.push(item)
     }
   })
-
   if (hasNativeToken) {
     newWaitingArr.unshift(nativeItem)
   }
-  console.log('tokenArr', tokenArr)
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {updateTx} = useTxState()
-  console.log('shuttleAddress', shuttleAddress)
   const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
-  console.log('balance', balance?.toString())
-  console.log('tokenBalances', tokenBalances)
-
   useEffect(() => {
     newWaitingArr.forEach((item, index) => {
       let amount = 0
@@ -216,10 +205,9 @@ const useUpdateWaiting = txs => {
       } else {
         amount = getComparedBalance(tokenBalances[index])
       }
-      console.log('amount', amount)
       updateTx(item?.hash, {amount: amount})
     })
-  }, [cfxAddress, JSON.stringify(tokenBalances)])
+  }, [cfxAddress, JSON.stringify(tokenBalances), balance.toString(10)])
 }
 
 function getComparedBalance(balance) {
@@ -252,7 +240,12 @@ function mapData(item = {}, tokenList) {
     .filter(item => token === (isCfxChain ? item.ctoken : item.reference))
     .filter(item => item.to_chain === to_chain)
   const tokenInfo = (newList && newList[0]) || {}
-  data.toToken = JSON.parse(JSON.stringify(tokenInfo))
+  data.fromToken = JSON.parse(
+    JSON.stringify(mapToken(tokenInfo, from_chain === KeyOfCfx)),
+  )
+  data.toToken = JSON.parse(
+    JSON.stringify(mapToken(tokenInfo, to_chain === KeyOfCfx)),
+  )
   data.response = item
   data.decimals = tokenInfo?.decimals
   data.status = ShuttleStatus.pending
@@ -288,7 +281,7 @@ function mapData(item = {}, tokenList) {
   data.toAddress = to_addr
   data.tx_type = TypeTransaction.transaction
   data.hash = nonce_or_txid?.split('_')[0]
-  data.amount = amount
+  data.amount = convertDecimal(amount, 'divide', Decimal18)
   return data
 }
 
@@ -312,15 +305,12 @@ export const useTxData = multipleOrderedStatus => {
       } else {
         groupedArr = filteredTxs.filter(tx => tx?.status === status)
       }
-      console.log('groupedArr', groupedArr)
       groupedArr.sort(function (a, b) {
         return b.timestamp - a.timestamp
       })
       newArr = newArr.concat(groupedArr)
-      console.log('newArr', newArr)
     })
     setArr(newArr)
-    console.log('arr', arr.length)
-  }, [transactions])
+  }, [JSON.stringify(transactions)])
   return arr
 }

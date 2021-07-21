@@ -7,6 +7,7 @@ import {useIsMobile, useConnectData} from '../../../hooks'
 import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
+import {useUpdateTxs} from '../../../hooks/useTransaction'
 
 function Header() {
   const {t} = useTranslation()
@@ -16,6 +17,7 @@ function Header() {
   const {value: isDarkMode} = useTheme()
 
   const connectData = useConnectData()
+  useUpdateTxs()
   const pendingTransactions = [
     {
       type: 'shuttle',

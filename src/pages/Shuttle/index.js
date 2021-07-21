@@ -39,9 +39,6 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  useUpdateTxs()
-  // const txs=useTxData([ShuttleStatus.pending,ShuttleStatus.waiting,ShuttleStatus.success,ShuttleStatus.error])
-  // console.log('txs',txs)
   const {
     address: fromAddress,
     error: fromChainError,
