@@ -25,7 +25,7 @@ import {ShuttleStatus} from '../../../constants'
 
 function WalletHub() {
   const connectData = useConnectData()
-  const transactions = useTxData(ShuttleStatus.pending, ShuttleStatus.waiting)
+  const transactions = useTxData([ShuttleStatus.pending, ShuttleStatus.waiting])
 
   const pendingTransactions = transactions.slice(0, 5)
 
