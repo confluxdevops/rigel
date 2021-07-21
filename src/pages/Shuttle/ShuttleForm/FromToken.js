@@ -44,6 +44,7 @@ function FromToken({
           placeholder="0.00"
           className="!text-gray-100 !text-lg !bg-transparent"
           width="w-32"
+          maxLength="40"
         />
         <div className="flex flex-col items-end">
           {fromAddress && !errorNetwork && (

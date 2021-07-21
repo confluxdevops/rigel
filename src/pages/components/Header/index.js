@@ -11,6 +11,7 @@ import './header.css'
 function Header() {
   const {t} = useTranslation()
   const {pathname} = useLocation()
+
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
 

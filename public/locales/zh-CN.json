@@ -45,8 +45,9 @@
   "error": {
     "index": "错误",
     "inputValidAmount": "请输入有效的数值",
-    "mustGtVal": "输入值必须大于等于 {{value}}",
-    "mustLsMax": "输入值值需要小于等于 {{value}}",
+    "mustGtZero": "输入值必须大于 0",
+    "mustGteMin": "输入值必须大于等于 {{value}}",
+    "mustLteMax": "输入值超出余额",
     "addressInvalid": "地址无效",
     "wrongNetwork": "网络错误",
     "unspoortedNetwork": "不支持的网络",

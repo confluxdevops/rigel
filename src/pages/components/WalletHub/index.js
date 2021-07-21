@@ -18,7 +18,7 @@ import {
   KeyOfPortal,
 } from '../../../constants/chainConfig'
 import {shortenAddress} from '../../../utils/address'
-import {AccountStatus} from '../../components'
+import {HeaderAccount} from '../../components'
 
 function WalletHub({connectData, pendingTransactions = []}) {
   const [arrow, setArrow] = useState('down')
@@ -140,17 +140,15 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           />
         </div>
         <div className="pt-3 flex flex-col">
-          <AccountStatus
+          <HeaderAccount
             id="metamask"
             chain={metamaskData.chain}
-            size="large"
             className="mb-3"
             onClose={onClose}
           />
-          <AccountStatus
+          <HeaderAccount
             id="portal"
             chain={portalData.chain}
-            size="large"
             onClose={onClose}
           />
         </div>

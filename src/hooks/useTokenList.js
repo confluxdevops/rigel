@@ -116,7 +116,7 @@ function useSearchAddressFromList(fromChain, toChain, search) {
 
 // serach token name from current list
 function useSearchNameFromList(fromChain, toChain, search) {
-  const tokenList = useMapTokenList(fromChain, toChain)
+  const tokenList = useDisplayTokenList(fromChain, toChain)
 
   return useMemo(
     () =>

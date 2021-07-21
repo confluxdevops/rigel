@@ -30,15 +30,15 @@ export function shortenBtcAddress(address) {
   return getEllipsStr(address, 10, 0)
 }
 
-export function shortenCfxAddress(address, type) {
-  if (!checkCfxTokenAddress(address, type)) return ''
+export function shortenCfxAddress(address, type, check = true) {
+  if (check && !checkCfxTokenAddress(address, type)) return ''
   const arr = address.split(':')
   const secondStr = getEllipsStr(arr[1], 4, 4)
   return arr[0] + ':' + secondStr
 }
 
-export function shortenAddress(chain, address, type = 'user') {
-  if (chain === KeyOfCfx) return shortenCfxAddress(address, type)
+export function shortenAddress(chain, address, type = 'user', checkCfx = true) {
+  if (chain === KeyOfCfx) return shortenCfxAddress(address, type, checkCfx)
   if (chain === KeyOfBtc) return shortenBtcAddress(address)
   return shortenEthAddress(address)
 }
