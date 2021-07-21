@@ -163,10 +163,10 @@ export const useUpdateTxs = () => {
       })
     }
     update()
-    // if (cfxAddress) {
-    //   const timeInterval = setInterval(() => update(), 30000)
-    //   return () => clearInterval(timeInterval)
-    // }
+    if (cfxAddress) {
+      const timeInterval = setInterval(() => update(), 30000)
+      return () => clearInterval(timeInterval)
+    }
   }, [cfxAddress])
 }
 
@@ -201,7 +201,7 @@ const useUpdateWaiting = txs => {
   const {updateTx} = useTxState()
   console.log('shuttleAddress', shuttleAddress)
   const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
-  console.log('balance', balance)
+  console.log('balance', balance?.toString())
   console.log('tokenBalances', tokenBalances)
 
   useEffect(() => {

@@ -40,6 +40,8 @@ function Shuttle() {
     location.search,
   )
   useUpdateTxs()
+  // const txs=useTxData([ShuttleStatus.pending,ShuttleStatus.waiting,ShuttleStatus.success,ShuttleStatus.error])
+  // console.log('txs',txs)
   const {
     address: fromAddress,
     error: fromChainError,
