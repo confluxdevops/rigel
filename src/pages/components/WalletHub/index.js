@@ -19,8 +19,25 @@ import {
 } from '../../../constants/chainConfig'
 import {shortenAddress} from '../../../utils/address'
 import {HeaderAccount} from '../../components'
+import {useTxData} from '../../../hooks/useTransaction'
+import {useConnectData} from '../../../hooks'
+import {ShuttleStatus} from '../../../constants'
 
-function WalletHub({connectData, pendingTransactions = []}) {
+function WalletHub() {
+  const connectData = useConnectData()
+  const transactions = useTxData(ShuttleStatus.pending, ShuttleStatus.waiting)
+
+  const pendingTransactions = transactions.slice(0, 5)
+
+  // const pendingTransactions = [
+  //   {
+  //     type: 'shuttle',
+  //     fromChain: 'eth',
+  //     toChain: 'cfx',
+  //     tokenSymbol: 'ETH',
+  //   },
+  //   {type: 'approve', tokenSymbol: 'UNI'},
+  // ]
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
   const connectedData = connectData.filter(data => !!data.address)
@@ -102,11 +119,6 @@ function WalletHub({connectData, pendingTransactions = []}) {
   )
 }
 
-WalletHub.propTypes = {
-  connectData: PropTypes.array.isRequired,
-  pendingTransactions: PropTypes.array,
-}
-
 export default WalletHub
 
 const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
@@ -167,20 +179,21 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           {pendingTransactions.length === 0
             ? noPending
             : displayPendingTransactions.map((data, index) => {
-                const {type, tokenSymbol, fromChain, toChain} = data
+                const {tx_type, fromToken, fromChain, toChain} = data
+                const {symbol} = fromToken
                 return (
                   <div className="mt-3 flex items-center" key={index}>
                     <Loading className="mr-1 !w-3 !h-3" />
                     <span className="text-gray-80 text-xs">
-                      {type === 'shuttle' &&
+                      {tx_type === 'transaction' &&
                         t('shuttleRecordItem', {
-                          tokenSymbol,
+                          tokenSymbol: symbol,
                           fromChain: ChainConfig[fromChain].shortName,
                           toChain: ChainConfig[toChain].shortName,
                         })}
 
-                      {type === 'approve' &&
-                        t('approveRecordItem', {tokenSymbol})}
+                      {tx_type === 'approve' &&
+                        t('approveRecordItem', {tokenSymbol: symbol})}
                     </span>
                   </div>
                 )
