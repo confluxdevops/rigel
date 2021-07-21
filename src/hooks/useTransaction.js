@@ -240,12 +240,6 @@ function mapData(item = {}, tokenList) {
     .filter(item => token === (isCfxChain ? item.ctoken : item.reference))
     .filter(item => item.to_chain === to_chain)
   const tokenInfo = (newList && newList[0]) || {}
-  data.fromToken = JSON.parse(
-    JSON.stringify(mapToken(tokenInfo, from_chain === KeyOfCfx)),
-  )
-  data.toToken = JSON.parse(
-    JSON.stringify(mapToken(tokenInfo, to_chain === KeyOfCfx)),
-  )
   data.response = item
   data.decimals = tokenInfo?.decimals
   data.status = ShuttleStatus.pending
@@ -278,6 +272,12 @@ function mapData(item = {}, tokenList) {
       data.toChain = from_chain
     }
   }
+  data.fromToken = JSON.parse(
+    JSON.stringify(mapToken(tokenInfo, data.fromChain === KeyOfCfx)),
+  )
+  data.toToken = JSON.parse(
+    JSON.stringify(mapToken(tokenInfo, data.toChain === KeyOfCfx)),
+  )
   data.toAddress = to_addr
   data.tx_type = TypeTransaction.transaction
   data.hash = nonce_or_txid?.split('_')[0]

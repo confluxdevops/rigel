@@ -24,7 +24,6 @@ import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
 import {getChainIdRight} from '../../utils'
-import {useTxData, useUpdateTxs} from '../../hooks/useTransaction'
 
 function Shuttle() {
   const location = useLocation()

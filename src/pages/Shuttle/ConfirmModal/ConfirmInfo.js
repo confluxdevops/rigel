@@ -25,10 +25,9 @@ function ConfirmInfo({fromChain, toChain, fromToken, toAddress}) {
       <div className="flex items-center justify-between mt-4">
         <span className="text-gray-40">{t('destination')}</span>
         <Account
-          showIcon={true}
           chain={toChain}
           className="text-gray-100"
-          iconClassName="mr-1 !w-5 !h-5"
+          size="large"
           address={toAddress}
         />
       </div>
