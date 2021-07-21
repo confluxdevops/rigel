@@ -144,7 +144,7 @@ function HistoryItem({historyItemData}) {
         onClick={() => setDetailShow(true)}
       >
         <TokenInfo fromChain={fromChain} toChain={toChain} toToken={toToken} />
-        <div className="flex flex-col">
+        <div className="flex flex-col items-end">
           <span className="text-base text-gray-100 text-right">
             {formatAmount(amount)}
           </span>
