@@ -289,7 +289,7 @@ function mapData(item = {}, tokenList) {
   data.toAddress = to_addr
   data.tx_type = TypeTransaction.transaction
   data.hash = nonce_or_txid?.split('_')[0]
-  data.amount = convertDecimal(amount, 'divide', Decimal18)
+  data.amount = convertDecimal(amount, 'divide', data.decimals)
   return data
 }
 
