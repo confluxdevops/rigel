@@ -79,8 +79,18 @@ export const createStore = () =>
         },
         appendTxs: txs => {
           let trans = get().transactions
-          trans = trans?.concat(txs)
-          set({transactions: trans || []})
+          let newTrans = JSON.parse(JSON.stringify(trans))
+          newTrans = newTrans?.concat(txs)
+          set({transactions: newTrans})
+        },
+        removeTxs: hashs => {
+          let trans = get().transactions
+          let newTrans = JSON.parse(JSON.stringify(trans))
+          hashs.forEach(hash => {
+            const index = newTrans.findIndex(tran => tran.hash == hash)
+            newTrans.splice(index, 1)
+          })
+          set({transactions: newTrans})
         },
       }),
       {
