@@ -7,7 +7,7 @@ import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 import {useShuttleState} from '../state'
 
-function mapToken(token, isCfxChain) {
+export function mapToken(token, isCfxChain) {
   if (!token) return {}
   const {
     ctoken,

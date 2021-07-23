@@ -157,3 +157,7 @@ export function useBalance(address, tokenAddress) {
   const nativeTokenBalance = useNativeTokenBalance(address) || BigNumZero
   return isNativeToken ? nativeTokenBalance : tokenBalance
 }
+
+export function useMultipleBalance(address, tokenAddressArr) {
+  return usePortalBalance(address, tokenAddressArr)
+}

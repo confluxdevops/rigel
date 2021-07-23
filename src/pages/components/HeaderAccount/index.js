@@ -14,7 +14,7 @@ function HeaderAccount({
   chain,
   className,
   iconClassName,
-  showIcon = false,
+  showIcon = true,
   id,
   ...props
 }) {
@@ -29,8 +29,13 @@ function HeaderAccount({
   )
 
   return (
-    <div className={`flex items-center ${className}`} {...props}>
-      {showIcon && <WalletIcon type={walletKey} className={iconClassName} />}
+    <div className={`flex items-center text-gray-80 ${className}`} {...props}>
+      {showIcon && (
+        <WalletIcon
+          type={walletKey}
+          className={`mr-1 w-5 h-5 ${iconClassName}`}
+        />
+      )}
       {address && shortenAddress(chain, address, 'user', false)}
       {accountType === TypeAccountStatus.unconnected && (
         <ConnectWallet

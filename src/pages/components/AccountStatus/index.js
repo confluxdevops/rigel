@@ -1,4 +1,3 @@
-import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
@@ -15,15 +14,6 @@ function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
     error,
     isChainIdRight,
   )
-  const accountCompStyle = useMemo(() => {
-    if (size === 'medium') return 'text-xs text-gray-80'
-    if (size === 'large') return 'text-sm text-gray-80'
-  }, [size])
-
-  const iconStyle = useMemo(() => {
-    if (size === 'medium') return 'mr-1.5 !w-3 !h-3'
-    if (size === 'large') return 'mr-2 !w-4 !h-4'
-  }, [size])
 
   return (
     <div className={`${className}`}>
@@ -31,9 +21,7 @@ function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
         <Account
           id={`${id}_account`}
           chain={chain}
-          showIcon={true}
-          className={accountCompStyle}
-          iconClassName={iconStyle}
+          size={size}
           address={address}
         />
       )}

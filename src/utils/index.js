@@ -60,3 +60,42 @@ export function getChainIdRight(chain, chainId, address, addrType = 'user') {
     wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'].id
   )
 }
+
+//remove duplicate object from array
+export function uniqueArray(arr) {
+  return arr.filter((item, index) => {
+    const _thing = JSON.stringify(item)
+    return (
+      index ===
+      arr.findIndex(obj => {
+        return JSON.stringify(obj) === _thing
+      })
+    )
+  })
+}
+
+//whether contains object in array
+export function containsObj(arr, obj) {
+  arr.forEach(item => {
+    const _item = JSON.stringify(item)
+    if (JSON.stringify(obj) === _item) {
+      return true
+    }
+    return false
+  })
+}
+
+/**
+ * whether the value of each object in this array equals to the value
+ * @param {*} arr
+ * @param {*} key
+ * @param {*} value
+ */
+export function containsValueBy(arr, key, value) {
+  arr.forEach(item => {
+    if (item[key] === value) {
+      return true
+    }
+    return false
+  })
+}

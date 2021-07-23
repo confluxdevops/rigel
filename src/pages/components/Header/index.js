@@ -3,10 +3,11 @@ import {NavLink} from 'react-router-dom'
 import {useLocation} from 'react-use'
 import {useTranslation} from 'react-i18next'
 import {Logo, DarkLogo, MobileLogo, DarkMobileLogo} from '../../../assets/svg'
-import {useIsMobile, useConnectData} from '../../../hooks'
+import {useIsMobile} from '../../../hooks'
 import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
+import {useUpdateTxs} from '../../../hooks/useTransaction'
 
 function Header() {
   const {t} = useTranslation()
@@ -14,18 +15,7 @@ function Header() {
 
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
-
-  const connectData = useConnectData()
-  const pendingTransactions = [
-    {
-      type: 'shuttle',
-      fromChain: 'eth',
-      toChain: 'cfx',
-      tokenSymbol: 'ETH',
-    },
-    {type: 'approve', tokenSymbol: 'UNI'},
-  ]
-
+  useUpdateTxs()
   if (pathname === '/maintenance' || pathname === '/notfound') {
     return null
   }
@@ -53,10 +43,7 @@ function Header() {
       </div>
       {!isMobile && (
         <div className="flex items-center">
-          <WalletHub
-            connectData={connectData}
-            pendingTransactions={pendingTransactions}
-          />
+          <WalletHub />
           <ThemeButton />
           <LanguageButton />
         </div>

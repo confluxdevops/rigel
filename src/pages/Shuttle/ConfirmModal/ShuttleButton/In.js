@@ -17,7 +17,11 @@ import {
   ContractType,
 } from '../../../../constants/contractConfig'
 
-import {ZeroAddrHex, TxReceiptModalType} from '../../../../constants'
+import {
+  ZeroAddrHex,
+  TxReceiptModalType,
+  TypeTransaction,
+} from '../../../../constants'
 import {useIsNativeToken} from '../../../../hooks/useWallet'
 import {
   useTokenContract,
@@ -27,11 +31,13 @@ import {calculateGasMargin, getExponent} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {useIsCfxChain} from '../../../../hooks'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
+import {useTxState} from '../../../../state/transaction'
 
 function ShuttleInButton({
   fromChain,
   toChain,
   fromToken,
+  toToken,
   value,
   onClose,
   disabled,
@@ -62,6 +68,7 @@ function ShuttleInButton({
     drContractAddress,
   ])
   const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
+  const {unshiftTx} = useTxState()
   useEffect(() => {
     setDidMount(true)
     if (!isNativeToken) {
@@ -80,12 +87,30 @@ function ShuttleInButton({
     }
   }, [decimals, tokenAllownace.toString(10), value, isNativeToken])
 
+  function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
+    const data = {
+      hash: hash,
+      fromChain,
+      toChain,
+      fromAddress,
+      toAddress,
+      amount: value,
+      fromToken,
+      toToken,
+      tx_type: type,
+    }
+    return data
+  }
+
   function contractApprove(tokenContract, value, gas) {
     tokenContract
       .approve(drContractAddress, value, {
         gasLimit: gas ? calculateGasMargin(gas) : undefined,
       })
       .then(txResponse => {
+        unshiftTx(
+          getShuttleStatusData(txResponse?.hash, TypeTransaction.approve),
+        )
         txResponse &&
           txResponse
             .wait()
@@ -116,7 +141,7 @@ function ShuttleInButton({
           error.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT ||
           (error.data && error.data.code === -32000)
         ) {
-          contractApprove(tokenContract, 0)
+          contractApprove(tokenContract, MaxUint256)
         } else {
           setIsApproving(false)
         }
@@ -146,7 +171,8 @@ function ShuttleInButton({
           gasLimit: calculateGasMargin(gas),
         })
         .then(data => {
-          setTxHash(data.hash)
+          unshiftTx(getShuttleStatusData(data?.hash))
+          setTxHash(data?.hash)
           setTxModalType(TxReceiptModalType.success)
         })
         .catch(() => {
@@ -176,6 +202,7 @@ function ShuttleInButton({
             gasLimit: calculateGasMargin(gasDt),
           })
           .then(data => {
+            unshiftTx(getShuttleStatusData(data?.hash))
             setTxHash(data?.hash)
             setTxModalType(TxReceiptModalType.success)
           })
@@ -186,6 +213,7 @@ function ShuttleInButton({
         const amountVal = convertDecimal(value, 'multiply', decimals)
         try {
           const data = await tokenContract.transfer(shuttleAddress, amountVal)
+          unshiftTx(getShuttleStatusData(data?.hash))
           setTxHash(data?.hash)
           setTxModalType(TxReceiptModalType.success)
         } catch {
@@ -231,6 +259,7 @@ ShuttleInButton.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
+  toToken: PropTypes.object,
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
   disabled: PropTypes.bool,

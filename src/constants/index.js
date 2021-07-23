@@ -41,9 +41,30 @@ export const TypeAccountStatus = {
   error: 'error',
 }
 
+/**
+ * Type of cached tx type
+ */
+export const TypeTransaction = {
+  transaction: 'transaction', //common transaction,for example: send for native token or transfer for erc20 token
+  approve: 'approve', //approve for erc20 token
+}
+
+/**
+ * Status of shuttle transaction, mainly for local environment
+ */
 export const ShuttleStatus = {
-  success: 'success',
-  waiting: 'waiting',
-  error: 'error',
   pending: 'pending',
+  waiting: 'waiting',
+  success: 'success',
+  error: 'error',
+  skip: 'skip',
+}
+
+export const StatusOperation = {
+  doing: 'doing',
+  finished: 'finished',
+}
+
+export const Millisecond = {
+  day: 24 * 60 * 60 * 1000,
 }
