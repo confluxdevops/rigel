@@ -81,6 +81,17 @@ export const createStore = () =>
           let trans = get().transactions
           let newTrans = JSON.parse(JSON.stringify(trans))
           newTrans = newTrans?.concat(txs)
+          // if(newTrans.length===0){
+          //   newTrans = newTrans?.concat(txs)
+          // }else{
+          //   txs.forEach(tx=>{
+          //     newTrans.forEach(tran=>{
+          //       if(tran?.hash!==tx.hash){
+          //         newTrans.push(tx)
+          //       }
+          //     })
+          // })
+          // }
           set({transactions: newTrans})
         },
         removeTxs: hashs => {

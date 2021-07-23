@@ -119,18 +119,19 @@ export const useUpdateTxs = () => {
         } = item
         const {origin} = toToken
         const isOriginCfx = origin === KeyOfCfx
-        if (
-          fromChain === KeyOfCfx &&
-          isOriginCfx &&
-          type === 'out' &&
-          status === ShuttleStatus.waiting
-        ) {
+        if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
           //native token on Conflux chain shuttle out
-          pendingTxs[hash] = item
-          setWaitingTxs({
-            ...waitingTxs,
-            ...pendingTxs,
-          })
+          const cfxOutTxsExceptWaiting = []
+          if (status === ShuttleStatus.waiting) {
+            pendingTxs[hash] = item
+            setWaitingTxs({
+              ...waitingTxs,
+              ...pendingTxs,
+            })
+          } else {
+            cfxOutTxsExceptWaiting.push(item?.hash)
+          }
+          removeTxs(cfxOutTxsExceptWaiting)
         } else {
           proArr.push(
             requestUserOperationByHash(
