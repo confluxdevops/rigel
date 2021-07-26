@@ -38,7 +38,7 @@ function mapToken(token, isCfxChain) {
 // only use for display
 export function useDisplayTokenList(fromChain, toChain) {
   const tokenList = useMapTokenList(fromChain, toChain)
-
+  console.log(tokenList.filter(ChainConfig[fromChain].displayFilter))
   return useMemo(
     () => tokenList.filter(ChainConfig[fromChain].displayFilter),
     [fromChain, tokenList.toString()],
