@@ -7,14 +7,14 @@ import {useCommonTokens} from '../../../hooks/useTokenList'
 function CommonToken({token, selectedToken, onClick, ...props}) {
   const getSelectedStyle = () => {
     if (_.isEqual(token, selectedToken)) {
-      return 'bg-primary border border-primary text-white'
+      return 'bg-primary text-white'
     }
-    return 'bg-gray-0 border border-gray-20 text-gray-80'
+    return 'bg-gray-0 text-gray-80'
   }
   const {display_symbol} = token
   return (
     <div
-      className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer ${getSelectedStyle()}`}
+      className={`w-20 h-8 rounded-full mr-4 flex justify-center items-center cursor-pointer hover:bg-primary hover:text-white ${getSelectedStyle()}`}
       onClick={() => onClick && onClick(token)}
       aria-hidden="true"
       {...props}

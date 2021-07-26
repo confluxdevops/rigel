@@ -8,7 +8,7 @@ import {BgArrowRight} from '../../../assets/svg'
 const SelectedChain = ({chain, type, ...props}) => {
   const {t} = useTranslation()
   return (
-    <div className="flex-1 px-4 py-3" {...props}>
+    <div className="flex flex-col flex-1 px-4 py-3 items-center" {...props}>
       {type === 'from' && (
         <span className="text-gray-40 text-xs mb-2 inline-block">
           {t('fromChain')}

@@ -46,7 +46,8 @@ export function getExponent(decimals) {
 
 export function getChainIdRight(chain, chainId, address, addrType = 'user') {
   const {wallet, supportedChainIds} = ChainConfig[chain] || {}
-  const isCfxChain = chain === KeyOfCfx
+  const str = 'cacacacacaca'
+  const isCfxChain = chain === KeyOfCfx ? true : false
 
   if (isCfxChain) {
     return (
@@ -55,6 +56,8 @@ export function getChainIdRight(chain, chainId, address, addrType = 'user') {
       checkCfxTokenAddress(address, addrType)
     )
   }
+
+  console.log(str)
 
   return (
     wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'].id

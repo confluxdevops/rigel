@@ -31,9 +31,9 @@ function Button({
         return 'text-gray-80 bg-transparent hover:bg-gray-10'
     } else if (variant === 'outlined') {
       if (danger)
-        return 'border border-error text-error bg-white hover:border-error-dark hover:text-error-dark'
+        return 'border border-error text-error bg-gray-0 hover:border-error-dark hover:text-error-dark'
       if (color === 'primary')
-        return 'border border-primary text-primary bg-white hover:border-primary-dark hover:text-primary-dark'
+        return 'border border-primary text-primary bg-gray-0 hover:border-primary-dark hover:text-primary-dark'
     } else if (variant === 'contained') {
       if (danger) return 'text-white bg-error hover:bg-error-dark'
       if (color === 'primary')
