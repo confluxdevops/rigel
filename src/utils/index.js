@@ -103,3 +103,29 @@ export function containsValueBy(arr, key, value) {
     return false
   })
 }
+
+export function removeTxByHash(trans, hash) {
+  const index = trans.findIndex(tran => tran.hash == hash)
+  trans.splice(index, 1)
+  return trans
+}
+
+export function removeTxs(trans, hashs) {
+  hashs.forEach(hash => {
+    trans.delete(hash)
+  })
+  return trans
+}
+
+export function appendTxs(trans, txs) {
+  txs.forEach(tx => {
+    const hash = tx?.hash
+    if (!trans.has(hash)) {
+      trans.set(hash, tx)
+    }
+  })
+}
+
+export function updateTx(trans, hash, data) {
+  trans.set(hash, {...trans.get(hash), ...data})
+}

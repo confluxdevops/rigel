@@ -1,22 +1,9 @@
-/* eslint-disable no-debugger */
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
 import {TypeTransaction, ShuttleStatus} from '../constants'
 import {KeyOfCfx} from '../constants/chainConfig'
 
 let Store = null
-
-// middleware: merge some data to original transaction data
-// const mergeData = config => (set, get, api) => config(args => {
-//   console.log("original applying", args)
-//   const infoData={
-//     local_timestamp:Date.now(),
-//     local_txType:TypeTransaction.transaction
-//   }
-//   const mergedArgs={...infoData,...args}
-//   set(mergedArgs)
-//   console.log("new state", get())
-// }, get, api)
 
 const mergeData = data => {
   const isToChainCfx = data?.toChain === KeyOfCfx
@@ -40,69 +27,61 @@ export const createStore = () =>
   create(
     persist(
       (set, get) => ({
-        transactions: [],
-        //add to top
+        transactions: {},
+        setTransactions: transactions => {
+          set({transactions: Object.fromEntries(transactions)})
+        },
         unshiftTx: tx => {
           let trans = get().transactions
           const {fromChain, shuttleAddress, toToken = {}} = tx
           const {origin, ctoken} = toToken
           const isCfxChainOut = fromChain === KeyOfCfx && origin === KeyOfCfx
-          const waitingCfxOutTrans = trans.filter(
+          const transArr = Object.values(trans)
+          const waitingCfxOutTrans = transArr.filter(
             tran =>
               tran?.shuttleAddress === shuttleAddress &&
               tran?.toToken?.ctoken === ctoken &&
               tran?.status === ShuttleStatus.waiting,
           )
           if (!(isCfxChainOut && waitingCfxOutTrans.length > 0)) {
-            trans?.unshift(mergeData(tx))
+            trans[tx.hash] = mergeData(tx)
           }
-          set({transactions: trans || []})
-        },
-        updateTx: (hash, data) => {
-          let trans = get().transactions
-          const index = trans.findIndex(tran => tran.hash == hash)
-          trans[index] = {...trans[index], ...data}
           set({transactions: trans})
         },
-        //remove by key: hash
-        removeTx: hash => {
-          let trans = get().transactions
-          const index = trans.findIndex(tran => tran.hash == hash)
-          trans.splice(index, 1)
-          set({transactions: trans})
-        },
-        //add to last
-        appendTx: tx => {
-          let trans = get().transactions
-          trans?.push(tx)
-          set({transactions: trans || []})
-        },
-        appendTxs: txs => {
-          let trans = get().transactions
-          let newTrans = JSON.parse(JSON.stringify(trans))
-          newTrans = newTrans?.concat(txs)
-          // if(newTrans.length===0){
-          //   newTrans = newTrans?.concat(txs)
-          // }else{
-          //   txs.forEach(tx=>{
-          //     newTrans.forEach(tran=>{
-          //       if(tran?.hash!==tx.hash){
-          //         newTrans.push(tx)
-          //       }
-          //     })
-          // })
-          // }
-          set({transactions: newTrans})
-        },
-        removeTxs: hashs => {
-          let trans = get().transactions
-          let newTrans = JSON.parse(JSON.stringify(trans))
-          hashs.forEach(hash => {
-            const index = newTrans.findIndex(tran => tran.hash == hash)
-            newTrans.splice(index, 1)
-          })
-          set({transactions: newTrans})
-        },
+        // updateTx: (hash, data) => {
+        //   let trans = get().transactions
+        //   const index = trans.findIndex(tran => tran.hash == hash)
+        //   trans[index] = {...trans[index], ...data}
+        //   set({transactions: trans})
+        // },
+        // //remove by key: hash
+        // removeTx: hash => {
+        //   let trans = get().transactions
+        //   const index = trans.findIndex(tran => tran.hash == hash)
+        //   trans.splice(index, 1)
+        //   set({transactions: trans})
+        // },
+        // //add to last
+        // appendTx: tx => {
+        //   let trans = get().transactions
+        //   trans?.push(tx)
+        //   set({transactions: trans || []})
+        // },
+        // appendTxs: txs => {
+        //   let trans = get().transactions
+        //   let newTrans = JSON.parse(JSON.stringify(trans))
+        //   newTrans = newTrans?.concat(txs)
+        //   set({transactions: newTrans})
+        // },
+        // removeTxs: hashs => {
+        //   let trans = get().transactions
+        //   let newTrans = JSON.parse(JSON.stringify(trans))
+        //   hashs.forEach(hash => {
+        //     const index = newTrans.findIndex(tran => tran.hash == hash)
+        //     newTrans.splice(index, 1)
+        //   })
+        //   set({transactions: newTrans})
+        // },
       }),
       {
         name: 'transactions', // unique name
