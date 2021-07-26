@@ -1,5 +1,9 @@
 import Big from 'big.js'
 
+Big.DP = 40
+Big.NE = -40
+Big.PE = 40
+
 export const NetworkContextName = 'NETWORK'
 
 export const TypeConnectWallet = {

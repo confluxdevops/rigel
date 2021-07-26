@@ -38,7 +38,6 @@ export function mapToken(token, isCfxChain) {
 // only use for display
 export function useDisplayTokenList(fromChain, toChain) {
   const tokenList = useMapTokenList(fromChain, toChain)
-
   return useMemo(
     () => tokenList.filter(ChainConfig[fromChain].displayFilter),
     [fromChain, tokenList.toString()],
@@ -87,7 +86,12 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
     requestToken,
   )
   const searchTokensFromBackend = useMemo(
-    () => (data ? [data].map(token => mapToken(token, isFromCfxChain)) : []),
+    () =>
+      data
+        ? [data]
+            .filter(token => token.is_valid_erc20 === true)
+            .map(token => mapToken(token, isFromCfxChain))
+        : [],
     [data?.reference, isFromCfxChain],
   )
   useEffect(() => {

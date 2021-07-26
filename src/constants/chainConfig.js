@@ -3,7 +3,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {IS_DEV} from '../utils'
-import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
+import {
+  checkHexAddress,
+  checkCfxTokenAddress,
+  checkBtcAddress,
+} from '../utils/address'
 import {
   ChainBscLogo,
   ChainBtcLogo,
@@ -121,9 +125,18 @@ export const ChainConfig = {
     scanUrl: ScanUrlEth,
     scanTxUrl: ScanUrlEth + '/tx/',
     scanTokenUrl: ScanUrlEth + '/token/',
-    // TODO
     // commonTokens: ['ETH', 'USDT', 'eCFX'],
-    commonTokens: ['eth', '0xae080e58d91cf0b8a8de18ddcf92b9e5fbfadec5'],
+    commonTokens: IS_DEV
+      ? [
+          'eth',
+          '0x08130635368aa28b217a4dfb68e1bf8dc525621c', //AfroX
+          '0x27ccd03d1eccb2cbced1efbb18554bbfd526800a', //ecfx
+        ]
+      : [
+          'eth',
+          '0xdac17f958d2ee523a2206206994597c13d831ec7', //usdt
+          '0xa1f82e14bc09a1b42710df1a8a999b62f294e592', //ecfx
+        ],
     supportedChainIds: ChainIdsEth,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.15, //when you shuttle in some tokens,for example: ETH-cETH,you must have reminder of this amount to pay fee
@@ -141,8 +154,10 @@ export const ChainConfig = {
     scanUrl: ScanUrlBsc,
     scanTxUrl: ScanUrlBsc + '/tx/',
     scanTokenUrl: ScanUrlBsc + '/token/',
-    // TODO
-    commonTokens: ['BNB', 'bcUSDT', 'bCFX'],
+    // commonTokens: ['BNB', 'bCFX'],
+    commonTokens: IS_DEV
+      ? ['bnb', '0xef3f743830078a9cb5ce39c212ec1ca807e45fe1']
+      : ['bnb', '0x045c4324039da91c52c55df5d785385aab073dcf'],
     supportedChainIds: ChainIdsBsc,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.002,
@@ -160,8 +175,10 @@ export const ChainConfig = {
     scanUrl: ScanUrlOec,
     scanTxUrl: ScanUrlOec + '/tx/',
     scanTokenUrl: ScanUrlOec + '/tokenAddr/',
-    // TODO
-    commonTokens: ['OKT'],
+    // commonTokens: ['okt', 'cfxk'],
+    commonTokens: IS_DEV
+      ? ['okt', '0xae6155367003e028b594f1139f2b6edbcb5bb297']
+      : ['okt', '0xfcd4d15f09548cd90efcaf0b1d9531bba670b7b1'],
     supportedChainIds: ChainIdsOec,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.001,
@@ -179,8 +196,18 @@ export const ChainConfig = {
     scanUrl: ScanUrlCfx,
     scanTxUrl: ScanUrlCfx + '/transaction/',
     scanTokenUrl: ScanUrlCfx + '/address/',
-    // TODO
-    commonTokens: ['CFX', 'cUSDT', 'cETH'],
+    // commonTokens: ['CFX', 'cUSDT', 'cETH'],
+    commonTokens: IS_DEV
+      ? [
+          'cfx',
+          'cfxtest:acbp2sm9d1ajzthsep0nkmpm0su0n4dzmeexzdcksf',
+          'cfxtest:acceftennya582450e1g227dthfvp8zz1p370pvb6r',
+        ]
+      : [
+          'cfx',
+          'cfx:acf2rcsh8payyxpg6xj7b0ztswwh81ute60tsw35j7',
+          'cfx:acdrf821t59y12b4guyzckyuw2xf1gfpj2ba0x4sj6',
+        ],
     supportedChainIds: ChainIdsCfx,
     wallet: KeyOfPortal,
     remainderAmount: 1,
@@ -193,10 +220,7 @@ export const ChainConfig = {
     fullName: 'Bitcoin',
     shortName: 'Bitcoin',
     tokenName: 'BTC',
-    checkAddress() {
-      //TODO:
-      return true
-    },
+    checkAddress: checkBtcAddress,
     displayFilter() {
       return true
     },
