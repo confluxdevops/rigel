@@ -57,22 +57,19 @@ import {removeTxs, appendTxs, updateTx} from '../utils/index'
 export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {library} = useActiveWeb3React()
-  const {transactions, setTransactions} = useTxState(
-    useCallback(state => state.transactions, []),
-  )
+  const {transactions, setTransactions} = useTxState()
   const tokenList = useAllTokenList()
   const [waitingTxs, setWaitingTxs] = useState({})
-  try {
-    window._transactions = JSON.parse(JSON.stringify(transactions))
-  } catch (error) {
-    window._transactions = []
-  }
+  console.log('transactions-bb', transactions)
+  window._transactions = new Map(Object.entries(transactions))
   useUpdateWaiting(waitingTxs)
   useEffect(() => {
     const update = () => {
-      const trans = JSON.parse(JSON.stringify(window._transactions))
+      console.log('window._transactions', window._transactions)
+      let trans = new Map(window._transactions)
+      let transArr = [...trans.values()]
       //when tx type is approve transaction
-      const approveTxs = trans.filter(
+      const approveTxs = transArr.filter(
         item => item.tx_type === TypeTransaction.approve,
       )
       const pendingApproveTxs = approveTxs.filter(
@@ -91,7 +88,7 @@ export const useUpdateTxs = () => {
 
       // when tx type is common transacton
       let proArr = []
-      const commonTxs = trans.filter(
+      const commonTxs = transArr.filter(
         item => item.tx_type === TypeTransaction.transaction,
       )
       const hashArr = []
@@ -168,9 +165,11 @@ export const useUpdateTxs = () => {
             if (list) {
               console.log('list', list?.length)
               const newList = list.map(item => mapData(item, tokenList))
+              console.log('newList', newList)
               appendTxs(trans, newList)
               console.log('appendTxs', trans)
             }
+            console.log('trans-final', trans)
             setTransactions(trans)
           })
           .finally(() => {
@@ -312,7 +311,8 @@ export const useTxData = multipleOrderedStatus => {
   const [arr, setArr] = useState([])
   const currentTimestamp = Date.now()
   useEffect(() => {
-    let filteredTxs = transactions.filter(
+    const transArr = Object.values(transactions)
+    let filteredTxs = transArr.filter(
       tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
     ) // recent 24 hours
     let newArr = []

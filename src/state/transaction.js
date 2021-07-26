@@ -40,24 +40,30 @@ export const createStore = () =>
   create(
     persist(
       (set, get) => ({
-        transactions: [],
-        setTransactions: transactions => set({transactions}),
+        transactions: {},
+        setTransactions: transactions => {
+          console.log('transactionscccc', transactions)
+          set({transactions: Object.fromEntries(transactions)})
+        },
         //add to top
         unshiftTx: tx => {
           let trans = get().transactions
           const {fromChain, shuttleAddress, toToken = {}} = tx
           const {origin, ctoken} = toToken
           const isCfxChainOut = fromChain === KeyOfCfx && origin === KeyOfCfx
-          const waitingCfxOutTrans = trans.filter(
+          const transArr = Object.values(trans)
+          const waitingCfxOutTrans = transArr.filter(
             tran =>
               tran?.shuttleAddress === shuttleAddress &&
               tran?.toToken?.ctoken === ctoken &&
               tran?.status === ShuttleStatus.waiting,
           )
           if (!(isCfxChainOut && waitingCfxOutTrans.length > 0)) {
-            trans?.unshift(mergeData(tx))
+            console.log('mergeData(tx)', mergeData(tx))
+            trans[tx.hash] = mergeData(tx)
           }
-          set({transactions: trans || []})
+          console.log(trans)
+          set({transactions: trans})
         },
         updateTx: (hash, data) => {
           let trans = get().transactions

@@ -107,9 +107,10 @@ export function removeTxByHash(trans, hash) {
 }
 
 export function removeTxs(trans, hashs) {
+  console.log('remove-trans', trans)
+  console.log('remove-hash', hashs)
   hashs.forEach(hash => {
-    const index = trans.findIndex(tran => tran.hash == hash)
-    trans.splice(index, 1)
+    trans.delete(hash)
   })
   return trans
 }
@@ -117,21 +118,14 @@ export function removeTxs(trans, hashs) {
 export function appendTxs(trans, txs) {
   console.log('txs', txs)
   txs.forEach(tx => {
-    if (trans.length === 0) {
-      trans = trans.concat(txs)
-    } else {
-      trans.forEach(tran => {
-        console.log('tran', tran)
-        if (tran?.hash !== tx?.hash) {
-          trans.push(tx)
-        }
-      })
+    const hash = tx?.hash
+    if (!trans.has(hash)) {
+      trans.set(hash, tx)
     }
   })
-  return trans
+  console.log('transaaa', trans)
 }
 
 export function updateTx(trans, hash, data) {
-  const index = trans.findIndex(tran => tran.hash == hash)
-  trans[index] = {...trans[index], ...data}
+  trans.set(hash, {...trans[hash], ...data})
 }
