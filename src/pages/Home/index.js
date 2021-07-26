@@ -116,10 +116,10 @@ function Home() {
             {t('home.subTitle')}
           </span>
           <div className="flex mt-11 md:mt-9">
-            <Button className="mr-6" onClick={() => onOpenApp()}>
+            <Button className="mr-6" onClick={() => onOpenApp()} id="openApp">
               {t('home.shuttleFlow')}
             </Button>
-            <Button onClick={() => onOpenPaper()}>
+            <Button onClick={() => onOpenPaper()} id="openPaper">
               {t('home.lightPaper')}
             </Button>
           </div>

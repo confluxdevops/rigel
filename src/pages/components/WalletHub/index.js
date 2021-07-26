@@ -148,7 +148,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
             onClick={onClose}
           />
         </div>
-        <div className="pt-3 flex flex-col">
+        <div className="pt-3 flex flex-col" id="headerAccounts">
           <HeaderAccount
             id="metamask"
             chain={metamaskData.chain}
@@ -162,12 +162,13 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           />
         </div>
       </div>
-      <div className="p-3 bg-gray-10 flex flex-col">
+      <div className="p-3 bg-gray-10 flex flex-col" id="rencentShuttleRecords">
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div
             className="flex items-center"
             aria-hidden="true"
+            id="all"
             onClick={() => {
               const pathWithQuery = queryString.stringifyUrl({
                 url: '/history',
