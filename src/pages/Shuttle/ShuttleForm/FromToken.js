@@ -37,6 +37,7 @@ function FromToken({
       </div>
       <div className="flex justify-between items-center">
         <Input
+          autoComplete="off"
           id="shuttleAmount"
           bordered={false}
           value={value}
