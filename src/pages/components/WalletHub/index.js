@@ -1,5 +1,7 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
+import {useHistory, useLocation} from 'react-router-dom'
 import {useTranslation} from 'react-i18next'
 import {Dropdown, WrapIcon, Link, Loading} from '../../../components'
 import {
@@ -28,16 +30,6 @@ function WalletHub() {
   const transactions = useTxData([ShuttleStatus.pending, ShuttleStatus.waiting])
 
   const pendingTransactions = transactions.slice(0, 5)
-
-  // const pendingTransactions = [
-  //   {
-  //     type: 'shuttle',
-  //     fromChain: 'eth',
-  //     toChain: 'cfx',
-  //     tokenSymbol: 'ETH',
-  //   },
-  //   {type: 'approve', tokenSymbol: 'UNI'},
-  // ]
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
   const connectedData = connectData.filter(data => !!data.address)
@@ -122,6 +114,11 @@ function WalletHub() {
 export default WalletHub
 
 const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
+  const location = useLocation()
+  const history = useHistory()
+  const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
+    location.search,
+  )
   const {t} = useTranslation()
   const metamaskData = connectData.filter(
     data => ChainConfig[data.chain].wallet === KeyOfMetaMask,
@@ -168,10 +165,24 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
       <div className="p-3 bg-gray-10 flex flex-col" id="rencentShuttleRecords">
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
-          <div className="flex items-center" id="all">
-            <Link size="small" href="/history">
-              {t('all')}
-            </Link>
+          <div
+            className="flex items-center"
+            aria-hidden="true"
+            id="all"
+            onClick={() => {
+              const pathWithQuery = queryString.stringifyUrl({
+                url: '/history',
+                query: {
+                  ...others,
+                  fromChain,
+                  toChain,
+                  fromTokenAddress,
+                },
+              })
+              history.push(pathWithQuery)
+            }}
+          >
+            <Link size="small">{t('all')}</Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>
         </div>
