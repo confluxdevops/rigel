@@ -19,7 +19,7 @@ function useChainNetId() {
 
   useEffectOnce(() => {
     const chainListener = newChainId => {
-      if (newChainId !== '0xNaN' && newChainId !== chainId) {
+      if (newChainId !== '0xNaN') {
         setChainid(newChainId)
       }
     }
