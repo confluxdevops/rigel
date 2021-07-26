@@ -111,7 +111,7 @@ function Status({status}) {
         break
       case 'pending':
       case 'waiting':
-        color = 'text-waiting'
+        color = 'text-warning'
         break
     }
     return color
