@@ -28,8 +28,9 @@
   </head>
   <script type="text/javascript">
     const darkMode = window.localStorage.getItem('darkMode') || 'light'
+    document.body.classList.add(darkMode);
   </script>
-  <body class="">
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
