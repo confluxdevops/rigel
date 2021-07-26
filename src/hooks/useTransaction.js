@@ -248,7 +248,7 @@ function mapData(item = {}, tokenList) {
     to_addr,
     amount,
   } = item
-  const isCfxChain = from_chain === KeyOfCfx
+  const isCfxChain = from_chain === KeyOfCfx ? true : false
   const newList = tokenList
     .filter(item => token === (isCfxChain ? item.ctoken : item.reference))
     .filter(item => item.to_chain === to_chain)
