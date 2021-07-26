@@ -115,7 +115,7 @@ export const useUpdateTxs = () => {
           status,
         } = item
         const {origin} = toToken
-        const isOriginCfx = origin === KeyOfCfx
+        const isOriginCfx = origin === KeyOfCfx ? true : false
         if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
           //native token on Conflux chain shuttle out
           const cfxOutTxsExceptWaiting = []

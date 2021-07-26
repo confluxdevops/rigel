@@ -6,7 +6,7 @@ import {KeyOfCfx} from '../constants/chainConfig'
 let Store = null
 
 const mergeData = data => {
-  const isToChainCfx = data?.toChain === KeyOfCfx
+  const isToChainCfx = data?.toChain === KeyOfCfx ? true : false
   const {fromChain, toToken} = data
   let status = ShuttleStatus.pending
   if (fromChain === KeyOfCfx && toToken?.origin === KeyOfCfx) {
