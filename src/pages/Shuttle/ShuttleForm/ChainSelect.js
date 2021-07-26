@@ -64,7 +64,7 @@ export default ChainSelect
  * @param {*} chain
  * @param {*} fromChain
  */
-function useChainsData(type, chain, fromChain) {
+function useChainsData(type, currentChain, fromChain) {
   const [chains, setChains] = useState([])
   useEffect(() => {
     let chainArr = []
@@ -77,7 +77,7 @@ function useChainsData(type, chain, fromChain) {
           item.name = chain.fullName
           item.icon = chain.icon('!h-6 !w-6')
           item.disabled = false
-          if (chainName === chain) {
+          if (chainName === currentChain) {
             item.selected = true
           } else {
             item.selected = false
@@ -105,7 +105,7 @@ function useChainsData(type, chain, fromChain) {
               item.disabled = false
             }
           }
-          if (chainName === chain) {
+          if (chainName === currentChain) {
             item.selected = true
           } else {
             item.selected = false
@@ -115,6 +115,6 @@ function useChainsData(type, chain, fromChain) {
         break
     }
     setChains(chainArr)
-  }, [type, chain, fromChain])
+  }, [type, currentChain, fromChain])
   return chains
 }
