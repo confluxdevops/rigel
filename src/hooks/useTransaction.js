@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useCallback, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {convertDecimal} from '@cfxjs/data-format'
 import {ProxyUrlPrefix, BigNumZero, Decimal18} from '../constants'
 import {useWallet} from '../hooks/useWallet'
@@ -60,12 +59,10 @@ export const useUpdateTxs = () => {
   const {transactions, setTransactions} = useTxState()
   const tokenList = useAllTokenList()
   const [waitingTxs, setWaitingTxs] = useState({})
-  console.log('transactions-bb', transactions)
   window._transactions = new Map(Object.entries(transactions))
   useUpdateWaiting(waitingTxs)
   useEffect(() => {
     const update = () => {
-      console.log('window._transactions', window._transactions)
       let trans = new Map(window._transactions)
       let transArr = [...trans.values()]
       //when tx type is approve transaction
@@ -163,18 +160,12 @@ export const useUpdateTxs = () => {
         )
           .then(list => {
             if (list) {
-              console.log('list', list?.length)
               const newList = list.map(item => mapData(item, tokenList))
-              console.log('newList', newList)
               appendTxs(trans, newList)
-              console.log('appendTxs', trans)
             }
-            console.log('trans-final', trans)
             setTransactions(trans)
           })
-          .finally(() => {
-            console.log('finally', trans)
-          })
+          .finally(() => {})
       })
     }
     update()
@@ -182,7 +173,9 @@ export const useUpdateTxs = () => {
     if (cfxAddress) {
       timeInterval = setInterval(() => update(), 30000)
     }
-    return () => timeInterval && clearInterval(timeInterval)
+    return () => {
+      timeInterval && clearInterval(timeInterval)
+    }
   }, [cfxAddress])
 }
 
@@ -209,9 +202,9 @@ const useUpdateWaiting = txs => {
     newWaitingArr.unshift(nativeItem)
   }
   const {address: cfxAddress} = useWallet(KeyOfCfx)
-  // const {setTransactions} = useTxState()
+  const {transactions, setTransactions} = useTxState()
   const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
-  const trans = JSON.parse(JSON.stringify(window._transactions))
+  let trans = new Map(Object.entries(transactions))
   useEffect(() => {
     newWaitingArr.forEach((item, index) => {
       let amount = 0
@@ -224,9 +217,9 @@ const useUpdateWaiting = txs => {
       } else {
         amount = getComparedBalance(tokenBalances[index])
       }
-      // updateTx(trans,item?.hash, {amount: amount, timestamp: Date.now()})
+      updateTx(trans, item?.hash, {amount: amount, timestamp: Date.now()})
     })
-    // setTransactions(trans)
+    setTransactions(trans)
   }, [cfxAddress, JSON.stringify(tokenBalances), balance.toString(10)])
 }
 
@@ -307,7 +300,6 @@ function mapData(item = {}, tokenList) {
 
 export const useTxData = multipleOrderedStatus => {
   const {transactions} = useTxState()
-  console.log('transactions', transactions)
   const [arr, setArr] = useState([])
   const currentTimestamp = Date.now()
   useEffect(() => {

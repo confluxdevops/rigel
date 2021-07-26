@@ -107,8 +107,6 @@ export function removeTxByHash(trans, hash) {
 }
 
 export function removeTxs(trans, hashs) {
-  console.log('remove-trans', trans)
-  console.log('remove-hash', hashs)
   hashs.forEach(hash => {
     trans.delete(hash)
   })
@@ -116,16 +114,14 @@ export function removeTxs(trans, hashs) {
 }
 
 export function appendTxs(trans, txs) {
-  console.log('txs', txs)
   txs.forEach(tx => {
     const hash = tx?.hash
     if (!trans.has(hash)) {
       trans.set(hash, tx)
     }
   })
-  console.log('transaaa', trans)
 }
 
 export function updateTx(trans, hash, data) {
-  trans.set(hash, {...trans[hash], ...data})
+  trans.set(hash, {...trans.get(hash), ...data})
 }
