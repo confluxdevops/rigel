@@ -226,7 +226,7 @@ function ShuttleForm({
           chain={fromChain || DefaultFromChain}
           type="from"
           onClick={onChangeChain}
-          id="fromToken"
+          id="fromChain"
         />
         <FromToken
           fromChain={fromChain}
