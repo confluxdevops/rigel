@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useCallback, useEffect, useState} from 'react'
 import {convertDecimal} from '@cfxjs/data-format'
@@ -19,6 +20,7 @@ import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList, mapToken} from '../hooks/useTokenList'
 import {useMultipleBalance} from '../hooks/usePortal'
 import {Big} from 'big.js'
+import {removeTxs, appendTxs, updateTx} from '../utils/index'
 
 //update the local data intervally
 // export const useUpdateData = () => {
@@ -55,7 +57,7 @@ import {Big} from 'big.js'
 export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {library} = useActiveWeb3React()
-  const {transactions, updateTx, appendTxs, removeTxs} = useTxState(
+  const {transactions, setTransactions} = useTxState(
     useCallback(state => state.transactions, []),
   )
   const tokenList = useAllTokenList()
@@ -68,8 +70,9 @@ export const useUpdateTxs = () => {
   useUpdateWaiting(waitingTxs)
   useEffect(() => {
     const update = () => {
+      const trans = JSON.parse(JSON.stringify(window._transactions))
       //when tx type is approve transaction
-      const approveTxs = window._transactions.filter(
+      const approveTxs = trans.filter(
         item => item.tx_type === TypeTransaction.approve,
       )
       const pendingApproveTxs = approveTxs.filter(
@@ -80,7 +83,7 @@ export const useUpdateTxs = () => {
           const {hash} = item
           library.getTransactionReceipt(hash).then(res => {
             if (res?.status) {
-              updateTx(hash, {status: ShuttleStatus.success})
+              updateTx(trans, hash, {status: ShuttleStatus.success})
             }
           })
         })
@@ -88,7 +91,7 @@ export const useUpdateTxs = () => {
 
       // when tx type is common transacton
       let proArr = []
-      const commonTxs = window._transactions.filter(
+      const commonTxs = trans.filter(
         item => item.tx_type === TypeTransaction.transaction,
       )
       const hashArr = []
@@ -101,7 +104,7 @@ export const useUpdateTxs = () => {
         .map(item => {
           hashArr.push(item?.hash)
         })
-      removeTxs(hashArr)
+      removeTxs(trans, hashArr)
       const pendingCommonTxs = commonTxs.filter(
         item =>
           item.status === ShuttleStatus.pending ||
@@ -131,7 +134,7 @@ export const useUpdateTxs = () => {
           } else {
             cfxOutTxsExceptWaiting.push(item?.hash)
           }
-          removeTxs(cfxOutTxsExceptWaiting)
+          removeTxs(trans, cfxOutTxsExceptWaiting)
         } else {
           proArr.push(
             requestUserOperationByHash(
@@ -151,7 +154,7 @@ export const useUpdateTxs = () => {
             hashArr.push(pendingCommonTxs[index]?.hash)
           }
         })
-        removeTxs(hashArr)
+        removeTxs(trans, hashArr)
         requestUserOperationList(
           ProxyUrlPrefix.shuttleflow,
           null,
@@ -160,12 +163,19 @@ export const useUpdateTxs = () => {
           null,
           null,
           10000,
-        ).then(list => {
-          if (list) {
-            const newList = list.map(item => mapData(item, tokenList))
-            appendTxs(newList)
-          }
-        })
+        )
+          .then(list => {
+            if (list) {
+              console.log('list', list?.length)
+              const newList = list.map(item => mapData(item, tokenList))
+              appendTxs(trans, newList)
+              console.log('appendTxs', trans)
+            }
+            setTransactions(trans)
+          })
+          .finally(() => {
+            console.log('finally', trans)
+          })
       })
     }
     update()
@@ -200,8 +210,9 @@ const useUpdateWaiting = txs => {
     newWaitingArr.unshift(nativeItem)
   }
   const {address: cfxAddress} = useWallet(KeyOfCfx)
-  const {updateTx} = useTxState()
+  // const {setTransactions} = useTxState()
   const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
+  const trans = JSON.parse(JSON.stringify(window._transactions))
   useEffect(() => {
     newWaitingArr.forEach((item, index) => {
       let amount = 0
@@ -214,8 +225,9 @@ const useUpdateWaiting = txs => {
       } else {
         amount = getComparedBalance(tokenBalances[index])
       }
-      updateTx(item?.hash, {amount: amount, timestamp: Date.now()})
+      // updateTx(trans,item?.hash, {amount: amount, timestamp: Date.now()})
     })
+    // setTransactions(trans)
   }, [cfxAddress, JSON.stringify(tokenBalances), balance.toString(10)])
 }
 
@@ -296,6 +308,7 @@ function mapData(item = {}, tokenList) {
 
 export const useTxData = multipleOrderedStatus => {
   const {transactions} = useTxState()
+  console.log('transactions', transactions)
   const [arr, setArr] = useState([])
   const currentTimestamp = Date.now()
   useEffect(() => {

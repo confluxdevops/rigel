@@ -41,6 +41,7 @@ export const createStore = () =>
     persist(
       (set, get) => ({
         transactions: [],
+        setTransactions: transactions => set({transactions}),
         //add to top
         unshiftTx: tx => {
           let trans = get().transactions

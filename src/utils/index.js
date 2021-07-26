@@ -99,3 +99,39 @@ export function containsValueBy(arr, key, value) {
     return false
   })
 }
+
+export function removeTxByHash(trans, hash) {
+  const index = trans.findIndex(tran => tran.hash == hash)
+  trans.splice(index, 1)
+  return trans
+}
+
+export function removeTxs(trans, hashs) {
+  hashs.forEach(hash => {
+    const index = trans.findIndex(tran => tran.hash == hash)
+    trans.splice(index, 1)
+  })
+  return trans
+}
+
+export function appendTxs(trans, txs) {
+  console.log('txs', txs)
+  txs.forEach(tx => {
+    if (trans.length === 0) {
+      trans = trans.concat(txs)
+    } else {
+      trans.forEach(tran => {
+        console.log('tran', tran)
+        if (tran?.hash !== tx?.hash) {
+          trans.push(tx)
+        }
+      })
+    }
+  })
+  return trans
+}
+
+export function updateTx(trans, hash, data) {
+  const index = trans.findIndex(tran => tran.hash == hash)
+  trans[index] = {...trans[index], ...data}
+}
