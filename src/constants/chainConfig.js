@@ -3,7 +3,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {IS_DEV} from '../utils'
-import {checkHexAddress, checkCfxTokenAddress} from '../utils/address'
+import {
+  checkHexAddress,
+  checkCfxTokenAddress,
+  checkBtcAddress,
+} from '../utils/address'
 import {
   ChainBscLogo,
   ChainBtcLogo,
@@ -150,7 +154,6 @@ export const ChainConfig = {
     scanUrl: ScanUrlBsc,
     scanTxUrl: ScanUrlBsc + '/tx/',
     scanTokenUrl: ScanUrlBsc + '/token/',
-    // TODO
     // commonTokens: ['BNB', 'bCFX'],
     commonTokens: IS_DEV
       ? ['bnb', '0xef3f743830078a9cb5ce39c212ec1ca807e45fe1']
@@ -172,7 +175,6 @@ export const ChainConfig = {
     scanUrl: ScanUrlOec,
     scanTxUrl: ScanUrlOec + '/tx/',
     scanTokenUrl: ScanUrlOec + '/tokenAddr/',
-    // TODO
     // commonTokens: ['okt', 'cfxk'],
     commonTokens: IS_DEV
       ? ['okt', '0xae6155367003e028b594f1139f2b6edbcb5bb297']
@@ -194,7 +196,6 @@ export const ChainConfig = {
     scanUrl: ScanUrlCfx,
     scanTxUrl: ScanUrlCfx + '/transaction/',
     scanTokenUrl: ScanUrlCfx + '/address/',
-    // TODO
     // commonTokens: ['CFX', 'cUSDT', 'cETH'],
     commonTokens: IS_DEV
       ? [
@@ -219,10 +220,7 @@ export const ChainConfig = {
     fullName: 'Bitcoin',
     shortName: 'Bitcoin',
     tokenName: 'BTC',
-    checkAddress() {
-      //TODO:
-      return true
-    },
+    checkAddress: checkBtcAddress,
     displayFilter() {
       return true
     },
