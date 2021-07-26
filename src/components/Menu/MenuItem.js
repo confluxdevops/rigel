@@ -11,7 +11,7 @@ function MenuItem({
   disabled,
 }) {
   const style = useMemo(() => {
-    if (disabled) return 'bg-gray-20 text-gray-40 cursor-not-allowed'
+    if (disabled) return 'text-gray-40 cursor-not-allowed'
     if (selected) return 'bg-gray-0 text-primary cursor-poiniter'
     return 'bg-gray-0 text-gray-100 cursor-poiniter hover:bg-gray-10 hover:text-primary'
   }, [disabled, selected])

@@ -40,7 +40,7 @@ function WalletHub() {
     if (!visible) setArrow('down')
   }
   const pendingTransactionsIcon = pendingTransactions.length > 0 && (
-    <div className="flex items-center justify-center w-4 h-4 absolute -top-1 -right-1 rounded-full bg-error text-xs text-gray-0">
+    <div className="flex items-center justify-center w-4 h-4 absolute -top-1 -right-1 rounded-full bg-error text-xs text-white">
       {pendingTransactions.length > 99 ? '99+' : pendingTransactions.length}
     </div>
   )
