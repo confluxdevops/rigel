@@ -27,9 +27,11 @@ import {ShuttleStatus} from '../../../constants'
 
 function WalletHub() {
   const connectData = useConnectData()
-  const transactions = useTxData([ShuttleStatus.pending, ShuttleStatus.waiting])
+  const pendingTransactions = useTxData([
+    ShuttleStatus.pending,
+    ShuttleStatus.waiting,
+  ])
 
-  const pendingTransactions = transactions.slice(0, 5)
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
   const connectedData = connectData.filter(data => !!data.address)
@@ -192,7 +194,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           </div>
         </div>
         <div>
-          {pendingTransactions.length === 0
+          {displayPendingTransactions.length === 0
             ? noPending
             : displayPendingTransactions.map((data, index) => {
                 const {tx_type, fromToken, fromChain, toChain} = data

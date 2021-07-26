@@ -115,7 +115,7 @@ export const useUpdateTxs = () => {
           status,
         } = item
         const {origin} = toToken
-        const isOriginCfx = origin === KeyOfCfx
+        const isOriginCfx = origin === KeyOfCfx ? true : false
         if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
           //native token on Conflux chain shuttle out
           const cfxOutTxsExceptWaiting = []
@@ -248,7 +248,7 @@ function mapData(item = {}, tokenList) {
     to_addr,
     amount,
   } = item
-  const isCfxChain = from_chain === KeyOfCfx
+  const isCfxChain = from_chain === KeyOfCfx ? true : false
   const newList = tokenList
     .filter(item => token === (isCfxChain ? item.ctoken : item.reference))
     .filter(item => item.to_chain === to_chain)
