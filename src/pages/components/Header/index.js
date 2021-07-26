@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import {NavLink} from 'react-router-dom'
-import {useLocation} from 'react-use'
+import {useLocation, useSearchParam} from 'react-use'
 import {useTranslation} from 'react-i18next'
 import {Logo, DarkLogo, MobileLogo, DarkMobileLogo} from '../../../assets/svg'
 import {useIsMobile} from '../../../hooks'
@@ -11,6 +11,9 @@ import './header.css'
 function Header() {
   const {t} = useTranslation()
   const {pathname} = useLocation()
+  const fromChain = useSearchParam('fromChain')
+  const toChain = useSearchParam('toChain')
+  const fromTokenAddress = useSearchParam('fromTokenAddress')
 
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
@@ -36,7 +39,10 @@ function Header() {
             <DarkLogo className="mr-8" />
           ))}
         {isMobile && (!isDarkMode ? <MobileLogo /> : <DarkMobileLogo />)}
-        <HeaderLink id="shuttle" to="/shuttle">
+        <HeaderLink
+          id="shuttle"
+          to={`/shuttle?fromChain=${fromChain}&toChain=${toChain}&fromTokenAddress=${fromTokenAddress}`}
+        >
           {t('app')}
         </HeaderLink>
       </div>

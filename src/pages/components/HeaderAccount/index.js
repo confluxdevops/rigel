@@ -30,7 +30,7 @@ function HeaderAccount({
 
   return (
     <div className={`flex items-center text-gray-80 ${className}`} {...props}>
-      {showIcon && (
+      {showIcon && accountType !== TypeAccountStatus.unconnected && (
         <WalletIcon
           type={walletKey}
           className={`mr-1 w-5 h-5 ${iconClassName}`}
