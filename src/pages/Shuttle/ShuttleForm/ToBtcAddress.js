@@ -16,7 +16,7 @@ function ToBtcAddress({
         id="toBtcAddress"
         value={btcAddressVal}
         onChange={onAddressInputChange}
-        placeholder={t('destination')}
+        placeholder={t('destinationBtc')}
         width="w-full"
         size="large"
         className="!bg-transparent"

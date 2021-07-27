@@ -42,7 +42,7 @@ function Toast({
         {...props}
       >
         {icon && <img src={icon} alt="status" className="mr-2 w-6 h-6" />}
-        <div className="text-base text-white">{content}</div>
+        <div className="text-xs text-white">{content}</div>
       </div>
     )
   }

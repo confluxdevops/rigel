@@ -5,6 +5,7 @@ import HistoryItem from './HistoryItem'
 import {useTxData} from '../../hooks/useTransaction'
 import {ShuttleStatus} from '../../constants'
 import {ArrowLeft, NoPending} from '../../assets/svg'
+import {Alert} from '../../components'
 
 function History() {
   const historyData = useTxData([
@@ -44,11 +45,18 @@ function History() {
         />
         <span className="text-base text-gray-100">{t('history.title')}</span>
       </div>
+      <Alert
+        open={true}
+        type="warning"
+        closable={false}
+        content={t('cfxAddressRecord')}
+        width="w-full"
+      />
       <div className="flex flex-col w-full overflow-y-auto">
         {historyData.length === 0 && (
           <div className="mt-20 flex flex-col items-center">
             <NoPending className="w-40 h-24 mb-4" />
-            <span className="text-xs text-gray-40">{t('noPendingTxs')}</span>
+            <span className="text-xs text-gray-40">{t('noRecords')}</span>
           </div>
         )}
         {historyData.map((item, index) => (
