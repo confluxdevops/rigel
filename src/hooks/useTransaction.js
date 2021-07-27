@@ -9,7 +9,7 @@ import {
   ShuttleStatus,
   TypeTransaction,
 } from '../constants'
-import {KeyOfCfx} from '../constants/chainConfig'
+import {KeyOfCfx, KeyOfBtc} from '../constants/chainConfig'
 import {
   requestUserOperationList,
   requestUserOperationByHash,
@@ -105,6 +105,7 @@ export const useUpdateTxs = () => {
           item.status === ShuttleStatus.waiting,
       )
       const pendingTxs = {}
+      const transWillRemove = [] //cfx-out btc-in
       pendingCommonTxs.forEach(item => {
         const {
           hash,
@@ -118,7 +119,6 @@ export const useUpdateTxs = () => {
         const isOriginCfx = origin === KeyOfCfx ? true : false
         if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
           //native token on Conflux chain shuttle out
-          const cfxOutTxsExceptWaiting = []
           if (status === ShuttleStatus.waiting) {
             pendingTxs[hash] = item
             setWaitingTxs({
@@ -126,9 +126,10 @@ export const useUpdateTxs = () => {
               ...pendingTxs,
             })
           } else {
-            cfxOutTxsExceptWaiting.push(item?.hash)
+            transWillRemove.push(item?.hash)
           }
-          removeTxs(trans, cfxOutTxsExceptWaiting)
+        } else if (fromChain === KeyOfBtc && type === 'in') {
+          transWillRemove.push(item?.hash)
         } else {
           proArr.push(
             requestUserOperationByHash(
@@ -141,6 +142,7 @@ export const useUpdateTxs = () => {
           )
         }
       })
+      removeTxs(trans, transWillRemove)
       Promise.all(proArr).then(response => {
         let hashArr = []
         response.forEach((item, index) => {
@@ -301,28 +303,33 @@ function mapData(item = {}, tokenList) {
 export const useTxData = multipleOrderedStatus => {
   const {transactions} = useTxState()
   const [arr, setArr] = useState([])
+  const {address} = useWallet(KeyOfCfx)
   const currentTimestamp = Date.now()
   useEffect(() => {
-    const transArr = Object.values(transactions)
-    let filteredTxs = transArr.filter(
-      tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
-    ) // recent 24 hours
-    let newArr = []
-    multipleOrderedStatus.forEach(status => {
-      let groupedArr = []
-      if (status === ShuttleStatus.waiting) {
-        groupedArr = filteredTxs
-          .filter(tx => tx?.status === status)
-          .filter(tx => tx?.amount != 0)
-      } else {
-        groupedArr = filteredTxs.filter(tx => tx?.status === status)
-      }
-      groupedArr.sort(function (a, b) {
-        return b.timestamp - a.timestamp
+    if (address) {
+      const transArr = Object.values(transactions)
+      let filteredTxs = transArr.filter(
+        tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
+      ) // recent 24 hours
+      let newArr = []
+      multipleOrderedStatus.forEach(status => {
+        let groupedArr = []
+        if (status === ShuttleStatus.waiting) {
+          groupedArr = filteredTxs
+            .filter(tx => tx?.status === status)
+            .filter(tx => tx?.amount != 0)
+        } else {
+          groupedArr = filteredTxs.filter(tx => tx?.status === status)
+        }
+        groupedArr.sort(function (a, b) {
+          return b.timestamp - a.timestamp
+        })
+        newArr = newArr.concat(groupedArr)
       })
-      newArr = newArr.concat(groupedArr)
-    })
-    setArr(newArr)
-  }, [JSON.stringify(transactions)])
+      setArr(newArr)
+    } else {
+      setArr([])
+    }
+  }, [JSON.stringify(transactions), address])
   return arr
 }
