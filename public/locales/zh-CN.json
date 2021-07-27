@@ -3,7 +3,7 @@
   "shuttleInfo": "跨 <strong>{{value}}</strong> {{tokenSymbol}} 去 {{chain}}",
   "confirm": "在 {{wallet}} 确认这笔交易",
   "submitted": "交易已发出",
-  "viewOnScan": "去 Scan 上查看",
+  "viewOnScan": "去区块链浏览器上查看",
   "addTokenToMetaMask": "添加 {{tokenSymbol}} 去 MetaMask",
   "addedTokenToMetaMask": "已添加 {{tokenSymbol}}",
   "rejected": "交易被拒绝",
@@ -29,9 +29,10 @@
   "receiveAs": "将收到",
   "fromChain": "从",
   "toChain": "至",
-  "transactionAmount": "交易数额",
+  "transactionAmount": "跨链交易数额",
   "asset": "资产",
   "destination": "目标收款地址",
+  "destinationBtc": "接收 BTC 的地址",
   "shuttleFee": "跨链手续费",
   "checkboxLabel": "我已知晓上述风险",
   "approve": "授权 {{tokenSymbol}}",
@@ -45,8 +46,9 @@
   "error": {
     "index": "错误",
     "inputValidAmount": "请输入有效的数值",
-    "mustGtVal": "输入值必须大于等于 {{value}}",
-    "mustLsMax": "输入值值需要小于等于 {{value}}",
+    "mustGtZero": "输入值必须大于 0",
+    "mustGteMin": "输入值必须大于等于 {{value}}",
+    "mustLteMax": "输入值超出余额",
     "addressInvalid": "地址无效",
     "wrongNetwork": "网络错误",
     "unspoortedNetwork": "不支持的网络",
@@ -59,7 +61,7 @@
     "notice": "注意",
     "addressTip": "请务必确认地址准确无误",
     "toBtcAddressTip": "请务必确保输入的地址准确",
-    "forbiddenAddressTip": "<strong>不要使用</strong>合约账户或者中心化交易所的充币地址",
+    "forbiddenAddressTip": "跨链手续费将会在跨链交易数量中扣减",
     "gasTip": "你需要支付 <strong>{{fromChain}}</strong> 网络的 Gas 费",
     "toBtcGasTip": "你需要支付比特币网络的矿工费",
     "btcWaitLongTip": "跨链将在比特币网络完成 6 个块确认后开始处理，至少需要 1 小时，请耐心等待",
@@ -96,5 +98,20 @@
     "goBack": "返回首页"
   },
   "testnet": "测试网",
-  "mainnet": "主网"
+  "mainnet": "主网",
+  "history": {
+    "title": "最近 24 小时的跨链记录",
+    "chainDescription": "从 {{fromChain}} 至 {{toChain}}",
+    "pending": "处理中",
+    "waiting": "等待中",
+    "success": "已完成",
+    "error": "错误",
+    "fromBtcAddress": "比特币网络地址",
+    "progress": {
+      "stepOne": "开始跨链进程",
+      "stepTwo": "{{fromChain}} {{fromChainId}} 已确认",
+      "stepThree": "ShuttleFlow 已确认",
+      "stepFour": "{{toChain}} {{toChainId}} 已确认"
+    }
+  }
 }

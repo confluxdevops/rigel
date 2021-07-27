@@ -23,7 +23,7 @@ function ConfirmTips({fromChain, toChain, ...props}) {
       {!isBtcChain && (
         <span className="flex items-center whitespace-pre">
           <Circle />
-          <Trans i18nKey="tips.forbiddenAddressTip" />
+          {t('tips.forbiddenAddressTip')}
         </span>
       )}
       {!isBtcChain && (
