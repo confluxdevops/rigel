@@ -80,7 +80,8 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
   const {setTokenFromBackend} = useShuttleState()
   const searchTokens = useSearchAddressFromList(fromChain, toChain, search)
   const {data} = useSWR(
-    ChainConfig[fromChain].checkAddress(search) && searchTokens.length === 0
+    ChainConfig[fromChain].checkAddress(search, 'contract') &&
+      searchTokens.length === 0
       ? [ProxyUrlPrefix.sponsor, fromChain, toChain, search]
       : null,
     requestToken,
@@ -92,7 +93,7 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
             .filter(token => token.is_valid_erc20 === true)
             .map(token => mapToken(token, isFromCfxChain))
         : [],
-    [data?.reference, isFromCfxChain],
+    [data?.reference, data?.ctoken, isFromCfxChain],
   )
   useEffect(() => {
     if (searchTokensFromBackend.length === 1) {
@@ -105,7 +106,7 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
 // search token adddress from current list
 function useSearchAddressFromList(fromChain, toChain, search) {
   const tokenList = useMapTokenList(fromChain, toChain)
-  const isValidAddress = ChainConfig[fromChain].checkAddress(search)
+  const isValidAddress = ChainConfig[fromChain].checkAddress(search, 'contract')
 
   return useMemo(
     () =>
