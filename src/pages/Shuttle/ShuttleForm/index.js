@@ -49,7 +49,7 @@ function ShuttleForm({
   toAccountType,
 }) {
   const {t} = useTranslation()
-  const [errorMsg, setErrorMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState(null)
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
@@ -152,23 +152,29 @@ function ShuttleForm({
 
   function validateData(value) {
     if ((!isFromChainBtc && !fromAddress) || errorNetwork) return ''
-    let error = ''
+    let error = null
     if (!isNaN(Number(value))) {
       const valBig = new Big(value || 0)
       if (valBig.gte(minimalVal) && valBig.gt('0')) {
         //must be greater than zero
         if (!isFromChainBtc && valBig.gt(balanceVal)) {
           //must be less than Max value
-          error = t('error.mustLteMax')
+          error = {str: 'error.mustLteMax'}
         }
       } else if (valBig.lte('0')) {
-        error = t('error.mustGtZero', {value: formatAmount(minimalVal)})
+        error = {
+          str: 'error.mustGtZero',
+          obj: {value: formatAmount(minimalVal)},
+        }
       } else {
-        error = t('error.mustGteMin', {value: formatAmount(minimalVal)})
+        error = {
+          str: 'error.mustGteMin',
+          obj: {value: formatAmount(minimalVal)},
+        }
       }
     } else {
       //not a valid number
-      error = t('error.inputValidAmount')
+      error = {str: 'error.inputValidAmount'}
     }
     return error
   }
@@ -243,7 +249,11 @@ function ShuttleForm({
       </div>
       <div className="flex w-full">
         <div className="w-29.5" />
-        {errorMsg && <div className="text-xs text-error mt-2">{errorMsg}</div>}
+        {errorMsg && (
+          <div className="text-xs text-error mt-2">
+            {t(errorMsg.str, errorMsg.obj)}
+          </div>
+        )}
       </div>
       <WrapIcon
         type="circle"
