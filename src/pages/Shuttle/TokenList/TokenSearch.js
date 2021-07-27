@@ -7,7 +7,7 @@ function TokenSearch({value, onChange}) {
   const {t} = useTranslation()
   return (
     <Input
-      autocomplete="off"
+      autoComplete="off"
       id="searchValue"
       prefix={<Search className="w-4 h-4 text-gray-40" />}
       width="w-full"
