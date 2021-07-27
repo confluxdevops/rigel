@@ -70,7 +70,7 @@ function Progress({progress, fromChain, toChain}) {
           >
             {t('history.progress.stepOne')}
           </span>
-          {!isFromBtcChain && (
+          {!isFromBtcChain && getIsDone(0) && (
             <JumpIcon
               url={
                 ChainConfig[fromChain].scanTxUrl + nonce_or_txid.split('_')[0]
@@ -92,7 +92,7 @@ function Progress({progress, fromChain, toChain}) {
                 ].name,
             })}
           </span>
-          {!isFromBtcChain && (
+          {!isFromBtcChain && getIsDone(1) && (
             <JumpIcon
               url={
                 ChainConfig[fromChain].scanTxUrl + nonce_or_txid.split('_')[0]
@@ -108,7 +108,7 @@ function Progress({progress, fromChain, toChain}) {
           >
             {t('history.progress.stepThree')}
           </span>
-          {!isToBtcChain && (
+          {!isToBtcChain && getIsDone(2) && (
             <JumpIcon
               url={ChainConfig[toChain].scanTxUrl + nonce_or_txid.split('_')[0]}
             />
@@ -128,7 +128,7 @@ function Progress({progress, fromChain, toChain}) {
                 ].name,
             })}
           </span>
-          {!isToBtcChain && (
+          {!isToBtcChain && getIsDone(3) && (
             <JumpIcon
               url={ChainConfig[toChain].scanTxUrl + nonce_or_txid.split('_')[0]}
             />
