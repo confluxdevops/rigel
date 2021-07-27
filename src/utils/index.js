@@ -1,4 +1,5 @@
 import {ChainConfig, KeyOfCfx} from '../constants/chainConfig'
+import {Mainnet, Testnet} from '../constants'
 import Big from 'big.js'
 import {BigNumber} from '@ethersproject/bignumber'
 import {BigNumZero} from '../constants'
@@ -52,14 +53,12 @@ export function getChainIdRight(chain, chainId, address, addrType = 'user') {
   if (isCfxChain) {
     return (
       wallet &&
-      chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'].id &&
+      chainId == supportedChainIds?.[IS_DEV ? Testnet : Mainnet].id &&
       checkCfxTokenAddress(address, addrType)
     )
   }
 
-  return (
-    wallet && chainId == supportedChainIds?.[IS_DEV ? 'TESTNET' : 'MAINNET'].id
-  )
+  return wallet && chainId == supportedChainIds?.[IS_DEV ? Testnet : Mainnet].id
 }
 
 //remove duplicate object from array
