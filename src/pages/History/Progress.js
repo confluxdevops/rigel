@@ -3,6 +3,7 @@ import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {SupportedChains, ChainConfig} from '../../constants/chainConfig'
+import {Mainnet, Testnet} from '../../constants'
 import {IS_DEV} from '../../utils'
 import {useIsBtcChain} from '../../hooks'
 import {ArrowJump} from '../../assets/svg'
@@ -87,7 +88,7 @@ function Progress({progress, fromChain, toChain}) {
               fromChain: ChainConfig[fromChain].shortName,
               fromChainId:
                 ChainConfig[fromChain].supportedChainIds?.[
-                  IS_DEV ? 'TESTNET' : 'MAINNET'
+                  IS_DEV ? Testnet : Mainnet
                 ].name,
             })}
           </span>
@@ -123,7 +124,7 @@ function Progress({progress, fromChain, toChain}) {
               toChain: ChainConfig[toChain].shortName,
               toChainId:
                 ChainConfig[toChain].supportedChainIds?.[
-                  IS_DEV ? 'TESTNET' : 'MAINNET'
+                  IS_DEV ? Testnet : Mainnet
                 ].name,
             })}
           </span>

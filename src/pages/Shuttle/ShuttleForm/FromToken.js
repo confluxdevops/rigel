@@ -43,7 +43,7 @@ function FromToken({
           value={value}
           onChange={onInputChange}
           placeholder="0.00"
-          className="!text-gray-100 !text-lg !bg-transparent"
+          className="!text-gray-100 !text-lg !bg-transparent !px-0"
           width="w-36"
           maxLength="40"
         />

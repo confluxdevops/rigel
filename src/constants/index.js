@@ -6,6 +6,9 @@ Big.PE = 40
 
 export const NetworkContextName = 'NETWORK'
 
+export const Mainnet = 'MAINNET'
+export const Testnet = 'TESTNET'
+
 export const TypeConnectWallet = {
   uninstalled: 'uninstalled',
   loading: 'loading',
