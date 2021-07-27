@@ -41,6 +41,8 @@
   "waitOneHour": "跨链将在比特币网络完成 6 个块确认后开始处理，至少需要 1 小时",
   "copiedSuccess": "复制成功",
   "noPendingTxs": "处理中的交易将会显示在这里",
+  "noRecords": "暂无记录",
+  "cfxAddressRecord": "只展示与 Conflux 地址相关的跨链记录。",
   "shuttleRecordItem": "{{tokenSymbol}} 从 {{fromChain}} 到 {{toChain}}",
   "approveRecordItem": "授权 {{tokenSymbol}}",
   "error": {

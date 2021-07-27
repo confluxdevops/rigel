@@ -58,7 +58,7 @@ function TokenInfo({toToken, fromChain, toChain}) {
                 open={copied}
                 type="line"
                 onClose={() => setCopied(false)}
-                className="top-5 -right-5 w-40"
+                className="top-5 -right-5 w-20"
               />
             </WrapIcon>
           )}

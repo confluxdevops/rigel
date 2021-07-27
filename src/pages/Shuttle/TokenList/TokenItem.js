@@ -74,7 +74,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
               open={copied}
               type="line"
               onClose={() => setCopied(false)}
-              className="top-5 right-5 w-40"
+              className="top-5 right-5 w-20"
             />
           </WrapIcon>
         )}

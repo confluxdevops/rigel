@@ -45,6 +45,13 @@ function Alert({
       }`
   }, [bordered, type])
 
+  const contentStyle = useMemo(() => {
+    if (type === 'info') return 'text-info-dark'
+    if (type === 'warning') return 'text-warning-dark'
+    if (type === 'error') return 'text-error-dark'
+    if (type === 'success') return 'text-success-dark'
+  }, [type])
+
   const onCloseClick = e => {
     e.stopPropagation()
     if (closable) {
@@ -66,7 +73,7 @@ function Alert({
     >
       <div className="flex items-center">
         {icon || IconComponent || null}
-        <span className="text-gray-80">{content}</span>
+        <span className={`${contentStyle}`}>{content}</span>
       </div>
       {closable && (
         <span aria-hidden="true" onClick={e => onCloseClick(e)}>

@@ -59,7 +59,7 @@ function BtcConfirmTips() {
         open={copied}
         type="line"
         onClose={() => setCopied(false)}
-        className="top-10 right-10 w-40"
+        className="top-10 right-10 w-20"
       />
     </div>
   )
