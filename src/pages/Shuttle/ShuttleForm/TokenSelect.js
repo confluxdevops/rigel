@@ -24,7 +24,7 @@ function TokenSelect({token, onClick, type, fromChain, toChain, ...props}) {
       {...props}
     >
       <TokenIcon token={token} chain={chain} size="small" />
-      <span className={`ml-1 ${style}`}>{display_symbol}</span>
+      <span className={`ml-1 font-medium ${style}`}>{display_symbol}</span>
       {type === 'from' && !isFromBtcChain && !isToBtcChain && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />
