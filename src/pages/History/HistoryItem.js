@@ -21,7 +21,7 @@ import {ShuttleStatus} from '../../constants'
 import Progress from './Progress'
 
 function TokenInfo({toToken, fromChain, toChain}) {
-  const {symbol, address} = toToken
+  const {display_symbol, address} = toToken
   const isNativeToken = useIsNativeToken(toChain, address)
   const {addToken} = useAddTokenToMetamask(toToken)
   const isToChainCfx = useIsCfxChain(toChain)
@@ -38,7 +38,7 @@ function TokenInfo({toToken, fromChain, toChain}) {
       <TokenIcon chain={toChain} size="large" token={toToken} />
       <div className="ml-2 flex flex-col">
         <span className="text-gray-100 font-medium mr-1 flex items-center">
-          {symbol}
+          {display_symbol}
           {!isNativeToken && !isToChainCfx && (
             <WrapIcon
               type="circle"
