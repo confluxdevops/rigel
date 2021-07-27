@@ -113,15 +113,11 @@ function ShuttleForm({
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
-    const error = validateData(maxAmount)
-    setErrorMsg(error)
   }
 
   const onInputChange = e => {
     let value = e.target.value
     onChangeValue && onChangeValue(value)
-    const error = validateData(value)
-    setErrorMsg(error)
   }
 
   const onAddressInputChange = e => {
@@ -129,7 +125,7 @@ function ShuttleForm({
     setBtcAddressVal(value)
     const isBtcAddress = checkBtcAddress(value)
     if (!isBtcAddress) {
-      setErrorBtcAddressMsg(t('error.addressInvalid'))
+      setErrorBtcAddressMsg('error.addressInvalid')
     } else {
       setErrorBtcAddressMsg('')
     }
@@ -178,6 +174,15 @@ function ShuttleForm({
     }
     return error
   }
+
+  useEffect(() => {
+    if (value) {
+      const error = validateData(value)
+      setErrorMsg(error)
+    } else {
+      setErrorMsg(null)
+    }
+  }, [value])
 
   useEffect(() => {
     setBtnDisabled(true)
@@ -277,7 +282,7 @@ function ShuttleForm({
       {isToChainBtc && (
         <ToBtcAddress
           btcAddressVal={btcAddressVal}
-          errorBtcAddressMsg={errorBtcAddressMsg}
+          errorBtcAddressMsg={t(errorBtcAddressMsg)}
           onAddressInputChange={onAddressInputChange}
         />
       )}
