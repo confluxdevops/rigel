@@ -1,4 +1,3 @@
-import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {BgArrowRight} from '../../../assets/svg'
 import {WrapIcon} from '../../../components'
@@ -11,10 +10,6 @@ function TokenSelect({token, onClick, type, fromChain, toChain, ...props}) {
   const isToBtcChain = useIsBtcChain(toChain)
   const chain = type === 'from' ? fromChain : toChain
   const {display_symbol} = token
-  const style = useMemo(() => {
-    if (type === 'from') return 'text-gray-100'
-    if (type === 'to') return 'text-gray-40'
-  }, [type])
 
   return (
     <div
@@ -24,7 +19,7 @@ function TokenSelect({token, onClick, type, fromChain, toChain, ...props}) {
       {...props}
     >
       <TokenIcon token={token} chain={chain} size="small" />
-      <span className={`ml-1 font-medium ${style}`}>{display_symbol}</span>
+      <span className="ml-1 font-medium text-gray-100">{display_symbol}</span>
       {type === 'from' && !isFromBtcChain && !isToBtcChain && (
         <WrapIcon type="circle" className="ml-1">
           <BgArrowRight />

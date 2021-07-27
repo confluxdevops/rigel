@@ -8,11 +8,11 @@ import {
   TokenLeft,
   SfCenter,
   TokenRight,
-  Twitter,
-  Telegram,
-  Discord,
-  Medium,
-  GitHub,
+  // Twitter,
+  // Telegram,
+  // Discord,
+  // Medium,
+  // GitHub,
   LightLeft,
   LightRight,
   LightCenter,
@@ -53,49 +53,49 @@ function Home() {
       © 2021 ShuttleFlow. All Rights Reserved.
     </span>
   )
-  const icon = (
-    <div className="flex pb-6 md:pb-0">
-      <a
-        className="mr-4"
-        href="https://twitter.com/@Conflux_Network"
-        rel="noreferrer"
-        target="_blank"
-      >
-        <img src={Twitter} alt="twitter" />
-      </a>
-      <a
-        className="mr-4"
-        href="https://t.me/Conflux_English"
-        rel="noreferrer"
-        target="_blank"
-      >
-        <img src={Telegram} alt="telegram" />
-      </a>
-      <a
-        className="mr-4"
-        href="https://discord.com/invite/aCZkf2C"
-        rel="noreferrer"
-        target="_blank"
-      >
-        <img src={Discord} alt="discord" />
-      </a>
-      <a
-        className="mr-4"
-        href="https://medium.com/@ConfluxNetwork"
-        rel="noreferrer"
-        target="_blank"
-      >
-        <img src={Medium} alt="medium" />
-      </a>
-      <a
-        href="https://github.com/conflux-chain"
-        rel="noreferrer"
-        target="_blank"
-      >
-        <img src={GitHub} alt="github" />
-      </a>
-    </div>
-  )
+  // const icon = (
+  //   <div className="flex pb-6 md:pb-0">
+  //     <a
+  //       className="mr-4"
+  //       href="https://twitter.com/@Conflux_Network"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Twitter} alt="twitter" />
+  //     </a>
+  //     <a
+  //       className="mr-4"
+  //       href="https://t.me/Conflux_English"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Telegram} alt="telegram" />
+  //     </a>
+  //     <a
+  //       className="mr-4"
+  //       href="https://discord.com/invite/aCZkf2C"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Discord} alt="discord" />
+  //     </a>
+  //     <a
+  //       className="mr-4"
+  //       href="https://medium.com/@ConfluxNetwork"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Medium} alt="medium" />
+  //     </a>
+  //     <a
+  //       href="https://github.com/conflux-chain"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={GitHub} alt="github" />
+  //     </a>
+  //   </div>
+  // )
   const line = <div className="border-solid border-t border-gray-20" />
 
   return (
@@ -255,12 +255,12 @@ function Home() {
           {line}
           <div className="flex justify-between items-center py-3 px-0">
             {copyright}
-            {icon}
+            {/* {icon} */}
           </div>
         </div>
       ) : (
         <div className="fixed bottom-0 w-full px-4">
-          {icon}
+          {/* {icon} */}
           {line}
           {copyright}
         </div>

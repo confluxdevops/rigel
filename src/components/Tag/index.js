@@ -25,9 +25,9 @@ function Tag({
   const colorStyle = useMemo(() => {
     if (disabled) return ''
     if (color === 'primary') {
-      return 'text-primary bg-primary-10 hover:border hover:border-primary'
+      return 'text-primary bg-primary-10 border border-transparent hover:border-primary'
     } else if (color === 'error') {
-      return 'text-error bg-error-10 hover:border hover:border-error'
+      return 'text-error bg-error-10 border border-transparent hover:border-error'
     }
     return ''
   }, [disabled, color])
