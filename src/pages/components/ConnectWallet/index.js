@@ -6,19 +6,23 @@ import {
   WalletConfig,
   SupportedChains,
 } from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
 import {ConnectWalletModal} from '../../components'
 import {Button, Tag} from '../../../components'
 import {TypeConnectWallet} from '../../../constants'
 
-function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
+function ConnectWallet({
+  size = 'medium',
+  chain,
+  className = '',
+  type,
+  tryActivate,
+  ...props
+}) {
   const {t} = useTranslation()
   const [open, setOpen] = useState(false)
-  const {type, tryActivate, setType} = useWallet(chain)
   const walletConfig = WalletConfig[ChainConfig[chain]?.wallet]
   const walletIcon = walletConfig?.icon(`${className} !w-3 !h-3`)
   const onConnect = () => {
-    setType(TypeConnectWallet.loading)
     setOpen(true)
     tryActivate()
   }
@@ -52,12 +56,15 @@ function ConnectWallet({size = 'medium', chain, className = '', ...props}) {
           {`${t('connect')} ${walletConfig?.name}`}
         </Button>
       )}
-      <ConnectWalletModal
-        type={type}
-        chain={chain}
-        open={open}
-        onClose={onClose}
-      />
+      {open && (
+        <ConnectWalletModal
+          type={type}
+          chain={chain}
+          open={open}
+          onClose={onClose}
+          tryActivate={tryActivate}
+        />
+      )}
     </>
   )
 }
@@ -65,6 +72,8 @@ ConnectWallet.propTypes = {
   size: PropTypes.oneOf(['medium', 'large']).isRequired,
   chain: PropTypes.oneOf(SupportedChains).isRequired,
   className: PropTypes.string,
+  type: PropTypes.oneOf(Object.values(TypeConnectWallet)).isRequired,
+  tryActivate: PropTypes.func,
 }
 
 export default ConnectWallet

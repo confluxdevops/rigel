@@ -1,7 +1,9 @@
-import {ChainConfig} from '../constants/chainConfig'
+import {ChainConfig, KeyOfCfx} from '../constants/chainConfig'
+import {Mainnet, Testnet} from '../constants'
 import Big from 'big.js'
 import {BigNumber} from '@ethersproject/bignumber'
 import {BigNumZero} from '../constants'
+import {checkCfxTokenAddress} from './address'
 
 export const IS_DEV =
   window.location.hostname === 'localhost' ||
@@ -41,4 +43,85 @@ export function calculateGasMargin(value) {
 
 export function getExponent(decimals) {
   return `1e${decimals}`
+}
+
+export function getChainIdRight(chain, chainId, address, addrType = 'user') {
+  console.log(chain, chainId, KeyOfCfx)
+  const {wallet, supportedChainIds} = ChainConfig[chain] || {}
+  const isCfxChain = chain === KeyOfCfx ? true : false
+
+  if (isCfxChain) {
+    return (
+      wallet &&
+      chainId == supportedChainIds?.[IS_DEV ? Testnet : Mainnet].id &&
+      checkCfxTokenAddress(address, addrType)
+    )
+  }
+
+  return wallet && chainId == supportedChainIds?.[IS_DEV ? Testnet : Mainnet].id
+}
+
+//remove duplicate object from array
+export function uniqueArray(arr) {
+  return arr.filter((item, index) => {
+    const _thing = JSON.stringify(item)
+    return (
+      index ===
+      arr.findIndex(obj => {
+        return JSON.stringify(obj) === _thing
+      })
+    )
+  })
+}
+
+//whether contains object in array
+export function containsObj(arr, obj) {
+  arr.forEach(item => {
+    const _item = JSON.stringify(item)
+    if (JSON.stringify(obj) === _item) {
+      return true
+    }
+    return false
+  })
+}
+
+/**
+ * whether the value of each object in this array equals to the value
+ * @param {*} arr
+ * @param {*} key
+ * @param {*} value
+ */
+export function containsValueBy(arr, key, value) {
+  arr.forEach(item => {
+    if (item[key] === value) {
+      return true
+    }
+    return false
+  })
+}
+
+export function removeTxByHash(trans, hash) {
+  const index = trans.findIndex(tran => tran.hash == hash)
+  trans.splice(index, 1)
+  return trans
+}
+
+export function removeTxs(trans, hashs) {
+  hashs.forEach(hash => {
+    trans.delete(hash)
+  })
+  return trans
+}
+
+export function appendTxs(trans, txs) {
+  txs.forEach(tx => {
+    const hash = tx?.hash
+    if (!trans.has(hash)) {
+      trans.set(hash, tx)
+    }
+  })
+}
+
+export function updateTx(trans, hash, data) {
+  trans.set(hash, {...trans.get(hash), ...data})
 }

@@ -1,22 +1,19 @@
-import {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
 import {Account, ConnectWallet, AccountError} from '../../components'
 import {TypeAccountStatus} from '../../../constants'
+import {getChainIdRight} from '../../../utils'
 
-function AccountStatus({chain, size = 'medium', className = '', id}) {
-  const {address} = useWallet(chain)
-  const {type: accountType, errorType} = useAccountStatus(chain)
-  const accountCompStyle = useMemo(() => {
-    if (size === 'medium') return 'text-xs text-gray-80'
-    if (size === 'large') return 'text-sm text-gray-80'
-  }, [size])
-
-  const iconStyle = useMemo(() => {
-    if (size === 'medium') return 'mr-1.5 !w-3 !h-3'
-    if (size === 'large') return 'mr-2 !w-4 !h-4'
-  }, [size])
+function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
+  const {address, error, chainId, type, tryActivate} = useWallet(chain)
+  const isChainIdRight = getChainIdRight(chain, chainId, address)
+  const {type: accountType, errorType} = useAccountStatus(
+    chain,
+    address,
+    error,
+    isChainIdRight,
+  )
 
   return (
     <div className={`${className}`}>
@@ -24,17 +21,21 @@ function AccountStatus({chain, size = 'medium', className = '', id}) {
         <Account
           id={`${id}_account`}
           chain={chain}
-          showIcon={true}
-          className={accountCompStyle}
-          iconClassName={iconStyle}
+          size={size}
           address={address}
         />
       )}
       {accountType === TypeAccountStatus.unconnected && (
-        <ConnectWallet id={`${id}_connectWallet`} chain={chain} size={size} />
+        <ConnectWallet
+          id={`${id}_connectWallet`}
+          chain={chain}
+          size={size}
+          type={type}
+          tryActivate={tryActivate}
+        />
       )}
       {accountType === TypeAccountStatus.error && (
-        <AccountError chain={chain} errorType={errorType} />
+        <AccountError chain={chain} errorType={errorType} onClose={onClose} />
       )}
     </div>
   )
@@ -45,5 +46,6 @@ AccountStatus.propTypes = {
   size: PropTypes.oneOf(['medium', 'large']),
   className: PropTypes.string,
   id: PropTypes.string,
+  onClose: PropTypes.func,
 }
 export default AccountStatus

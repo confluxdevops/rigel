@@ -30,7 +30,7 @@ function TokenList({fromChain, toChain, selectedToken, onSelectToken, onBack}) {
     <div className="flex flex-col items-center bg-gray-0 w-full md:w-110 rounded-2.5xl py-6 shadow-common">
       <div className="flex justify-center items-center relative w-full mb-4 px-6">
         <ArrowLeft
-          className="text-gray-40 absolute left-6 w-6 h-6"
+          className="text-gray-40 absolute left-6 w-6 h-6 cursor-pointer"
           onClick={() => onBack && onBack()}
         />
         <span className="text-base text-gray-100">{t('selectToken')}</span>

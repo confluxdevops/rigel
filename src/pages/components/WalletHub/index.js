@@ -1,5 +1,7 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
+import {useHistory, useLocation} from 'react-router-dom'
 import {useTranslation} from 'react-i18next'
 import {Dropdown, WrapIcon, Link, Loading} from '../../../components'
 import {
@@ -18,18 +20,31 @@ import {
   KeyOfPortal,
 } from '../../../constants/chainConfig'
 import {shortenAddress} from '../../../utils/address'
-import {AccountStatus} from '../../components'
+import {HeaderAccount} from '../../components'
+import {useTxData} from '../../../hooks/useTransaction'
+import {useConnectData} from '../../../hooks'
+import {ShuttleStatus} from '../../../constants'
 
-function WalletHub({connectData, pendingTransactions = []}) {
+function WalletHub() {
+  const connectData = useConnectData()
+  const pendingTransactions = useTxData([
+    ShuttleStatus.pending,
+    ShuttleStatus.waiting,
+  ])
+
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
   const connectedData = connectData.filter(data => !!data.address)
-  const unConnectedData = connectData.filter(data => !data.address)
   const length = connectedData.length
   const onVisibleChange = visible => {
     if (visible) setArrow('top')
     if (!visible) setArrow('down')
   }
+  const pendingTransactionsIcon = pendingTransactions.length > 0 && (
+    <div className="flex items-center justify-center w-4 h-4 absolute -top-1 -right-1 rounded-full bg-error text-xs text-white">
+      {pendingTransactions.length > 99 ? '99+' : pendingTransactions.length}
+    </div>
+  )
   let children
   if (length === 0) {
     children = (
@@ -47,30 +62,29 @@ function WalletHub({connectData, pendingTransactions = []}) {
         id="walletHub"
         className="h-8 bg-gray-20 flex items-center pl-3 rounded-full relative cursor-pointer"
       >
-        {WalletConfig[ChainConfig[unConnectedData[0].chain].wallet].icon()}
+        {WalletConfig[ChainConfig[connectedData[0].chain].wallet].icon()}
         <div className="h-full border border-gray-20 bg-gray-0 flex items-center rounded-full ml-1 px-3">
           <Connected className="w-2 h-2 mr-1" />
           <span className="mr-1 text-gray-100">
-            {shortenAddress(connectedData[0].chain, connectedData[0].address)}
+            {shortenAddress(
+              connectedData[0].chain,
+              connectedData[0].address,
+              'user',
+              false,
+            )}
           </span>
           <WrapIcon type="circle">
             {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
           </WrapIcon>
         </div>
-        {pendingTransactions.length > 0 && (
-          <div className="flex items-center justify-center w-4 h-4 absolute top-0 right-0 rounded-full bg-error text-xs text-gray-0">
-            {pendingTransactions.length > 99
-              ? '99+'
-              : pendingTransactions.length}
-          </div>
-        )}
+        {pendingTransactionsIcon}
       </div>
     )
   } else if (length === 2) {
     children = (
       <div
         id="walletHub"
-        className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer"
+        className="h-8 px-3 flex items-center rounded-full border border-gray-20 cursor-pointer relative"
       >
         <Connected className="w-2 h-2 mr-1" />
         {WalletConfig[KeyOfPortal].icon()}
@@ -78,6 +92,7 @@ function WalletHub({connectData, pendingTransactions = []}) {
         <WrapIcon type="circle" className="ml-1">
           {arrow === 'down' ? <BgArrowDown /> : <BgArrowUp />}
         </WrapIcon>
+        {pendingTransactionsIcon}
       </div>
     )
   }
@@ -102,14 +117,14 @@ function WalletHub({connectData, pendingTransactions = []}) {
   )
 }
 
-WalletHub.propTypes = {
-  connectData: PropTypes.array.isRequired,
-  pendingTransactions: PropTypes.array,
-}
-
 export default WalletHub
 
 const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
+  const location = useLocation()
+  const history = useHistory()
+  const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
+    location.search,
+  )
   const {t} = useTranslation()
   const metamaskData = connectData.filter(
     data => ChainConfig[data.chain].wallet === KeyOfMetaMask,
@@ -124,6 +139,10 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
     </div>
   )
   const displayPendingTransactions = pendingTransactions.slice(0, 5)
+  const onClose = () => {
+    onClick && onClick()
+    onClickHandler && onClickHandler()
+  }
   return (
     <div className="w-60 shadow-common rounded flex flex-col">
       <div className="p-3 bg-gray-0 flex flex-col">
@@ -132,50 +151,66 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
           <Close
             id="closePopup"
             className="w-4 h-4 text-gray-40"
-            onClick={() => {
-              onClick && onClick()
-              onClickHandler && onClickHandler()
-            }}
+            onClick={onClose}
           />
         </div>
-        <div className="pt-3 flex flex-col">
-          <AccountStatus
+        <div className="pt-3 flex flex-col" id="headerAccounts">
+          <HeaderAccount
             id="metamask"
             chain={metamaskData.chain}
-            size="large"
             className="mb-3"
+            onClose={onClose}
           />
-          <AccountStatus id="portal" chain={portalData.chain} size="large" />
+          <HeaderAccount
+            id="portal"
+            chain={portalData.chain}
+            onClose={onClose}
+          />
         </div>
       </div>
-      <div className="p-3 bg-gray-10 flex flex-col">
+      <div className="p-3 bg-gray-10 flex flex-col" id="rencentShuttleRecords">
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
-          <div className="flex items-center">
-            <Link size="small" to="/history">
-              {t('all')}
-            </Link>
+          <div
+            className="flex items-center cursor-pointer"
+            aria-hidden="true"
+            id="all"
+            onClick={() => {
+              const pathWithQuery = queryString.stringifyUrl({
+                url: '/history',
+                query: {
+                  ...others,
+                  fromChain,
+                  toChain,
+                  fromTokenAddress,
+                },
+              })
+              history.push(pathWithQuery)
+            }}
+          >
+            <Link size="small">{t('all')}</Link>
             <ArrowRight className="w-4 h-4 text-gray-40" />
           </div>
         </div>
         <div>
-          {pendingTransactions.length === 0
+          {displayPendingTransactions.length === 0
             ? noPending
             : displayPendingTransactions.map((data, index) => {
-                const {type, tokenSymbol, fromChain, toChain} = data
+                const {tx_type, fromToken, fromChain, toChain} = data
+                const {display_symbol} = fromToken
                 return (
                   <div className="mt-3 flex items-center" key={index}>
                     <Loading className="mr-1 !w-3 !h-3" />
                     <span className="text-gray-80 text-xs">
-                      {type === 'shuttle' &&
+                      {tx_type === 'transaction' &&
                         t('shuttleRecordItem', {
-                          tokenSymbol,
+                          tokenSymbol: display_symbol,
                           fromChain: ChainConfig[fromChain].shortName,
                           toChain: ChainConfig[toChain].shortName,
                         })}
 
-                      {type === 'approve' &&
-                        t('approveRecordItem', {tokenSymbol})}
+                      {tx_type === 'approve' &&
+                        t('approveRecordItem', {tokenSymbol: display_symbol})}
                     </span>
                   </div>
                 )

@@ -1,36 +1,30 @@
 import PropTypes from 'prop-types'
 import {NavLink} from 'react-router-dom'
-import {useLocation} from 'react-use'
+import {useLocation, useSearchParam} from 'react-use'
 import {useTranslation} from 'react-i18next'
 import {Logo, DarkLogo, MobileLogo, DarkMobileLogo} from '../../../assets/svg'
-import {useIsMobile, useConnectData} from '../../../hooks'
+import {useIsMobile} from '../../../hooks'
 import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
+import {useUpdateTxs} from '../../../hooks/useTransaction'
 
 function Header() {
   const {t} = useTranslation()
   const {pathname} = useLocation()
+  const fromChain = useSearchParam('fromChain')
+  const toChain = useSearchParam('toChain')
+  const fromTokenAddress = useSearchParam('fromTokenAddress')
+
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
-
-  const connectData = useConnectData()
-  const pendingTransactions = [
-    {
-      type: 'shuttle',
-      fromChain: 'eth',
-      toChain: 'cfx',
-      tokenSymbol: 'ETH',
-    },
-    {type: 'approve', tokenSymbol: 'UNI'},
-  ]
-
+  useUpdateTxs()
   if (pathname === '/maintenance' || pathname === '/notfound') {
     return null
   }
   if (pathname === '/') {
     return (
-      <div className="h-16 px-8 bg-transparent flex justify-between items-center w-full">
+      <div className="h-16 px-3 md:px-8 bg-transparent flex justify-between items-center w-full">
         {!isMobile ? <DarkLogo /> : <DarkMobileLogo />}
         <LanguageButton />
       </div>
@@ -46,16 +40,16 @@ function Header() {
             <DarkLogo className="mr-8" />
           ))}
         {isMobile && (!isDarkMode ? <MobileLogo /> : <DarkMobileLogo />)}
-        <HeaderLink id="shuttle" to="/shuttle">
+        <HeaderLink
+          id="shuttle"
+          to={`/shuttle?fromChain=${fromChain}&toChain=${toChain}&fromTokenAddress=${fromTokenAddress}`}
+        >
           {t('app')}
         </HeaderLink>
       </div>
       {!isMobile && (
         <div className="flex items-center">
-          <WalletHub
-            connectData={connectData}
-            pendingTransactions={pendingTransactions}
-          />
+          <WalletHub />
           <ThemeButton />
           <LanguageButton />
         </div>

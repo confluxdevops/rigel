@@ -25,11 +25,8 @@ export function useConnectData() {
   const {address: ethAddress} = useWallet(KeyOfEth)
   const connectData = useMemo(
     () => [
-      {
-        chain: KeyOfCfx,
-        address: cfxAddress,
-      },
-      {chain: KeyOfEth, address: ethAddress},
+      {address: ethAddress, chain: KeyOfEth},
+      {address: cfxAddress, chain: KeyOfCfx},
     ],
     [cfxAddress, ethAddress],
   )

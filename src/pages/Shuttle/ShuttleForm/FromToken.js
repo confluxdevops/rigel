@@ -16,8 +16,10 @@ function FromToken({
   value,
   onInputChange,
   onMaxClick,
+  errorNetwork,
 }) {
   const {t} = useTranslation()
+
   return (
     <div className="flex flex-col flex-1 border border-gray-10 rounded px-3 py-4 justify-between">
       <div className="flex justify-between">
@@ -29,26 +31,30 @@ function FromToken({
           toChain={toChain}
           onClick={() => onChooseToken && onChooseToken()}
         />
-        <AccountStatus id="fromToken" chain={fromChain} size="medium" />
+        <div className="h-6 flex items-center">
+          <AccountStatus id="fromToken" chain={fromChain} size="medium" />
+        </div>
       </div>
       <div className="flex justify-between items-center">
         <Input
+          autoComplete="off"
           id="shuttleAmount"
           bordered={false}
           value={value}
           onChange={onInputChange}
           placeholder="0.00"
-          className="!text-gray-100 !text-lg !bg-transparent"
-          width="w-32"
+          className="!text-gray-100 !text-lg !bg-transparent !px-0"
+          width="w-36"
+          maxLength="40"
         />
         <div className="flex flex-col items-end">
-          {fromAddress && (
+          {fromAddress && !errorNetwork && (
             <span
               className="text-gray-40 text-xs inline-block mb-1"
               id="balance"
             >{`${t('balance')} ${formatAmount(balanceVal)}`}</span>
           )}
-          {fromAddress && (
+          {fromAddress && !errorNetwork && (
             <Tag size="small" onClick={onMaxClick} id="max">
               {t('max')}
             </Tag>
@@ -69,6 +75,7 @@ FromToken.propTypes = {
   onChooseToken: PropTypes.func,
   onInputChange: PropTypes.func,
   onMaxClick: PropTypes.func,
+  errorNetwork: PropTypes.bool,
 }
 
 export default FromToken

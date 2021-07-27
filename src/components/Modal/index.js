@@ -57,7 +57,7 @@ function Modal({
             : size === 'medium'
             ? 'w-full md:w-110'
             : 'w-full md:w-70'
-        } rounded bg-white shadow-3 p-6 ${className}`}
+        } rounded bg-gray-0 shadow-3 p-6 ${className}`}
         {...props}
       >
         {closable && (

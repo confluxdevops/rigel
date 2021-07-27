@@ -8,12 +8,11 @@ import {
   TokenLeft,
   SfCenter,
   TokenRight,
-  CopyRight,
-  Twitter,
-  Telegram,
-  Discord,
-  Medium,
-  GitHub,
+  // Twitter,
+  // Telegram,
+  // Discord,
+  // Medium,
+  // GitHub,
   LightLeft,
   LightRight,
   LightCenter,
@@ -23,8 +22,11 @@ import {
   PipleRight,
   TunnelLeft,
   TunnelRight,
+  BaseMobile,
+  ShuttleFlowMobile,
 } from '../../assets/img'
 import {Button} from '../../components'
+import {useIsMobile} from '../../hooks'
 
 function Home() {
   useEffectOnce(() => {
@@ -45,24 +47,85 @@ function Home() {
         : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf',
     )
   }
+  const isMobile = useIsMobile()
+  const copyright = (
+    <span className="inline-block text-gray-40 text-xs py-4 md:py-0 md:h-4">
+      © 2021 ShuttleFlow. All Rights Reserved.
+    </span>
+  )
+  // const icon = (
+  //   <div className="flex pb-6 md:pb-0">
+  //     <a
+  //       className="mr-4"
+  //       href="https://twitter.com/@Conflux_Network"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Twitter} alt="twitter" />
+  //     </a>
+  //     <a
+  //       className="mr-4"
+  //       href="https://t.me/Conflux_English"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Telegram} alt="telegram" />
+  //     </a>
+  //     <a
+  //       className="mr-4"
+  //       href="https://discord.com/invite/aCZkf2C"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Discord} alt="discord" />
+  //     </a>
+  //     <a
+  //       className="mr-4"
+  //       href="https://medium.com/@ConfluxNetwork"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={Medium} alt="medium" />
+  //     </a>
+  //     <a
+  //       href="https://github.com/conflux-chain"
+  //       rel="noreferrer"
+  //       target="_blank"
+  //     >
+  //       <img src={GitHub} alt="github" />
+  //     </a>
+  //   </div>
+  // )
+  const line = <div className="border-solid border-t border-gray-20" />
+
   return (
-    <div className="w-full h-screen relative">
-      <div className="w-360">
-        <div className="ml-24">
-          <img className="w-160 pt-24" src={ShuttleFlow} alt="title" />
-          <span className="inline-block text-gray-400 mt-9 text-xl">
+    <div className="w-full relative md:h-screen md:min-h-220">
+      <div className="md:w-360 mx-auto">
+        <div className="ml-4 md:ml-20">
+          <img
+            className="mt-14 md:hidden"
+            src={ShuttleFlowMobile}
+            alt="title"
+          />
+          <img
+            className="hidden md:block w-160 pt-24"
+            src={ShuttleFlow}
+            alt="title"
+          />
+          <span className="inline-block text-gray-60 mt-2 text-base md:mt-9 md:text-xl">
             {t('home.subTitle')}
           </span>
-          <div className="mt-9 flex">
-            <Button className="mr-5" onClick={() => onOpenApp()}>
+          <div className="flex mt-11 md:mt-9">
+            <Button className="mr-6" onClick={() => onOpenApp()} id="openApp">
               {t('home.shuttleFlow')}
             </Button>
-            <Button onClick={() => onOpenPaper()}>
+            <Button onClick={() => onOpenPaper()} id="openPaper">
               {t('home.lightPaper')}
             </Button>
           </div>
         </div>
-        <div className="relative">
+        <img className="mt-8 w-full md:hidden" src={BaseMobile} alt="base" />
+        <div className="hidden md:block relative">
           <div className="absolute left-240 top-30">
             <img className="w-64" src={TunnelRight} alt="tunnel" />
           </div>
@@ -76,7 +139,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
             >
               <animateMotion
-                dur="5s"
+                dur="10s"
                 repeatCount="indefinite"
                 path="M0,160 Q110,118 200,25 Q110,118 0,160"
               />
@@ -87,7 +150,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
             >
               <animateMotion
-                dur="6s"
+                dur="11s"
                 repeatCount="indefinite"
                 path="M0,160 Q110,118 200,25 Q110,118 0,160"
               />
@@ -98,7 +161,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
             >
               <animateMotion
-                dur="7s"
+                dur="12s"
                 repeatCount="indefinite"
                 path="M0,160 Q110,118 200,25 Q110,118 0,160"
               />
@@ -124,7 +187,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
             >
               <animateMotion
-                dur="7s"
+                dur="10s"
                 repeatCount="indefinite"
                 path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60 "
               />
@@ -135,7 +198,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
             >
               <animateMotion
-                dur="6s"
+                dur="11s"
                 repeatCount="indefinite"
                 path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
               />
@@ -146,7 +209,7 @@ function Home() {
               href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
             >
               <animateMotion
-                dur="5s"
+                dur="12s"
                 repeatCount="indefinite"
                 path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
               />
@@ -164,19 +227,19 @@ function Home() {
           <div className="absolute left-302 -top-6 animate-bounce">
             <img src={TokenRight} alt="token" />
           </div>
-          <div className="absolute left-40 top-52 animate-pulse">
+          <div className="absolute left-40 top-52 animate-pulse-fast">
             <img src={LightLeft} alt="light" />
           </div>
-          <div className="absolute left-154 -top-1 animate-pulse">
+          <div className="absolute left-154 -top-1 animate-pulse-fast">
             <img src={LightCenter} alt="light" />
           </div>
-          <div className="absolute left-293 -top-1 animate-pulse">
+          <div className="absolute left-293 -top-1 animate-pulse-fast">
             <img src={LightRight} alt="light" />
           </div>
-          <div className="absolute left-158 top-60 animate-pulse">
+          <div className="absolute left-158 top-60 animate-pulse-fast">
             <img src={LightTunnel1} alt="light" />
           </div>
-          <div className="absolute left-280 top-34 animate-pulse">
+          <div className="absolute left-280 top-34 animate-pulse-fast">
             <img src={LightTunnel2} alt="light" />
           </div>
           <div className="absolute left-116 top-64">
@@ -187,51 +250,21 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-16 w-full flex justify-between py-4 border-solid border-t-2 border-gray-20">
-        <img src={CopyRight} alt="copyright" />
-        <div className="flex">
-          <a
-            className="mr-5"
-            href="https://twitter.com/@Conflux_Network"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Twitter} alt="twitter" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://t.me/Conflux_English"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Telegram} alt="telegram" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://discord.com/invite/aCZkf2C"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Discord} alt="discord" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://medium.com/@ConfluxNetwork"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={Medium} alt="medium" />
-          </a>
-          <a
-            className="mr-5"
-            href="https://github.com/conflux-chain"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={GitHub} alt="github" />
-          </a>
+      {!isMobile ? (
+        <div className="absolute bottom-0 w-full">
+          {line}
+          <div className="flex justify-between items-center py-3 px-0">
+            {copyright}
+            {/* {icon} */}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="fixed bottom-0 w-full px-4">
+          {/* {icon} */}
+          {line}
+          {copyright}
+        </div>
+      )}
     </div>
   )
 }

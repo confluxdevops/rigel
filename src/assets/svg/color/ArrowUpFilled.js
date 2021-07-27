@@ -1,4 +1,4 @@
-function SvgArrowTopFilled(props) {
+function SvgArrowUpFilled(props) {
   return (
     <svg
       width={24}
@@ -30,4 +30,4 @@ function SvgArrowTopFilled(props) {
   )
 }
 
-export default SvgArrowTopFilled
+export default SvgArrowUpFilled

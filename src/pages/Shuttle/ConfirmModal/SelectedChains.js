@@ -8,7 +8,7 @@ import {BgArrowRight} from '../../../assets/svg'
 const SelectedChain = ({chain, type, ...props}) => {
   const {t} = useTranslation()
   return (
-    <div className="flex-1 px-4 py-3" {...props}>
+    <div className="flex flex-col flex-1 px-4 py-3 items-center" {...props}>
       {type === 'from' && (
         <span className="text-gray-40 text-xs mb-2 inline-block">
           {t('fromChain')}
@@ -37,7 +37,10 @@ SelectedChain.propTypes = {
 
 function SelectedChains({fromChain, toChain}) {
   return (
-    <div className="w-full border border-gray-10 flex items-center">
+    <div
+      id="selectedChains"
+      className="w-full border border-gray-10 flex items-center"
+    >
       <SelectedChain id="selectedFromChain" type="from" chain={fromChain} />
       <WrapIcon size="w-7 h-7" className="mx-6" type="circle">
         <BgArrowRight className="text-gray-40" />

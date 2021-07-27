@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
+import {formatAmount} from '@cfxjs/data-format'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon, Account} from '../../components'
 import {useIsCfxChain} from '../../../hooks'
 import {useShuttleFee} from '../../../hooks/useShuttleData'
 
-function ConfirmInfo({fromChain, toChain, fromToken}) {
+function ConfirmInfo({fromChain, toChain, fromToken, toAddress}) {
   const {display_symbol} = fromToken
   const {t} = useTranslation()
   const isFromChainCfx = useIsCfxChain(fromChain)
@@ -24,15 +25,17 @@ function ConfirmInfo({fromChain, toChain, fromToken}) {
       <div className="flex items-center justify-between mt-4">
         <span className="text-gray-40">{t('destination')}</span>
         <Account
-          showIcon={true}
           chain={toChain}
           className="text-gray-100"
-          iconClassName="mr-1 !w-5 !h-5"
+          size="large"
+          address={toAddress}
         />
       </div>
       <div className="flex items-center justify-between mt-4">
         <span className="text-gray-40">{t('shuttleFee')}</span>
-        <span className="text-gray-100">{`${shuttleFee} ${display_symbol}`}</span>
+        <span className="text-gray-100">{`${formatAmount(
+          shuttleFee,
+        )} ${display_symbol}`}</span>
       </div>
     </div>
   )
@@ -42,6 +45,7 @@ ConfirmInfo.propTypes = {
   fromToken: PropTypes.object.isRequired,
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
+  toAddress: PropTypes.string,
 }
 
 export default ConfirmInfo

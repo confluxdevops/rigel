@@ -7,7 +7,7 @@ import {ChainConfig} from '../constants/chainConfig'
 import {useIsCfxChain} from '../hooks'
 import {useShuttleState} from '../state'
 
-function mapToken(token, isCfxChain) {
+export function mapToken(token, isCfxChain) {
   if (!token) return {}
   const {
     ctoken,
@@ -38,7 +38,6 @@ function mapToken(token, isCfxChain) {
 // only use for display
 export function useDisplayTokenList(fromChain, toChain) {
   const tokenList = useMapTokenList(fromChain, toChain)
-
   return useMemo(
     () => tokenList.filter(ChainConfig[fromChain].displayFilter),
     [fromChain, tokenList.toString()],
@@ -66,10 +65,12 @@ export function useMapTokenList(fromChain, toChain) {
 
 // get all token list from backend
 export function useAllTokenList() {
-  const {data} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
+  const {data, error} = useSWR(ProxyUrlPrefix.sponsor, requestAllTokenList, {
     refreshInterval: IntervalTime.fetchTokenList,
     suspense: true,
   })
+  const {setError} = useShuttleState()
+  if (error) setError(error)
   return data ? data : []
 }
 
@@ -85,14 +86,19 @@ function useSearchAddressFromBackend(fromChain, toChain, search) {
     requestToken,
   )
   const searchTokensFromBackend = useMemo(
-    () => (data ? [data].map(token => mapToken(token, isFromCfxChain)) : []),
-    [data.reference, isFromCfxChain],
+    () =>
+      data
+        ? [data]
+            .filter(token => token.is_valid_erc20 === true)
+            .map(token => mapToken(token, isFromCfxChain))
+        : [],
+    [data?.reference, isFromCfxChain],
   )
   useEffect(() => {
     if (searchTokensFromBackend.length === 1) {
       setTokenFromBackend(searchTokensFromBackend[0])
     }
-  }, [searchTokensFromBackend[0].address])
+  }, [searchTokensFromBackend[0]?.address])
   return searchTokensFromBackend
 }
 
@@ -114,7 +120,7 @@ function useSearchAddressFromList(fromChain, toChain, search) {
 
 // serach token name from current list
 function useSearchNameFromList(fromChain, toChain, search) {
-  const tokenList = useMapTokenList(fromChain, toChain)
+  const tokenList = useDisplayTokenList(fromChain, toChain)
 
   return useMemo(
     () =>

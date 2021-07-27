@@ -1,18 +1,25 @@
+import {useState} from 'react'
 import PropTypes from 'prop-types'
+import {useTranslation} from 'react-i18next'
 import _ from 'underscore'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon} from '../../components'
-import {WrapIcon} from '../../../components'
-import {BgPlus} from '../../../assets/svg'
+import {WrapIcon, Toast} from '../../../components'
+import {BgPlus, BgCopy} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../../hooks'
+import {useIsNativeToken} from '../../../hooks/useWallet'
 
 function TokenItem({chain, token, selectedToken, onClick, ...props}) {
   const {address, display_symbol, display_name} = token
-  const {addToken, success} = useAddTokenToMetamask(token)
+  const {addToken} = useAddTokenToMetamask(token)
   const isCfxChain = useIsCfxChain(chain)
+  const isNativeToken = useIsNativeToken(chain, address)
   const tokenAddress = shortenAddress(chain, address, 'contract')
+  const {t} = useTranslation()
+  const [copied, setCopied] = useState(false)
 
   const getSelectedStyle = () => {
     if (_.isEqual(token, selectedToken)) {
@@ -23,7 +30,6 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
 
   const onAddToken = e => {
     e.stopPropagation()
-    if (success) return
     addToken()
   }
 
@@ -45,13 +51,31 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
         {tokenAddress && (
           <span className="text-xs text-primary">{tokenAddress}</span>
         )}
-        {!isCfxChain && (
+        {!isCfxChain && !isNativeToken && (
           <WrapIcon
             type="circle"
             className="ml-1 cursor-pointer"
             onClick={e => onAddToken(e)}
           >
             <BgPlus />
+          </WrapIcon>
+        )}
+        {isCfxChain && !isNativeToken && (
+          <WrapIcon
+            type="circle"
+            className="ml-1 cursor-pointer relative"
+            onClick={e => e.stopPropagation()}
+          >
+            <CopyToClipboard text={address} onCopy={() => setCopied(true)}>
+              <BgCopy />
+            </CopyToClipboard>
+            <Toast
+              content={t('copiedSuccess')}
+              open={copied}
+              type="line"
+              onClose={() => setCopied(false)}
+              className="top-5 right-5 w-40"
+            />
           </WrapIcon>
         )}
       </div>

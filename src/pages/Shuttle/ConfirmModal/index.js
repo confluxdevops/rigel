@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
+import {formatAmount} from '@cfxjs/data-format'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {useIsBtcChain} from '../../../hooks'
@@ -24,7 +25,7 @@ function ConfirmModal({
   const content = (
     <div className="flex flex-col items-center">
       <span className="text-gray-100 text-xl">
-        {value}
+        {formatAmount(value ? value : '0')}
         <span className="text-sm ml-1">{display_symbol}</span>
       </span>
       <span className="inline-block -mt-1 mb-4 text-gray-40">
@@ -36,6 +37,7 @@ function ConfirmModal({
           fromChain={fromChain}
           toChain={toChain}
           fromToken={fromToken}
+          {...props}
         />
       </div>
       {fromIsBtcChain && <BtcConfirmTips />}
@@ -57,7 +59,7 @@ function ConfirmModal({
       open={open}
       content={content}
       onClose={onClose}
-      className="!pb-0 !px-0 !bg-gray-0"
+      className="!pb-0 !px-0"
     />
   )
 }

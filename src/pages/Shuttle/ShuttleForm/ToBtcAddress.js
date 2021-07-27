@@ -12,6 +12,7 @@ function ToBtcAddress({
   return (
     <div className="flex flex-col mt-4">
       <Input
+        autoComplete="off"
         id="toBtcAddress"
         value={btcAddressVal}
         onChange={onAddressInputChange}

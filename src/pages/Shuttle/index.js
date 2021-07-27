@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import {useFromToken, useToToken} from '../../hooks/useTokenList'
-import {useAccountStatus} from '../../hooks/useWallet'
+import {useAccountStatus, useWallet} from '../../hooks/useWallet'
 import ShuttleForm from './ShuttleForm'
 import TokenList from './TokenList'
 import {
@@ -14,15 +15,20 @@ import {
   KeyOfCfx,
   KeyOfBtc,
 } from '../../constants/chainConfig'
-import {TxReceiptModalType, TypeAccountStatus} from '../../constants'
+import {
+  TxReceiptModalType,
+  TypeAccountStatus,
+  ShuttleStatus,
+} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
+import {getChainIdRight} from '../../utils'
 
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const {tokenFromBackend} = useShuttleState()
+  const {tokenFromBackend, error} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [value, setValue] = useState('')
@@ -32,8 +38,34 @@ function Shuttle() {
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
   )
-  const {type: fromAccountType} = useAccountStatus(fromChain)
-  const {type: toAccountType} = useAccountStatus(toChain)
+  const {
+    address: fromAddress,
+    error: fromChainError,
+    chainId: fromChainId,
+  } = useWallet(fromChain)
+  const {
+    address: toAddress,
+    error: toChainError,
+    chainId: toChainId,
+  } = useWallet(toChain)
+  const isFromChainIdRight = getChainIdRight(
+    fromChain,
+    fromChainId,
+    fromAddress,
+  )
+  const isToChainIdRight = getChainIdRight(toChain, toChainId, toAddress)
+  const {type: fromAccountType} = useAccountStatus(
+    fromChain,
+    fromAddress,
+    fromChainError,
+    isFromChainIdRight,
+  )
+  const {type: toAccountType} = useAccountStatus(
+    toChain,
+    toAddress,
+    toChainError,
+    isToChainIdRight,
+  )
   const {address} = tokenFromBackend
   let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
   if (address === fromTokenAddress) fromToken = tokenFromBackend
@@ -81,6 +113,10 @@ function Shuttle() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, btcTokenPair.address])
 
+  useEffect(() => {
+    if (error) history.push('/maintenance')
+  }, [error, history])
+
   const onSelectToken = token => {
     setTokenListShow(false)
     const pathWithQuery = queryString.stringifyUrl({
@@ -93,6 +129,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onChangeChain = (chain, type) => {
@@ -121,6 +158,7 @@ function Shuttle() {
       },
     })
     history.push(pathWithQuery)
+    setValue('')
   }
 
   const onInvertChain = () => {
@@ -158,7 +196,6 @@ function Shuttle() {
         <ShuttleForm
           fromChain={fromChain}
           toChain={toChain}
-          fromTokenAddress={fromTokenAddress}
           fromToken={fromToken}
           toToken={toToken}
           onChooseToken={() => setTokenListShow(true)}
@@ -167,6 +204,10 @@ function Shuttle() {
           value={value}
           onChangeChain={onChangeChain}
           onInvertChain={onInvertChain}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
+          fromAccountType={fromAccountType}
+          toAccountType={toAccountType}
         />
       )}
       {tokenListShow && (
@@ -178,7 +219,7 @@ function Shuttle() {
           onBack={() => setTokenListShow(false)}
         />
       )}
-      {true && (
+      {confirmModalShow && (
         <ConfirmModal
           open={confirmModalShow}
           onClose={() => setConfirmModalShow(false)}
@@ -190,6 +231,8 @@ function Shuttle() {
           setTxModalType={setTxModalType}
           setTxModalShow={setTxModalShow}
           setTxHash={setTxHash}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
         />
       )}
       {txModalShow && (
@@ -202,7 +245,10 @@ function Shuttle() {
           toToken={toToken}
           value={value}
           txHash={txHash}
-          onClose={() => setTxModalShow(false)}
+          onClose={() => {
+            setTxModalShow(false)
+            setValue('')
+          }}
         />
       )}
     </div>

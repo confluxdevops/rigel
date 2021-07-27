@@ -2,7 +2,7 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
-import {convertDecimal} from '@cfxjs/data-format'
+import {convertDecimal, formatAmount} from '@cfxjs/data-format'
 import Big from 'big.js'
 
 import {WrapIcon, Button} from '../../../components'
@@ -12,11 +12,17 @@ import {
   SupportedChains,
   KeyOfBtc,
 } from '../../../constants/chainConfig'
+import {TypeAccountStatus, Decimal18} from '../../../constants'
 
-import {useWallet, useBalance, useIsNativeToken} from '../../../hooks/useWallet'
+import {
+  useBalance,
+  useIsNativeToken,
+  useWallet,
+  useAccountStatus,
+} from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
-import {getMaxAmount} from '../../../utils'
+import {getMaxAmount, getChainIdRight} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
@@ -29,7 +35,6 @@ import {useCustodianData, useSponsorData} from '../../../hooks/useShuttleData'
 function ShuttleForm({
   fromChain,
   toChain,
-  fromTokenAddress,
   fromToken,
   toToken,
   onChooseToken,
@@ -38,15 +43,18 @@ function ShuttleForm({
   value,
   onChangeChain,
   onInvertChain,
+  fromAddress,
+  toAddress,
+  fromAccountType,
+  toAccountType,
 }) {
   const {t} = useTranslation()
-  const [errorMsg, setErrorMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState(null)
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
-  const {address: fromAddress} = useWallet(fromChain)
-  const {address: toAddress} = useWallet(toChain)
-  const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
+  const {address, decimals, supported} = fromToken
+  const isNativeToken = useIsNativeToken(fromChain, address)
   const isFromChainCfx = useIsCfxChain(fromChain)
   const isToChainCfx = useIsCfxChain(toChain)
   const isFromChainBtc = useIsBtcChain(fromChain)
@@ -57,23 +65,40 @@ function ShuttleForm({
     toChain,
     isFromChainCfx ? 'out' : 'in',
   )
-  const {address, decimal, supported} = fromToken
-  const balance = useBalance(fromChain, fromAddress, address, [fromAddress])
+
+  const {error, chainId} = useWallet(fromChain)
+  const isChainIdRight = getChainIdRight(fromChain, chainId, fromAddress)
+  const {type: accountType} = useAccountStatus(
+    fromChain,
+    fromAddress,
+    error,
+    isChainIdRight,
+  )
+  const errorNetwork = accountType !== TypeAccountStatus.success
+
+  const balance = useBalance(fromChain, fromAddress, address)
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
   const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
   const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
     useCustodianData(chainOfContract, toToken)
   const {sponsorValue} = useSponsorData(chainOfContract, toToken)
-
-  const balanceVal = convertDecimal(balance, 'divide', decimal)
+  const balanceVal = convertDecimal(
+    balance,
+    'divide',
+    isFromChainCfx ? Decimal18 : decimals,
+  )
 
   const maxAmount = (
     isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal
   )?.toString(10)
 
   const minimalVal = isFromChainCfx
-    ? minimal_out_value?.toNumber()
-    : minimal_in_value?.toNumber()
+    ? minimal_out_value
+      ? minimal_out_value.toString(10)
+      : '0'
+    : minimal_in_value
+    ? minimal_in_value.toString(10)
+    : '0'
 
   const shuttlePaused = () => {
     try {
@@ -88,15 +113,11 @@ function ShuttleForm({
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
-    const error = validateData(value)
-    setErrorMsg(error)
   }
 
   const onInputChange = e => {
     let value = e.target.value
     onChangeValue && onChangeValue(value)
-    const error = validateData(value)
-    setErrorMsg(error)
   }
 
   const onAddressInputChange = e => {
@@ -104,13 +125,18 @@ function ShuttleForm({
     setBtcAddressVal(value)
     const isBtcAddress = checkBtcAddress(value)
     if (!isBtcAddress) {
-      setErrorBtcAddressMsg(t('error.addressInvalid'))
+      setErrorBtcAddressMsg('error.addressInvalid')
     } else {
       setErrorBtcAddressMsg('')
     }
   }
 
   const onNextBtnClick = () => {
+    const error = validateData(value)
+    if (error) {
+      setErrorMsg(error)
+      return
+    }
     if (isFromChainBtc) {
       setFromBtcAddress(shuttleAddress)
     }
@@ -121,26 +147,42 @@ function ShuttleForm({
   }
 
   function validateData(value) {
-    if (!isFromChainBtc && !fromAddress) return ''
-    const val = Number(value)
-    let error = ''
-    if (!isNaN(val)) {
-      const valBig = new Big(val)
-      if (valBig.gte(minimalVal)) {
+    if ((!isFromChainBtc && !fromAddress) || errorNetwork) return ''
+    let error = null
+    if (!isNaN(Number(value))) {
+      const valBig = new Big(value || 0)
+      if (valBig.gte(minimalVal) && valBig.gt('0')) {
         //must be greater than zero
-        if (!isFromChainBtc && !valBig.lte(maxAmount)) {
+        if (!isFromChainBtc && valBig.gt(balanceVal)) {
           //must be less than Max value
-          error = t('error.mustLsMax', {value: maxAmount})
+          error = {str: 'error.mustLteMax'}
+        }
+      } else if (valBig.lte('0')) {
+        error = {
+          str: 'error.mustGtZero',
+          obj: {value: formatAmount(minimalVal)},
         }
       } else {
-        error = t('error.mustGtVal', {value: minimalVal})
+        error = {
+          str: 'error.mustGteMin',
+          obj: {value: formatAmount(minimalVal)},
+        }
       }
     } else {
       //not a valid number
-      error = t('error.inputValidAmount')
+      error = {str: 'error.inputValidAmount'}
     }
     return error
   }
+
+  useEffect(() => {
+    if (value) {
+      const error = validateData(value)
+      setErrorMsg(error)
+    } else {
+      setErrorMsg(null)
+    }
+  }, [value])
 
   useEffect(() => {
     setBtnDisabled(true)
@@ -148,7 +190,13 @@ function ShuttleForm({
       (!isFromChainBtc && isToChainCfx) ||
       (isFromChainCfx && !isToChainBtc)
     ) {
-      if (fromAddress && value && !errorMsg) {
+      if (
+        fromAddress &&
+        value &&
+        !errorMsg &&
+        fromAccountType === TypeAccountStatus.success &&
+        toAccountType === TypeAccountStatus.success
+      ) {
         setBtnDisabled(false)
       }
     } else {
@@ -178,6 +226,8 @@ function ShuttleForm({
     isToChainCfx,
     toAddress,
     btnDisabled,
+    fromAccountType,
+    toAccountType,
   ])
 
   return (
@@ -187,7 +237,7 @@ function ShuttleForm({
           chain={fromChain || DefaultFromChain}
           type="from"
           onClick={onChangeChain}
-          id="fromToken"
+          id="fromChain"
         />
         <FromToken
           fromChain={fromChain}
@@ -199,11 +249,16 @@ function ShuttleForm({
           onMaxClick={onMaxClick}
           onChooseToken={onChooseToken}
           onInputChange={onInputChange}
+          errorNetwork={errorNetwork}
         />
       </div>
       <div className="flex w-full">
         <div className="w-29.5" />
-        {errorMsg && <div className="text-xs text-error mt-2">{errorMsg}</div>}
+        {errorMsg && (
+          <div className="text-xs text-error mt-2">
+            {t(errorMsg.str, errorMsg.obj)}
+          </div>
+        )}
       </div>
       <WrapIcon
         type="circle"
@@ -227,7 +282,7 @@ function ShuttleForm({
       {isToChainBtc && (
         <ToBtcAddress
           btcAddressVal={btcAddressVal}
-          errorBtcAddressMsg={errorBtcAddressMsg}
+          errorBtcAddressMsg={t(errorBtcAddressMsg)}
           onAddressInputChange={onAddressInputChange}
         />
       )}
@@ -272,7 +327,6 @@ function ShuttleForm({
 ShuttleForm.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
-  fromTokenAddress: PropTypes.string,
   fromToken: PropTypes.object,
   toToken: PropTypes.object,
   onChooseToken: PropTypes.func,
@@ -281,6 +335,10 @@ ShuttleForm.propTypes = {
   value: PropTypes.string,
   onChangeChain: PropTypes.func,
   onInvertChain: PropTypes.func,
+  fromAddress: PropTypes.string,
+  toAddress: PropTypes.string,
+  fromAccountType: PropTypes.string,
+  toAccountType: PropTypes.string,
 }
 
 export default ShuttleForm
