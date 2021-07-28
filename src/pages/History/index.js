@@ -6,14 +6,18 @@ import {useTxData} from '../../hooks/useTransaction'
 import {ShuttleStatus} from '../../constants'
 import {ArrowLeft, NoPending} from '../../assets/svg'
 import {Alert} from '../../components'
+import {TypeTransaction} from '../../constants'
 
 function History() {
-  const historyData = useTxData([
-    ShuttleStatus.pending,
-    ShuttleStatus.waiting,
-    ShuttleStatus.success,
-    ShuttleStatus.error,
-  ])
+  const historyData = useTxData(
+    [
+      ShuttleStatus.pending,
+      ShuttleStatus.waiting,
+      ShuttleStatus.success,
+      ShuttleStatus.error,
+    ],
+    [TypeTransaction.transaction],
+  )
   const {t} = useTranslation()
   const history = useHistory()
   const location = useLocation()
