@@ -120,10 +120,9 @@ function ShuttleForm({
 
   const onInputChange = e => {
     let value = e.target.value
-    const demical = isFromChainCfx ? Decimal18 : decimals
     const [p0, p1] = value.split('.')
 
-    if ((p0 && p0.length > 40) || (p1 && p1.length > demical)) {
+    if ((p0 && p0.length > 40) || (p1 && p1.length > decimals)) {
       value = oldValue.current
     }
     onChangeValue && onChangeValue(value)
