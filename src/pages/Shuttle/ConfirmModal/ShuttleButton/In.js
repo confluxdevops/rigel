@@ -72,6 +72,16 @@ function ShuttleInButton({
   const {unshiftTx} = useTxState()
   useEffect(() => {
     setDidMount(true)
+    console.log('tokenAllownace', tokenAllownace.toString(10))
+    console.log(
+      'value',
+      new Big(value).times(getExponent(decimals)).toString(10),
+    )
+    console.log(
+      new Big(tokenAllownace.toString(10)).lt(
+        new Big(value).times(getExponent(decimals)),
+      ),
+    )
     if (!isNativeToken) {
       if (
         new Big(tokenAllownace.toString(10)).lt(
