@@ -22,7 +22,7 @@ import {
 } from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
-import {getMaxAmount, getChainIdRight} from '../../../utils'
+import {getMaxAmount, getChainIdRight, isNumber} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
@@ -149,7 +149,7 @@ function ShuttleForm({
   function validateData(value) {
     if ((!isFromChainBtc && !fromAddress) || errorNetwork) return ''
     let error = null
-    if (!isNaN(Number(value))) {
+    if (isNumber(value)) {
       const valBig = new Big(value || 0)
       if (valBig.gte(minimalVal) && valBig.gt('0')) {
         //must be greater than zero

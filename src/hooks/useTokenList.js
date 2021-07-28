@@ -187,10 +187,11 @@ export function useToToken(fromChain, toChain, fromTokenAddress) {
     () =>
       tokenList.filter(
         token =>
-          (token.address === token.ctoken &&
+          token.address &&
+          ((token.address === token.ctoken &&
             token.reference === fromTokenAddress) ||
-          (token.address === token.reference &&
-            token.ctoken === fromTokenAddress),
+            (token.address === token.reference &&
+              token.ctoken === fromTokenAddress)),
       ),
     [tokenList.toString(), fromTokenAddress],
   )
