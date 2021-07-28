@@ -15,6 +15,7 @@ function FromToken({
   balanceVal,
   value,
   onInputChange,
+  onInputPress,
   onMaxClick,
   errorNetwork,
 }) {
@@ -42,6 +43,7 @@ function FromToken({
           bordered={false}
           value={value}
           onChange={onInputChange}
+          onKeyDown={onInputPress}
           placeholder="0.00"
           className="!text-gray-100 !text-lg !bg-transparent !px-0"
           width="w-36"
@@ -74,6 +76,7 @@ FromToken.propTypes = {
   value: PropTypes.string,
   onChooseToken: PropTypes.func,
   onInputChange: PropTypes.func,
+  onInputPress: PropTypes.func,
   onMaxClick: PropTypes.func,
   errorNetwork: PropTypes.bool,
 }
