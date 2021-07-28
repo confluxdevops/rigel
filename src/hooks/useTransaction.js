@@ -195,7 +195,6 @@ const useUpdateWaiting = txs => {
       hasNativeToken = true
       nativeItem = item
     } else {
-      hasNativeToken = false
       tokenArr.push(toToken.ctoken)
       newWaitingArr.push(item)
     }
