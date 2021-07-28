@@ -210,7 +210,7 @@ export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
 }
 
 export function useTokenAllowance(tokenAddress, params) {
-  const allowance = useContractState(tokenAddress, 'allowance', params)
+  const allowance = useContractState(tokenAddress, 'allowance', params, 2000)
   return allowance || BigNumZero
 }
 

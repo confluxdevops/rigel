@@ -31,10 +31,7 @@ export default function jsonRpc(url, method, params) {
     .then(data => {
       return data.result
     })
-    .catch(e => {
-      const error = new Error(e)
-      throw error
-    })
+    .catch(() => {})
 }
 
 /**
