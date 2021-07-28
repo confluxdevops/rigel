@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {convertDecimal, formatAmount} from '@cfxjs/data-format'
@@ -53,6 +53,7 @@ function ShuttleForm({
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
+  const oldValue = useRef('')
   const {address, decimals, supported} = fromToken
   const isNativeToken = useIsNativeToken(fromChain, address)
   const isFromChainCfx = useIsCfxChain(fromChain)
@@ -115,8 +116,15 @@ function ShuttleForm({
     onChangeValue && onChangeValue(maxAmount)
   }
 
+  const onInputPress = e => (oldValue.current = e.target.value)
+
   const onInputChange = e => {
     let value = e.target.value
+    const [p0, p1] = value.split('.')
+
+    if ((p0 && p0.length > 40) || (p1 && p1.length > decimals)) {
+      value = oldValue.current
+    }
     onChangeValue && onChangeValue(value)
   }
 
@@ -249,6 +257,7 @@ function ShuttleForm({
           onMaxClick={onMaxClick}
           onChooseToken={onChooseToken}
           onInputChange={onInputChange}
+          onInputPress={onInputPress}
           errorNetwork={errorNetwork}
         />
       </div>
