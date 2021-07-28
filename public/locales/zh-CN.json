@@ -102,18 +102,18 @@
   "testnet": "测试网",
   "mainnet": "主网",
   "history": {
-    "title": "Recently 24h Cross-Chain Records",
-    "chainDescription": "From {{fromChain}} to {{toChain}}",
-    "pending": "Pending",
-    "waiting": "Waiting",
-    "success": "Success",
-    "error": "Error",
-    "fromBtcAddress": "Bitcoin Address",
+    "title": "最近 24 小时的跨链记录",
+    "chainDescription": "从 {{fromChain}} 至 {{toChain}}",
+    "pending": "处理中",
+    "waiting": "等待中",
+    "success": "已完成",
+    "error": "错误",
+    "fromBtcAddress": "比特币网络地址",
     "progress": {
-      "stepOne": "Initiate cross-chain",
-      "stepTwo": "Confirm on {{fromChain}} {{fromChainId}}",
-      "stepThree": "Confirm on ShuttleFlow",
-      "stepFour": "Confirm on {{toChain}} {{toChainId}}"
+      "stepOne": "开始跨链进程",
+      "stepTwo": "{{fromChain}} {{fromChainId}} 已确认",
+      "stepThree": "ShuttleFlow 已确认",
+      "stepFour": "{{toChain}} {{toChainId}} 已确认"
     }
   }
 }
