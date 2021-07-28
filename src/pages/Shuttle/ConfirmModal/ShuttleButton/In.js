@@ -157,7 +157,7 @@ function ShuttleInButton({
           error.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT ||
           (error.data && error.data.code === -32000)
         ) {
-          contractApprove(tokenContract, MaxUint256)
+          contractApprove(tokenContract, 0)
         } else {
           setIsApproving(false)
         }
