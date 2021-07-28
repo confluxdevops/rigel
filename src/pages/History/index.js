@@ -14,7 +14,6 @@ function History() {
     ShuttleStatus.success,
     ShuttleStatus.error,
   ])
-  console.log('historyData', historyData)
   const {t} = useTranslation()
   const history = useHistory()
   const location = useLocation()
