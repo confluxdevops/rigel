@@ -65,17 +65,19 @@ function ShuttleOutButton({
   }, [isToChainBtc, toAddress, toBtcAddress])
 
   function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
+    let fee = out_fee ? out_fee.toString(10) : '0'
     const data = {
       hash: hash,
       fromChain,
       toChain,
       fromAddress,
       toAddress,
-      amount: value,
+      amount: new Big(value).minus(fee).toString(10),
       fromToken,
       toToken,
       tx_type: type,
       shuttleAddress: shuttleAddress,
+      fee,
     }
     return data
   }

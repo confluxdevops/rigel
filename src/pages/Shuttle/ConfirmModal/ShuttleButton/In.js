@@ -98,6 +98,7 @@ function ShuttleInButton({
       fromToken,
       toToken,
       tx_type: type,
+      fee: '0',
     }
     return data
   }

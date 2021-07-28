@@ -219,6 +219,8 @@ const useUpdateWaiting = txs => {
       } else {
         amount = getComparedBalance(tokenBalances[index])
       }
+      const amountMinus = new Big(amount).minus(item?.fee)
+      amount = amountMinus.gt(0) ? amountMinus.toString(10) : '0'
       updateTx(trans, item?.hash, {amount: amount, timestamp: Date.now()})
     })
     setTransactions(trans)
