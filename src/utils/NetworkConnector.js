@@ -22,7 +22,6 @@ class MiniRpcProvider {
   }
 
   async clearBatch() {
-    console.debug('Clearing batch', this.batch)
     const batch = this.batch
     this.batch = []
     this.batchTimeoutId = null
