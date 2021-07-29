@@ -59,6 +59,7 @@ function ShuttleInButton({
     origin,
   } = fromToken
   const isCfxChain = useIsCfxChain(origin)
+  const isToChainCfx = useIsCfxChain(toChain)
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
   const drContractAddress =
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
@@ -72,7 +73,7 @@ function ShuttleInButton({
   const {unshiftTx} = useTxState()
   useEffect(() => {
     setDidMount(true)
-    if (!isNativeToken) {
+    if (!isNativeToken && !(isCfxChain && isToChainCfx)) {
       if (
         new Big(tokenAllownace.toString(10)).lt(
           new Big(value).times(getExponent(decimals)),
