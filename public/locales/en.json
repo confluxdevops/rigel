@@ -34,7 +34,7 @@
   "destination": "Destination",
   "destinationBtc": "Destination address for receiving BTC",
   "shuttleFee": "Shuttle Fee",
-  "checkboxLabel": "I have confirmed the wiring information",
+  "checkboxLabel": "I have confirmed the transfer information",
   "approve": "Approve {{tokenSymbol}}",
   "send": "Send",
   "pleaseWait": "Please Wait Patiently",
