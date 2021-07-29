@@ -51,6 +51,7 @@ function ShuttleInButton({
   const [approveShown, setApproveShown] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [didMount, setDidMount] = useState(false)
+  const [fetchApprove, setFetchApprove] = useState(false)
   const {
     address: fromTokenAddress,
     decimals,
@@ -85,7 +86,7 @@ function ShuttleInButton({
     return () => {
       setDidMount(false)
     }
-  }, [decimals, tokenAllownace.toString(10), value, isNativeToken])
+  }, [decimals, tokenAllownace, value, isNativeToken, fetchApprove])
 
   function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
     const data = {
@@ -116,6 +117,7 @@ function ShuttleInButton({
           txResponse
             .wait()
             .then(() => {
+              setFetchApprove(!fetchApprove)
               setIsApproving(false)
               setApproveShown(false)
             })
@@ -142,7 +144,7 @@ function ShuttleInButton({
           error.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT ||
           (error.data && error.data.code === -32000)
         ) {
-          contractApprove(tokenContract, MaxUint256)
+          contractApprove(tokenContract, 0)
         } else {
           setIsApproving(false)
         }

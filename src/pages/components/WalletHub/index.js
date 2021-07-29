@@ -23,14 +23,14 @@ import {shortenAddress} from '../../../utils/address'
 import {HeaderAccount} from '../../components'
 import {useTxData} from '../../../hooks/useTransaction'
 import {useConnectData} from '../../../hooks'
-import {ShuttleStatus} from '../../../constants'
+import {ShuttleStatus, TypeTransaction} from '../../../constants'
 
 function WalletHub() {
   const connectData = useConnectData()
-  const pendingTransactions = useTxData([
-    ShuttleStatus.pending,
-    ShuttleStatus.waiting,
-  ])
+  const pendingTransactions = useTxData(
+    [ShuttleStatus.pending, ShuttleStatus.waiting],
+    Object.values(TypeTransaction),
+  )
 
   const [arrow, setArrow] = useState('down')
   const {t} = useTranslation()
