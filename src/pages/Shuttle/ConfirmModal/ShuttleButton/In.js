@@ -70,21 +70,8 @@ function ShuttleInButton({
   ])
   const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
   const {unshiftTx} = useTxState()
-  console.log('approveShown', approveShown)
-  console.log('fetchApprove', fetchApprove)
-  console.log('tokenAllownace1', tokenAllownace.toString(10))
   useEffect(() => {
     setDidMount(true)
-    console.log('tokenAllownace2', tokenAllownace.toString(10))
-    console.log(
-      'value',
-      new Big(value).times(getExponent(decimals)).toString(10),
-    )
-    console.log(
-      new Big(tokenAllownace.toString(10)).lt(
-        new Big(value).times(getExponent(decimals)),
-      ),
-    )
     if (!isNativeToken) {
       if (
         new Big(tokenAllownace.toString(10)).lt(
