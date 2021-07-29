@@ -134,7 +134,9 @@ function HistoryItem({historyItemData}) {
 
   const {t} = useTranslation()
 
-  const [detailShow, setDetailShow] = useState(false)
+  const [detailShow, setDetailShow] = useState(
+    status === 'pending' ? true : false,
+  )
 
   return (
     <>
