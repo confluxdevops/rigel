@@ -51,8 +51,8 @@ export const ChainIdsBsc = {
 
 export const KeyOfOec = 'oec'
 export const ScanUrlOec = IS_DEV
-  ? 'https://www.oklink.com/okexchain'
-  : 'https://www.oklink.com/okexchain-test'
+  ? 'https://www.oklink.com/okexchain-test'
+  : 'https://www.oklink.com/okexchain'
 export const ChainIdsOec = {
   MAINNET: {id: 66, name: 'Mainnet'},
   TESTNET: {id: 65, name: 'Testnet'},
