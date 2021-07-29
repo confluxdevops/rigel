@@ -168,7 +168,7 @@ export function useNativeTokenBalance(
     const getBalance = () => {
       library &&
         library
-          .getBalance(account)
+          .getBalance(address)
           .then(newBalance => {
             if (!balance.eq(newBalance)) {
               setBalance(new Big(newBalance.toString(10)))
