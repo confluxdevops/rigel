@@ -27,6 +27,8 @@ import {
 } from '../../assets/img'
 import {Button} from '../../components'
 import {useIsMobile} from '../../hooks'
+import whitePaperEN from '../../assets/pdf/SF-whitepaper-en-v1.0.pdf'
+import whitePaperZH from '../../assets/pdf/SF-whitepaper-zh-v1.0.pdf'
 
 function Home() {
   useEffectOnce(() => {
@@ -39,13 +41,6 @@ function Home() {
   const {language} = i18n
   const onOpenApp = () => {
     window.open('/shuttle')
-  }
-  const onOpenPaper = () => {
-    window.open(
-      language === 'en'
-        ? 'https://shuttleflow.io/assets/SF-whitepaper-en.bbd9b.modern.pdf'
-        : 'https://shuttleflow.io/assets/SF-whitepaper-zh.75dc3.modern.pdf',
-    )
   }
   const isMobile = useIsMobile()
   const copyright = (
@@ -119,8 +114,14 @@ function Home() {
             <Button className="mr-6" onClick={() => onOpenApp()} id="openApp">
               {t('home.shuttleFlow')}
             </Button>
-            <Button onClick={() => onOpenPaper()} id="openPaper">
-              {t('home.lightPaper')}
+            <Button id="openPaper">
+              <a
+                rel="noreferrer"
+                href={language === 'en' ? whitePaperEN : whitePaperZH}
+                target="_blank"
+              >
+                {t('home.lightPaper')}
+              </a>
             </Button>
           </div>
         </div>
