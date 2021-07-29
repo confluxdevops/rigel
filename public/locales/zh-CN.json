@@ -4,7 +4,7 @@
   "confirm": "在 {{wallet}} 确认这笔交易",
   "submitted": "交易已发出",
   "viewOnScan": "去区块链浏览器上查看",
-  "addTokenToMetaMask": "添加 {{tokenSymbol}} 去 MetaMask",
+  "addTokenToMetaMask": "添加 {{tokenSymbol}} 至 MetaMask",
   "addedTokenToMetaMask": "已添加 {{tokenSymbol}}",
   "rejected": "交易被拒绝",
   "installWallet": "安装 {{walletName}} 钱包",
