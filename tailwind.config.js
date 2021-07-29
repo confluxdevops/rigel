@@ -65,7 +65,7 @@ module.exports = {
         info: '#4c65e9',
         'primary-dark': '#16bd98',
         'error-dark': '#b83c36',
-        'success-dark': '#52b067',
+        'success-dark': '#16bd98',
         'warning-dark': '#ec7910',
         'info-dark': '#2330c0',
         'primary-10': 'var(--color-primary-10)',
