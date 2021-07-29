@@ -78,6 +78,8 @@ export const useUpdateTxs = () => {
           library.getTransactionReceipt(hash).then(res => {
             if (res?.status) {
               updateTx(trans, hash, {status: ShuttleStatus.success})
+            } else {
+              updateTx(trans, hash, {status: ShuttleStatus.error})
             }
           })
         })
