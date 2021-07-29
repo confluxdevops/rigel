@@ -183,7 +183,7 @@ export function useNativeTokenBalance(
       const timeInterval = setInterval(() => getBalance(), delay)
       return () => clearInterval(timeInterval)
     }
-  }, [delay, Boolean(account)])
+  }, [delay, Boolean(account), address])
   return balance
 }
 
