@@ -60,7 +60,7 @@ module.exports = {
         black: '#000',
         primary: '#44d7B6',
         error: '#e15c56',
-        success: '#7cd77b',
+        success: '#16bd98',
         warning: '#ffca4f',
         info: '#4c65e9',
         'primary-dark': '#16bd98',
