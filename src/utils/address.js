@@ -17,7 +17,7 @@ export function checkCfxTokenAddress(address, type) {
 }
 
 export function checkBtcAddress(address) {
-  return validate(address)
+  return validate(address, IS_DEV ? 'testnet' : 'mainnet')
 }
 
 export function shortenEthAddress(address) {
