@@ -42,7 +42,7 @@ function SelectedChains({fromChain, toChain}) {
       className="w-full border border-gray-10 flex items-center"
     >
       <SelectedChain id="selectedFromChain" type="from" chain={fromChain} />
-      <WrapIcon size="w-7 h-7" className="mx-6" type="circle">
+      <WrapIcon size="w-7 h-7" className="mx-6" type="circle" clickable={false}>
         <BgArrowRight className="text-gray-40" />
       </WrapIcon>
       <SelectedChain id="selectedToChain" type="to" chain={toChain} />
