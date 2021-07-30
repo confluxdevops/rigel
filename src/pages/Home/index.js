@@ -125,131 +125,135 @@ function Home() {
             </Button>
           </div>
         </div>
-        <img className="mt-8 w-full md:hidden" src={BaseMobile} alt="base" />
-        <div className="hidden md:block relative">
-          <div className="absolute left-240 top-30">
-            <img className="w-64" src={TunnelRight} alt="tunnel" />
-          </div>
-          <svg
-            className="absolute w-80 h-52 left-232 top-24"
-            viewBox="0 0 200 200"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <image
-              className="w-4 h-4"
-              href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
+        {isMobile && (
+          <img className="mt-8 w-full" src={BaseMobile} alt="base" />
+        )}
+        {!isMobile && (
+          <div className="block relative">
+            <div className="absolute left-240 top-30">
+              <img className="w-64" src={TunnelRight} alt="tunnel" />
+            </div>
+            <svg
+              className="absolute w-80 h-52 left-232 top-24"
+              viewBox="0 0 200 200"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <animateMotion
-                dur="10s"
-                repeatCount="indefinite"
-                path="M0,160 Q110,118 200,25 Q110,118 0,160"
-              />
-            </image>
+              <image
+                className="w-4 h-4"
+                href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
+              >
+                <animateMotion
+                  dur="10s"
+                  repeatCount="indefinite"
+                  path="M0,160 Q110,118 200,25 Q110,118 0,160"
+                />
+              </image>
 
-            <image
-              className="w-4 h-4"
-              href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
-            >
-              <animateMotion
-                dur="11s"
-                repeatCount="indefinite"
-                path="M0,160 Q110,118 200,25 Q110,118 0,160"
-              />
-            </image>
+              <image
+                className="w-4 h-4"
+                href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
+              >
+                <animateMotion
+                  dur="11s"
+                  repeatCount="indefinite"
+                  path="M0,160 Q110,118 200,25 Q110,118 0,160"
+                />
+              </image>
 
-            <image
-              className="w-4 h-4"
-              href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
-            >
-              <animateMotion
-                dur="12s"
-                repeatCount="indefinite"
-                path="M0,160 Q110,118 200,25 Q110,118 0,160"
-              />
-            </image>
-          </svg>
-          <div className="absolute left-136 top-9">
-            <img className="w-168" src={BaseCenter} alt="base" />
-          </div>
-          <div className="absolute left-260 top-2.5">
-            <img className="w-110" src={BaseRight} alt="base" />
-          </div>
-          <div className="absolute left-65 top-60">
-            <img src={TunnelLeft} alt="tunnel" />
-          </div>
+              <image
+                className="w-4 h-4"
+                href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-right.png"
+              >
+                <animateMotion
+                  dur="12s"
+                  repeatCount="indefinite"
+                  path="M0,160 Q110,118 200,25 Q110,118 0,160"
+                />
+              </image>
+            </svg>
+            <div className="absolute left-136 top-9">
+              <img className="w-168" src={BaseCenter} alt="base" />
+            </div>
+            <div className="absolute left-260 top-2.5">
+              <img className="w-110" src={BaseRight} alt="base" />
+            </div>
+            <div className="absolute left-65 top-60">
+              <img src={TunnelLeft} alt="tunnel" />
+            </div>
 
-          <svg
-            className="absolute left-44 top-48 w-132 h-52 "
-            viewBox="0 0 200 100"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <image
-              className="w-3 h-3"
-              href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
+            <svg
+              className="absolute left-44 top-48 w-132 h-52 "
+              viewBox="0 0 200 100"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <animateMotion
-                dur="10s"
-                repeatCount="indefinite"
-                path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60 "
-              />
-            </image>
+              <image
+                className="w-3 h-3"
+                href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
+              >
+                <animateMotion
+                  dur="10s"
+                  repeatCount="indefinite"
+                  path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60 "
+                />
+              </image>
 
-            <image
-              className="w-3 h-3"
-              href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
-            >
-              <animateMotion
-                dur="11s"
-                repeatCount="indefinite"
-                path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
-              />
-            </image>
+              <image
+                className="w-3 h-3"
+                href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
+              >
+                <animateMotion
+                  dur="11s"
+                  repeatCount="indefinite"
+                  path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
+                />
+              </image>
 
-            <image
-              className="w-3 h-3"
-              href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
-            >
-              <animateMotion
-                dur="12s"
-                repeatCount="indefinite"
-                path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
-              />
-            </image>
-          </svg>
-          <div className="absolute left-1 top-56">
-            <img className="w-104" src={BaseLeft} alt="base" />
+              <image
+                className="w-3 h-3"
+                href="https://conflux-static.oss-cn-beijing.aliyuncs.com/shuttleflow-img/token-n-left.png"
+              >
+                <animateMotion
+                  dur="12s"
+                  repeatCount="indefinite"
+                  path="M10,60 Q80,30 145,42 Q220,50 250,20 Q220,50 145,42 Q80,30 10,60"
+                />
+              </image>
+            </svg>
+            <div className="absolute left-1 top-56">
+              <img className="w-104" src={BaseLeft} alt="base" />
+            </div>
+            <div className="absolute left-48 top-48 animate-bounce">
+              <img src={TokenLeft} alt="token" />
+            </div>
+            <div className="absolute left-192 top-4 animate-bounce">
+              <img className="w-40" src={SfCenter} alt="sf" />
+            </div>
+            <div className="absolute left-302 -top-6 animate-bounce">
+              <img src={TokenRight} alt="token" />
+            </div>
+            <div className="absolute left-40 top-52 animate-pulse-fast">
+              <img src={LightLeft} alt="light" />
+            </div>
+            <div className="absolute left-154 -top-1 animate-pulse-fast">
+              <img src={LightCenter} alt="light" />
+            </div>
+            <div className="absolute left-293 -top-1 animate-pulse-fast">
+              <img src={LightRight} alt="light" />
+            </div>
+            <div className="absolute left-158 top-60 animate-pulse-fast">
+              <img src={LightTunnel1} alt="light" />
+            </div>
+            <div className="absolute left-280 top-34 animate-pulse-fast">
+              <img src={LightTunnel2} alt="light" />
+            </div>
+            <div className="absolute left-116 top-64">
+              <img src={PipleLeft} alt="piple" />
+            </div>
+            <div className="absolute left-270 top-44">
+              <img src={PipleRight} alt="piple" />
+            </div>
           </div>
-          <div className="absolute left-48 top-48 animate-bounce">
-            <img src={TokenLeft} alt="token" />
-          </div>
-          <div className="absolute left-192 top-4 animate-bounce">
-            <img className="w-40" src={SfCenter} alt="sf" />
-          </div>
-          <div className="absolute left-302 -top-6 animate-bounce">
-            <img src={TokenRight} alt="token" />
-          </div>
-          <div className="absolute left-40 top-52 animate-pulse-fast">
-            <img src={LightLeft} alt="light" />
-          </div>
-          <div className="absolute left-154 -top-1 animate-pulse-fast">
-            <img src={LightCenter} alt="light" />
-          </div>
-          <div className="absolute left-293 -top-1 animate-pulse-fast">
-            <img src={LightRight} alt="light" />
-          </div>
-          <div className="absolute left-158 top-60 animate-pulse-fast">
-            <img src={LightTunnel1} alt="light" />
-          </div>
-          <div className="absolute left-280 top-34 animate-pulse-fast">
-            <img src={LightTunnel2} alt="light" />
-          </div>
-          <div className="absolute left-116 top-64">
-            <img src={PipleLeft} alt="piple" />
-          </div>
-          <div className="absolute left-270 top-44">
-            <img src={PipleRight} alt="piple" />
-          </div>
-        </div>
+        )}
       </div>
       {!isMobile ? (
         <div className="absolute bottom-0 w-full">
