@@ -45,7 +45,7 @@ export function useConnect() {
 
   useEffectOnce(() => {
     window?.conflux
-      ?.send('cfx_accounts')
+      ?.send({method: 'cfx_accounts'})
       .then(accounts => {
         if (validAccounts(accounts) && accounts[0] !== address) {
           setAddress(accounts[0])
@@ -77,7 +77,7 @@ export function useConnect() {
       if (!address) {
         if (window?.conflux)
           window.conflux
-            .send('cfx_requestAccounts')
+            .enable()
             .then(accounts => {
               setType(TypeConnectWallet.success)
               if (validAccounts(accounts)) {
