@@ -129,7 +129,7 @@ function Home() {
           <img className="mt-8 w-full" src={BaseMobile} alt="base" />
         )}
         {!isMobile && (
-          <div className="block relative">
+          <div className="relative">
             <div className="absolute left-240 top-30">
               <img className="w-64" src={TunnelRight} alt="tunnel" />
             </div>
