@@ -44,14 +44,10 @@ export function useConnect() {
     window.conflux.autoRefreshOnNetworkChange = false
 
   useEffectOnce(() => {
-    window?.conflux
-      ?.send({method: 'cfx_accounts'})
-      .then(accounts => {
-        if (validAccounts(accounts) && accounts[0] !== address) {
-          setAddress(accounts[0])
-        }
-      })
-      .catch(error => setError(error))
+    const {result: accounts} = window?.conflux?.send({method: 'cfx_accounts'})
+    if (validAccounts(accounts) && accounts[0] !== address) {
+      setAddress(accounts[0])
+    }
   })
 
   useEffectOnce(() => {
