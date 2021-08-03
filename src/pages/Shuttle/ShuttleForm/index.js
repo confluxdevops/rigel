@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {convertDecimal, formatAmount} from '@cfxjs/data-format'
@@ -22,7 +22,7 @@ import {
 } from '../../../hooks/useWallet'
 import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
 import {BgChange, AlertTriangle} from '../../../assets/svg'
-import {getMaxAmount, getChainIdRight} from '../../../utils'
+import {getMaxAmount, getChainIdRight, isNumber} from '../../../utils'
 import {checkBtcAddress} from '../../../utils/address'
 import useShuttleAddress from '../../../hooks/useShuttleAddress'
 import {useShuttleState} from '../../../state'
@@ -53,6 +53,7 @@ function ShuttleForm({
   const [errorBtcAddressMsg, setErrorBtcAddressMsg] = useState('')
   const [btcAddressVal, setBtcAddressVal] = useState('')
   const [btnDisabled, setBtnDisabled] = useState(true)
+  const oldValue = useRef('')
   const {address, decimals, supported} = fromToken
   const isNativeToken = useIsNativeToken(fromChain, address)
   const isFromChainCfx = useIsCfxChain(fromChain)
@@ -115,8 +116,15 @@ function ShuttleForm({
     onChangeValue && onChangeValue(maxAmount)
   }
 
+  const onInputPress = e => (oldValue.current = e.target.value)
+
   const onInputChange = e => {
     let value = e.target.value
+    const [p0, p1] = value.split('.')
+
+    if ((p0 && p0.length > 40) || (p1 && p1.length > decimals)) {
+      value = oldValue.current
+    }
     onChangeValue && onChangeValue(value)
   }
 
@@ -149,7 +157,7 @@ function ShuttleForm({
   function validateData(value) {
     if ((!isFromChainBtc && !fromAddress) || errorNetwork) return ''
     let error = null
-    if (!isNaN(Number(value))) {
+    if (isNumber(value)) {
       const valBig = new Big(value || 0)
       if (valBig.gte(minimalVal) && valBig.gt('0')) {
         //must be greater than zero
@@ -249,6 +257,7 @@ function ShuttleForm({
           onMaxClick={onMaxClick}
           onChooseToken={onChooseToken}
           onInputChange={onInputChange}
+          onInputPress={onInputPress}
           errorNetwork={errorNetwork}
         />
       </div>

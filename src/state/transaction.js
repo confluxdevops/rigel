@@ -1,5 +1,6 @@
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
+import fromEntries from 'object.fromentries'
 import {TypeTransaction, ShuttleStatus} from '../constants'
 import {KeyOfCfx} from '../constants/chainConfig'
 
@@ -29,7 +30,7 @@ export const createStore = () =>
       (set, get) => ({
         transactions: {},
         setTransactions: transactions => {
-          set({transactions: Object.fromEntries(transactions)})
+          set({transactions: fromEntries(transactions)})
         },
         unshiftTx: tx => {
           let trans = get().transactions

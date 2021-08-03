@@ -110,7 +110,7 @@ function Progress({progress, fromChain, toChain}) {
           </span>
           {!isToBtcChain && getIsDone(2) && (
             <JumpIcon
-              url={ChainConfig[toChain].scanTxUrl + nonce_or_txid.split('_')[0]}
+              url={ChainConfig[toChain].scanTxUrl + settled_tx.split('_')[0]}
             />
           )}
         </div>
@@ -130,7 +130,7 @@ function Progress({progress, fromChain, toChain}) {
           </span>
           {!isToBtcChain && getIsDone(3) && (
             <JumpIcon
-              url={ChainConfig[toChain].scanTxUrl + nonce_or_txid.split('_')[0]}
+              url={ChainConfig[toChain].scanTxUrl + settled_tx.split('_')[0]}
             />
           )}
         </div>

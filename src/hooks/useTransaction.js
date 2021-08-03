@@ -78,6 +78,8 @@ export const useUpdateTxs = () => {
           library.getTransactionReceipt(hash).then(res => {
             if (res?.status) {
               updateTx(trans, hash, {status: ShuttleStatus.success})
+            } else {
+              updateTx(trans, hash, {status: ShuttleStatus.error})
             }
           })
         })
@@ -301,7 +303,10 @@ function mapData(item = {}, tokenList) {
   return data
 }
 
-export const useTxData = multipleOrderedStatus => {
+export const useTxData = (
+  multipleOrderedStatus,
+  transactionTypes = Object.values(TypeTransaction),
+) => {
   const {transactions} = useTxState()
   const [arr, setArr] = useState([])
   const {address} = useWallet(KeyOfCfx)
@@ -309,9 +314,12 @@ export const useTxData = multipleOrderedStatus => {
   useEffect(() => {
     if (address) {
       const transArr = Object.values(transactions)
-      let filteredTxs = transArr.filter(
-        tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
-      ) // recent 24 hours
+      let filteredTxs = transArr
+        .filter(
+          // recent 24 hours
+          tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
+        )
+        .filter(tx => transactionTypes.indexOf(tx?.tx_type) != -1)
       let newArr = []
       multipleOrderedStatus.forEach(status => {
         let groupedArr = []

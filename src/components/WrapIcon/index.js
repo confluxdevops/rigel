@@ -7,13 +7,16 @@ function WrapIcon({
   children,
   className = '',
   onClick,
+  clickable = true,
   ...props
 }) {
   return (
     <div
       onClick={e => onClick && onClick(e)}
       aria-hidden="true"
-      className={`${size} relative flex justify-center items-center cursor-pointer ${className}`}
+      className={`${size} relative flex justify-center items-center ${
+        clickable ? 'cursor-pointer' : ''
+      } ${className}`}
       {...props}
     >
       {type === 'circle' && <CircleBg className={size} />}
@@ -38,4 +41,5 @@ WrapIcon.propTypes = {
   ]).isRequired,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  clickable: PropTypes.bool,
 }

@@ -24,6 +24,10 @@ export const getEllipsStr = (str, frontNum, endNum) => {
   return ''
 }
 
+export function isNumber(value) {
+  return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value)
+}
+
 export const getMaxAmount = (chain, amount) => {
   const remainderAmount = ChainConfig[chain]?.remainderAmount
   let amountBig = new Big(amount)
