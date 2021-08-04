@@ -150,7 +150,7 @@ function ShuttleForm({
       const valBig = new Big(value || 0)
       if (valBig.lt('0.000001')) {
         // should >= 0.000001
-        error = {str: 'error.mustGtZero'}
+        error = {str: 'error.mustGteCommonMin'}
       } else if (valBig.lt(minimalVal)) {
         // should >= min
         error = {
