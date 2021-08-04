@@ -128,6 +128,8 @@ html {
   --color-gray-100: #fff;
   --shadow-common: 2px 8px 44px #1d1d1d;
   @apply bg-dark;
+  @apply bg-no-repeat;
+  @apply bg-cover;
 }
 
 .home {
