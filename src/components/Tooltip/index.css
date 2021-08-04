@@ -58,10 +58,10 @@
   @apply py-1.5;
   @apply text-gray-0;
   @apply text-left;
+  @apply text-xs;
   @apply no-underline;
   @apply break-words;
   @apply bg-gray-100;
-  @apply bg-opacity-90;
   @apply border-2;
   @apply shadow-1;
 }
@@ -84,7 +84,6 @@
   @apply h-2;
   @apply m-auto;
   @apply bg-gray-100;
-  @apply bg-opacity-90;
   @apply pointer-events-auto;
 }
 
