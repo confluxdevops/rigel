@@ -15,6 +15,7 @@ module.exports = {
     },
     extend: {
       spacing: {
+        1.25: '0.3125rem',
         4.5: '1.125rem',
         15: '3.75rem',
         24.5: '6.125rem',
@@ -170,7 +171,14 @@ module.exports = {
         302: '75.5rem',
       },
       minHeight: {
+        8: '2rem',
         220: '55rem',
+      },
+      minWidth: {
+        8: '2rem',
+      },
+      maxWidth: {
+        60: '15rem',
       },
     },
   },
