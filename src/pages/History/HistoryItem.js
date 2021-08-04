@@ -8,7 +8,7 @@ import {SupportedChains, ChainConfig} from '../../constants/chainConfig'
 import {useIsNativeToken} from '../../hooks/useWallet'
 import useAddTokenToMetamask from '../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../hooks'
-import {WrapIcon, Toast} from '../../components'
+import {WrapIcon, Toast, Tooltip} from '../../components'
 import {
   BgPlus,
   BgCopy,
@@ -40,13 +40,17 @@ function TokenInfo({toToken, fromChain, toChain}) {
         <span className="text-gray-100 font-medium mr-1 flex items-center">
           {display_symbol}
           {!isNativeToken && !isToChainCfx && (
-            <WrapIcon
-              type="circle"
-              className="ml-1 cursor-pointer"
-              onClick={e => onAddToken(e)}
+            <Tooltip
+              title={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
             >
-              <BgPlus />
-            </WrapIcon>
+              <WrapIcon
+                type="circle"
+                className="ml-1 cursor-pointer"
+                onClick={e => onAddToken(e)}
+              >
+                <BgPlus />
+              </WrapIcon>
+            </Tooltip>
           )}
           {!isNativeToken && isToChainCfx && (
             <WrapIcon type="circle" className="ml-1 cursor-pointer relative">

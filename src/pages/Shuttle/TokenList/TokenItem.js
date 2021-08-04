@@ -5,7 +5,7 @@ import _ from 'underscore'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {TokenIcon} from '../../components'
-import {WrapIcon, Toast} from '../../../components'
+import {WrapIcon, Toast, Tooltip} from '../../../components'
 import {BgPlus, BgCopy} from '../../../assets/svg'
 import {shortenAddress} from '../../../utils/address'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
@@ -52,13 +52,17 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
           <span className="text-xs text-primary">{tokenAddress}</span>
         )}
         {!isCfxChain && !isNativeToken && (
-          <WrapIcon
-            type="circle"
-            className="ml-1 cursor-pointer"
-            onClick={e => onAddToken(e)}
+          <Tooltip
+            title={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
           >
-            <BgPlus />
-          </WrapIcon>
+            <WrapIcon
+              type="circle"
+              className="ml-1 cursor-pointer"
+              onClick={e => onAddToken(e)}
+            >
+              <BgPlus />
+            </WrapIcon>
+          </Tooltip>
         )}
         {isCfxChain && !isNativeToken && (
           <WrapIcon
