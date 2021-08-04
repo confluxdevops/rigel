@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react'
 import {convertDecimal} from '@cfxjs/data-format'
-import {ProxyUrlPrefix, BigNumZero, Decimal18} from '../constants'
+import {ProxyUrlPrefix} from '../constants'
 import {useWallet} from '../hooks/useWallet'
 import {
   StatusOperation,
@@ -17,50 +17,14 @@ import {
 import {useTxState} from '../state/transaction'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList, mapToken} from '../hooks/useTokenList'
-import {useMultipleBalance} from '../hooks/usePortal'
-import {Big} from 'big.js'
 import {removeTxs, appendTxs, updateTx} from '../utils/index'
-
-//update the local data intervally
-// export const useUpdateData = () => {
-//   const {address: cfxAddress} = useWallet(KeyOfCfx)
-//   const {data: btcData} = useSWR(
-//     cfxAddress
-//       ? [
-//           ProxyUrlPrefix.shuttleflow,
-//           'in',
-//           cfxAddress,
-//           Object.values(StatusOperation),
-//           KeyOfBtc,
-//           KeyOfCfx,
-//         ]
-//       : null,
-//     requestUserOperationList,
-//   )
-//   const {data: cfxData} = useSWR(
-//     cfxAddress
-//       ? [
-//           ProxyUrlPrefix.shuttleflow,
-//           'out',
-//           cfxAddress,
-//           Object.values(StatusOperation),
-//           KeyOfCfx,
-//           null,
-//         ]
-//       : null,
-//     requestUserOperationList,
-//   )
-//   return {}
-// }
 
 export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {library} = useActiveWeb3React()
   const {transactions, setTransactions} = useTxState()
   const tokenList = useAllTokenList()
-  const [waitingTxs, setWaitingTxs] = useState({})
   window._transactions = new Map(Object.entries(transactions))
-  useUpdateWaiting(waitingTxs)
   useEffect(() => {
     const update = () => {
       let trans = new Map(window._transactions)
@@ -106,31 +70,12 @@ export const useUpdateTxs = () => {
           item.status === ShuttleStatus.pending ||
           item.status === ShuttleStatus.waiting,
       )
-      const pendingTxs = {}
       const transWillRemove = [] //cfx-out btc-in
       pendingCommonTxs.forEach(item => {
-        const {
-          hash,
-          in_or_out: type,
-          fromChain,
-          toChain,
-          toToken,
-          status,
-        } = item
+        const {hash, in_or_out: type, fromChain, toChain, toToken} = item
         const {origin} = toToken
         const isOriginCfx = origin === KeyOfCfx ? true : false
-        if (fromChain === KeyOfCfx && isOriginCfx && type === 'out') {
-          //native token on Conflux chain shuttle out
-          if (status === ShuttleStatus.waiting) {
-            pendingTxs[hash] = item
-            setWaitingTxs({
-              ...waitingTxs,
-              ...pendingTxs,
-            })
-          } else {
-            transWillRemove.push(item?.hash)
-          }
-        } else if (fromChain === KeyOfBtc && type === 'in') {
+        if (fromChain === KeyOfBtc && type === 'in') {
           transWillRemove.push(item?.hash)
         } else {
           proArr.push(
@@ -183,57 +128,50 @@ export const useUpdateTxs = () => {
   }, [cfxAddress])
 }
 
-const useUpdateWaiting = txs => {
-  const waitingItems = Object.values(txs)
-  let hasNativeToken = false
-  const tokenArr = []
-  const newWaitingArr = []
-  let nativeItem = {}
-  let shuttleAddress = ''
-  waitingItems.forEach(item => {
-    const {toToken = {}, shuttleAddress: address} = item
-    shuttleAddress = address
-    if (toToken.ctoken === KeyOfCfx) {
-      hasNativeToken = true
-      nativeItem = item
-    } else {
-      tokenArr.push(toToken.ctoken)
-      newWaitingArr.push(item)
-    }
-  })
-  if (hasNativeToken) {
-    newWaitingArr.unshift(nativeItem)
-  }
-  const {address: cfxAddress} = useWallet(KeyOfCfx)
-  const {transactions, setTransactions} = useTxState()
-  const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
-  let trans = new Map(Object.entries(transactions))
-  useEffect(() => {
-    newWaitingArr.forEach((item, index) => {
-      let amount = 0
-      if (hasNativeToken) {
-        if (index === 0) {
-          amount = getComparedBalance(balance)
-        } else {
-          amount = getComparedBalance(tokenBalances[index - 1])
-        }
-      } else {
-        amount = getComparedBalance(tokenBalances[index])
-      }
-      const amountMinus = new Big(amount).minus(item?.fee)
-      amount = amountMinus.gt(0) ? amountMinus.toString(10) : '0'
-      updateTx(trans, item?.hash, {amount: amount, timestamp: Date.now()})
-    })
-    setTransactions(trans)
-  }, [cfxAddress, JSON.stringify(tokenBalances), balance.toString(10)])
-}
-
-function getComparedBalance(balance) {
-  if (new Big(balance || 0)?.gt(BigNumZero)) {
-    return convertDecimal(balance?.toString(10), 'divide', Decimal18)
-  }
-  return 0
-}
+// const useUpdateWaiting = txs => {
+//   const waitingItems = Object.values(txs)
+//   let hasNativeToken = false
+//   const tokenArr = []
+//   const newWaitingArr = []
+//   let nativeItem = {}
+//   let shuttleAddress = ''
+//   waitingItems.forEach(item => {
+//     const {toToken = {}, shuttleAddress: address} = item
+//     shuttleAddress = address
+//     if (toToken.ctoken === KeyOfCfx) {
+//       hasNativeToken = true
+//       nativeItem = item
+//     } else {
+//       tokenArr.push(toToken.ctoken)
+//       newWaitingArr.push(item)
+//     }
+//   })
+//   if (hasNativeToken) {
+//     newWaitingArr.unshift(nativeItem)
+//   }
+//   const {address: cfxAddress} = useWallet(KeyOfCfx)
+//   const {transactions, setTransactions} = useTxState()
+//   const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
+//   let trans = new Map(Object.entries(transactions))
+//   useEffect(() => {
+//     newWaitingArr.forEach((item, index) => {
+//       let amount = 0
+//       if (hasNativeToken) {
+//         if (index === 0) {
+//           amount = getComparedBalance(balance)
+//         } else {
+//           amount = getComparedBalance(tokenBalances[index - 1])
+//         }
+//       } else {
+//         amount = getComparedBalance(tokenBalances[index])
+//       }
+//       const amountMinus = new Big(amount).minus(item?.fee)
+//       amount = amountMinus.gt(0) ? amountMinus.toString(10) : '0'
+//       updateTx(trans, item?.hash, {amount: amount, timestamp: Date.now()})
+//     })
+//     setTransactions(trans)
+//   }, [cfxAddress, JSON.stringify(tokenBalances), balance.toString(10)])
+// }
 
 /**
  * Get tokenInfo from tokenList by token address
@@ -252,6 +190,8 @@ function mapData(item = {}, tokenList) {
     nonce_or_txid,
     to_addr,
     amount,
+    tx_to,
+    tx_input,
   } = item
   const isCfxChain = from_chain === KeyOfCfx ? true : false
   const newList = tokenList
@@ -300,6 +240,8 @@ function mapData(item = {}, tokenList) {
   data.tx_type = TypeTransaction.transaction
   data.hash = nonce_or_txid?.split('_')[0]
   data.amount = convertDecimal(amount, 'divide', data.decimals)
+  data.tx_to = tx_to
+  data.tx_input = tx_input
   return data
 }
 
