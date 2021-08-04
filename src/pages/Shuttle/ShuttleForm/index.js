@@ -10,7 +10,6 @@ import {
   DefaultFromChain,
   DefaultToChain,
   SupportedChains,
-  KeyOfBtc,
 } from '../../../constants/chainConfig'
 import {TypeAccountStatus, Decimal18} from '../../../constants'
 
@@ -30,7 +29,7 @@ import ChainSelect from './ChainSelect'
 import FromToken from './FromToken'
 import ToToken from './ToToken'
 import ToBtcAddress from './ToBtcAddress'
-import {useCustodianData, useSponsorData} from '../../../hooks/useShuttleData'
+import {useCustodianData} from '../../../hooks/useShuttleData'
 
 function ShuttleForm({
   fromChain,
@@ -80,9 +79,10 @@ function ShuttleForm({
   const balance = useBalance(fromChain, fromAddress, address)
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
   const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
-  const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
-    useCustodianData(chainOfContract, toToken)
-  const {sponsorValue} = useSponsorData(chainOfContract, toToken)
+  const {minimal_in_value, minimal_out_value} = useCustodianData(
+    chainOfContract,
+    toToken,
+  )
   const balanceVal = convertDecimal(
     balance,
     'divide',
@@ -100,17 +100,6 @@ function ShuttleForm({
     : minimal_in_value
     ? minimal_in_value.toString(10)
     : '0'
-
-  const shuttlePaused = () => {
-    try {
-      return (
-        !(fromChain === KeyOfBtc || toChain === KeyOfBtc) &&
-        sponsorValue?.lte(safe_sponsor_amount)
-      )
-    } catch (error) {
-      return false
-    }
-  }
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -295,7 +284,7 @@ function ShuttleForm({
           onAddressInputChange={onAddressInputChange}
         />
       )}
-      {!shuttlePaused() && supported !== 0 && (
+      {supported !== 0 && (
         <Button
           className="mt-6"
           fullWidth
@@ -315,17 +304,6 @@ function ShuttleForm({
           </span>
           <span className="inline-block mt-1">
             {t('tips.notAvailableDescription', {fromChain, toChain})}
-          </span>
-        </div>
-      )}
-      {shuttlePaused() && (
-        <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
-          <span className="flex items-center font-medium">
-            <AlertTriangle className="mr-1 w-4 h-4" />
-            {t('tips.shuttlePaused')}
-          </span>
-          <span className="inline-block mt-1">
-            {t('tips.shuttlePausedDescription', {fromChain, toChain})}
           </span>
         </div>
       )}
