@@ -17,7 +17,7 @@ import {
   TypeTransaction,
 } from '../../../../constants'
 import {useShuttleState} from '../../../../state'
-import {getExponent} from '../../../../utils'
+import {getExponent, calculateGasMargin} from '../../../../utils'
 import {useTxState} from '../../../../state/transaction'
 
 function ShuttleOutButton({
@@ -46,7 +46,10 @@ function ShuttleOutButton({
     'out',
   )
   const tokenBaseContract = useShuttleContract(ContractType.tokenBase)
-  const confluxJS = window?.confluxJS
+  const drCfxContract = useShuttleContract(
+    ContractType.depositRelayerCfx,
+    toChain,
+  )
   const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
@@ -90,13 +93,25 @@ function ShuttleOutButton({
       const amountVal = Big(value).mul(getExponent(decimals))
       if (ctoken === KeyOfCfx) {
         try {
-          const data = await confluxJS.sendTransaction({
-            from: fromAddress,
-            to: shuttleAddress,
-            value: amountVal,
-          })
-          unshiftTx(getShuttleStatusData(data))
-          setTxHash(data)
+          const estimateData = await drCfxContract
+            .deposit(toAddress, ZeroAddrHex)
+            .estimateGasAndCollateral({
+              from: fromAddress,
+              value: amountVal,
+            })
+          const txHash = await drCfxContract
+            .deposit(toAddress, ZeroAddrHex)
+            .sendTransaction({
+              from: fromAddress,
+              value: amountVal,
+              gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+              storageLimit: calculateGasMargin(
+                estimateData?.storageCollateralized,
+                0.5,
+              ),
+            })
+          unshiftTx(getShuttleStatusData(txHash))
+          setTxHash(txHash)
           setTxModalType(TxReceiptModalType.success)
         } catch {
           setTxModalType(TxReceiptModalType.error)

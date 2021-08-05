@@ -11,6 +11,7 @@ import {
 } from './chainConfig'
 import {
   DepositRelayer_ABI,
+  DepositRelayer_CFX_ABI,
   CustodianImpl_ABI,
   CustodianImplReverse_ABI,
   TokenSponsor_ABI,
@@ -22,6 +23,7 @@ import {IS_DEV} from '../utils'
 
 export const ContractType = {
   depositRelayer: 'depositRelayer',
+  depositRelayerCfx: 'depositRelayerCfx',
   custodianImpl: 'custodianImpl',
   custodianImplReverse: 'custodianImplReverse',
   tokenSponsor: 'tokenSponsor',
@@ -44,6 +46,22 @@ export const ContractConfig = {
       [KeyOfOec]: IS_DEV
         ? '0x5cF9C20DE32aE58d33Cb8C22e73d9b2B2E886AdA'
         : '0x214c2958C04150846A442A7b977F9f190B603F31',
+    },
+  },
+  [ContractType.depositRelayerCfx]: {
+    wallet: KeyOfPortal,
+    abi: DepositRelayer_CFX_ABI,
+    address: {
+      //TODO: update the depositRelayerCfx address of prod env
+      [KeyOfEth]: IS_DEV
+        ? 'cfxtest:accfj95y44gfbcsa8nfk98u2dcydt5j0825cevrxv2'
+        : '',
+      [KeyOfBsc]: IS_DEV
+        ? 'cfxtest:acau4v7hac8r01h659u2m525dg5w0391pjb406f0m2'
+        : '',
+      [KeyOfOec]: IS_DEV
+        ? 'cfxtest:acd2cgm2f7yph27ycsyes1zg45yysccfna5dsm18jc'
+        : '',
     },
   },
   [ContractType.custodianImpl]: {
