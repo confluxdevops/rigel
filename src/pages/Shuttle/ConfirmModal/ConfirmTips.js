@@ -2,16 +2,14 @@ import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
-import {Checkbox, Circle} from '../../../components'
-import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
-import {ShuttleInButton, ShuttleOutButton} from '../../components'
+import {Checkbox, Circle, Button} from '../../../components'
+import {useIsBtcChain} from '../../../hooks'
+import CbtcShuttleOutButton from './CbtcShuttleOutButton'
 
-function ConfirmTips({fromChain, toChain, ...props}) {
+function ConfirmTips({fromChain, toChain, onNextClick, ...props}) {
   const [checked, setChecked] = useState(false)
   const {t} = useTranslation()
-  const isBtcChain = useIsBtcChain(toChain)
-  const isCfxChain = useIsCfxChain(toChain)
-  let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
+  const isToBtcChain = useIsBtcChain(toChain)
 
   return (
     <div
@@ -21,15 +19,15 @@ function ConfirmTips({fromChain, toChain, ...props}) {
       <span className="text-sm text-medium">{t('tips.mustKnow')}</span>
       <span className="flex items-center">
         <Circle />
-        {isBtcChain ? t('tips.toBtcAddressTip') : t('tips.addressTip')}
+        {isToBtcChain ? t('tips.toBtcAddressTip') : t('tips.addressTip')}
       </span>
-      {!isBtcChain && (
+      {!isToBtcChain && (
         <span className="flex items-center whitespace-pre">
           <Circle />
           {t('tips.forbiddenAddressTip')}
         </span>
       )}
-      {!isBtcChain && (
+      {!isToBtcChain && (
         <span className="flex items-center whitespace-pre">
           <Circle />
           <Trans
@@ -38,13 +36,13 @@ function ConfirmTips({fromChain, toChain, ...props}) {
           />
         </span>
       )}
-      {isBtcChain && (
+      {isToBtcChain && (
         <span className="flex items-center">
           <Circle />
           {t('tips.toBtcGasTip')}
         </span>
       )}
-      {isBtcChain && (
+      {isToBtcChain && (
         <span className="flex items-start">
           <Circle />
           {t('tips.btcWaitLongTip')}
@@ -60,12 +58,25 @@ function ConfirmTips({fromChain, toChain, ...props}) {
       >
         <span className="text-primary text-xs">{t('checkboxLabel')}</span>
       </Checkbox>
-      <BtnComp
-        fromChain={fromChain}
-        toChain={toChain}
-        disabled={!checked}
-        {...props}
-      />
+      {isToBtcChain && (
+        <CbtcShuttleOutButton
+          fromChain={fromChain}
+          toChain={toChain}
+          disabled={!checked}
+          {...props}
+        />
+      )}
+      {!isToBtcChain && (
+        <Button
+          fullWidth
+          size="large"
+          disabled={!checked}
+          onClick={() => onNextClick && onNextClick()}
+          id="confirmNext"
+        >
+          {t('next')}
+        </Button>
+      )}
     </div>
   )
 }
@@ -73,6 +84,7 @@ function ConfirmTips({fromChain, toChain, ...props}) {
 ConfirmTips.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
+  onNextClick: PropTypes.func,
 }
 
 export default ConfirmTips
