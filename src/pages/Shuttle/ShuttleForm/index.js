@@ -148,22 +148,18 @@ function ShuttleForm({
     let error = null
     if (isNumber(value)) {
       const valBig = new Big(value || 0)
-      if (valBig.gte(minimalVal) && valBig.gt('0')) {
-        //must be greater than zero
-        if (!isFromChainBtc && valBig.gt(balanceVal)) {
-          //must be less than Max value
-          error = {str: 'error.mustLteMax'}
-        }
-      } else if (valBig.lte('0')) {
-        error = {
-          str: 'error.mustGtZero',
-          obj: {value: formatAmount(minimalVal)},
-        }
-      } else {
+      if (valBig.lt('0.000001')) {
+        // should >= 0.000001
+        error = {str: 'error.mustGteCommonMin'}
+      } else if (valBig.lt(minimalVal)) {
+        // should >= min
         error = {
           str: 'error.mustGteMin',
           obj: {value: formatAmount(minimalVal)},
         }
+      } else if (!isFromChainBtc && valBig.gt(balanceVal)) {
+        // should <= balance
+        error = {str: 'error.mustLteMax'}
       }
     } else {
       //not a valid number

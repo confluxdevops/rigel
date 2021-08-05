@@ -48,7 +48,7 @@
   "error": {
     "index": "错误",
     "inputValidAmount": "请输入有效的数值",
-    "mustGtZero": "输入值必须大于 0",
+    "mustGteCommonMin": "输入值必须大于等于 0.000001",
     "mustGteMin": "输入值必须大于等于 {{value}}",
     "mustLteMax": "余额不足",
     "addressInvalid": "地址无效",
