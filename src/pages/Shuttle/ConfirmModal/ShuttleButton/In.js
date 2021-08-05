@@ -235,6 +235,7 @@ function ShuttleInButton({
     <>
       {approveShown && (
         <Button
+          fullWidth
           onClick={onApprove}
           disabled={disabled}
           size="large"
@@ -246,11 +247,12 @@ function ShuttleInButton({
       )}
       {!approveShown && (
         <Button
-          id="shuttleIn"
+          fullWidth
           startIcon={<Send />}
           onClick={onSubmit}
           disabled={disabled}
           size="large"
+          id="shuttleIn"
         >
           {t('send')}
         </Button>

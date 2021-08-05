@@ -26,7 +26,7 @@
   "connect": "Connect",
   "balance": "Balance",
   "max": "Max",
-  "maxTipTilte": "Safty Max",
+  "maxTipTitle": "Safty Max",
   "maxTipContent": "The real-time Gas Price has not been read yet.\nReserve {{fromChain}} network gas fee, MAX will reserve {{remainderAmount}} {{tokenSymbol}}.",
   "receiveAs": "Receive as",
   "fromChain": "From Chain",

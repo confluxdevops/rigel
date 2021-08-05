@@ -143,6 +143,7 @@ function ShuttleOutButton({
   }
   return (
     <Button
+      fullWidth
       startIcon={<Send />}
       onClick={onSubmit}
       disabled={disabled}
