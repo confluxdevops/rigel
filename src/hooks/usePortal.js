@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useMemo, useState, useCallback} from 'react'
+import {useMemo, useState, useCallback, useEffect} from 'react'
 import {useEffectOnce} from 'react-use'
 import {useBalance as usePortalBalance} from '@cfxjs/react-hooks'
 import {ERC20_ABI} from '../abi'
@@ -157,4 +157,43 @@ export function useBalance(address, tokenAddress) {
 
 export function useMultipleBalance(address, tokenAddressArr) {
   return usePortalBalance(address, tokenAddressArr)
+}
+
+/**
+ * call some method from contract and get the value
+ * @param {*} contract
+ * @param {*} method
+ * @param {*} params
+ * @returns
+ */
+export function useContractState(tokenAddress, method, params, interval) {
+  const contract = useTokenContract(tokenAddress)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const getContractData = params => {
+      contract?.[method](...params)
+        .then(res => {
+          setData(res)
+        })
+        .catch(() => {
+          setData(null)
+        })
+    }
+
+    if (interval) {
+      getContractData(params)
+      const timeInterval = setInterval(() => getContractData(params), interval)
+      return () => clearInterval(timeInterval)
+    } else {
+      getContractData(params)
+    }
+  }, [...params, interval, Boolean(contract)])
+
+  return data
+}
+
+export function useTokenAllowance(tokenAddress, params) {
+  const allowance = useContractState(tokenAddress, 'allowance', params, 2000)
+  return allowance || BigNumZero
 }

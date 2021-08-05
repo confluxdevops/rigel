@@ -36,11 +36,31 @@ export const useUpdateTxs = () => {
       const pendingApproveTxs = approveTxs.filter(
         item => item.status === ShuttleStatus.pending,
       )
+      const pendingInApproveTxs = pendingApproveTxs.filter(
+        item => item.fromChain !== KeyOfCfx,
+      )
       if (library) {
-        pendingApproveTxs.forEach(item => {
+        pendingInApproveTxs.forEach(item => {
           const {hash} = item
           library.getTransactionReceipt(hash).then(res => {
             if (res?.status) {
+              updateTx(trans, hash, {status: ShuttleStatus.success})
+            } else {
+              updateTx(trans, hash, {status: ShuttleStatus.error})
+            }
+          })
+        })
+      }
+
+      const pendingOutApproveTxs = pendingApproveTxs.filter(
+        item => item.fromChain === KeyOfCfx,
+      )
+
+      if (window?.confluxJS) {
+        pendingOutApproveTxs.forEach(item => {
+          const {hash} = item
+          window.confluxJS.getTransactionReceipt(hash).then(res => {
+            if (res?.outcomeStatus == 0) {
               updateTx(trans, hash, {status: ShuttleStatus.success})
             } else {
               updateTx(trans, hash, {status: ShuttleStatus.error})

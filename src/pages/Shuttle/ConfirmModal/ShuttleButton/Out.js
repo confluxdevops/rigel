@@ -2,14 +2,18 @@ import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import Big from 'big.js'
+import {MaxUint256} from '@ethersproject/constants'
 
-import {Button} from '../../../../components'
+import {Button, Loading} from '../../../../components'
 import {Send} from '../../../../assets/svg'
 import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
-import {ContractType} from '../../../../constants/contractConfig'
+import {
+  ContractType,
+  ContractConfig,
+} from '../../../../constants/contractConfig'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
 import {
   ZeroAddrHex,
@@ -19,6 +23,8 @@ import {
 import {useShuttleState} from '../../../../state'
 import {getExponent, calculateGasMargin} from '../../../../utils'
 import {useTxState} from '../../../../state/transaction'
+import {useTokenContract, useTokenAllowance} from '../../../../hooks/usePortal'
+import {useIsNativeToken} from '../../../../hooks/useWallet'
 
 function ShuttleOutButton({
   fromChain,
@@ -35,6 +41,7 @@ function ShuttleOutButton({
   toAddress,
 }) {
   const {t} = useTranslation()
+  const {display_symbol} = fromToken
   const {origin, decimals, ctoken} = toToken
   const isCfxChain = useIsCfxChain(origin)
   const isToChainBtc = useIsBtcChain(toChain)
@@ -54,7 +61,17 @@ function ShuttleOutButton({
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
   const {unshiftTx} = useTxState()
-
+  const drContractAddress =
+    ContractConfig[ContractType.depositRelayerCfx]?.address?.[toChain]
+  const [approveShown, setApproveShown] = useState(false)
+  const [isApproving, setIsApproving] = useState(false)
+  const [fetchApprove, setFetchApprove] = useState(false)
+  const tokenContract = useTokenContract(ctoken)
+  const tokenAllownace = useTokenAllowance(ctoken, [
+    fromAddress,
+    drContractAddress,
+  ])
+  const isNativeToken = useIsNativeToken(fromChain, ctoken)
   useEffect(() => {
     setDidMount(true)
     if (isToChainBtc) {
@@ -66,6 +83,24 @@ function ShuttleOutButton({
       setDidMount(false)
     }
   }, [isToChainBtc, toAddress, toBtcAddress])
+
+  useEffect(() => {
+    setDidMount(true)
+    if (
+      isCfxChain &&
+      !isNativeToken &&
+      new Big(tokenAllownace.toString(10)).lt(
+        new Big(value).times(getExponent(decimals)),
+      )
+    ) {
+      setApproveShown(true)
+    } else {
+      setApproveShown(false)
+    }
+    return () => {
+      setDidMount(false)
+    }
+  }, [decimals, tokenAllownace, value, isNativeToken, isCfxChain, fetchApprove])
 
   function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
     let fee = out_fee ? out_fee.toString(10) : '0'
@@ -118,14 +153,23 @@ function ShuttleOutButton({
         }
       } else {
         try {
-          const data = await tokenBaseContract
-            .transfer(shuttleAddress, amountVal)
+          const estimateData = await drCfxContract
+            .depositToken(ctoken, toAddress, ZeroAddrHex, amountVal)
+            .estimateGasAndCollateral({
+              from: fromAddress,
+            })
+          const txHash = await drCfxContract
+            .depositToken(ctoken, toAddress, ZeroAddrHex, amountVal)
             .sendTransaction({
               from: fromAddress,
-              to: ctoken,
+              gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+              storageLimit: calculateGasMargin(
+                estimateData?.storageCollateralized,
+                0.5,
+              ),
             })
-          unshiftTx(getShuttleStatusData(data))
-          setTxHash(data)
+          unshiftTx(getShuttleStatusData(txHash))
+          setTxHash(txHash)
           setTxModalType(TxReceiptModalType.success)
         } catch {
           setTxModalType(TxReceiptModalType.error)
@@ -153,19 +197,85 @@ function ShuttleOutButton({
     }
   }
 
+  function contractApprove(tokenContract, value, gas, storage) {
+    tokenContract
+      .approve(drContractAddress, value)
+      .sendTransaction({
+        gas: gas ? calculateGasMargin(gas, 0.5) : undefined,
+        from: fromAddress,
+        storageLimit: storage ? calculateGasMargin(storage, 0.5) : undefined,
+      })
+      .confirmed()
+      .then(receipt => {
+        unshiftTx(
+          getShuttleStatusData(
+            receipt?.transactionHash,
+            TypeTransaction.approve,
+          ),
+        )
+        setFetchApprove(!fetchApprove)
+        setIsApproving(false)
+        setApproveShown(false)
+      })
+      .catch(() => {
+        setIsApproving(false)
+      })
+  }
+
+  const onApprove = async () => {
+    if (isApproving) return
+    setIsApproving(true)
+    //MaxUint256
+    tokenContract
+      .approve(drContractAddress, MaxUint256)
+      .estimateGasAndCollateral({
+        from: fromAddress,
+      })
+      .then(estimateData => {
+        contractApprove(
+          tokenContract,
+          MaxUint256,
+          estimateData?.gasLimit,
+          estimateData?.storage,
+        )
+      })
+      .catch(error => {
+        if (error.data && error.data.code === -32000) {
+          contractApprove(tokenContract, 0)
+        } else {
+          setIsApproving(false)
+        }
+      })
+  }
+
   if (!didMount) {
     return null
   }
   return (
-    <Button
-      startIcon={<Send />}
-      onClick={onSubmit}
-      disabled={disabled}
-      size="large"
-      id="shuttleOut"
-    >
-      {t('send')}
-    </Button>
+    <>
+      {approveShown && (
+        <Button
+          onClick={onApprove}
+          disabled={disabled}
+          size="large"
+          id="approve"
+        >
+          {isApproving && <Loading className="!w-6 !h-6" />}
+          {!isApproving && t('approve', {tokenSymbol: display_symbol})}
+        </Button>
+      )}
+      {!approveShown && (
+        <Button
+          startIcon={<Send />}
+          onClick={onSubmit}
+          disabled={disabled}
+          size="large"
+          id="shuttleOut"
+        >
+          {t('send')}
+        </Button>
+      )}
+    </>
   )
 }
 
