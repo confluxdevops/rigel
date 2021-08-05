@@ -161,7 +161,7 @@ export function useNativeTokenBalance(
   address,
   delay = IntervalTime.fetchBalance,
 ) {
-  const [balance, setBalance] = useState(BigNumZero)
+  const [balance, setBalance] = useState(null)
   const {account, library} = useWeb3React()
 
   useEffect(() => {
@@ -170,7 +170,7 @@ export function useNativeTokenBalance(
         library
           .getBalance(address)
           .then(newBalance => {
-            if (!balance.eq(newBalance)) {
+            if (!balance || !balance.eq(newBalance)) {
               setBalance(new Big(newBalance.toString(10)))
             }
           })
@@ -255,12 +255,12 @@ export function useTokenBalance(tokenAddress, params) {
     params,
     IntervalTime.fetchBalance,
   )
-  return balance ? new Big(balance) : BigNumZero
+  return balance ? new Big(balance) : null
 }
 
 export function useBalance(address, tokenAddress) {
-  const tokenBalance = useTokenBalance(tokenAddress, [address]) || BigNumZero
-  const nativeTokenBalance = useNativeTokenBalance(address) || BigNumZero
+  const tokenBalance = useTokenBalance(tokenAddress, [address])
+  const nativeTokenBalance = useNativeTokenBalance(address)
   const isNativeToken = !checkHexAddress(tokenAddress)
   return isNativeToken ? nativeTokenBalance : tokenBalance
 }

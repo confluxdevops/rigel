@@ -11,7 +11,7 @@ import {
   DefaultToChain,
   SupportedChains,
 } from '../../../constants/chainConfig'
-import {TypeAccountStatus, Decimal18} from '../../../constants'
+import {TypeAccountStatus, Decimal18, BigNumZero} from '../../../constants'
 
 import {
   useBalance,
@@ -83,14 +83,16 @@ function ShuttleForm({
     chainOfContract,
     toToken,
   )
-  const balanceVal = convertDecimal(
-    balance,
-    'divide',
-    isFromChainCfx ? Decimal18 : decimals,
-  )
+  const balanceVal = balance
+    ? convertDecimal(balance, 'divide', isFromChainCfx ? Decimal18 : decimals)
+    : null
 
   const maxAmount = (
-    isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal
+    balanceVal
+      ? isNativeToken
+        ? getMaxAmount(fromChain, balanceVal)
+        : balanceVal
+      : BigNumZero
   )?.toString(10)
 
   const minimalVal = isFromChainCfx
@@ -148,22 +150,18 @@ function ShuttleForm({
     let error = null
     if (isNumber(value)) {
       const valBig = new Big(value || 0)
-      if (valBig.gte(minimalVal) && valBig.gt('0')) {
-        //must be greater than zero
-        if (!isFromChainBtc && valBig.gt(balanceVal)) {
-          //must be less than Max value
-          error = {str: 'error.mustLteMax'}
-        }
-      } else if (valBig.lte('0')) {
-        error = {
-          str: 'error.mustGtZero',
-          obj: {value: formatAmount(minimalVal)},
-        }
-      } else {
+      if (valBig.lt('0.000001')) {
+        // should >= 0.000001
+        error = {str: 'error.mustGteCommonMin'}
+      } else if (valBig.lt(minimalVal)) {
+        // should >= min
         error = {
           str: 'error.mustGteMin',
           obj: {value: formatAmount(minimalVal)},
         }
+      } else if (!isFromChainBtc && balanceVal && valBig.gt(balanceVal)) {
+        // should <= balance
+        error = {str: 'error.mustLteMax'}
       }
     } else {
       //not a valid number

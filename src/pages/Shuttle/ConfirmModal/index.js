@@ -20,7 +20,7 @@ function ConfirmModal({
   ...props
 }) {
   const {t} = useTranslation()
-  const fromIsBtcChain = useIsBtcChain(fromChain)
+  const isFromBtcChain = useIsBtcChain(fromChain)
   const {display_symbol} = fromToken
   const content = (
     <div className="flex flex-col items-center">
@@ -40,8 +40,8 @@ function ConfirmModal({
           {...props}
         />
       </div>
-      {fromIsBtcChain && <BtcConfirmTips />}
-      {!fromIsBtcChain && (
+      {isFromBtcChain && <BtcConfirmTips />}
+      {!isFromBtcChain && (
         <ConfirmTips
           fromChain={fromChain}
           toChain={toChain}

@@ -255,6 +255,7 @@ function ShuttleOutButton({
     <>
       {approveShown && (
         <Button
+          fullWidth
           onClick={onApprove}
           disabled={disabled}
           size="large"
@@ -266,6 +267,7 @@ function ShuttleOutButton({
       )}
       {!approveShown && (
         <Button
+          fullWidth
           startIcon={<Send />}
           onClick={onSubmit}
           disabled={disabled}
