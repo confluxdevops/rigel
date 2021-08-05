@@ -65,7 +65,7 @@ function FromToken({
                 {t('max')}
               </Tag>
               <Tooltip
-                title={
+                content={
                   <div className="px-2 py-1 text-xs flex flex-col">
                     <span className="text-gray-0 inline-block mb-0.5">
                       {t('maxTipTitle')}

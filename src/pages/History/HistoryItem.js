@@ -41,7 +41,7 @@ function TokenInfo({toToken, fromChain, toChain}) {
           {display_symbol}
           {!isNativeToken && !isToChainCfx && (
             <Tooltip
-              title={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
+              content={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
             >
               <WrapIcon
                 type="circle"
