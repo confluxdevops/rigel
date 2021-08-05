@@ -3,22 +3,22 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import Big from 'big.js'
 
-import {Button} from '../../../../components'
-import {Send} from '../../../../assets/svg'
-import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
-import useShuttleAddress from '../../../../hooks/useShuttleAddress'
-import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
-import {useShuttleContract} from '../../../../hooks/useShuttleContract'
-import {ContractType} from '../../../../constants/contractConfig'
-import {useCustodianData} from '../../../../hooks/useShuttleData'
+import {Button} from '../../../components'
+import {Send} from '../../../assets/svg'
+import {SupportedChains, KeyOfCfx} from '../../../constants/chainConfig'
+import useShuttleAddress from '../../../hooks/useShuttleAddress'
+import {useIsCfxChain, useIsBtcChain} from '../../../hooks'
+import {useShuttleContract} from '../../../hooks/useShuttleContract'
+import {ContractType} from '../../../constants/contractConfig'
+import {useCustodianData} from '../../../hooks/useShuttleData'
 import {
   ZeroAddrHex,
   TxReceiptModalType,
   TypeTransaction,
-} from '../../../../constants'
-import {useShuttleState} from '../../../../state'
-import {getExponent} from '../../../../utils'
-import {useTxState} from '../../../../state/transaction'
+} from '../../../constants'
+import {useShuttleState} from '../../../state'
+import {getExponent} from '../../../utils'
+import {useTxState} from '../../../state/transaction'
 
 function ShuttleOutButton({
   fromChain,

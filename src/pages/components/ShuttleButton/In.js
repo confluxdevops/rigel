@@ -9,29 +9,26 @@ import {BigNumber} from '@ethersproject/bignumber'
 import {MaxUint256} from '@ethersproject/constants'
 import {Logger} from '@ethersproject/logger'
 
-import {Button, Loading} from '../../../../components'
-import {Send} from '../../../../assets/svg'
-import {SupportedChains} from '../../../../constants/chainConfig'
-import {
-  ContractConfig,
-  ContractType,
-} from '../../../../constants/contractConfig'
+import {Button, Loading} from '../../../components'
+import {Send} from '../../../assets/svg'
+import {SupportedChains} from '../../../constants/chainConfig'
+import {ContractConfig, ContractType} from '../../../constants/contractConfig'
 
 import {
   ZeroAddrHex,
   TxReceiptModalType,
   TypeTransaction,
-} from '../../../../constants'
-import {useIsNativeToken} from '../../../../hooks/useWallet'
+} from '../../../constants'
+import {useIsNativeToken} from '../../../hooks/useWallet'
 import {
   useTokenContract,
   useTokenAllowance,
-} from '../../../../hooks/useWeb3Network'
-import {calculateGasMargin, getExponent} from '../../../../utils'
-import {useShuttleContract} from '../../../../hooks/useShuttleContract'
-import {useIsCfxChain} from '../../../../hooks'
-import useShuttleAddress from '../../../../hooks/useShuttleAddress'
-import {useTxState} from '../../../../state/transaction'
+} from '../../../hooks/useWeb3Network'
+import {calculateGasMargin, getExponent} from '../../../utils'
+import {useShuttleContract} from '../../../hooks/useShuttleContract'
+import {useIsCfxChain} from '../../../hooks'
+import useShuttleAddress from '../../../hooks/useShuttleAddress'
+import {useTxState} from '../../../state/transaction'
 
 function ShuttleInButton({
   fromChain,

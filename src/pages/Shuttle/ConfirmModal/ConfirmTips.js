@@ -4,7 +4,7 @@ import {useTranslation, Trans} from 'react-i18next'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 import {Checkbox, Circle} from '../../../components'
 import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
-import {ShuttleInButton, ShuttleOutButton} from './ShuttleButton'
+import {ShuttleInButton, ShuttleOutButton} from '../../components'
 
 function ConfirmTips({fromChain, toChain, ...props}) {
   const [checked, setChecked] = useState(false)
