@@ -10,7 +10,7 @@ import {
   useConnect as useConnectWeb3,
   useBalance as useBalanceWeb3,
 } from './useWeb3Network'
-import {BigNumZero, TypeAccountStatus} from '../constants'
+import {TypeAccountStatus} from '../constants'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -38,14 +38,14 @@ export function useWallet(chain) {
 export function useBalance(chain, address, tokenAddress) {
   const balancePortal = useBalancePortal(address, tokenAddress)
   const balanceWeb3 = useBalanceWeb3(address, tokenAddress)
-  if (!chain || !address) return BigNumZero
+  if (!chain || !address) return null
   switch (ChainConfig[chain]?.wallet) {
     case KeyOfMetaMask:
       return balanceWeb3
     case KeyOfPortal:
       return balancePortal
     default:
-      return BigNumZero
+      return null
   }
 }
 

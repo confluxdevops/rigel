@@ -209,7 +209,7 @@ const Tooltip = React.forwardRef((props, ref) => {
 Tooltip.displayName = 'Tooltip'
 
 Tooltip.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   overlay: PropTypes.bool,
   visible: PropTypes.bool,
   defaultVisible: PropTypes.bool,

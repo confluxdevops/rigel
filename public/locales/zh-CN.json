@@ -26,6 +26,8 @@
   "connect": "连接",
   "balance": "余额",
   "max": "最大",
+  "maxTipTitle": "最大安全值",
+  "maxTipContent": "暂时没有读取实时 Gas 价格\n为了预留 {{fromChain}} 网络的 Gas Fee，点击全部将会预留 {{remainderAmount}} {{tokenSymbol}}",
   "receiveAs": "将收到",
   "fromChain": "从",
   "toChain": "至",

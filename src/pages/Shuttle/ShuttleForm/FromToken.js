@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {formatAmount} from '@cfxjs/data-format'
-import {SupportedChains} from '../../../constants/chainConfig'
-import {Input, Tag} from '../../../components'
+import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
+import {Input, Tag, Tooltip} from '../../../components'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
+import {Question} from '../../../assets/svg'
 
 function FromToken({
   fromChain,
@@ -54,12 +55,34 @@ function FromToken({
             <span
               className="text-gray-40 text-xs inline-block mb-1"
               id="balance"
-            >{`${t('balance')} ${formatAmount(balanceVal)}`}</span>
+            >{`${t('balance')} ${
+              balanceVal ? formatAmount(balanceVal) : '--'
+            }`}</span>
           )}
           {fromAddress && !errorNetwork && (
-            <Tag size="small" onClick={onMaxClick} id="max">
-              {t('max')}
-            </Tag>
+            <div className="flex items-center">
+              <Tag size="small" onClick={onMaxClick} id="max" className="mr-1">
+                {t('max')}
+              </Tag>
+              <Tooltip
+                title={
+                  <div className="px-2 py-1 text-xs flex flex-col">
+                    <span className="text-gray-0 inline-block mb-0.5">
+                      {t('maxTipTitle')}
+                    </span>
+                    <span className="text-gray-40">
+                      {t('maxTipContent', {
+                        fromChain,
+                        remainderAmount: ChainConfig[fromChain].remainderAmount,
+                        tokenSymbol: ChainConfig[fromChain].tokenName,
+                      })}
+                    </span>
+                  </div>
+                }
+              >
+                <Question className="w-3 h-3 text-gray-40" />
+              </Tooltip>
+            </div>
           )}
         </div>
       </div>
