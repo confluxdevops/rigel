@@ -55,7 +55,9 @@ function FromToken({
             <span
               className="text-gray-40 text-xs inline-block mb-1"
               id="balance"
-            >{`${t('balance')} ${formatAmount(balanceVal)}`}</span>
+            >{`${t('balance')} ${
+              balanceVal ? formatAmount(balanceVal) : '--'
+            }`}</span>
           )}
           {fromAddress && !errorNetwork && (
             <div className="flex items-center">

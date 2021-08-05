@@ -11,7 +11,7 @@ import {
   DefaultToChain,
   SupportedChains,
 } from '../../../constants/chainConfig'
-import {TypeAccountStatus, Decimal18} from '../../../constants'
+import {TypeAccountStatus, Decimal18, BigNumZero} from '../../../constants'
 
 import {
   useBalance,
@@ -83,14 +83,16 @@ function ShuttleForm({
     chainOfContract,
     toToken,
   )
-  const balanceVal = convertDecimal(
-    balance,
-    'divide',
-    isFromChainCfx ? Decimal18 : decimals,
-  )
+  const balanceVal = balance
+    ? convertDecimal(balance, 'divide', isFromChainCfx ? Decimal18 : decimals)
+    : null
 
   const maxAmount = (
-    isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal
+    balanceVal
+      ? isNativeToken
+        ? getMaxAmount(fromChain, balanceVal)
+        : balanceVal
+      : BigNumZero
   )?.toString(10)
 
   const minimalVal = isFromChainCfx
@@ -157,7 +159,7 @@ function ShuttleForm({
           str: 'error.mustGteMin',
           obj: {value: formatAmount(minimalVal)},
         }
-      } else if (!isFromChainBtc && valBig.gt(balanceVal)) {
+      } else if (!isFromChainBtc && balanceVal && valBig.gt(balanceVal)) {
         // should <= balance
         error = {str: 'error.mustLteMax'}
       }
