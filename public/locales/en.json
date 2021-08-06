@@ -1,11 +1,11 @@
 {
   "waiting": "Confirming",
+  "process": "Conflux Processing",
   "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{tokenSymbol}} to {{chain}}",
-  "confirm": "Confirm this transaction in {{wallet}}",
+  "confirm": "Confirm the transaction in {{wallet}}",
   "submitted": "Transaction Submitted",
   "viewOnScan": "View on Scan",
   "addTokenToMetaMask": "Add {{tokenSymbol}} to MetaMask",
-  "addedTokenToMetaMask": "Added {{tokenSymbol}}",
   "rejected": "Transaction Rejected",
   "installWallet": "Install {{walletName}} Wallet",
   "installTipOne": " You will need to install {{walletName}} to continue.",
@@ -27,7 +27,7 @@
   "balance": "Balance",
   "max": "Max",
   "maxTipTitle": "Safty Max",
-  "maxTipContent": "The real-time Gas Price has not been read yet.\nReserve {{fromChain}} network gas fee, MAX will reserve {{remainderAmount}} {{tokenSymbol}}.",
+  "maxTipContent": "The real-time Gas Price has not been read yet.<br/>Reserve {{fromChain}} network gas fee, MAX will reserve {{remainderAmount}} {{tokenSymbol}}.",
   "receiveAs": "Receive as",
   "fromChain": "From Chain",
   "toChain": "To Chain",
@@ -39,6 +39,7 @@
   "checkboxLabel": "I have confirmed the transfer information",
   "approve": "Approve {{tokenSymbol}}",
   "send": "Send",
+  "claim": "Claim",
   "pleaseWait": "Please Wait Patiently",
   "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
   "copiedSuccess": "Copy～",
@@ -117,5 +118,16 @@
       "stepThree": "Confirm on ShuttleFlow",
       "stepFour": "Confirm on {{toChain}} {{toChainId}}"
     }
+  },
+  "claimModal": {
+    "title": "Two steps to claim",
+    "description": "Two steps to cross-chain",
+    "sendFromToken": "Send your {{fromTokenSymbol}} on {{fromChain}}",
+    "claimToToken": "Claim your {{toTokenSymbol}} on {{toChain}}",
+    "claimTips": "Why need to claim? Exempt your Shuttle Fee.",
+    "takeTime": "It may <strong>take a while</strong>, wait here or ",
+    "viewHistory": "View in history",
+    "clickSend": "Click Send to continue",
+    "clickClaim": "Click Claim to continue"
   }
 }

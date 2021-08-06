@@ -25,7 +25,7 @@ function TransactionReceiptionModal({
   onClose,
 }) {
   const {t} = useTranslation()
-  const {addToken, success} = useAddTokenToMetamask(toToken)
+  const {addToken} = useAddTokenToMetamask(toToken)
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   let content
   const onAddToken = () => {
@@ -71,18 +71,13 @@ function TransactionReceiptionModal({
             variant="outlined"
             fullWidth
             className="mt-4"
-            endIcon={!success ? <MetamaskLogo alt="metamaskLogo" /> : null}
-            disabled={success}
+            endIcon={<MetamaskLogo alt="metamaskLogo" />}
             // TODO: deal with metamask is not installed
             onClick={onAddToken}
           >
-            {success
-              ? t('addedTokenToMetaMask', {
-                  tokenSymbol: toToken && toToken.display_symbol,
-                })
-              : t('addTokenToMetaMask', {
-                  tokenSymbol: toToken && toToken.display_symbol,
-                })}
+            {t('addTokenToMetaMask', {
+              tokenSymbol: toToken && toToken.display_symbol,
+            })}
           </Button>
         )}
       </div>
