@@ -39,7 +39,7 @@ const FirstStep = ({
         history.push(pathWithQuery)
       }}
     >
-      <Link>{t('viewHistory')}</Link>
+      <Link>{t('viewInHistory')}</Link>
     </div>
   )
   return (

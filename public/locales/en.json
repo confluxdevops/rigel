@@ -126,7 +126,6 @@
     "claimToToken": "Claim your {{toTokenSymbol}} on {{toChain}}",
     "claimTips": "Why need to claim? Exempt your Shuttle Fee.",
     "takeTime": "It may <strong>take a while</strong>, wait here or ",
-    "viewHistory": "View in history",
     "clickSend": "Click Send to continue",
     "clickClaim": "Click Claim to continue"
   }

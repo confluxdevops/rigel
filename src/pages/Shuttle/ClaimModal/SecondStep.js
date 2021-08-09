@@ -120,7 +120,7 @@ const SecondStep = ({
                 history.push(pathWithQuery)
               }}
             >
-              <Link>{t('viewHistory')}</Link>
+              <Link>{t('viewInHistory')}</Link>
             </div>
           )}
           {sendStatus === SendStatus.success &&
