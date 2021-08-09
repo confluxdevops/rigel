@@ -28,7 +28,7 @@
   background: fade('#fff', 1%);
 }
 .popover-hidden {
-  /* @apply hidden; */
+  @apply hidden;
 }
 .popover-content {
   @apply shadow-1;
