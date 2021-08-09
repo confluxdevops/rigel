@@ -20,6 +20,11 @@ function ClaimModal({
   const {t} = useTranslation()
   const [sendStatus, setSendStatus] = useState('')
   const [claimStatus, setClaimStatus] = useState('')
+  const onClickClose = () => {
+    const modal = document.getElementById('claimModal')
+    modal.classList.add('animate-fade-out-top-right')
+    onClose && onClose()
+  }
   const content = (
     <div className="flex flex-col w-full">
       <span className="inine-block mb-3 text-gray-60">
@@ -55,11 +60,12 @@ function ClaimModal({
   )
   return (
     <Modal
+      id="claimModal"
       size="medium"
       open={open}
       title={t('claimModal.title')}
       content={content}
-      onClose={onClose}
+      onClose={onClickClose}
     />
   )
 }
