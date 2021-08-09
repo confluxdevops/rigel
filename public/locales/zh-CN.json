@@ -47,6 +47,9 @@
   "cfxAddressRecord": "只展示与 Conflux 地址相关的跨链记录。",
   "shuttleRecordItem": "{{tokenSymbol}} 从 {{fromChain}} 到 {{toChain}}",
   "approveRecordItem": "授权 {{tokenSymbol}}",
+  "viewInHistory": "View in history",
+  "notificationDetail": "{{value}} {{symbol}} from {{fromChain}} to {{toChain}}",
+  "claimNotificationTitle": "Ready to Claim",
   "error": {
     "index": "错误",
     "inputValidAmount": "请输入有效的数值",
