@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {formatAmount} from '@cfxjs/data-format'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
-import {Input, Tag, Tooltip} from '../../../components'
+import {Input, Tag, Popover} from '../../../components'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
 import {Question} from '../../../assets/svg'
@@ -64,24 +64,30 @@ function FromToken({
               <Tag size="small" onClick={onMaxClick} id="max" className="mr-1">
                 {t('max')}
               </Tag>
-              <Tooltip
-                title={
-                  <div className="px-2 py-1 text-xs flex flex-col">
-                    <span className="text-gray-0 inline-block mb-0.5">
-                      {t('maxTipTitle')}
-                    </span>
-                    <span className="text-gray-40">
-                      {t('maxTipContent', {
-                        fromChain,
-                        remainderAmount: ChainConfig[fromChain].remainderAmount,
-                        tokenSymbol: ChainConfig[fromChain].tokenName,
-                      })}
-                    </span>
-                  </div>
-                }
+              <Popover
+                title={t('maxTipTitle')}
+                content={t('maxTipContent', {
+                  fromChain,
+                  remainderAmount: ChainConfig[fromChain].remainderAmount,
+                  tokenSymbol: ChainConfig[fromChain].tokenName,
+                })}
+                // title={
+                //   <div className="px-2 py-1 text-xs flex flex-col">
+                //     <span className="text-gray-0 inline-block mb-0.5">
+                //       {t('maxTipTitle')}
+                //     </span>
+                //     <span className="text-gray-40">
+                //       {t('maxTipContent', {
+                //         fromChain,
+                //         remainderAmount: ChainConfig[fromChain].remainderAmount,
+                //         tokenSymbol: ChainConfig[fromChain].tokenName,
+                //       })}
+                //     </span>
+                //   </div>
+                // }
               >
                 <Question className="w-3 h-3 text-gray-40" />
-              </Tooltip>
+              </Popover>
             </div>
           )}
         </div>
