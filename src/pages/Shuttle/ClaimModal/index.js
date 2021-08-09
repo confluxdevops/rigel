@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
+import {useIsMobile} from '../../../hooks'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {SendStatus, ClaimStatus} from '../../../constants'
@@ -18,12 +19,18 @@ function ClaimModal({
   ...props
 }) {
   const {t} = useTranslation()
+  const isMobile = useIsMobile()
   const [sendStatus, setSendStatus] = useState('')
   const [claimStatus, setClaimStatus] = useState('')
   const onClickClose = () => {
     const modal = document.getElementById('claimModal')
-    modal.classList.add('animate-fade-out-top-right')
-    onClose && onClose()
+    modal.classList.add(
+      isMobile ? 'animate-fade-out-bottom-left' : 'animate-fade-out-top-right',
+    )
+    const closeTimer = setTimeout(() => {
+      clearTimeout(closeTimer)
+      onClose && onClose()
+    }, 500)
   }
   const content = (
     <div className="flex flex-col w-full">
