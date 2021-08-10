@@ -9,7 +9,7 @@ import Shuttle from '../pages/Shuttle'
 import History from '../pages/History'
 import Home from '../pages/Home'
 import Maintenance from '../pages/Maintenance'
-import Notfound from '../pages/NotFound'
+import NotFound from '../pages/NotFound'
 import {Web3ReactManager, Header, MobileFooter} from '../pages/components'
 import {Loading} from '../components'
 import {useIsMobile} from '../hooks'
@@ -97,7 +97,7 @@ function App() {
                   <Maintenance />
                 </Route>
                 <Route path="/notfound">
-                  <Notfound />
+                  <NotFound />
                 </Route>
                 <Route path="*">
                   <Redirect to="/notfound" />
