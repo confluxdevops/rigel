@@ -1,5 +1,5 @@
 import * as React from 'react'
-import PropTypes, {string} from 'prop-types'
+import PropTypes from 'prop-types'
 import RcTooltip from 'rc-tooltip'
 import useMergedState from 'rc-util/lib/hooks/useMergedState'
 import classNames from 'classnames'
@@ -154,8 +154,9 @@ const Tooltip = React.forwardRef((props, ref) => {
     overlayClassName,
     overlayInnerStyle,
     children,
+    prefixCls: customPrefixCls,
   } = props
-  const prefixCls = 'tooltip'
+  const prefixCls = customPrefixCls || 'tooltip'
 
   let tempVisible = visible
   // Hide tooltip when there is no content
@@ -223,9 +224,10 @@ Tooltip.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  builtinPlacements: string,
+  builtinPlacements: PropTypes.string,
   arrowPointAtCenter: PropTypes.bool,
   autoAdjustOverflow: PropTypes.bool,
+  prefixCls: PropTypes.string,
 }
 
 Tooltip.defaultProps = {

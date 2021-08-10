@@ -174,7 +174,6 @@ module.exports = {
         maxHeight: 'maxHeight',
       },
       inset: {
-        0.5: '0.125rem',
         30: '7.5rem',
         34: '8.5rem',
         65: '16.25rem',
@@ -194,10 +193,12 @@ module.exports = {
       },
       minHeight: {
         8: '2rem',
+        50: '12.5rem',
         220: '55rem',
       },
       minWidth: {
         8: '2rem',
+        40: '10rem',
       },
       maxWidth: {
         60: '15rem',
