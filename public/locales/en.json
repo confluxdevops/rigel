@@ -119,7 +119,8 @@
       "stepOne": "Initiate cross-chain",
       "stepTwo": "Confirm on {{fromChain}} {{fromChainId}}",
       "stepThree": "Confirm on ShuttleFlow",
-      "stepFour": "Confirm on {{toChain}} {{toChainId}}"
+      "stepFour": "Waiting for Claim",
+      "stepFive": "Confirm on {{toChain}} {{toChainId}}"
     }
   },
   "claimModal": {

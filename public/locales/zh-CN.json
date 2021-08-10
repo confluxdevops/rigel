@@ -119,7 +119,8 @@
       "stepOne": "开始跨链进程",
       "stepTwo": "{{fromChain}} {{fromChainId}} 已确认",
       "stepThree": "ShuttleFlow 已确认",
-      "stepFour": "{{toChain}} {{toChainId}} 已确认"
+      "stepFour": "Waiting for Claim",
+      "stepFive": "{{toChain}} {{toChainId}} 已确认"
     }
   },
   "claimModal": {
