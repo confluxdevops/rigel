@@ -38,6 +38,20 @@ export const TxReceiptModalType = {
   success: 'success',
   error: 'error',
 }
+
+export const SendStatus = {
+  ongoing: 'ongoing',
+  success: 'success',
+  error: 'error',
+  claim: 'claim',
+}
+
+export const ClaimStatus = {
+  ongoing: 'ongoing',
+  success: 'success',
+  error: 'error',
+}
+
 export const MobileBreakpoint = 768
 
 export const Decimal18 = '18'

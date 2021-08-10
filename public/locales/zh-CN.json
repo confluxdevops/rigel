@@ -1,11 +1,11 @@
 {
   "waiting": "等待确认",
+  "process": "Conflux Processing",
   "shuttleInfo": "跨 <strong>{{value}}</strong> {{tokenSymbol}} 去 {{chain}}",
   "confirm": "在 {{wallet}} 确认这笔交易",
   "submitted": "交易已发出",
   "viewOnScan": "去区块链浏览器上查看",
   "addTokenToMetaMask": "添加 {{tokenSymbol}} 至 MetaMask",
-  "addedTokenToMetaMask": "已添加 {{tokenSymbol}}",
   "rejected": "交易被拒绝",
   "installWallet": "安装 {{walletName}} 钱包",
   "installTipOne": "你需要安装 {{walletName}} 才能继续.",
@@ -27,7 +27,7 @@
   "balance": "余额",
   "max": "最大",
   "maxTipTitle": "最大安全值",
-  "maxTipContent": "暂时没有读取实时 Gas 价格\n为了预留 {{fromChain}} 网络的 Gas Fee，点击全部将会预留 {{remainderAmount}} {{tokenSymbol}}",
+  "maxTipContent": "暂时没有读取实时 Gas 价格<br/>为了预留 {{fromChain}} 网络的 Gas Fee，点击全部将会预留 {{remainderAmount}} {{tokenSymbol}}",
   "receiveAs": "将收到",
   "fromChain": "从",
   "toChain": "至",
@@ -39,6 +39,7 @@
   "checkboxLabel": "我已知晓上述风险",
   "approve": "授权 {{tokenSymbol}}",
   "send": "发送",
+  "claim": "Claim",
   "pleaseWait": "请耐心等待",
   "waitOneHour": "跨链将在比特币网络完成 6 个块确认后开始处理，至少需要 1 小时",
   "copiedSuccess": "复制成功",
@@ -117,5 +118,15 @@
       "stepThree": "ShuttleFlow 已确认",
       "stepFour": "{{toChain}} {{toChainId}} 已确认"
     }
+  },
+  "claimModal": {
+    "title": "Two steps to claim",
+    "description": "Two steps to cross-chain",
+    "sendFromToken": "Send your {{fromTokenSymbol}} on {{fromChain}}",
+    "claimToToken": "Claim your {{toTokenSymbol}} on {{toChain}}",
+    "claimTips": "Why need to claim? Exempt your Shuttle Fee.",
+    "takeTime": "It may <strong>take a while</strong>, wait here or ",
+    "clickSend": "Click Send to continue",
+    "clickClaim": "Click Claim to continue"
   }
 }

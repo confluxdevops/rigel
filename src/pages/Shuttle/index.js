@@ -21,6 +21,7 @@ import {
   ShuttleStatus,
 } from '../../constants'
 import ConfirmModal from './ConfirmModal'
+import ClaimModal from './ClaimModal'
 import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
 import {getChainIdRight} from '../../utils'
@@ -31,6 +32,7 @@ function Shuttle() {
   const {tokenFromBackend, error} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
+  const [claimModalShow, setClaimModalShow] = useState(false)
   const [value, setValue] = useState('')
   const [txModalShow, setTxModalShow] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
@@ -233,6 +235,20 @@ function Shuttle() {
           setTxHash={setTxHash}
           fromAddress={fromAddress}
           toAddress={toAddress}
+          onNextClick={() => {
+            setConfirmModalShow(false)
+            setClaimModalShow(true)
+          }}
+        />
+      )}
+      {claimModalShow && (
+        <ClaimModal
+          open={claimModalShow}
+          onClose={() => setClaimModalShow(false)}
+          fromChain={fromChain}
+          toChain={toChain}
+          fromToken={fromToken}
+          toToken={toToken}
         />
       )}
       {txModalShow && (

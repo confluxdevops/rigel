@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {useTranslation} from 'react-i18next'
+import {useTranslation, Trans} from 'react-i18next'
 import {formatAmount} from '@cfxjs/data-format'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 import {Input, Tag, Tooltip} from '../../../components'
@@ -65,17 +65,21 @@ function FromToken({
                 {t('max')}
               </Tag>
               <Tooltip
-                title={
+                content={
                   <div className="px-2 py-1 text-xs flex flex-col">
                     <span className="text-gray-0 inline-block mb-0.5">
                       {t('maxTipTitle')}
                     </span>
                     <span className="text-gray-40">
-                      {t('maxTipContent', {
-                        fromChain,
-                        remainderAmount: ChainConfig[fromChain].remainderAmount,
-                        tokenSymbol: ChainConfig[fromChain].tokenName,
-                      })}
+                      <Trans
+                        i18nKey="maxTipContent"
+                        values={{
+                          fromChain,
+                          remainderAmount:
+                            ChainConfig[fromChain].remainderAmount,
+                          tokenSymbol: ChainConfig[fromChain].tokenName,
+                        }}
+                      />
                     </span>
                   </div>
                 }
