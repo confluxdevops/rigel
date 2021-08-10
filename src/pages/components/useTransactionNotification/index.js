@@ -1,4 +1,5 @@
 import queryString from 'query-string'
+import {useTranslation} from 'react-i18next'
 import {useHistory, useLocation} from 'react-router-dom'
 import {
   ChainConfig,
@@ -8,6 +9,7 @@ import {
 import {Notification, Link} from '../../../components'
 
 const useTransactionNotification = () => {
+  const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
   const {
@@ -18,7 +20,12 @@ const useTransactionNotification = () => {
   } = queryString.parse(location.search)
   return ({symbol, fromChain, toChain, value, isMobile}) =>
     Notification.open({
-      title: `${value} ${symbol} from ${ChainConfig[fromChain].shortName} to ${ChainConfig[toChain].shortName}`,
+      title: t('notificationDetail', {
+        value,
+        symbol,
+        fromChain: ChainConfig[fromChain].shortName,
+        toChain: ChainConfig[toChain].shortName,
+      }),
       type: 'success',
       content: (
         <div
@@ -36,7 +43,7 @@ const useTransactionNotification = () => {
             history.push(pathWithQuery)
           }}
         >
-          <Link className="!justify-start">View in history</Link>
+          <Link className="!justify-start">{t('viewInHistory')}</Link>
         </div>
       ),
       duration: 0,
