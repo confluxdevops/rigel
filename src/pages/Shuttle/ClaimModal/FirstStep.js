@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import queryString from 'query-string'
 import {useHistory} from 'react-router-dom'
-import {Button, Loading, Link} from '../../../components'
+import {Loading, Link} from '../../../components'
 import {
   SupportedChains,
   ChainConfig,
@@ -10,6 +10,8 @@ import {
 } from '../../../constants/chainConfig'
 import {SendStatus} from '../../../constants'
 import {SuccessFilled, ErrorOutlined} from '../../../assets/svg'
+import {ShuttleInButton, ShuttleOutButton} from '../ClaimModal/ShuttleButton'
+import {useIsCfxChain} from '../../../hooks'
 
 const FirstStep = ({
   fromChain,
@@ -17,11 +19,15 @@ const FirstStep = ({
   fromToken,
   sendStatus,
   setSendStatus,
+  value,
   ...props
 }) => {
   const {t} = useTranslation()
   const history = useHistory()
   const {display_symbol, address} = fromToken
+  const isCfxChain = useIsCfxChain(toChain)
+  let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
+
   const viewHistory = (
     <div
       className="flex items-center cursor-pointer"
@@ -56,11 +62,16 @@ const FirstStep = ({
             })}
           </span>
         </div>
-        {/* TODO: replace with ShuttleButton */}
         {(!sendStatus || sendStatus === SendStatus.error) && (
-          <Button size="small" setSendStatus={setSendStatus} {...props}>
-            {t('send')}
-          </Button>
+          <BtnComp
+            size="small"
+            setSendStatus={setSendStatus}
+            fromChain={fromChain}
+            toChain={toChain}
+            fromToken={fromToken}
+            value={value}
+            {...props}
+          />
         )}
         {sendStatus === 'claim' && <SuccessFilled className="w-6 h-6" />}
       </div>
@@ -108,6 +119,7 @@ FirstStep.propTypes = {
   fromToken: PropTypes.object.isRequired,
   sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
   setSendStatus: PropTypes.func,
+  value: PropTypes.string.isRequired,
 }
 
 export default FirstStep

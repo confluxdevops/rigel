@@ -41,6 +41,7 @@ function ClaimModal({
         fromChain={fromChain}
         toChain={toChain}
         fromToken={fromToken}
+        toToken={toToken}
         sendStatus={sendStatus}
         setSendStatus={setSendStatus}
         {...props}

@@ -5,7 +5,6 @@ import Big from 'big.js'
 import {MaxUint256} from '@ethersproject/constants'
 
 import {Button, Loading} from '../../../../components'
-import {Send} from '../../../../assets/svg'
 import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
@@ -15,11 +14,7 @@ import {
   ContractConfig,
 } from '../../../../constants/contractConfig'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
-import {
-  ZeroAddrHex,
-  TxReceiptModalType,
-  TypeTransaction,
-} from '../../../../constants'
+import {ZeroAddrHex, TypeTransaction, SendStatus} from '../../../../constants'
 import {useShuttleState} from '../../../../state'
 import {getExponent, calculateGasMargin} from '../../../../utils'
 import {useTxState} from '../../../../state/transaction'
@@ -34,11 +29,10 @@ function ShuttleOutButton({
   value,
   onClose,
   disabled,
-  setTxModalType,
-  setTxModalShow,
   setTxHash,
   fromAddress,
   toAddress,
+  setSendStatus,
 }) {
   const {t} = useTranslation()
   const {display_symbol} = fromToken
@@ -121,9 +115,8 @@ function ShuttleOutButton({
   }
 
   const onSubmit = async () => {
-    setTxModalShow(true)
     onClose && onClose()
-    setTxModalType(TxReceiptModalType.ongoing)
+    setSendStatus(SendStatus.ongoing)
     if (isCfxChain) {
       const amountVal = Big(value).mul(getExponent(decimals))
       if (ctoken === KeyOfCfx) {
@@ -147,9 +140,9 @@ function ShuttleOutButton({
             })
           unshiftTx(getShuttleStatusData(txHash))
           setTxHash(txHash)
-          setTxModalType(TxReceiptModalType.success)
+          setSendStatus(SendStatus.success)
         } catch {
-          setTxModalType(TxReceiptModalType.error)
+          setSendStatus(SendStatus.error)
         }
       } else {
         try {
@@ -170,9 +163,9 @@ function ShuttleOutButton({
             })
           unshiftTx(getShuttleStatusData(txHash))
           setTxHash(txHash)
-          setTxModalType(TxReceiptModalType.success)
+          setSendStatus(SendStatus.success)
         } catch {
-          setTxModalType(TxReceiptModalType.error)
+          setSendStatus(SendStatus.error)
         }
       }
     } else {
@@ -190,9 +183,9 @@ function ShuttleOutButton({
         })
         unshiftTx(getShuttleStatusData(data))
         setTxHash(data)
-        setTxModalType(TxReceiptModalType.success)
+        setSendStatus(SendStatus.success)
       } catch {
-        setTxModalType(TxReceiptModalType.error)
+        setSendStatus(SendStatus.error)
       }
     }
   }
@@ -267,10 +260,9 @@ function ShuttleOutButton({
       )}
       {!approveShown && (
         <Button
-          startIcon={<Send />}
           onClick={onSubmit}
           disabled={disabled}
-          size="large"
+          size="small"
           id="shuttleOut"
         >
           {t('send')}
@@ -288,11 +280,10 @@ ShuttleOutButton.propTypes = {
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
   disabled: PropTypes.bool,
-  setTxModalType: PropTypes.func,
   setTxHash: PropTypes.func,
-  setTxModalShow: PropTypes.func,
   fromAddress: PropTypes.string,
   toAddress: PropTypes.string,
+  setSendStatus: PropTypes.func,
 }
 
 export default ShuttleOutButton

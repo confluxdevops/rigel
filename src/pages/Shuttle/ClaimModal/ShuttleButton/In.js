@@ -10,7 +10,6 @@ import {MaxUint256} from '@ethersproject/constants'
 import {Logger} from '@ethersproject/logger'
 
 import {Button, Loading} from '../../../../components'
-import {Send} from '../../../../assets/svg'
 import {SupportedChains} from '../../../../constants/chainConfig'
 import {
   ContractConfig,
@@ -246,10 +245,9 @@ function ShuttleInButton({
       )}
       {!approveShown && (
         <Button
-          startIcon={<Send />}
           onClick={onSubmit}
           disabled={disabled}
-          size="large"
+          size="small"
           id="shuttleIn"
         >
           {t('send')}

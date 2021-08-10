@@ -249,6 +249,10 @@ function Shuttle() {
           toChain={toChain}
           fromToken={fromToken}
           toToken={toToken}
+          value={value}
+          setTxHash={setTxHash}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
         />
       )}
       {txModalShow && (
