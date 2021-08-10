@@ -48,6 +48,9 @@
   "cfxAddressRecord": "Cross-chain activity with Conflux address only.",
   "shuttleRecordItem": "{{tokenSymbol}} from {{fromChain}} to {{toChain}}",
   "approveRecordItem": "Approve {{tokenSymbol}}",
+  "viewInHistory": "View in history",
+  "notificationDetail": "{{value}} {{symbol}} from {{fromChain}} to {{toChain}}",
+  "claimNotificationTitle": "Ready to Claim",
   "error": {
     "index": "Error",
     "inputValidAmount": "Please enter a valid amount",
