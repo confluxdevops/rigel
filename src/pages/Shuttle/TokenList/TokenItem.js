@@ -53,7 +53,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
         )}
         {!isCfxChain && !isNativeToken && (
           <Tooltip
-            title={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
+            content={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
           >
             <WrapIcon
               type="circle"
