@@ -99,6 +99,26 @@ module.exports = {
         ],
       },
       keyframes: {
+        'fade-out-top-right': {
+          '0%': {
+            opacity: 1,
+            transform: 'translate3d(0, 0, 0)',
+          },
+          '100%': {
+            opacity: 0,
+            transform: 'translate3d(100%, -100%, 0)',
+          },
+        },
+        'fade-out-bottom-left': {
+          '0%': {
+            opacity: 1,
+            transform: 'translate3d(0, 0, 0)',
+          },
+          '100%': {
+            opacity: 0,
+            transform: 'translate3d(-100%, 100%, 0)',
+          },
+        },
         'move-left': {
           '0%': {
             transform: 'translateX(100%)',
@@ -147,6 +167,8 @@ module.exports = {
         'slice-down': 'slice-down 0.3s ease-in 1',
         'slice-up': 'slice-up 0.3s ease-in 1',
         'pulse-fast': 'pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'fade-out-top-right': 'fade-out-top-right 0.5s ease-in-out 1',
+        'fade-out-bottom-left': 'fade-out-bottom-left 0.5s ease-in-out 1',
       },
       transitionProperty: {
         maxHeight: 'maxHeight',
