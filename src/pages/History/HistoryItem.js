@@ -174,7 +174,7 @@ function HistoryItem({historyItemData}) {
         }`}
       >
         <div className="flex flex-col items-start w-full">
-          <div className="flex justify-between items-center">
+          <div className="flex w-full justify-between items-center">
             <div className="flex items-center py-4">
               <span className="text-gray-60 mr-2">{t('destination')}</span>
               <Account chain={toChain} address={toAddress} size="large" />
