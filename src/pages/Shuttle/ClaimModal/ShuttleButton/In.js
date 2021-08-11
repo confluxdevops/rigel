@@ -10,23 +10,29 @@ import {MaxUint256} from '@ethersproject/constants'
 import {Logger} from '@ethersproject/logger'
 
 import {Button, Loading} from '../../../../components'
-import {SupportedChains} from '../../../../constants/chainConfig'
+import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
 import {
   ContractConfig,
   ContractType,
 } from '../../../../constants/contractConfig'
 
-import {ZeroAddrHex, TypeTransaction, SendStatus} from '../../../../constants'
+import {
+  ZeroAddrHex,
+  TypeTransaction,
+  SendStatus,
+  ProxyUrlPrefix,
+} from '../../../../constants'
 import {useIsNativeToken} from '../../../../hooks/useWallet'
 import {
   useTokenContract,
   useTokenAllowance,
 } from '../../../../hooks/useWeb3Network'
-import {calculateGasMargin, getExponent} from '../../../../utils'
+import {calculateGasMargin, getExponent, updateTx} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {useIsCfxChain} from '../../../../hooks'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useTxState} from '../../../../state/transaction'
+import {requestUserOperationByHash} from '../../../../utils/api'
 
 function ShuttleInButton({
   fromChain,
@@ -64,7 +70,8 @@ function ShuttleInButton({
     drContractAddress,
   ])
   const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
-  const {unshiftTx} = useTxState()
+  const {unshiftTx, transactions, setTransactions} = useTxState()
+  window._transactions = new Map(Object.entries(transactions))
   useEffect(() => {
     setDidMount(true)
     if (!isNativeToken && !(isCfxChain && isToChainCfx)) {
@@ -146,6 +153,27 @@ function ShuttleInButton({
       })
   }
 
+  function fetchShuttleData(hash) {
+    const interval = setInterval(async () => {
+      const operationData = await requestUserOperationByHash(
+        ProxyUrlPrefix.shuttleflow,
+        hash,
+        'in',
+        origin,
+        isCfxChain ? fromChain : KeyOfCfx,
+      )
+      if (operationData?.tx_to && operationData?.tx_input) {
+        setSendStatus(SendStatus.claim)
+        updateTx(window._transactions, hash, {
+          tx_to: operationData?.tx_to,
+          tx_input: operationData?.tx_input,
+        })
+        setTransactions(window._transactions)
+        interval && clearInterval(interval)
+      }
+    }, 1000)
+  }
+
   const onSubmit = async () => {
     onClose && onClose()
     setSendStatus(SendStatus.ongoing)
@@ -169,6 +197,7 @@ function ShuttleInButton({
         })
         .then(data => {
           unshiftTx(getShuttleStatusData(data?.hash))
+          fetchShuttleData(data?.hash)
           setTxHash(data?.hash)
           setSendStatus(SendStatus.success)
         })
@@ -200,6 +229,7 @@ function ShuttleInButton({
           })
           .then(data => {
             unshiftTx(getShuttleStatusData(data?.hash))
+            fetchShuttleData(data?.hash)
             setTxHash(data?.hash)
             setSendStatus(SendStatus.success)
           })
@@ -211,6 +241,7 @@ function ShuttleInButton({
         try {
           const data = await tokenContract.transfer(shuttleAddress, amountVal)
           unshiftTx(getShuttleStatusData(data?.hash))
+          fetchShuttleData(data?.hash)
           setTxHash(data?.hash)
           setSendStatus(SendStatus.success)
         } catch {

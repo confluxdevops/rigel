@@ -171,7 +171,7 @@ function HistoryItem({historyItemData}) {
               <Account chain={toChain} address={toAddress} size="large" />
             </div>
             {/* TODO: replace with claim button */}
-            <Button size="small">{t('claim')}</Button>
+            {status === 'waiting' && <Button size="small">{t('claim')}</Button>}
           </div>
           {response && (
             <Progress

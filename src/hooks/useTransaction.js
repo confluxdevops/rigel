@@ -92,9 +92,8 @@ export const useUpdateTxs = () => {
       )
       const transWillRemove = [] //cfx-out btc-in
       pendingCommonTxs.forEach(item => {
-        const {hash, in_or_out: type, fromChain, toChain, toToken} = item
-        const {origin} = toToken
-        const isOriginCfx = origin === KeyOfCfx ? true : false
+        const {hash, in_or_out: type, fromChain, toToken} = item
+        const {origin, to_chain} = toToken
         if (fromChain === KeyOfBtc && type === 'in') {
           transWillRemove.push(item?.hash)
         } else {
@@ -104,13 +103,7 @@ export const useUpdateTxs = () => {
               hash,
               type,
               origin,
-              isOriginCfx
-                ? type === 'in'
-                  ? fromChain
-                  : toChain
-                : type === 'out'
-                ? KeyOfCfx
-                : fromChain,
+              to_chain,
             ),
           )
         }
