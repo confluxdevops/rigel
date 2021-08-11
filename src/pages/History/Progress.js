@@ -120,7 +120,11 @@ function Progress({progress, fromChain, toChain}) {
         <div className="flex justify-between">
           <span
             className={`inline-block mb-2 ${
-              getIsDone(3) ? 'text-error' : 'text-gray-40'
+              progressLevel === 3
+                ? 'text-error'
+                : progressLevel < 3
+                ? 'text-gray-40'
+                : 'text-gray-100'
             }`}
           >
             {t('history.progress.stepFour')}
