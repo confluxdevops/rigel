@@ -16,11 +16,7 @@ import {
   ContractType,
 } from '../../../../constants/contractConfig'
 
-import {
-  ZeroAddrHex,
-  TxReceiptModalType,
-  TypeTransaction,
-} from '../../../../constants'
+import {ZeroAddrHex, TypeTransaction, SendStatus} from '../../../../constants'
 import {useIsNativeToken} from '../../../../hooks/useWallet'
 import {
   useTokenContract,
@@ -40,11 +36,10 @@ function ShuttleInButton({
   value,
   onClose,
   disabled,
-  setTxModalType,
-  setTxModalShow,
   setTxHash,
   fromAddress,
   toAddress,
+  setSendStatus,
 }) {
   const {t} = useTranslation()
   const [approveShown, setApproveShown] = useState(false)
@@ -152,9 +147,8 @@ function ShuttleInButton({
   }
 
   const onSubmit = async () => {
-    setTxModalShow(true)
     onClose && onClose()
-    setTxModalType(TxReceiptModalType.ongoing)
+    setSendStatus(SendStatus.ongoing)
     if (isNativeToken) {
       let params = [
         format.hexAddress(toAddress),
@@ -176,10 +170,10 @@ function ShuttleInButton({
         .then(data => {
           unshiftTx(getShuttleStatusData(data?.hash))
           setTxHash(data?.hash)
-          setTxModalType(TxReceiptModalType.success)
+          setSendStatus(SendStatus.success)
         })
         .catch(() => {
-          setTxModalType(TxReceiptModalType.error)
+          setSendStatus(SendStatus.error)
         })
     } else {
       if (!isCfxChain) {
@@ -207,10 +201,10 @@ function ShuttleInButton({
           .then(data => {
             unshiftTx(getShuttleStatusData(data?.hash))
             setTxHash(data?.hash)
-            setTxModalType(TxReceiptModalType.success)
+            setSendStatus(SendStatus.success)
           })
           .catch(() => {
-            setTxModalType(TxReceiptModalType.error)
+            setSendStatus(SendStatus.error)
           })
       } else {
         const amountVal = convertDecimal(value, 'multiply', decimals)
@@ -218,9 +212,9 @@ function ShuttleInButton({
           const data = await tokenContract.transfer(shuttleAddress, amountVal)
           unshiftTx(getShuttleStatusData(data?.hash))
           setTxHash(data?.hash)
-          setTxModalType(TxReceiptModalType.success)
+          setSendStatus(SendStatus.success)
         } catch {
-          setTxModalType(TxReceiptModalType.error)
+          setSendStatus(SendStatus.error)
         }
       }
     }
@@ -267,9 +261,9 @@ ShuttleInButton.propTypes = {
   disabled: PropTypes.bool,
   setTxModalType: PropTypes.func,
   setTxHash: PropTypes.func,
-  setTxModalShow: PropTypes.func,
   fromAddress: PropTypes.string,
   toAddress: PropTypes.string,
+  setSendStatus: PropTypes.func,
 }
 
 export default ShuttleInButton

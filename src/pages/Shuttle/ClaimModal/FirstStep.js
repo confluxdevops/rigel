@@ -73,7 +73,9 @@ const FirstStep = ({
             {...props}
           />
         )}
-        {sendStatus === 'claim' && <SuccessFilled className="w-6 h-6" />}
+        {sendStatus === SendStatus.claim && (
+          <SuccessFilled className="w-6 h-6" />
+        )}
       </div>
       {sendStatus && (
         <span className="ml-7 text-gray-40 text-xs inline-block pt-0.5">

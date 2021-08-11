@@ -11,15 +11,19 @@ import {
 import {useWallet} from '../../../../hooks/useWallet'
 import {calculateGasMargin} from '../../../../utils'
 import {useActiveWeb3React} from '../../../../hooks/useWeb3Network'
+import {useTxState} from '../../../../state/transaction'
+import {ClaimStatus} from '../../../../constants'
 
-function ShuttleClaimButton({historyData}) {
+function ShuttleClaimButton({hash, setClaimStatus, disabled}) {
   const {t} = useTranslation()
-  const {toChain, tx_to, tx_input} = historyData
+  const {transactions} = useTxState()
+  const txData = transactions?.[hash]
+  const {toChain, tx_to, tx_input} = txData || {}
   const {library} = useActiveWeb3React()
   const {address} = useWallet(toChain)
-  console.log('toAddress', address)
-  const wallet = ChainConfig[toChain].wallet
+  const wallet = ChainConfig[toChain]?.wallet
   const onSubmit = async () => {
+    setClaimStatus(ClaimStatus.ongoing)
     if (wallet === KeyOfPortal && window.confluxJS) {
       //portal
       try {
@@ -28,8 +32,7 @@ function ShuttleClaimButton({historyData}) {
           data: tx_input,
           to: tx_to,
         })
-        console.log('estimateData', estimateData)
-        const txData = await window.confluxJS.sendTransaction({
+        await window.confluxJS.sendTransaction({
           from: address,
           data: tx_input,
           to: tx_to,
@@ -39,9 +42,9 @@ function ShuttleClaimButton({historyData}) {
             0.5,
           ),
         })
-        console.log(txData)
+        setClaimStatus(ClaimStatus.success)
       } catch (error) {
-        console.log(error)
+        setClaimStatus(ClaimStatus.error)
       }
     }
     if (wallet === KeyOfMetaMask && library) {
@@ -51,7 +54,6 @@ function ShuttleClaimButton({historyData}) {
         data: tx_input,
         to: tx_to,
       })
-      console.log('gas', gas)
       library
         .getSigner()
         .sendTransaction({
@@ -60,25 +62,32 @@ function ShuttleClaimButton({historyData}) {
           to: tx_to,
           gasLimit: gas ? calculateGasMargin(gas) : undefined,
         })
-        .then(data => {
-          console.log('data', data)
+        .then(() => {
+          setClaimStatus(ClaimStatus.success)
         })
-        .catch(error => {
-          console.log(error)
+        .catch(() => {
+          setClaimStatus(ClaimStatus.error)
         })
     }
   }
   return (
     <>
-      <Button fullWidth onClick={onSubmit} size="large" id="shuttleIn">
-        {t('send')}
+      <Button
+        onClick={onSubmit}
+        size="small"
+        id="shuttleIn"
+        disabled={disabled}
+      >
+        {t('claim')}
       </Button>
     </>
   )
 }
 
 ShuttleClaimButton.propTypes = {
-  historyData: PropTypes.object,
+  hash: PropTypes.string,
+  setClaimStatus: PropTypes.func,
+  disabled: PropTypes.bool,
 }
 
 export default ShuttleClaimButton

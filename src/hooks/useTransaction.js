@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react'
 import {convertDecimal} from '@cfxjs/data-format'
-import {ProxyUrlPrefix} from '../constants'
 import {useWallet} from '../hooks/useWallet'
 import {
   StatusOperation,
   Millisecond,
   ShuttleStatus,
   TypeTransaction,
+  ProxyUrlPrefix,
 } from '../constants'
 import {KeyOfCfx, KeyOfBtc} from '../constants/chainConfig'
 import {
@@ -104,7 +104,13 @@ export const useUpdateTxs = () => {
               hash,
               type,
               origin,
-              isOriginCfx && toChain === KeyOfCfx ? fromChain : KeyOfCfx,
+              isOriginCfx
+                ? type === 'in'
+                  ? fromChain
+                  : toChain
+                : type === 'out'
+                ? KeyOfCfx
+                : fromChain,
             ),
           )
         }
@@ -221,8 +227,15 @@ function mapData(item = {}, tokenList) {
   data.response = item
   data.decimals = tokenInfo?.decimals
   data.status = ShuttleStatus.pending
-  if (status === 'confirming' || status === 'doing') {
+  if (status === 'confirming') {
     data.status = ShuttleStatus.pending
+  }
+  if (status === 'doing') {
+    if (tx_to && tx_input) {
+      data.status = ShuttleStatus.waiting
+    } else {
+      data.status = ShuttleStatus.pending
+    }
   }
   if (status === 'finished') {
     data.status = 'success'

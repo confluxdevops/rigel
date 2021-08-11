@@ -251,6 +251,7 @@ function Shuttle() {
           toToken={toToken}
           value={value}
           setTxHash={setTxHash}
+          txHash={txHash}
           fromAddress={fromAddress}
           toAddress={toAddress}
         />

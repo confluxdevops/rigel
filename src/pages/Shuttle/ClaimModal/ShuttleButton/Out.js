@@ -14,12 +14,18 @@ import {
   ContractConfig,
 } from '../../../../constants/contractConfig'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
-import {ZeroAddrHex, TypeTransaction, SendStatus} from '../../../../constants'
+import {
+  ZeroAddrHex,
+  TypeTransaction,
+  SendStatus,
+  ProxyUrlPrefix,
+} from '../../../../constants'
 import {useShuttleState} from '../../../../state'
-import {getExponent, calculateGasMargin} from '../../../../utils'
+import {getExponent, calculateGasMargin, updateTx} from '../../../../utils'
 import {useTxState} from '../../../../state/transaction'
 import {useTokenContract, useTokenAllowance} from '../../../../hooks/usePortal'
 import {useIsNativeToken} from '../../../../hooks/useWallet'
+import {requestUserOperationByHash} from '../../../../utils/api'
 
 function ShuttleOutButton({
   fromChain,
@@ -54,7 +60,8 @@ function ShuttleOutButton({
   const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
-  const {unshiftTx} = useTxState()
+  const {unshiftTx, transactions, setTransactions} = useTxState()
+  window._transactions = new Map(Object.entries(transactions))
   const drContractAddress =
     ContractConfig[ContractType.depositRelayerCfx]?.address?.[toChain]
   const [approveShown, setApproveShown] = useState(false)
@@ -114,6 +121,27 @@ function ShuttleOutButton({
     return data
   }
 
+  function fetchShuttleData(hash) {
+    const interval = setInterval(async () => {
+      const operationData = await requestUserOperationByHash(
+        ProxyUrlPrefix.shuttleflow,
+        hash,
+        'out',
+        origin,
+        isCfxChain ? toChain : KeyOfCfx,
+      )
+      if (operationData?.tx_to && operationData?.tx_input) {
+        setSendStatus(SendStatus.claim)
+        updateTx(window._transactions, hash, {
+          tx_to: operationData?.tx_to,
+          tx_input: operationData?.tx_input,
+        })
+        setTransactions(window._transactions)
+        interval && clearInterval(interval)
+      }
+    }, 1000)
+  }
+
   const onSubmit = async () => {
     onClose && onClose()
     setSendStatus(SendStatus.ongoing)
@@ -139,6 +167,7 @@ function ShuttleOutButton({
               ),
             })
           unshiftTx(getShuttleStatusData(txHash))
+          fetchShuttleData(txHash)
           setTxHash(txHash)
           setSendStatus(SendStatus.success)
         } catch {
@@ -162,6 +191,7 @@ function ShuttleOutButton({
               ),
             })
           unshiftTx(getShuttleStatusData(txHash))
+          fetchShuttleData(txHash)
           setTxHash(txHash)
           setSendStatus(SendStatus.success)
         } catch {
@@ -182,6 +212,7 @@ function ShuttleOutButton({
           to: ctoken,
         })
         unshiftTx(getShuttleStatusData(data))
+        fetchShuttleData(data)
         setTxHash(data)
         setSendStatus(SendStatus.success)
       } catch {

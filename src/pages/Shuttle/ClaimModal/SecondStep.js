@@ -13,6 +13,7 @@ import {useIsNativeToken} from '../../../hooks/useWallet'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {SendStatus, ClaimStatus} from '../../../constants'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
+import {ShuttleClaimButton} from '../ClaimModal/ShuttleButton'
 
 const SecondStep = ({
   fromChain,
@@ -22,6 +23,7 @@ const SecondStep = ({
   sendStatus,
   claimStatus,
   setClaimStatus,
+  txHash,
   ...props
 }) => {
   const {t} = useTranslation()
@@ -62,16 +64,13 @@ const SecondStep = ({
             })}
           </span>
         </div>
-        {/* TODO: replace with ClaimButton */}
         {(!claimStatus || claimStatus === ClaimStatus.error) && (
-          <Button
-            size="small"
+          <ShuttleClaimButton
             disabled={!enableClaim}
             setClaimStatus={setClaimStatus}
+            hash={txHash}
             {...props}
-          >
-            {t('claim')}
-          </Button>
+          />
         )}
       </div>
       {claimStatus && claimStatus !== ClaimStatus.success && (
@@ -150,6 +149,7 @@ SecondStep.propTypes = {
   sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
   claimStatus: PropTypes.oneOf(Object.values(ClaimStatus)).isRequired,
   setClaimStatus: PropTypes.func,
+  txHash: PropTypes.string,
 }
 
 export default SecondStep
