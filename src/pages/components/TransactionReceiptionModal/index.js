@@ -23,6 +23,7 @@ function TransactionReceiptionModal({
   toToken,
   txHash,
   onClose,
+  isClaim = false,
 }) {
   const {t} = useTranslation()
   const {addToken} = useAddTokenToMetamask(toToken)
@@ -36,15 +37,19 @@ function TransactionReceiptionModal({
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
-        <span>
-          <Trans
-            i18nKey="shuttleInfo"
-            values={{value: formatAmount(value), tokenSymbol, chain}}
-          />
-        </span>
+        {!isClaim && (
+          <span>
+            <Trans
+              i18nKey="shuttleInfo"
+              values={{value: formatAmount(value), tokenSymbol, chain}}
+            />
+          </span>
+        )}
         <div className="bg-warning-10 text-warning-dark w-full px-6 pt-3 pb-6 mt-4 text-center">
           {t('confirm', {
-            wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
+            wallet:
+              WalletConfig[ChainConfig[isClaim ? toChain : fromChain].wallet]
+                .name,
           })}
         </div>
       </div>
@@ -63,7 +68,10 @@ function TransactionReceiptionModal({
   } else if (type === 'success') {
     content = (
       <div className="flex flex-1 flex-col items-center">
-        <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
+        <Link
+          href={ChainConfig[isClaim ? toChain : fromChain].scanTxUrl + txHash}
+          target="_blank"
+        >
           {t('viewOnScan')}
         </Link>
         {ChainConfig[toChain].wallet === KeyOfMetaMask && !isNativeToken && (
@@ -119,6 +127,7 @@ TransactionReceiptionModal.propTypes = {
   fromToken: PropTypes.object,
   toToken: PropTypes.object,
   txHash: PropTypes.string,
+  isClaim: PropTypes.bool,
 }
 
 export default TransactionReceiptionModal

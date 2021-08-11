@@ -89,3 +89,8 @@ export const StatusOperation = {
 export const Millisecond = {
   day: 24 * 60 * 60 * 1000,
 }
+
+export const ClaimButtonType = {
+  twoStep: 'twoStep',
+  common: 'common',
+}

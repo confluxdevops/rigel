@@ -11,9 +11,9 @@ import {
 } from '../../../constants/chainConfig'
 import {useIsNativeToken} from '../../../hooks/useWallet'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
-import {SendStatus, ClaimStatus} from '../../../constants'
+import {SendStatus, ClaimStatus, ClaimButtonType} from '../../../constants'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
-import {ShuttleClaimButton} from '../ClaimModal/ShuttleButton'
+import {ClaimButton} from '../../components/'
 
 const SecondStep = ({
   fromChain,
@@ -65,10 +65,11 @@ const SecondStep = ({
           </span>
         </div>
         {(!claimStatus || claimStatus === ClaimStatus.error) && (
-          <ShuttleClaimButton
+          <ClaimButton
             disabled={!enableClaim}
             setClaimStatus={setClaimStatus}
             hash={txHash}
+            type={ClaimButtonType.twoStep}
             {...props}
           />
         )}

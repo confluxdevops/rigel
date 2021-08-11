@@ -8,7 +8,7 @@ import {SupportedChains, ChainConfig} from '../../constants/chainConfig'
 import {useIsNativeToken} from '../../hooks/useWallet'
 import useAddTokenToMetamask from '../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../hooks'
-import {WrapIcon, Toast, Tooltip, Button} from '../../components'
+import {WrapIcon, Toast, Tooltip} from '../../components'
 import {
   BgPlus,
   BgCopy,
@@ -17,8 +17,9 @@ import {
   PendingFilled,
   ArrowUp,
 } from '../../assets/svg'
-import {ShuttleStatus} from '../../constants'
+import {ShuttleStatus, ClaimButtonType} from '../../constants'
 import Progress from './Progress'
+import {ClaimButton} from '../components'
 
 function TokenInfo({toToken, fromChain, toChain}) {
   const {display_symbol, address} = toToken
@@ -133,8 +134,16 @@ Status.propTypes = {
   status: PropTypes.oneOf(Object.keys(ShuttleStatus)),
 }
 function HistoryItem({historyItemData}) {
-  const {toToken, fromChain, toChain, amount, status, toAddress, response} =
-    historyItemData
+  const {
+    toToken,
+    fromChain,
+    toChain,
+    amount,
+    status,
+    toAddress,
+    response,
+    hash,
+  } = historyItemData
 
   const {t} = useTranslation()
 
@@ -171,7 +180,9 @@ function HistoryItem({historyItemData}) {
               <Account chain={toChain} address={toAddress} size="large" />
             </div>
             {/* TODO: replace with claim button */}
-            {status === 'waiting' && <Button size="small">{t('claim')}</Button>}
+            {status === 'waiting' && (
+              <ClaimButton hash={hash} type={ClaimButtonType.common} />
+            )}
           </div>
           {response && (
             <Progress
