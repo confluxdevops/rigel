@@ -4,7 +4,6 @@ import {convertDecimal} from '@cfxjs/data-format'
 import {useWallet} from '../hooks/useWallet'
 import {
   StatusOperation,
-  Millisecond,
   ShuttleStatus,
   TypeTransaction,
   ProxyUrlPrefix,
@@ -278,23 +277,18 @@ export const useTxData = (
   const {transactions} = useTxState()
   const [arr, setArr] = useState([])
   const {address} = useWallet(KeyOfCfx)
-  const currentTimestamp = Date.now()
   useEffect(() => {
     if (address) {
       const transArr = Object.values(transactions)
-      let filteredTxs = transArr
-        .filter(
-          // recent 24 hours
-          tx => tx?.timestamp >= currentTimestamp - Millisecond.day,
-        )
-        .filter(tx => transactionTypes.indexOf(tx?.tx_type) != -1)
+      let filteredTxs = transArr.filter(
+        tx => transactionTypes.indexOf(tx?.tx_type) != -1,
+      )
       let newArr = []
       multipleOrderedStatus.forEach(status => {
         let groupedArr = []
-        if (status === ShuttleStatus.waiting) {
-          groupedArr = filteredTxs
-            .filter(tx => tx?.status === status)
-            .filter(tx => tx?.amount != 0)
+        if (status === ShuttleStatus.success) {
+          groupedArr = filteredTxs.filter(tx => tx?.status === status)
+          if (groupedArr.length > 100) groupedArr = groupedArr.slice(0, 100) //first 100 element
         } else {
           groupedArr = filteredTxs.filter(tx => tx?.status === status)
         }
