@@ -61,7 +61,7 @@ function Progress({progress, fromChain, toChain}) {
         <Dot isDone={getIsDone(0)} />
         <Dot isDone={getIsDone(1)} />
         <Dot isDone={getIsDone(2)} />
-        <Dot isDone={getIsDone(3)} isWaiting={true} />
+        <Dot isDone={getIsDone(3)} isWaiting={progressLevel === 3} />
         <Dot isDone={getIsDone(4)} hasLine={false} />
       </div>
       <div className="flex flex-col text-xs flex-1">
