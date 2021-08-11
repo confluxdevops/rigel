@@ -40,6 +40,7 @@
   "approve": "授权 {{tokenSymbol}}",
   "send": "发送",
   "claim": "Claim",
+  "continue": "继续",
   "pleaseWait": "请耐心等待",
   "waitOneHour": "跨链将在比特币网络完成 6 个块确认后开始处理，至少需要 1 小时",
   "copiedSuccess": "复制成功",
@@ -51,6 +52,8 @@
   "viewInHistory": "View in history",
   "notificationDetail": "{{value}} {{symbol}} from {{fromChain}} to {{toChain}}",
   "claimNotificationTitle": "Ready to Claim",
+  "testnet": "测试网",
+  "mainnet": "主网",
   "error": {
     "index": "错误",
     "inputValidAmount": "请输入有效的数值",
@@ -91,6 +94,10 @@
     "maintDesc1": "我们正在更新维护，将很快完成",
     "maintDesc2": "感谢您的耐心等待！"
   },
+  "notFoundPage": {
+    "notFound": "页面未找到",
+    "goBack": "返回首页"
+  },
   "riskModal": {
     "title": "风险自负",
     "tokenNotInShuttleFlow": "此代币有未知风险，ShuttleFlow 没有收录此代币。请务必确认合约地址是正确的，且风险自负。",
@@ -98,15 +105,12 @@
     "descriptionOne": "同名代币：任何人都可以在区块链上创建任何名称的代币，包括现有代币的伪造版本或伪造没有发行代币的项目。",
     "descriptionTwo": "开放的跨链平台：ShuttleFlow 是去中心化的跨链平台，任何人都可以使任意满足 ERC20 标准的代币的跨链。",
     "confirm": "请务必确认：您充分了解此代币存在的风险，且风险自负",
-    "continue": "继续",
     "checkboxLabel": "我已知晓"
   },
-  "notfound": {
-    "notFound": "页面未找到",
-    "goBack": "返回首页"
+  "claimAddressModal": {
+    "title": "Cautious",
+    "content": "Current address is not destination address.<br/>Tokens will still be sent to the destination address."
   },
-  "testnet": "测试网",
-  "mainnet": "主网",
   "history": {
     "title": "最近 24 小时的跨链记录",
     "chainDescription": "从 {{fromChain}} 至 {{toChain}}",
@@ -119,7 +123,8 @@
       "stepOne": "开始跨链进程",
       "stepTwo": "{{fromChain}} {{fromChainId}} 已确认",
       "stepThree": "ShuttleFlow 已确认",
-      "stepFour": "{{toChain}} {{toChainId}} 已确认"
+      "stepFour": "Waiting for Claim",
+      "stepFive": "{{toChain}} {{toChainId}} 已确认"
     }
   },
   "claimModal": {

@@ -52,7 +52,7 @@ module.exports = {
       backgroundImage: () => ({
         light: "url('/src/assets/svg/background.svg')",
         dark: "url('/src/assets/svg/background-dark.svg')",
-        home: "url('assets/img/bgHome.png')",
+        home: "url('assets/img/bg-home.png')",
         metamask: "url('/src/assets/svg/metamask.svg')",
         portal: "url('/src/assets/svg/portal.svg')",
       }),
