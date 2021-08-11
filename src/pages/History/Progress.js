@@ -8,12 +8,12 @@ import {IS_DEV} from '../../utils'
 import {useIsBtcChain} from '../../hooks'
 import {ArrowJump} from '../../assets/svg'
 
-function Dot({isDone, isWaiting = false, hasLine = true}) {
+function Dot({isDone, hasLine = true}) {
   return (
     <div className="flex flex-col items-center">
       <div
         className={`w-2 h-2 ${
-          isDone ? (isWaiting ? 'bg-error' : 'bg-primary') : 'bg-gray-40'
+          isDone ? 'bg-primary' : 'bg-gray-40'
         } rounded-full border-2 border-gray-20`}
       />
       {hasLine && <div className="border-l w-0 h-4 border-gray-20" />}
@@ -24,7 +24,6 @@ function Dot({isDone, isWaiting = false, hasLine = true}) {
 Dot.propTypes = {
   isDone: PropTypes.bool.isRequired,
   hasLine: PropTypes.bool,
-  isWaiting: PropTypes.bool,
 }
 
 function JumpIcon({url}) {
@@ -47,11 +46,14 @@ function Progress({progress, fromChain, toChain}) {
 
   const progressLevel = useMemo(() => {
     if (status === 'confirming') return 0
-    if (status === 'doing' && !settled_tx) return 1
-    if (status === 'doing' && settled_tx && !tx_to && !tx_input) return 2
-    if (status === 'doing' && settled_tx && tx_to && tx_input) return 3
-    if (status === 'finished') return 4
-  }, [status, settled_tx, tx_to, tx_input])
+    if (status === 'doing' && !tx_to && !tx_input) return 1
+    if (
+      status === 'doing' &&
+      ((settled_tx && isToBtcChain) || (!isToBtcChain && tx_to && tx_input))
+    )
+      return 2
+    if (status === 'finished') return 3
+  }, [status, settled_tx, tx_to, tx_input, isToBtcChain])
 
   const getIsDone = index => index <= progressLevel
 
@@ -61,8 +63,7 @@ function Progress({progress, fromChain, toChain}) {
         <Dot isDone={getIsDone(0)} />
         <Dot isDone={getIsDone(1)} />
         <Dot isDone={getIsDone(2)} />
-        <Dot isDone={getIsDone(3)} isWaiting={progressLevel === 3} />
-        <Dot isDone={getIsDone(4)} hasLine={false} />
+        <Dot isDone={getIsDone(3)} hasLine={false} />
       </div>
       <div className="flex flex-col text-xs flex-1">
         <div className="flex justify-between">
@@ -103,40 +104,40 @@ function Progress({progress, fromChain, toChain}) {
             />
           )}
         </div>
+        {isToBtcChain && (
+          <div className="flex justify-between">
+            <span
+              className={`inline-block mb-2 ${
+                getIsDone(2) ? 'text-gray-100' : 'text-gray-40'
+              }`}
+            >
+              {t('history.progress.stepThreeToBtc')}
+            </span>
+            {!isToBtcChain && getIsDone(2) && (
+              <JumpIcon
+                url={ChainConfig[toChain].scanTxUrl + settled_tx.split('_')[0]}
+              />
+            )}
+          </div>
+        )}
+        {!isToBtcChain && (
+          <div className="flex justify-between">
+            <span
+              className={`inline-block mb-2 ${
+                getIsDone(2) ? 'text-gray-100' : 'text-gray-40'
+              }`}
+            >
+              {t('history.progress.stepThree')}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span
             className={`inline-block mb-2 ${
-              getIsDone(2) ? 'text-gray-100' : 'text-gray-40'
+              getIsDone(3) ? 'text-gray-100' : 'text-gray-40'
             }`}
           >
-            {t('history.progress.stepThree')}
-          </span>
-          {!isToBtcChain && getIsDone(2) && (
-            <JumpIcon
-              url={ChainConfig[toChain].scanTxUrl + settled_tx.split('_')[0]}
-            />
-          )}
-        </div>
-        <div className="flex justify-between">
-          <span
-            className={`inline-block mb-2 ${
-              progressLevel === 3
-                ? 'text-error'
-                : progressLevel < 3
-                ? 'text-gray-40'
-                : 'text-gray-100'
-            }`}
-          >
-            {t('history.progress.stepFour')}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span
-            className={`inline-block mb-2 ${
-              getIsDone(4) ? 'text-gray-100' : 'text-gray-40'
-            }`}
-          >
-            {t('history.progress.stepFive', {
+            {t('history.progress.stepFour', {
               toChain: ChainConfig[toChain].shortName,
               toChainId:
                 ChainConfig[toChain].supportedChainIds?.[
