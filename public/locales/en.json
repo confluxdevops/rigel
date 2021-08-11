@@ -122,9 +122,9 @@
     "progress": {
       "stepOne": "Initiate cross-chain",
       "stepTwo": "Confirm on {{fromChain}} {{fromChainId}}",
-      "stepThree": "Confirm on ShuttleFlow",
-      "stepFour": "Waiting for Claim",
-      "stepFive": "Confirm on {{toChain}} {{toChainId}}"
+      "stepThreeToBtc": "Confirm on ShuttleFlow",
+      "stepThree": "Waiting for Claim",
+      "stepFour": "Confirm on {{toChain}} {{toChainId}}"
     }
   },
   "claimModal": {
