@@ -59,7 +59,6 @@ function ClaimModal({
       {/* TODO: add url */}
       <a href="www.baidu.com" target="_blank" className="flex items-center">
         <span className="text-gray-40 text-xs">
-          {' '}
           {t('claimModal.claimTips')}
         </span>
         <Question className="w-3 h-3 text-gray-40 ml-1" />

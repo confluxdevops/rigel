@@ -8,7 +8,7 @@ import {SupportedChains, ChainConfig} from '../../constants/chainConfig'
 import {useIsNativeToken} from '../../hooks/useWallet'
 import useAddTokenToMetamask from '../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../hooks'
-import {WrapIcon, Toast, Tooltip} from '../../components'
+import {WrapIcon, Toast, Tooltip, Button} from '../../components'
 import {
   BgPlus,
   BgCopy,
@@ -165,9 +165,13 @@ function HistoryItem({historyItemData}) {
         }`}
       >
         <div className="flex flex-col items-start w-full">
-          <div className="flex items-center py-4">
-            <span className="text-gray-60 mr-2">{t('destination')}</span>
-            <Account chain={toChain} address={toAddress} size="large" />
+          <div className="flex justify-between items-center">
+            <div className="flex items-center py-4">
+              <span className="text-gray-60 mr-2">{t('destination')}</span>
+              <Account chain={toChain} address={toAddress} size="large" />
+            </div>
+            {/* TODO: replace with claim button */}
+            <Button size="small">{t('claim')}</Button>
           </div>
           {response && (
             <Progress

@@ -51,7 +51,7 @@ function RiskModal({open, onClose, onConfirm}) {
           disabled={!checked}
           onClick={onConfirm}
         >
-          {t('riskModal.continue')}
+          {t('continue')}
         </Button>
       }
       content={content}

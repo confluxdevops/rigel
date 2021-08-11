@@ -40,6 +40,7 @@
   "approve": "Approve {{tokenSymbol}}",
   "send": "Send",
   "claim": "Claim",
+  "continue": "Continue",
   "pleaseWait": "Please Wait Patiently",
   "waitOneHour": "Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
   "copiedSuccess": "Copy～",
@@ -51,6 +52,8 @@
   "viewInHistory": "View in history",
   "notificationDetail": "{{value}} {{symbol}} from {{fromChain}} to {{toChain}}",
   "claimNotificationTitle": "Ready to Claim",
+  "testnet": "Testnet",
+  "mainnet": "Mainnet",
   "error": {
     "index": "Error",
     "inputValidAmount": "Please enter a valid amount",
@@ -91,6 +94,10 @@
     "maintDesc1": "We are currently undergoing maintenance. We will be back shortly.",
     "maintDesc2": "Thank you for your patience!"
   },
+  "notFoundPage": {
+    "notFound": "Page not found",
+    "goBack": "Go Back Home"
+  },
   "riskModal": {
     "title": "At Your Own Risk",
     "tokenNotInShuttleFlow": "This token has uncertain risks, and it's not in ShuttleFlow list. Please make sure that the contract address is correct, and at your own risk.",
@@ -98,15 +105,12 @@
     "descriptionOne": "Tokens with the same name: Anyone can create a token on Blockchain with any name, including fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
     "descriptionTwo": "Open Cross-chain platform: ShuttleFlow is a decentralized cross-chain platform, anyone can support cross-chain tokens that meet the ERC20 standard.",
     "confirm": "Be sure to confirm: You know the risks of the selected token, at your own risk.",
-    "continue": "Continue",
     "checkboxLabel": "I read and accept"
   },
-  "notfound": {
-    "notFound": "Page not found",
-    "goBack": "Go Back Home"
+  "claimAddressModal": {
+    "title": "Cautious",
+    "content": "Current address is not destination address.<br/>Tokens will still be sent to the destination address."
   },
-  "testnet": "Testnet",
-  "mainnet": "Mainnet",
   "history": {
     "title": "Cross-Chain Records within 24 Hours",
     "chainDescription": "From {{fromChain}} to {{toChain}}",
@@ -119,7 +123,8 @@
       "stepOne": "Initiate cross-chain",
       "stepTwo": "Confirm on {{fromChain}} {{fromChainId}}",
       "stepThree": "Confirm on ShuttleFlow",
-      "stepFour": "Confirm on {{toChain}} {{toChainId}}"
+      "stepFour": "Waiting for Claim",
+      "stepFive": "Confirm on {{toChain}} {{toChainId}}"
     }
   },
   "claimModal": {

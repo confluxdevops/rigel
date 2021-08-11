@@ -8,12 +8,12 @@ import {IS_DEV} from '../../utils'
 import {useIsBtcChain} from '../../hooks'
 import {ArrowJump} from '../../assets/svg'
 
-function Dot({isDone, hasLine = true}) {
+function Dot({isDone, isWaiting = false, hasLine = true}) {
   return (
     <div className="flex flex-col items-center">
       <div
         className={`w-2 h-2 ${
-          isDone ? 'bg-primary' : 'bg-gray-40'
+          isDone ? (isWaiting ? 'bg-error' : 'bg-primary') : 'bg-gray-40'
         } rounded-full border-2 border-gray-20`}
       />
       {hasLine && <div className="border-l w-0 h-4 border-gray-20" />}
@@ -24,6 +24,7 @@ function Dot({isDone, hasLine = true}) {
 Dot.propTypes = {
   isDone: PropTypes.bool.isRequired,
   hasLine: PropTypes.bool,
+  isWaiting: PropTypes.bool,
 }
 
 function JumpIcon({url}) {
@@ -40,16 +41,17 @@ JumpIcon.propTypes = {
 
 function Progress({progress, fromChain, toChain}) {
   const {t} = useTranslation()
-  const {status, nonce_or_txid, settled_tx} = progress
+  const {status, nonce_or_txid, settled_tx, tx_to, tx_input} = progress
   const isFromBtcChain = useIsBtcChain(fromChain)
   const isToBtcChain = useIsBtcChain(toChain)
 
   const progressLevel = useMemo(() => {
     if (status === 'confirming') return 0
     if (status === 'doing' && !settled_tx) return 1
-    if (status === 'doing' && settled_tx) return 2
-    if (status === 'finished') return 3
-  }, [status, settled_tx])
+    if (status === 'doing' && settled_tx && !tx_to && !tx_input) return 2
+    if (status === 'doing' && settled_tx && tx_to && tx_input) return 3
+    if (status === 'finished') return 4
+  }, [status, settled_tx, tx_to, tx_input])
 
   const getIsDone = index => index <= progressLevel
 
@@ -59,7 +61,8 @@ function Progress({progress, fromChain, toChain}) {
         <Dot isDone={getIsDone(0)} />
         <Dot isDone={getIsDone(1)} />
         <Dot isDone={getIsDone(2)} />
-        <Dot isDone={getIsDone(3)} hasLine={false} />
+        <Dot isDone={getIsDone(3)} isWaiting={true} />
+        <Dot isDone={getIsDone(4)} hasLine={false} />
       </div>
       <div className="flex flex-col text-xs flex-1">
         <div className="flex justify-between">
@@ -117,10 +120,19 @@ function Progress({progress, fromChain, toChain}) {
         <div className="flex justify-between">
           <span
             className={`inline-block mb-2 ${
-              getIsDone(3) ? 'text-gray-100' : 'text-gray-40'
+              getIsDone(3) ? 'text-error' : 'text-gray-40'
             }`}
           >
-            {t('history.progress.stepFour', {
+            {t('history.progress.stepFour')}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span
+            className={`inline-block mb-2 ${
+              getIsDone(4) ? 'text-gray-100' : 'text-gray-40'
+            }`}
+          >
+            {t('history.progress.stepFive', {
               toChain: ChainConfig[toChain].shortName,
               toChainId:
                 ChainConfig[toChain].supportedChainIds?.[
