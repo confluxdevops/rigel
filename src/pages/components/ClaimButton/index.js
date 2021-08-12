@@ -40,7 +40,7 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
           data: tx_input,
           to: tx_to,
         })
-        const data = await window.confluxJS.sendTransaction({
+        const hash = await window.confluxJS.sendTransaction({
           from: address,
           data: tx_input,
           to: tx_to,
@@ -53,7 +53,7 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
         setClaimStatus && setClaimStatus(ClaimStatus.success)
         type === ClaimButtonType.common &&
           setTxModalType(TxReceiptModalType.success)
-        setTxHash(data?.hash)
+        setTxHash(hash)
       } catch (error) {
         setClaimStatus && setClaimStatus(ClaimStatus.error)
         type === ClaimButtonType.common &&

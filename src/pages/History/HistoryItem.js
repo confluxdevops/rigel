@@ -20,6 +20,7 @@ import {
 import {ShuttleStatus, ClaimButtonType} from '../../constants'
 import Progress from './Progress'
 import {ClaimButton} from '../components'
+import {useActiveWeb3React} from '../../hooks/useWeb3Network'
 
 function TokenInfo({toToken, fromChain, toChain}) {
   const {display_symbol, address} = toToken
@@ -28,7 +29,6 @@ function TokenInfo({toToken, fromChain, toChain}) {
   const isToChainCfx = useIsCfxChain(toChain)
   const {t} = useTranslation()
   const [copied, setCopied] = useState(false)
-
   const onAddToken = e => {
     e.stopPropagation()
     addToken()
@@ -146,6 +146,7 @@ function HistoryItem({historyItemData}) {
   } = historyItemData
 
   const {t} = useTranslation()
+  const {library} = useActiveWeb3React()
 
   const [detailShow, setDetailShow] = useState(
     status === 'pending' ? true : false,
@@ -181,7 +182,11 @@ function HistoryItem({historyItemData}) {
             </div>
             {/* TODO: replace with claim button */}
             {status === 'waiting' && (
-              <ClaimButton hash={hash} type={ClaimButtonType.common} />
+              <ClaimButton
+                hash={hash}
+                type={ClaimButtonType.common}
+                library={library}
+              />
             )}
           </div>
           {response && (
