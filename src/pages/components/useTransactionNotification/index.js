@@ -7,18 +7,20 @@ import {
   KeyOfMetaMask,
 } from '../../../constants/chainConfig'
 import {Notification, Link} from '../../../components'
+import {useIsMobile} from '../../../hooks'
 
 const useTransactionNotification = () => {
   const {t} = useTranslation()
   const location = useLocation()
   const history = useHistory()
+  const isMobile = useIsMobile()
   const {
     fromChain: pathFromChain,
     toChain: pathToChain,
     fromTokenAddress,
     ...others
   } = queryString.parse(location.search)
-  return ({symbol, fromChain, toChain, value, isMobile}) =>
+  return ({symbol, fromChain, toChain, value}) =>
     Notification.open({
       title: t('notificationDetail', {
         value,

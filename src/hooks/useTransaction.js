@@ -17,12 +17,14 @@ import {useTxState} from '../state/transaction'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList, mapToken} from '../hooks/useTokenList'
 import {removeTxs, appendTxs, updateTx} from '../utils/index'
+import useTransactionNotification from '../pages/components/useTransactionNotification'
 
 export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {library} = useActiveWeb3React()
   const {transactions, setTransactions} = useTxState()
   const tokenList = useAllTokenList()
+  const txNotificationShow = useTransactionNotification()
   window._transactions = new Map(Object.entries(transactions))
   useEffect(() => {
     const update = () => {
@@ -128,6 +130,22 @@ export const useUpdateTxs = () => {
           .then(list => {
             if (list) {
               const newList = list.map(item => mapData(item, tokenList))
+              const mappedData = _mapListToMap(newList)
+              pendingCommonTxs.forEach(item => {
+                const {hash, amount, fromChain, toChain, fromToken} = item
+                const {display_symbol} = fromToken
+                const apiData = mappedData.get(hash)
+                const newStatus = apiData?.status
+                if (newStatus === 'success') {
+                  //Success Notification
+                  txNotificationShow({
+                    symbol: display_symbol,
+                    fromChain,
+                    toChain,
+                    value: amount,
+                  })
+                }
+              })
               appendTxs(trans, newList)
             }
             setTransactions(trans)
@@ -144,52 +162,16 @@ export const useUpdateTxs = () => {
       timeInterval && clearInterval(timeInterval)
     }
   }, [cfxAddress])
-}
 
-// const useUpdateWaiting = txs => {
-//   const waitingItems = Object.values(txs)
-//   let hasNativeToken = false
-//   const tokenArr = []
-//   const newWaitingArr = []
-//   let nativeItem = {}
-//   let shuttleAddress = ''
-//   waitingItems.forEach(item => {
-//     const {toToken = {}, shuttleAddress: address} = item
-//     shuttleAddress = address
-//     if (toToken.ctoken === KeyOfCfx) {
-//       hasNativeToken = true
-//       nativeItem = item
-//     } else {
-//       tokenArr.push(toToken.ctoken)
-//       newWaitingArr.push(item)
-//     }
-//   })
-//   if (hasNativeToken) {
-//     newWaitingArr.unshift(nativeItem)
-//   }
-//   const {address: cfxAddress} = useWallet(KeyOfCfx)
-//   const {transactions, setTransactions} = useTxState()
-//   const [balance, tokenBalances] = useMultipleBalance(shuttleAddress, tokenArr)
-//   let trans = new Map(Object.entries(transactions))
-//   useEffect(() => {
-//     newWaitingArr.forEach((item, index) => {
-//       let amount = 0
-//       if (hasNativeToken) {
-//         if (index === 0) {
-//           amount = getComparedBalance(balance)
-//         } else {
-//           amount = getComparedBalance(tokenBalances[index - 1])
-//         }
-//       } else {
-//         amount = getComparedBalance(tokenBalances[index])
-//       }
-//       const amountMinus = new Big(amount).minus(item?.fee)
-//       amount = amountMinus.gt(0) ? amountMinus.toString(10) : '0'
-//       updateTx(trans, item?.hash, {amount: amount, timestamp: Date.now()})
-//     })
-//     setTransactions(trans)
-//   }, [cfxAddress, JSON.stringify(tokenBalances), balance.toString(10)])
-// }
+  function _mapListToMap(list) {
+    const map = new Map()
+    list.forEach(item => {
+      const {hash} = item
+      map.set(hash, item)
+    })
+    return map
+  }
+}
 
 /**
  * Get tokenInfo from tokenList by token address
