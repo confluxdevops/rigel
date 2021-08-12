@@ -11,7 +11,6 @@ import {
 } from '../../../constants/chainConfig'
 import {useWallet} from '../../../hooks/useWallet'
 import {calculateGasMargin} from '../../../utils'
-import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
 import {useTxState} from '../../../state/transaction'
 import {
   ClaimStatus,
@@ -20,12 +19,11 @@ import {
 } from '../../../constants'
 import {TransactionReceiptionModal} from '../../components'
 
-function ShuttleClaimButton({hash, type, setClaimStatus, disabled}) {
+function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
   const {t} = useTranslation()
   const {transactions} = useTxState()
   const txData = transactions?.[hash]
   const {fromChain, toChain, tx_to, tx_input, fromToken, toToken} = txData || {}
-  const {library} = useActiveWeb3React()
   const {address} = useWallet(toChain)
   const wallet = ChainConfig[toChain]?.wallet
   const [txModalShow, setTxModalShow] = useState(false)
@@ -111,6 +109,7 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled}) {
           txHash={txHash}
           value={0}
           isClaim={true}
+          library={library}
           onClose={() => {
             setTxModalShow(false)
           }}
@@ -125,6 +124,7 @@ ShuttleClaimButton.propTypes = {
   setClaimStatus: PropTypes.func,
   disabled: PropTypes.bool,
   type: PropTypes.oneOf(Object.values(ClaimButtonType)).isRequired,
+  library: PropTypes.object,
 }
 
 export default ShuttleClaimButton

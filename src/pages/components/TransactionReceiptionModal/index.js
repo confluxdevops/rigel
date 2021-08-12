@@ -24,9 +24,10 @@ function TransactionReceiptionModal({
   txHash,
   onClose,
   isClaim = false,
+  library,
 }) {
   const {t} = useTranslation()
-  const {addToken} = useAddTokenToMetamask(toToken)
+  const {addToken} = useAddTokenToMetamask(toToken, library)
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   let content
   const onAddToken = () => {
@@ -128,6 +129,7 @@ TransactionReceiptionModal.propTypes = {
   toToken: PropTypes.object,
   txHash: PropTypes.string,
   isClaim: PropTypes.bool,
+  library: PropTypes.object,
 }
 
 export default TransactionReceiptionModal

@@ -1,10 +1,16 @@
 import {useTranslation} from 'react-i18next'
 import {ChainConfig} from '../../../constants/chainConfig'
-import {Notification, Button, Loading} from '../../../components'
+import {Notification, Loading} from '../../../components'
+import {useIsMobile} from '../../../hooks'
+import {ClaimButton} from '../../components'
+import {ClaimButtonType} from '../../../constants'
+import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
 
 const useClaimNotification = () => {
   const {t} = useTranslation()
-  return ({symbol, fromChain, toChain, value, isMobile}) =>
+  const isMobile = useIsMobile()
+  const {library} = useActiveWeb3React()
+  return ({symbol, fromChain, toChain, value, hash}) =>
     Notification.open({
       title: t('claimNotificationTitle'),
       icon: <Loading className="w-6 h-6" />,
@@ -17,7 +23,15 @@ const useClaimNotification = () => {
       duration: 0,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
-      actions: <Button>{t('claim')}</Button>,
+      actions: (
+        <ClaimButton
+          hash={hash}
+          type={ClaimButtonType.common}
+          library={library}
+        >
+          {}
+        </ClaimButton>
+      ),
     })
 }
 

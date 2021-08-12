@@ -17,7 +17,10 @@ import {useTxState} from '../state/transaction'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList, mapToken} from '../hooks/useTokenList'
 import {removeTxs, appendTxs, updateTx} from '../utils/index'
-import useTransactionNotification from '../pages/components/useTransactionNotification'
+import {
+  useTransactionNotification,
+  useClaimNotification,
+} from '../pages/components'
 
 export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
@@ -25,6 +28,7 @@ export const useUpdateTxs = () => {
   const {transactions, setTransactions} = useTxState()
   const tokenList = useAllTokenList()
   const txNotificationShow = useTransactionNotification()
+  const claimNotificationShow = useClaimNotification()
   window._transactions = new Map(Object.entries(transactions))
   useEffect(() => {
     const update = () => {
@@ -132,17 +136,32 @@ export const useUpdateTxs = () => {
               const newList = list.map(item => mapData(item, tokenList))
               const mappedData = _mapListToMap(newList)
               pendingCommonTxs.forEach(item => {
-                const {hash, amount, fromChain, toChain, fromToken} = item
+                const {hash, amount, fromChain, toChain, fromToken, status} =
+                  item
                 const {display_symbol} = fromToken
                 const apiData = mappedData.get(hash)
-                const newStatus = apiData?.status
-                if (newStatus === 'success') {
+                const {status: newStatus} = apiData || {}
+                if (newStatus === ShuttleStatus.success) {
                   //Success Notification
                   txNotificationShow({
                     symbol: display_symbol,
                     fromChain,
                     toChain,
                     value: amount,
+                  })
+                }
+                if (
+                  toChain !== KeyOfBtc &&
+                  status === ShuttleStatus.pending &&
+                  newStatus === ShuttleStatus.waiting
+                ) {
+                  //Claim Notification
+                  claimNotificationShow({
+                    symbol: display_symbol,
+                    fromChain,
+                    toChain,
+                    value: amount,
+                    hash,
                   })
                 }
               })

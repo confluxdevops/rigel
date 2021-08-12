@@ -5,9 +5,9 @@
 import {useCallback, useState} from 'react'
 import {useActiveWeb3React} from './useWeb3Network'
 
-export default function useAddTokenToMetamask(token) {
-  const {library} = useActiveWeb3React()
-
+export default function useAddTokenToMetamask(token, outerLibrary) {
+  const {library: innerLibrary} = useActiveWeb3React()
+  const library = innerLibrary || outerLibrary
   const [success, setSuccess] = useState()
 
   const addToken = useCallback(() => {
