@@ -14,6 +14,7 @@ import {
   requestUserOperationByHash,
 } from '../utils/api'
 import {useTxState} from '../state/transaction'
+import {useShuttleState} from '../state'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList, mapToken} from '../hooks/useTokenList'
 import {removeTxs, appendTxs, updateTx} from '../utils/index'
@@ -26,6 +27,7 @@ export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
   const {library} = useActiveWeb3React()
   const {transactions, setTransactions} = useTxState()
+  const {txClaimModalShown} = useShuttleState()
   const tokenList = useAllTokenList()
   const txNotificationShow = useTransactionNotification()
   const claimNotificationShow = useClaimNotification()
@@ -153,7 +155,8 @@ export const useUpdateTxs = () => {
                 if (
                   toChain !== KeyOfBtc &&
                   status === ShuttleStatus.pending &&
-                  newStatus === ShuttleStatus.waiting
+                  newStatus === ShuttleStatus.waiting &&
+                  !txClaimModalShown
                 ) {
                   //Claim Notification
                   claimNotificationShow({
@@ -180,7 +183,7 @@ export const useUpdateTxs = () => {
     return () => {
       timeInterval && clearInterval(timeInterval)
     }
-  }, [cfxAddress])
+  }, [cfxAddress, txClaimModalShown])
 
   function _mapListToMap(list) {
     const map = new Map()

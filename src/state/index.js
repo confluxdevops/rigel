@@ -8,10 +8,12 @@ const createStore = () =>
     fromBtcAddress: '',
     tokenFromBackend: {},
     error: null,
+    txClaimModalShown: false,
     setFromBtcAddress: fromBtcAddress => set({fromBtcAddress}),
     setToBtcAddress: toBtcAddress => set({toBtcAddress}),
     setTokenFromBackend: tokenFromBackend => set({tokenFromBackend}),
     setError: error => set({error}),
+    setTxClaimModalShown: txClaimModalShown => set({txClaimModalShown}),
   }))
 
 export const useShuttleState = () => {

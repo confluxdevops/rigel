@@ -23,7 +23,7 @@ import {getChainIdRight} from '../../utils'
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const {tokenFromBackend, error} = useShuttleState()
+  const {tokenFromBackend, error, setTxClaimModalShown} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [claimModalShow, setClaimModalShow] = useState(false)
@@ -70,6 +70,10 @@ function Shuttle() {
     KeyOfCfx,
     ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
   )
+
+  useEffect(() => {
+    setTxClaimModalShown(claimModalShow)
+  }, [claimModalShow, setTxClaimModalShown])
 
   /**
    * 1. The fromChain and toChain must be in the SupportChains list
