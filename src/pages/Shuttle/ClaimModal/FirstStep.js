@@ -100,7 +100,7 @@ const FirstStep = ({
             })}
           {sendStatus === SendStatus.success && (
             <span className="flex items-center">
-              <Trans i18nKey="takeTime" />
+              <Trans i18nKey="claimModal.takeTime" />
               {viewHistory}
             </span>
           )}
