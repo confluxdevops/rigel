@@ -31,8 +31,8 @@ function In({
   disabled,
   fromAddress,
   toAddress,
-  setInApproveShown,
-  inApproveShown,
+  setApproveShown,
+  approveShown,
 }) {
   const {
     address: fromTokenAddress,
@@ -57,20 +57,15 @@ function In({
   const {unshiftTx} = useTxState()
 
   useEffect(() => {
-    console.log('tokenAllowance', tokenAllownace.toString(10))
-    console.log(
-      'value',
-      new Big(value).times(getExponent(decimals)).toString(10),
-    )
     if (!isNativeToken && !(isCfxChain && isToChainCfx)) {
       if (
         new Big(tokenAllownace.toString(10)).lt(
           new Big(value).times(getExponent(decimals)),
         )
       ) {
-        setInApproveShown(true)
+        setApproveShown(true)
       } else {
-        setInApproveShown(false)
+        setApproveShown(false)
       }
     }
     return () => {}
@@ -112,7 +107,7 @@ function In({
             .then(() => {
               setFetchApprove(!fetchApprove)
               setIsApproving(false)
-              setInApproveShown(false)
+              setApproveShown(false)
             })
             .catch(() => {
               setIsApproving(false)
@@ -141,7 +136,7 @@ function In({
 
   return (
     <>
-      {inApproveShown && (
+      {approveShown && (
         <Button
           fullWidth
           onClick={onApprove}
@@ -167,9 +162,9 @@ In.propTypes = {
   setTxModalType: PropTypes.func,
   fromAddress: PropTypes.string,
   toAddress: PropTypes.string,
-  setInApproveShown: PropTypes.func,
+  setApproveShown: PropTypes.func,
   isInApproving: PropTypes.bool,
-  inApproveShown: PropTypes.bool,
+  approveShown: PropTypes.bool,
 }
 
 export default In

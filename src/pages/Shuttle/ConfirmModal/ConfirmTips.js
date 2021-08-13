@@ -5,7 +5,7 @@ import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 import {Checkbox, Circle, Button} from '../../../components'
 import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
 import CbtcShuttleOutButton from './CbtcShuttleOutButton'
-import {ApproveIn} from './Approve'
+import {ApproveIn, ApproveOut} from './Approve'
 
 function ConfirmTips({fromChain, toChain, onNextClick, ...props}) {
   const [checked, setChecked] = useState(false)
@@ -13,6 +13,7 @@ function ConfirmTips({fromChain, toChain, onNextClick, ...props}) {
   const isToBtcChain = useIsBtcChain(toChain)
   const isToCfxChain = useIsCfxChain(toChain)
   const [inApproveShown, setInApproveShown] = useState(false)
+  const [outApproveShown, setOutApproveShown] = useState(false)
   return (
     <div
       id="confirmTips"
@@ -72,12 +73,23 @@ function ConfirmTips({fromChain, toChain, onNextClick, ...props}) {
         <ApproveIn
           fromChain={fromChain}
           toChain={toChain}
+          disabled={!checked}
+          setApproveShown={setInApproveShown}
+          approveShown={inApproveShown}
           {...props}
-          setInApproveShown={setInApproveShown}
-          inApproveShown={inApproveShown}
         />
       )}
-      {!isToBtcChain && !inApproveShown && (
+      {!isToBtcChain && !isToCfxChain && (
+        <ApproveOut
+          fromChain={fromChain}
+          toChain={toChain}
+          disabled={!checked}
+          setApproveShown={setOutApproveShown}
+          approveShown={outApproveShown}
+          {...props}
+        />
+      )}
+      {!isToBtcChain && !inApproveShown && !outApproveShown && (
         <Button
           fullWidth
           size="large"
