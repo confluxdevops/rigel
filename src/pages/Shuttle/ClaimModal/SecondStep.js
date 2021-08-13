@@ -14,6 +14,7 @@ import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
 import {SendStatus, ClaimStatus, ClaimButtonType} from '../../../constants'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import {ClaimButton} from '../../components/'
+import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
 
 const SecondStep = ({
   fromChain,
@@ -28,6 +29,7 @@ const SecondStep = ({
 }) => {
   const {t} = useTranslation()
   const history = useHistory()
+  const {library} = useActiveWeb3React()
   const {address} = fromToken
   const {display_symbol} = toToken
   const enableClaim = sendStatus === SendStatus.claim
@@ -70,6 +72,7 @@ const SecondStep = ({
             setClaimStatus={setClaimStatus}
             hash={txHash}
             type={ClaimButtonType.twoStep}
+            library={library}
             {...props}
           />
         )}
