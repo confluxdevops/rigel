@@ -60,8 +60,7 @@ function Link({
   return (
     <a
       aria-hidden="true"
-      onClick={e => onClick && onClick(e)}
-      disabled={disabled}
+      onClick={e => onClick && !disabled && onClick(e)}
       className={`
       flex justify-center items-center focus:outline-none rounded ${disabledStyle} ${colorStyle} ${sizeStyle} ${className}`}
       {...props}
