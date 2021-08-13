@@ -3,14 +3,16 @@ import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
 import {Checkbox, Circle, Button} from '../../../components'
-import {useIsBtcChain} from '../../../hooks'
+import {useIsBtcChain, useIsCfxChain} from '../../../hooks'
 import CbtcShuttleOutButton from './CbtcShuttleOutButton'
+import {ApproveIn} from './Approve'
 
 function ConfirmTips({fromChain, toChain, onNextClick, ...props}) {
   const [checked, setChecked] = useState(false)
   const {t} = useTranslation()
   const isToBtcChain = useIsBtcChain(toChain)
-
+  const isToCfxChain = useIsCfxChain(toChain)
+  const [inApproveShown, setInApproveShown] = useState(false)
   return (
     <div
       id="confirmTips"
@@ -66,7 +68,16 @@ function ConfirmTips({fromChain, toChain, onNextClick, ...props}) {
           {...props}
         />
       )}
-      {!isToBtcChain && (
+      {!isToBtcChain && isToCfxChain && (
+        <ApproveIn
+          fromChain={fromChain}
+          toChain={toChain}
+          {...props}
+          setInApproveShown={setInApproveShown}
+          inApproveShown={inApproveShown}
+        />
+      )}
+      {!isToBtcChain && !inApproveShown && (
         <Button
           fullWidth
           size="large"

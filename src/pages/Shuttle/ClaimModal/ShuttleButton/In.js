@@ -1,20 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 import {convertDecimal} from '@cfxjs/data-format'
 import {format} from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js'
-import Big from 'big.js'
 import {BigNumber} from '@ethersproject/bignumber'
-import {MaxUint256} from '@ethersproject/constants'
-import {Logger} from '@ethersproject/logger'
 
-import {Button, Loading} from '../../../../components'
+import {Button} from '../../../../components'
 import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
-import {
-  ContractConfig,
-  ContractType,
-} from '../../../../constants/contractConfig'
+import {ContractType} from '../../../../constants/contractConfig'
 
 import {
   ZeroAddrHex,
@@ -23,11 +16,8 @@ import {
   ProxyUrlPrefix,
 } from '../../../../constants'
 import {useIsNativeToken} from '../../../../hooks/useWallet'
-import {
-  useTokenContract,
-  useTokenAllowance,
-} from '../../../../hooks/useWeb3Network'
-import {calculateGasMargin, getExponent, updateTx} from '../../../../utils'
+import {useTokenContract} from '../../../../hooks/useWeb3Network'
+import {calculateGasMargin, updateTx} from '../../../../utils'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {useIsCfxChain} from '../../../../hooks'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
@@ -48,47 +38,14 @@ function ShuttleInButton({
   setSendStatus,
 }) {
   const {t} = useTranslation()
-  const [approveShown, setApproveShown] = useState(false)
-  const [isApproving, setIsApproving] = useState(false)
-  const [didMount, setDidMount] = useState(false)
-  const [fetchApprove, setFetchApprove] = useState(false)
-  const {
-    address: fromTokenAddress,
-    decimals,
-    display_symbol,
-    origin,
-  } = fromToken
+  const {address: fromTokenAddress, decimals, origin} = fromToken
   const isCfxChain = useIsCfxChain(origin)
-  const isToChainCfx = useIsCfxChain(toChain)
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
-  const drContractAddress =
-    ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
   const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
   const tokenContract = useTokenContract(fromTokenAddress)
-  const tokenAllownace = useTokenAllowance(fromTokenAddress, [
-    fromAddress,
-    drContractAddress,
-  ])
   const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
   const {unshiftTx, transactions, setTransactions} = useTxState()
   window._transactions = new Map(Object.entries(transactions))
-  useEffect(() => {
-    setDidMount(true)
-    if (!isNativeToken && !(isCfxChain && isToChainCfx)) {
-      if (
-        new Big(tokenAllownace.toString(10)).lt(
-          new Big(value).times(getExponent(decimals)),
-        )
-      ) {
-        setApproveShown(true)
-      } else {
-        setApproveShown(false)
-      }
-    }
-    return () => {
-      setDidMount(false)
-    }
-  }, [decimals, tokenAllownace, value, isNativeToken, fetchApprove])
 
   function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
     const data = {
@@ -104,53 +61,6 @@ function ShuttleInButton({
       fee: '0',
     }
     return data
-  }
-
-  function contractApprove(tokenContract, value, gas) {
-    tokenContract
-      .approve(drContractAddress, value, {
-        gasLimit: gas ? calculateGasMargin(gas) : undefined,
-      })
-      .then(txResponse => {
-        unshiftTx(
-          getShuttleStatusData(txResponse?.hash, TypeTransaction.approve),
-        )
-        txResponse &&
-          txResponse
-            .wait()
-            .then(() => {
-              setFetchApprove(!fetchApprove)
-              setIsApproving(false)
-              setApproveShown(false)
-            })
-            .catch(() => {
-              setIsApproving(false)
-            })
-      })
-      .catch(() => {
-        setIsApproving(false)
-      })
-  }
-
-  const onApprove = async () => {
-    if (isApproving) return
-    setIsApproving(true)
-    //MaxUint256
-    tokenContract.estimateGas
-      .approve(drContractAddress, MaxUint256)
-      .then(gas => {
-        contractApprove(tokenContract, MaxUint256, gas)
-      })
-      .catch(error => {
-        if (
-          error.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT ||
-          (error.data && error.data.code === -32000)
-        ) {
-          contractApprove(tokenContract, 0)
-        } else {
-          setIsApproving(false)
-        }
-      })
   }
 
   function fetchShuttleData(hash) {
@@ -251,24 +161,9 @@ function ShuttleInButton({
     }
   }
 
-  if (!didMount) {
-    return null
-  }
-
   return (
     <>
-      {approveShown && (
-        <Button
-          onClick={onApprove}
-          disabled={disabled}
-          size="large"
-          id="approve"
-        >
-          {isApproving && <Loading className="!w-6 !h-6" />}
-          {!isApproving && t('approve', {tokenSymbol: display_symbol})}
-        </Button>
-      )}
-      {!approveShown && (
+      {
         <Button
           onClick={onSubmit}
           disabled={disabled}
@@ -277,7 +172,7 @@ function ShuttleInButton({
         >
           {t('send')}
         </Button>
-      )}
+      }
     </>
   )
 }
