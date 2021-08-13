@@ -11,10 +11,18 @@ import {
 } from '../../../constants/chainConfig'
 import {useIsNativeToken} from '../../../hooks/useWallet'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
-import {SendStatus, ClaimStatus, ClaimButtonType} from '../../../constants'
+import {
+  SendStatus,
+  ClaimStatus,
+  ClaimButtonType,
+  TypeAccountStatus,
+} from '../../../constants'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
 import {ClaimButton} from '../../components/'
 import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {getChainIdRight} from '../../../utils'
+import {AccountStatus} from '../../components'
 
 const SecondStep = ({
   fromChain,
@@ -35,6 +43,14 @@ const SecondStep = ({
   const enableClaim = sendStatus === SendStatus.claim
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   const {addToken} = useAddTokenToMetamask(toToken)
+  const {address: accountAddress, error, chainId} = useWallet(toChain)
+  const isChainIdRight = getChainIdRight(toChain, chainId, accountAddress)
+  const {type: accountType} = useAccountStatus(
+    toChain,
+    accountAddress,
+    error,
+    isChainIdRight,
+  )
   const onAddToken = () => {
     addToken()
   }
@@ -66,15 +82,19 @@ const SecondStep = ({
             })}
           </span>
         </div>
-        {(!claimStatus || claimStatus === ClaimStatus.error) && (
-          <ClaimButton
-            disabled={!enableClaim}
-            setClaimStatus={setClaimStatus}
-            hash={txHash}
-            type={ClaimButtonType.twoStep}
-            library={library}
-            {...props}
-          />
+        {accountType === TypeAccountStatus.success &&
+          (!claimStatus || claimStatus === ClaimStatus.error) && (
+            <ClaimButton
+              disabled={!enableClaim}
+              setClaimStatus={setClaimStatus}
+              hash={txHash}
+              type={ClaimButtonType.twoStep}
+              library={library}
+              {...props}
+            />
+          )}
+        {accountType !== TypeAccountStatus.success && (
+          <AccountStatus id="claim" chain={toChain} size="medium" />
         )}
       </div>
       {claimStatus && claimStatus !== ClaimStatus.success && (

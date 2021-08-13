@@ -8,10 +8,13 @@ import {
   ChainConfig,
   WalletConfig,
 } from '../../../constants/chainConfig'
-import {SendStatus} from '../../../constants'
+import {SendStatus, TypeAccountStatus} from '../../../constants'
 import {SuccessFilled, ErrorOutlined} from '../../../assets/svg'
 import {ShuttleInButton, ShuttleOutButton} from '../ClaimModal/ShuttleButton'
 import {useIsCfxChain} from '../../../hooks'
+import {getChainIdRight} from '../../../utils'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {AccountStatus} from '../../components'
 
 const FirstStep = ({
   fromChain,
@@ -27,7 +30,14 @@ const FirstStep = ({
   const {display_symbol, address} = fromToken
   const isCfxChain = useIsCfxChain(toChain)
   let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
-
+  const {address: accountAddress, error, chainId} = useWallet(fromChain)
+  const isChainIdRight = getChainIdRight(fromChain, chainId, accountAddress)
+  const {type: accountType} = useAccountStatus(
+    fromChain,
+    accountAddress,
+    error,
+    isChainIdRight,
+  )
   const viewHistory = (
     <div
       className="flex items-center cursor-pointer"
@@ -62,17 +72,22 @@ const FirstStep = ({
             })}
           </span>
         </div>
-        {(!sendStatus || sendStatus === SendStatus.error) && (
-          <BtnComp
-            size="small"
-            setSendStatus={setSendStatus}
-            fromChain={fromChain}
-            toChain={toChain}
-            fromToken={fromToken}
-            value={value}
-            {...props}
-          />
+        {accountType === TypeAccountStatus.success &&
+          (!sendStatus || sendStatus === SendStatus.error) && (
+            <BtnComp
+              size="small"
+              setSendStatus={setSendStatus}
+              fromChain={fromChain}
+              toChain={toChain}
+              fromToken={fromToken}
+              value={value}
+              {...props}
+            />
+          )}
+        {accountType !== TypeAccountStatus.success && (
+          <AccountStatus id="send" chain={fromChain} size="medium" />
         )}
+
         {sendStatus === SendStatus.claim && (
           <SuccessFilled className="w-6 h-6" />
         )}

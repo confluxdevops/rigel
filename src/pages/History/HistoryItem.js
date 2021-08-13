@@ -17,10 +17,17 @@ import {
   PendingFilled,
   ArrowUp,
 } from '../../assets/svg'
-import {ShuttleStatus, ClaimButtonType} from '../../constants'
+import {
+  ShuttleStatus,
+  ClaimButtonType,
+  TypeAccountStatus,
+} from '../../constants'
 import Progress from './Progress'
 import {ClaimButton} from '../components'
 import {useActiveWeb3React} from '../../hooks/useWeb3Network'
+import {useWallet, useAccountStatus} from '../../hooks/useWallet'
+import {getChainIdRight} from '../../utils'
+import {AccountStatus} from '../components'
 
 function TokenInfo({toToken, fromChain, toChain}) {
   const {display_symbol, address} = toToken
@@ -147,6 +154,14 @@ function HistoryItem({historyItemData}) {
 
   const {t} = useTranslation()
   const {library} = useActiveWeb3React()
+  const {address: accountAddress, error, chainId} = useWallet(toChain)
+  const isChainIdRight = getChainIdRight(toChain, chainId, accountAddress)
+  const {type: accountType} = useAccountStatus(
+    toChain,
+    accountAddress,
+    error,
+    isChainIdRight,
+  )
 
   const [detailShow, setDetailShow] = useState(
     status === 'pending' ? true : false,
@@ -180,13 +195,16 @@ function HistoryItem({historyItemData}) {
               <span className="text-gray-60 mr-2">{t('destination')}</span>
               <Account chain={toChain} address={toAddress} size="large" />
             </div>
-            {/* TODO: replace with claim button */}
-            {status === 'waiting' && (
-              <ClaimButton
-                hash={hash}
-                type={ClaimButtonType.common}
-                library={library}
-              />
+            {accountType === TypeAccountStatus.success &&
+              status === 'waiting' && (
+                <ClaimButton
+                  hash={hash}
+                  type={ClaimButtonType.common}
+                  library={library}
+                />
+              )}
+            {accountType !== TypeAccountStatus.success && (
+              <AccountStatus id="claim" chain={toChain} size="medium" />
             )}
           </div>
           {response && (
