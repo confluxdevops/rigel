@@ -211,7 +211,6 @@ Tooltip.displayName = 'Tooltip'
 
 Tooltip.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  overlay: PropTypes.bool,
   visible: PropTypes.bool,
   defaultVisible: PropTypes.bool,
   getPopupContainer: PropTypes.func,
