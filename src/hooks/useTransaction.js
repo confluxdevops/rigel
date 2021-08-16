@@ -199,7 +199,7 @@ export const useUpdateTxs = () => {
  * Get tokenInfo from tokenList by token address
  * Merge api data to local data
  */
-function mapData(item = {}, tokenList) {
+export function mapData(item = {}, tokenList) {
   const data = {}
   if (!item) return {}
   const {

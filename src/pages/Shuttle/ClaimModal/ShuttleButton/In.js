@@ -23,6 +23,8 @@ import {useIsCfxChain} from '../../../../hooks'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useTxState} from '../../../../state/transaction'
 import {requestUserOperationByHash} from '../../../../utils/api'
+import {useAllTokenList} from '../../../../hooks/useTokenList'
+import {mapData} from '../../../../hooks/useTransaction'
 
 function ShuttleInButton({
   fromChain,
@@ -43,6 +45,7 @@ function ShuttleInButton({
   const isNativeToken = useIsNativeToken(fromChain, fromTokenAddress)
   const drContract = useShuttleContract(ContractType.depositRelayer, fromChain)
   const tokenContract = useTokenContract(fromTokenAddress)
+  const tokenList = useAllTokenList()
   const shuttleAddress = useShuttleAddress(toAddress, toChain, fromChain, 'in')
   const {unshiftTx, transactions, setTransactions} = useTxState()
   window._transactions = new Map(Object.entries(transactions))
@@ -73,10 +76,7 @@ function ShuttleInButton({
       )
       if (operationData?.tx_to && operationData?.tx_input) {
         setSendStatus(SendStatus.claim)
-        updateTx(window._transactions, hash, {
-          tx_to: operationData?.tx_to,
-          tx_input: operationData?.tx_input,
-        })
+        updateTx(window._transactions, hash, mapData(operationData, tokenList))
         setTransactions(window._transactions)
         interval && clearInterval(interval)
       }

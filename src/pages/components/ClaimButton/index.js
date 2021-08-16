@@ -31,9 +31,8 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
   const [txHash, setTxHash] = useState('')
   const [claimAddressModalShown, setClaimAddressModalShown] = useState(false)
-
   const onClick = () => {
-    if (toAddress !== address) {
+    if (toAddress?.toLocaleLowerCase !== address?.toLocaleLowerCase) {
       setClaimAddressModalShown(true)
       return
     }
