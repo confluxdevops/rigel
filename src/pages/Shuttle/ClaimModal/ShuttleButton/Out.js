@@ -4,21 +4,21 @@ import {useTranslation} from 'react-i18next'
 import Big from 'big.js'
 
 import {Button} from '../../../../components'
-import {Send} from '../../../../assets/svg'
 import {SupportedChains, KeyOfCfx} from '../../../../constants/chainConfig'
 import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {ContractType} from '../../../../constants/contractConfig'
-import {useCustodianData} from '../../../../hooks/useShuttleData'
 import {
   ZeroAddrHex,
-  TxReceiptModalType,
   TypeTransaction,
+  SendStatus,
+  ProxyUrlPrefix,
 } from '../../../../constants'
 import {useShuttleState} from '../../../../state'
-import {getExponent} from '../../../../utils'
+import {getExponent, calculateGasMargin, updateTx} from '../../../../utils'
 import {useTxState} from '../../../../state/transaction'
+import {requestUserOperationByHash} from '../../../../utils/api'
 
 function ShuttleOutButton({
   fromChain,
@@ -28,11 +28,10 @@ function ShuttleOutButton({
   value,
   onClose,
   disabled,
-  setTxModalType,
-  setTxModalShow,
   setTxHash,
   fromAddress,
   toAddress,
+  setSendStatus,
 }) {
   const {t} = useTranslation()
   const {origin, decimals, ctoken} = toToken
@@ -46,12 +45,14 @@ function ShuttleOutButton({
     'out',
   )
   const tokenBaseContract = useShuttleContract(ContractType.tokenBase)
-  const confluxJS = window?.confluxJS
-  const {out_fee} = useCustodianData(toChain, toToken)
+  const drCfxContract = useShuttleContract(
+    ContractType.depositRelayerCfx,
+    toChain,
+  )
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
-  const {unshiftTx} = useTxState()
-
+  const {unshiftTx, transactions, setTransactions} = useTxState()
+  window._transactions = new Map(Object.entries(transactions))
   useEffect(() => {
     setDidMount(true)
     if (isToChainBtc) {
@@ -65,55 +66,97 @@ function ShuttleOutButton({
   }, [isToChainBtc, toAddress, toBtcAddress])
 
   function getShuttleStatusData(hash, type = TypeTransaction.transaction) {
-    let fee = out_fee ? out_fee.toString(10) : '0'
     const data = {
       hash: hash,
       fromChain,
       toChain,
       fromAddress,
       toAddress,
-      amount: new Big(value).minus(fee).toString(10),
+      amount: new Big(value).toString(10),
       fromToken,
       toToken,
       tx_type: type,
       shuttleAddress: shuttleAddress,
-      fee,
     }
     return data
   }
 
+  function fetchShuttleData(hash) {
+    const interval = setInterval(async () => {
+      const operationData = await requestUserOperationByHash(
+        ProxyUrlPrefix.shuttleflow,
+        hash,
+        'out',
+        origin,
+        isCfxChain ? toChain : KeyOfCfx,
+      )
+      if (operationData?.tx_to && operationData?.tx_input) {
+        setSendStatus(SendStatus.claim)
+        updateTx(window._transactions, hash, {
+          tx_to: operationData?.tx_to,
+          tx_input: operationData?.tx_input,
+          toAddress: operationData?.to_addr,
+        })
+        setTransactions(window._transactions)
+        interval && clearInterval(interval)
+      }
+    }, 1000)
+  }
+
   const onSubmit = async () => {
-    setTxModalShow(true)
     onClose && onClose()
-    setTxModalType(TxReceiptModalType.ongoing)
+    setSendStatus(SendStatus.ongoing)
     if (isCfxChain) {
       const amountVal = Big(value).mul(getExponent(decimals))
       if (ctoken === KeyOfCfx) {
         try {
-          const data = await confluxJS.sendTransaction({
-            from: fromAddress,
-            to: shuttleAddress,
-            value: amountVal,
-          })
-          unshiftTx(getShuttleStatusData(data))
-          setTxHash(data)
-          setTxModalType(TxReceiptModalType.success)
+          const estimateData = await drCfxContract
+            .deposit(toAddress, ZeroAddrHex)
+            .estimateGasAndCollateral({
+              from: fromAddress,
+              value: amountVal,
+            })
+          const txHash = await drCfxContract
+            .deposit(toAddress, ZeroAddrHex)
+            .sendTransaction({
+              from: fromAddress,
+              value: amountVal,
+              gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+              storageLimit: calculateGasMargin(
+                estimateData?.storageCollateralized,
+                0.5,
+              ),
+            })
+          unshiftTx(getShuttleStatusData(txHash))
+          fetchShuttleData(txHash)
+          setTxHash(txHash)
+          setSendStatus(SendStatus.success)
         } catch {
-          setTxModalType(TxReceiptModalType.error)
+          setSendStatus(SendStatus.error)
         }
       } else {
         try {
-          const data = await tokenBaseContract
-            .transfer(shuttleAddress, amountVal)
+          const estimateData = await drCfxContract
+            .depositToken(ctoken, toAddress, ZeroAddrHex, amountVal)
+            .estimateGasAndCollateral({
+              from: fromAddress,
+            })
+          const txHash = await drCfxContract
+            .depositToken(ctoken, toAddress, ZeroAddrHex, amountVal)
             .sendTransaction({
               from: fromAddress,
-              to: ctoken,
+              gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+              storageLimit: calculateGasMargin(
+                estimateData?.storageCollateralized,
+                0.5,
+              ),
             })
-          unshiftTx(getShuttleStatusData(data))
-          setTxHash(data)
-          setTxModalType(TxReceiptModalType.success)
+          unshiftTx(getShuttleStatusData(txHash))
+          fetchShuttleData(txHash)
+          setTxHash(txHash)
+          setSendStatus(SendStatus.success)
         } catch {
-          setTxModalType(TxReceiptModalType.error)
+          setSendStatus(SendStatus.error)
         }
       }
     } else {
@@ -122,7 +165,7 @@ function ShuttleOutButton({
         const data = await tokenBaseContract['burn'](
           fromAddress,
           amountVal,
-          Big(out_fee).mul(getExponent(18)),
+          0,
           outAddress,
           ZeroAddrHex,
         ).sendTransaction({
@@ -130,10 +173,11 @@ function ShuttleOutButton({
           to: ctoken,
         })
         unshiftTx(getShuttleStatusData(data))
+        fetchShuttleData(data)
         setTxHash(data)
-        setTxModalType(TxReceiptModalType.success)
+        setSendStatus(SendStatus.success)
       } catch {
-        setTxModalType(TxReceiptModalType.error)
+        setSendStatus(SendStatus.error)
       }
     }
   }
@@ -142,15 +186,18 @@ function ShuttleOutButton({
     return null
   }
   return (
-    <Button
-      startIcon={<Send />}
-      onClick={onSubmit}
-      disabled={disabled}
-      size="large"
-      id="shuttleOut"
-    >
-      {t('send')}
-    </Button>
+    <>
+      {
+        <Button
+          onClick={onSubmit}
+          disabled={disabled}
+          size="small"
+          id="shuttleOut"
+        >
+          {t('send')}
+        </Button>
+      }
+    </>
   )
 }
 
@@ -162,11 +209,10 @@ ShuttleOutButton.propTypes = {
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
   disabled: PropTypes.bool,
-  setTxModalType: PropTypes.func,
   setTxHash: PropTypes.func,
-  setTxModalShow: PropTypes.func,
   fromAddress: PropTypes.string,
   toAddress: PropTypes.string,
+  setSendStatus: PropTypes.func,
 }
 
 export default ShuttleOutButton

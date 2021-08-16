@@ -11,8 +11,18 @@ import {
 } from '../../../constants/chainConfig'
 import {useIsNativeToken} from '../../../hooks/useWallet'
 import useAddTokenToMetamask from '../../../hooks/useAddTokenToMetamask'
-import {SendStatus, ClaimStatus} from '../../../constants'
+import {
+  SendStatus,
+  ClaimStatus,
+  ClaimButtonType,
+  TypeAccountStatus,
+} from '../../../constants'
 import {ErrorOutlined, SuccessOutlined, MetamaskLogo} from '../../../assets/svg'
+import {ClaimButton} from '../../components/'
+import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {getChainIdRight} from '../../../utils'
+import {AccountStatus} from '../../components'
 
 const SecondStep = ({
   fromChain,
@@ -22,15 +32,25 @@ const SecondStep = ({
   sendStatus,
   claimStatus,
   setClaimStatus,
+  txHash,
   ...props
 }) => {
   const {t} = useTranslation()
   const history = useHistory()
+  const {library} = useActiveWeb3React()
   const {address} = fromToken
   const {display_symbol} = toToken
   const enableClaim = sendStatus === SendStatus.claim
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   const {addToken} = useAddTokenToMetamask(toToken)
+  const {address: accountAddress, error, chainId} = useWallet(toChain)
+  const isChainIdRight = getChainIdRight(toChain, chainId, accountAddress)
+  const {type: accountType} = useAccountStatus(
+    toChain,
+    accountAddress,
+    error,
+    isChainIdRight,
+  )
   const onAddToken = () => {
     addToken()
   }
@@ -62,16 +82,19 @@ const SecondStep = ({
             })}
           </span>
         </div>
-        {/* TODO: replace with ClaimButton */}
-        {(!claimStatus || claimStatus === ClaimStatus.error) && (
-          <Button
-            size="small"
-            disabled={!enableClaim}
-            setClaimStatus={setClaimStatus}
-            {...props}
-          >
-            {t('claim')}
-          </Button>
+        {accountType === TypeAccountStatus.success &&
+          (!claimStatus || claimStatus === ClaimStatus.error) && (
+            <ClaimButton
+              disabled={!enableClaim}
+              setClaimStatus={setClaimStatus}
+              hash={txHash}
+              type={ClaimButtonType.twoStep}
+              library={library}
+              {...props}
+            />
+          )}
+        {accountType !== TypeAccountStatus.success && (
+          <AccountStatus id="claim" chain={toChain} size="medium" />
         )}
       </div>
       {claimStatus && claimStatus !== ClaimStatus.success && (
@@ -147,9 +170,10 @@ SecondStep.propTypes = {
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
   toToken: PropTypes.object.isRequired,
-  sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
-  claimStatus: PropTypes.oneOf(Object.values(ClaimStatus)).isRequired,
+  sendStatus: PropTypes.oneOf([...Object.values(SendStatus), '']).isRequired,
+  claimStatus: PropTypes.oneOf([...Object.values(ClaimStatus), '']).isRequired,
   setClaimStatus: PropTypes.func,
+  txHash: PropTypes.string,
 }
 
 export default SecondStep

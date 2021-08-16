@@ -2,14 +2,19 @@ import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import queryString from 'query-string'
 import {useHistory} from 'react-router-dom'
-import {Button, Loading, Link} from '../../../components'
+import {Loading, Link} from '../../../components'
 import {
   SupportedChains,
   ChainConfig,
   WalletConfig,
 } from '../../../constants/chainConfig'
-import {SendStatus} from '../../../constants'
+import {SendStatus, TypeAccountStatus} from '../../../constants'
 import {SuccessFilled, ErrorOutlined} from '../../../assets/svg'
+import {ShuttleInButton, ShuttleOutButton} from '../ClaimModal/ShuttleButton'
+import {useIsCfxChain} from '../../../hooks'
+import {getChainIdRight} from '../../../utils'
+import {useWallet, useAccountStatus} from '../../../hooks/useWallet'
+import {AccountStatus} from '../../components'
 
 const FirstStep = ({
   fromChain,
@@ -17,11 +22,22 @@ const FirstStep = ({
   fromToken,
   sendStatus,
   setSendStatus,
+  value,
   ...props
 }) => {
   const {t} = useTranslation()
   const history = useHistory()
   const {display_symbol, address} = fromToken
+  const isCfxChain = useIsCfxChain(toChain)
+  let BtnComp = isCfxChain ? ShuttleInButton : ShuttleOutButton
+  const {address: accountAddress, error, chainId} = useWallet(fromChain)
+  const isChainIdRight = getChainIdRight(fromChain, chainId, accountAddress)
+  const {type: accountType} = useAccountStatus(
+    fromChain,
+    accountAddress,
+    error,
+    isChainIdRight,
+  )
   const viewHistory = (
     <div
       className="flex items-center cursor-pointer"
@@ -56,13 +72,25 @@ const FirstStep = ({
             })}
           </span>
         </div>
-        {/* TODO: replace with ShuttleButton */}
-        {(!sendStatus || sendStatus === SendStatus.error) && (
-          <Button size="small" setSendStatus={setSendStatus} {...props}>
-            {t('send')}
-          </Button>
+        {accountType === TypeAccountStatus.success &&
+          (!sendStatus || sendStatus === SendStatus.error) && (
+            <BtnComp
+              size="small"
+              setSendStatus={setSendStatus}
+              fromChain={fromChain}
+              toChain={toChain}
+              fromToken={fromToken}
+              value={value}
+              {...props}
+            />
+          )}
+        {accountType !== TypeAccountStatus.success && (
+          <AccountStatus id="send" chain={fromChain} size="medium" />
         )}
-        {sendStatus === 'claim' && <SuccessFilled className="w-6 h-6" />}
+
+        {sendStatus === SendStatus.claim && (
+          <SuccessFilled className="w-6 h-6" />
+        )}
       </div>
       {sendStatus && (
         <span className="ml-7 text-gray-40 text-xs inline-block pt-0.5">
@@ -106,8 +134,9 @@ FirstStep.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
-  sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
+  sendStatus: PropTypes.oneOf([...Object.values(SendStatus), '']).isRequired,
   setSendStatus: PropTypes.func,
+  value: PropTypes.string.isRequired,
 }
 
 export default FirstStep

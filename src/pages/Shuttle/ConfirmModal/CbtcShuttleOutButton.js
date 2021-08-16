@@ -18,6 +18,7 @@ import {
 import {useShuttleState} from '../../../state'
 import {getExponent} from '../../../utils'
 import {useTxState} from '../../../state/transaction'
+import {TransactionReceiptionModal} from '../../components'
 
 function CbtcShuttleOutButton({
   fromChain, // is cfx
@@ -25,11 +26,7 @@ function CbtcShuttleOutButton({
   fromToken,
   toToken,
   value,
-  onClose,
   disabled,
-  setTxModalType,
-  setTxModalShow,
-  setTxHash,
   fromAddress,
   toAddress,
 }) {
@@ -47,6 +44,9 @@ function CbtcShuttleOutButton({
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
   const {unshiftTx} = useTxState()
+  const [txModalShow, setTxModalShow] = useState(false)
+  const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
+  const [txHash, setTxHash] = useState('')
 
   useEffect(() => {
     setDidMount(true)
@@ -75,15 +75,19 @@ function CbtcShuttleOutButton({
   }
 
   const onSubmit = async () => {
+    if (
+      txModalType === TxReceiptModalType.success ||
+      txModalType === TxReceiptModalType.error
+    ) {
+      setTxModalType(TxReceiptModalType.ongoing)
+    }
     setTxModalShow(true)
-    onClose && onClose()
-    setTxModalType(TxReceiptModalType.ongoing)
     const amountVal = Big(value).mul(getExponent(18))
     try {
       const data = await tokenBaseContract['burn'](
         fromAddress,
         amountVal,
-        Big(out_fee).mul(getExponent(18)),
+        0,
         outAddress,
         ZeroAddrHex,
       ).sendTransaction({
@@ -102,16 +106,33 @@ function CbtcShuttleOutButton({
     return null
   }
   return (
-    <Button
-      fullWidth
-      startIcon={<Send />}
-      onClick={onSubmit}
-      disabled={disabled}
-      size="large"
-      id="cBtcShuttleOut"
-    >
-      {t('send')}
-    </Button>
+    <>
+      <Button
+        fullWidth
+        startIcon={<Send />}
+        onClick={onSubmit}
+        disabled={disabled}
+        size="large"
+        id="cBtcShuttleOut"
+      >
+        {t('send')}
+      </Button>
+      {txModalShow && (
+        <TransactionReceiptionModal
+          type={txModalType}
+          open={txModalShow}
+          fromChain={fromChain}
+          toChain={toChain}
+          fromToken={fromToken}
+          toToken={toToken}
+          txHash={txHash}
+          value={value}
+          onClose={() => {
+            setTxModalShow(false)
+          }}
+        />
+      )}
+    </>
   )
 }
 
@@ -123,9 +144,6 @@ CbtcShuttleOutButton.propTypes = {
   value: PropTypes.string.isRequired,
   onClose: PropTypes.func,
   disabled: PropTypes.bool,
-  setTxModalType: PropTypes.func,
-  setTxHash: PropTypes.func,
-  setTxModalShow: PropTypes.func,
   fromAddress: PropTypes.string,
   toAddress: PropTypes.string,
 }

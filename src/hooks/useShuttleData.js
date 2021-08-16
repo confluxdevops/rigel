@@ -61,8 +61,6 @@ export function useCustodianData(chainOfContract, token) {
     )
       .then(data => {
         const [
-          burn_fee,
-          mint_fee,
           wallet_fee,
           minimal_mint_value,
           minimal_burn_value,
@@ -75,9 +73,7 @@ export function useCustodianData(chainOfContract, token) {
           //     ? burn_fee.div(`${dicimalsNum}`)
           //     : mint_fee.div(`${dicimalsNum}`),
           in_fee: Big(0), //shuttle in fee has already benn zero in new version
-          out_fee: isCfxChain
-            ? mint_fee.div(`${dicimalsNum}`)
-            : burn_fee.div(`${dicimalsNum}`),
+          out_fee: Big(0), //shuttle in fee has already benn zero in claim version
           wallet_fee: wallet_fee.div(`${dicimalsNum}`),
           //   minimal_in_value: isCfxChain
           //     ? minimal_burn_value.div(`${dicimalsNum}`)

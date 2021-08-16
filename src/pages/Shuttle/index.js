@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -15,27 +14,21 @@ import {
   KeyOfCfx,
   KeyOfBtc,
 } from '../../constants/chainConfig'
-import {
-  TxReceiptModalType,
-  TypeAccountStatus,
-  ShuttleStatus,
-} from '../../constants'
+import {TypeAccountStatus} from '../../constants'
 import ConfirmModal from './ConfirmModal'
 import ClaimModal from './ClaimModal'
-import {TransactionReceiptionModal} from '../components'
 import {useShuttleState} from '../../state'
 import {getChainIdRight} from '../../utils'
 
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const {tokenFromBackend, error} = useShuttleState()
+  const {tokenFromBackend, error, setTxClaimModalShown} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
   const [claimModalShow, setClaimModalShow] = useState(false)
   const [value, setValue] = useState('')
-  const [txModalShow, setTxModalShow] = useState(false)
-  const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
+
   const [txHash, setTxHash] = useState('')
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
@@ -77,6 +70,10 @@ function Shuttle() {
     KeyOfCfx,
     ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
   )
+
+  useEffect(() => {
+    setTxClaimModalShown(claimModalShow)
+  }, [claimModalShow, setTxClaimModalShown])
 
   /**
    * 1. The fromChain and toChain must be in the SupportChains list
@@ -230,8 +227,6 @@ function Shuttle() {
           value={value}
           fromToken={fromToken}
           toToken={toToken}
-          setTxModalType={setTxModalType}
-          setTxModalShow={setTxModalShow}
           setTxHash={setTxHash}
           fromAddress={fromAddress}
           toAddress={toAddress}
@@ -249,22 +244,11 @@ function Shuttle() {
           toChain={toChain}
           fromToken={fromToken}
           toToken={toToken}
-        />
-      )}
-      {txModalShow && (
-        <TransactionReceiptionModal
-          type={txModalType}
-          open={txModalShow}
-          fromChain={fromChain}
-          toChain={toChain}
-          fromToken={fromToken}
-          toToken={toToken}
           value={value}
+          setTxHash={setTxHash}
           txHash={txHash}
-          onClose={() => {
-            setTxModalShow(false)
-            setValue('')
-          }}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
         />
       )}
     </div>

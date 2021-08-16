@@ -209,11 +209,6 @@ export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useTokenAllowance(tokenAddress, params) {
-  const allowance = useContractState(tokenAddress, 'allowance', params, 2000)
-  return allowance || BigNumZero
-}
-
 /**
  * call some method from contract and get the value
  * @param {*} contract
