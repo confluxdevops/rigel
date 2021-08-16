@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import {useTranslation, Trans} from 'react-i18next'
 import {Modal, Button} from '../../../components'
 
-function ClaimAddressModal({open, onClose}) {
+function ClaimAddressModal({open, onClose, onContinue}) {
   const {t} = useTranslation()
 
   return (
@@ -16,7 +16,7 @@ function ClaimAddressModal({open, onClose}) {
           id="claimAddressModalButton"
           size="large"
           fullWidth
-          onClick={onClose}
+          onClick={onContinue && onContinue}
         >
           {t('continue')}
         </Button>
@@ -29,7 +29,7 @@ function ClaimAddressModal({open, onClose}) {
 ClaimAddressModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  onConfirm: PropTypes.func,
+  onContinue: PropTypes.func,
 }
 
 export default ClaimAddressModal

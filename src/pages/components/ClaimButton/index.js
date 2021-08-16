@@ -17,19 +17,35 @@ import {
   ClaimButtonType,
   TxReceiptModalType,
 } from '../../../constants'
-import {TransactionReceiptionModal} from '../../components'
+import {TransactionReceiptionModal, ClaimAddressModal} from '../../components'
 
 function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
   const {t} = useTranslation()
   const {transactions} = useTxState()
   const txData = transactions?.[hash]
-  const {fromChain, toChain, tx_to, tx_input, fromToken, toToken} = txData || {}
+  const {fromChain, toChain, tx_to, tx_input, fromToken, toToken, toAddress} =
+    txData || {}
   const {address} = useWallet(toChain)
   const wallet = ChainConfig[toChain]?.wallet
   const [txModalShow, setTxModalShow] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
   const [txHash, setTxHash] = useState('')
+  const [claimAddressModalShown, setClaimAddressModalShown] = useState(false)
+
+  const onClick = () => {
+    if (toAddress !== address) {
+      setClaimAddressModalShown(true)
+      return
+    }
+    onSubmit && onSubmit()
+  }
   const onSubmit = async () => {
+    if (
+      txModalType === TxReceiptModalType.success ||
+      txModalType === TxReceiptModalType.error
+    ) {
+      setTxModalType(TxReceiptModalType.ongoing)
+    }
     type === ClaimButtonType.common && setTxModalShow(true)
     setClaimStatus && setClaimStatus(ClaimStatus.ongoing)
     if (wallet === KeyOfPortal && window.confluxJS) {
@@ -62,40 +78,42 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
     }
     if (wallet === KeyOfMetaMask && library) {
       //metamask
-      const gas = await library.estimateGas({
-        from: address,
-        data: tx_input,
-        to: tx_to,
-      })
-      library
-        .getSigner()
-        .sendTransaction({
+      try {
+        const gas = await library.estimateGas({
+          from: address,
+          data: tx_input,
+          to: tx_to,
+        })
+        const data = await library.getSigner().sendTransaction({
           from: address,
           data: tx_input,
           to: tx_to,
           gasLimit: gas ? calculateGasMargin(gas) : undefined,
         })
-        .then(data => {
-          setClaimStatus && setClaimStatus(ClaimStatus.success)
-          type === ClaimButtonType.common &&
-            setTxModalType(TxReceiptModalType.success)
-          setTxHash(data?.hash)
-        })
-        .catch(() => {
-          setClaimStatus && setClaimStatus(ClaimStatus.error)
-          type === ClaimButtonType.common &&
-            setTxModalType(TxReceiptModalType.error)
-        })
+        setClaimStatus && setClaimStatus(ClaimStatus.success)
+        type === ClaimButtonType.common &&
+          setTxModalType(TxReceiptModalType.success)
+        setTxHash(data?.hash)
+      } catch (error) {
+        setClaimStatus && setClaimStatus(ClaimStatus.error)
+        type === ClaimButtonType.common &&
+          setTxModalType(TxReceiptModalType.error)
+      }
     }
   }
+
+  const closeClaimAddressModal = () => {
+    setClaimAddressModalShown(false)
+  }
+
+  const onContinue = () => {
+    setClaimAddressModalShown(false)
+    onSubmit && onSubmit()
+  }
+
   return (
     <>
-      <Button
-        onClick={onSubmit}
-        size="small"
-        id="shuttleIn"
-        disabled={disabled}
-      >
+      <Button onClick={onClick} size="small" id="shuttleIn" disabled={disabled}>
         {t('claim')}
       </Button>
       {type === ClaimButtonType.common && txModalShow && (
@@ -115,6 +133,11 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
           }}
         />
       )}
+      <ClaimAddressModal
+        open={claimAddressModalShown}
+        onClose={closeClaimAddressModal}
+        onContinue={onContinue}
+      />
     </>
   )
 }
