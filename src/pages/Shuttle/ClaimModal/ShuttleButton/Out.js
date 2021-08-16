@@ -20,8 +20,6 @@ import {useShuttleState} from '../../../../state'
 import {getExponent, calculateGasMargin, updateTx} from '../../../../utils'
 import {useTxState} from '../../../../state/transaction'
 import {requestUserOperationByHash} from '../../../../utils/api'
-import {useAllTokenList} from '../../../../hooks/useTokenList'
-import {mapData} from '../../../../hooks/useTransaction'
 
 function ShuttleOutButton({
   fromChain,
@@ -56,7 +54,6 @@ function ShuttleOutButton({
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
   const {unshiftTx, transactions, setTransactions} = useTxState()
-  const tokenList = useAllTokenList()
   window._transactions = new Map(Object.entries(transactions))
   useEffect(() => {
     setDidMount(true)
@@ -97,7 +94,11 @@ function ShuttleOutButton({
       )
       if (operationData?.tx_to && operationData?.tx_input) {
         setSendStatus(SendStatus.claim)
-        updateTx(window._transactions, hash, mapData(operationData, tokenList))
+        updateTx(window._transactions, hash, {
+          tx_to: operationData?.tx_to,
+          tx_input: operationData?.tx_input,
+          toAddress: operationData?.to_addr,
+        })
         setTransactions(window._transactions)
         interval && clearInterval(interval)
       }
