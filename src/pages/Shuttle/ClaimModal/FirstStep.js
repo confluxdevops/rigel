@@ -99,7 +99,7 @@ const FirstStep = ({
               wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
             })}
           {sendStatus === SendStatus.success && (
-            <span className="flex items-center">
+            <span className="flex items-center whitespace-pre">
               <Trans i18nKey="claimModal.takeTime" />
               {viewHistory}
             </span>
