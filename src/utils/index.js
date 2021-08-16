@@ -40,7 +40,7 @@ export const getMaxAmount = (chain, amount) => {
 
 // add 10%
 export function calculateGasMargin(value, margin = 0.1) {
-  return BigNumber.from(value?.toString())
+  return BigNumber.from(value?.toString(10))
     .mul(BigNumber.from(10000).add(BigNumber.from(10000 * margin)))
     .div(BigNumber.from(10000))
 }
