@@ -78,8 +78,8 @@ const Tooltip = React.forwardRef((props, ref) => {
   })
 
   const isNoContent = () => {
-    const {content, overlay} = props
-    return !content && !overlay && content !== 0 // overlay for old version compatibility
+    const {content} = props
+    return !content && content !== 0
   }
 
   const onVisibleChange = vis => {
@@ -139,11 +139,11 @@ const Tooltip = React.forwardRef((props, ref) => {
   }
 
   const getOverlay = () => {
-    const {content, overlay} = props
+    const {content} = props
     if (content === 0) {
       return content
     }
-    return overlay || content || ''
+    return content || ''
   }
 
   const {getPopupContainer, ...otherProps} = props
@@ -211,7 +211,6 @@ Tooltip.displayName = 'Tooltip'
 
 Tooltip.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  overlay: PropTypes.bool,
   visible: PropTypes.bool,
   defaultVisible: PropTypes.bool,
   getPopupContainer: PropTypes.func,

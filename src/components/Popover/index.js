@@ -19,7 +19,7 @@ const Popover = React.forwardRef(
         {...otherProps}
         prefixCls={prefixCls}
         ref={ref}
-        overlay={getOverlay(prefixCls)}
+        content={getOverlay(prefixCls)}
       />
     )
   },
