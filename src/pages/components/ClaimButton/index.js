@@ -17,6 +17,7 @@ import {
   TxReceiptModalType,
 } from '../../../constants'
 import {TransactionReceiptionModal, ClaimAddressModal} from '../../components'
+import {useWallet} from '../../../hooks/useWallet'
 
 function ShuttleClaimButton({
   hash,
@@ -24,13 +25,15 @@ function ShuttleClaimButton({
   setClaimStatus,
   disabled,
   library,
-  toAccountAddress: address,
+  toAccountAddress,
 }) {
   const {t} = useTranslation()
   const {transactions} = useTxState()
   const txData = transactions?.[hash]
   const {fromChain, toChain, tx_to, tx_input, fromToken, toToken, toAddress} =
     txData || {}
+  const {address: walletAddress} = useWallet(toChain)
+  const address = walletAddress || toAccountAddress
   const wallet = ChainConfig[toChain]?.wallet
   const [txModalShow, setTxModalShow] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
