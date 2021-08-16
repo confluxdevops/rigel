@@ -9,7 +9,6 @@ import {
   KeyOfPortal,
   ChainConfig,
 } from '../../../constants/chainConfig'
-import {useWallet} from '../../../hooks/useWallet'
 import {calculateGasMargin} from '../../../utils'
 import {useTxState} from '../../../state/transaction'
 import {
@@ -19,13 +18,19 @@ import {
 } from '../../../constants'
 import {TransactionReceiptionModal, ClaimAddressModal} from '../../components'
 
-function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
+function ShuttleClaimButton({
+  hash,
+  type,
+  setClaimStatus,
+  disabled,
+  library,
+  toAccountAddress: address,
+}) {
   const {t} = useTranslation()
   const {transactions} = useTxState()
   const txData = transactions?.[hash]
   const {fromChain, toChain, tx_to, tx_input, fromToken, toToken, toAddress} =
     txData || {}
-  const {address} = useWallet(toChain)
   const wallet = ChainConfig[toChain]?.wallet
   const [txModalShow, setTxModalShow] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
@@ -147,6 +152,7 @@ ShuttleClaimButton.propTypes = {
   disabled: PropTypes.bool,
   type: PropTypes.oneOf(Object.values(ClaimButtonType)).isRequired,
   library: PropTypes.object,
+  toAccountAddress: PropTypes.string,
 }
 
 export default ShuttleClaimButton

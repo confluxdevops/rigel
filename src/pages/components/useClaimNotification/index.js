@@ -1,16 +1,36 @@
 import {useTranslation} from 'react-i18next'
-import {ChainConfig} from '../../../constants/chainConfig'
+import {
+  ChainConfig,
+  KeyOfMetaMask,
+  KeyOfPortal,
+} from '../../../constants/chainConfig'
 import {Notification, Loading} from '../../../components'
 import {useIsMobile} from '../../../hooks'
 import {ClaimButton} from '../../components'
 import {ClaimButtonType} from '../../../constants'
 import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
+import {useConnect as useConnectPortal} from '../../../hooks/usePortal'
+
+import {useConnect as useConnectWeb3} from '../../../hooks/useWeb3Network'
 
 const useClaimNotification = () => {
   const {t} = useTranslation()
   const isMobile = useIsMobile()
   const {library} = useActiveWeb3React()
-  return ({symbol, fromChain, toChain, value, hash}) =>
+  const connectObjPortal = useConnectPortal()
+  const connectObjWeb3 = useConnectWeb3()
+
+  return function ({symbol, fromChain, toChain, value, hash}) {
+    let data = {}
+    switch (ChainConfig[toChain]?.wallet) {
+      case KeyOfMetaMask:
+        data = connectObjWeb3
+        break
+      case KeyOfPortal:
+        data = connectObjPortal
+        break
+    }
+    const toAccountAddress = data?.address
     Notification.open({
       title: t('claimNotificationTitle'),
       icon: <Loading className="w-6 h-6" />,
@@ -28,11 +48,13 @@ const useClaimNotification = () => {
           hash={hash}
           type={ClaimButtonType.common}
           library={library}
+          toAccountAddress={toAccountAddress}
         >
           {}
         </ClaimButton>
       ),
     })
+  }
 }
 
 export default useClaimNotification
