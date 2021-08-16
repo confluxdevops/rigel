@@ -9,7 +9,6 @@ import useShuttleAddress from '../../../../hooks/useShuttleAddress'
 import {useIsCfxChain, useIsBtcChain} from '../../../../hooks'
 import {useShuttleContract} from '../../../../hooks/useShuttleContract'
 import {ContractType} from '../../../../constants/contractConfig'
-import {useCustodianData} from '../../../../hooks/useShuttleData'
 import {
   ZeroAddrHex,
   TypeTransaction,
@@ -50,7 +49,6 @@ function ShuttleOutButton({
     ContractType.depositRelayerCfx,
     toChain,
   )
-  const {out_fee} = useCustodianData(toChain, toToken)
   const {toBtcAddress} = useShuttleState()
   const [didMount, setDidMount] = useState(false)
   const {unshiftTx, transactions, setTransactions} = useTxState()
@@ -167,7 +165,7 @@ function ShuttleOutButton({
         const data = await tokenBaseContract['burn'](
           fromAddress,
           amountVal,
-          Big(out_fee).mul(getExponent(18)),
+          0,
           outAddress,
           ZeroAddrHex,
         ).sendTransaction({

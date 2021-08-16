@@ -87,7 +87,7 @@ function CbtcShuttleOutButton({
       const data = await tokenBaseContract['burn'](
         fromAddress,
         amountVal,
-        Big(out_fee).mul(getExponent(18)),
+        0,
         outAddress,
         ZeroAddrHex,
       ).sendTransaction({
