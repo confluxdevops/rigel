@@ -125,7 +125,7 @@ function ShuttleClaimButton({hash, type, setClaimStatus, disabled, library}) {
           fromToken={fromToken}
           toToken={toToken}
           txHash={txHash}
-          value={0}
+          value={'0'}
           isClaim={true}
           library={library}
           onClose={() => {
