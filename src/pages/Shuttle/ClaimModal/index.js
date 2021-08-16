@@ -4,7 +4,6 @@ import {useTranslation} from 'react-i18next'
 import {useIsMobile} from '../../../hooks'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
-import {SendStatus, ClaimStatus} from '../../../constants'
 import {Question} from '../../../assets/svg'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
@@ -84,8 +83,6 @@ ClaimModal.propTypes = {
   toToken: PropTypes.object.isRequired,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
-  claimStatus: PropTypes.oneOf(Object.values(ClaimStatus)).isRequired,
 }
 
 export default ClaimModal

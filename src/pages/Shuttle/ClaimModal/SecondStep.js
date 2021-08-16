@@ -170,8 +170,8 @@ SecondStep.propTypes = {
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
   toToken: PropTypes.object.isRequired,
-  sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
-  claimStatus: PropTypes.oneOf(Object.values(ClaimStatus)).isRequired,
+  sendStatus: PropTypes.oneOf([...Object.values(SendStatus), '']).isRequired,
+  claimStatus: PropTypes.oneOf([...Object.values(ClaimStatus), '']).isRequired,
   setClaimStatus: PropTypes.func,
   txHash: PropTypes.string,
 }

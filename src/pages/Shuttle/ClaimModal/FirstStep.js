@@ -134,7 +134,7 @@ FirstStep.propTypes = {
   fromChain: PropTypes.oneOf(SupportedChains).isRequired,
   toChain: PropTypes.oneOf(SupportedChains).isRequired,
   fromToken: PropTypes.object.isRequired,
-  sendStatus: PropTypes.oneOf(Object.values(SendStatus)).isRequired,
+  sendStatus: PropTypes.oneOf([...Object.values(SendStatus), '']).isRequired,
   setSendStatus: PropTypes.func,
   value: PropTypes.string.isRequired,
 }
