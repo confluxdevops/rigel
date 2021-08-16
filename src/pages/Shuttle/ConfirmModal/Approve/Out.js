@@ -10,7 +10,7 @@ import {
   ContractType,
   ContractConfig,
 } from '../../../../constants/contractConfig'
-import {useTokenContract, useTokenAllowance} from '../../../../hooks/usePortal'
+import {useTokenContract} from '../../../../hooks/usePortal'
 import {calculateGasMargin, getExponent} from '../../../../utils'
 import {TypeTransaction} from '../../../../constants'
 import {useCustodianData} from '../../../../hooks/useShuttleData'
@@ -19,7 +19,7 @@ import {useShuttleState} from '../../../../state'
 import {useIsBtcChain, useIsCfxChain} from '../../../../hooks'
 import {SupportedChains} from '../../../../constants/chainConfig'
 import {useTxState} from '../../../../state/transaction'
-import {useIsNativeToken} from '../../../../hooks/useWallet'
+import {useIsNativeToken, useTokenAllowance} from '../../../../hooks/useWallet'
 
 function Out({
   fromChain,
@@ -55,7 +55,7 @@ function Out({
     toChain,
     'out',
   )
-  const tokenAllownace = useTokenAllowance(ctoken, [
+  const tokenAllownace = useTokenAllowance(fromChain, ctoken, [
     fromAddress,
     drContractAddress,
   ])

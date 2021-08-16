@@ -6,13 +6,10 @@ import {MaxUint256} from '@ethersproject/constants'
 import {Logger} from '@ethersproject/logger'
 import {useTranslation} from 'react-i18next'
 
-import {useIsNativeToken} from '../../../../hooks/useWallet'
+import {useIsNativeToken, useTokenAllowance} from '../../../../hooks/useWallet'
 import {SupportedChains} from '../../../../constants/chainConfig'
 import {useIsCfxChain} from '../../../../hooks'
-import {
-  useTokenContract,
-  useTokenAllowance,
-} from '../../../../hooks/useWeb3Network'
+import {useTokenContract} from '../../../../hooks/useWeb3Network'
 import {
   ContractConfig,
   ContractType,
@@ -47,7 +44,7 @@ function In({
   const drContractAddress =
     ContractConfig[ContractType.depositRelayer]?.address?.[fromChain]
   const tokenContract = useTokenContract(fromTokenAddress)
-  const tokenAllownace = useTokenAllowance(fromTokenAddress, [
+  const tokenAllownace = useTokenAllowance(fromChain, fromTokenAddress, [
     fromAddress,
     drContractAddress,
   ])

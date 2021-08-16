@@ -5,12 +5,15 @@ import {ChainConfig, KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {
   useConnect as useConnectPortal,
   useBalance as useBalancePortal,
+  useContractState as useContractStatePortal,
 } from './usePortal'
 import {
   useConnect as useConnectWeb3,
   useBalance as useBalanceWeb3,
+  useContractState as useContractStateWeb3,
 } from './useWeb3Network'
 import {TypeAccountStatus} from '../constants'
+import {BigNumZero} from '../constants'
 
 export function useWallet(chain) {
   const connectObjPortal = useConnectPortal()
@@ -88,4 +91,53 @@ export function useAccountStatus(chain, address, error, isChainIdRight) {
       return {type: TypeAccountStatus.success}
     }
   }, [Boolean(address), chain, Boolean(error), isChainIdRight])
+}
+
+/**
+ * call some method from contract and get the value
+ * @param {*} contract
+ * @param {*} method
+ * @param {*} params
+ * @returns
+ */
+export function useContractState(
+  chain,
+  tokenAddress,
+  method,
+  params,
+  interval,
+) {
+  const contractDataPortal = useContractStatePortal(
+    tokenAddress,
+    method,
+    params,
+    interval,
+  )
+  const contractDataWeb3 = useContractStateWeb3(
+    tokenAddress,
+    method,
+    params,
+    interval,
+  )
+  let contractData = {}
+  switch (ChainConfig[chain]?.wallet) {
+    case KeyOfMetaMask:
+      contractData = contractDataWeb3
+      break
+    case KeyOfPortal:
+      contractData = contractDataPortal
+      break
+  }
+  return contractData
+}
+
+export function useTokenAllowance(chain, tokenAddress, params) {
+  const allowance = useContractState(
+    chain,
+    tokenAddress,
+    'allowance',
+    params,
+    2000,
+  )
+  return allowance || BigNumZero
 }

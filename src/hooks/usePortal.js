@@ -4,7 +4,7 @@ import {useEffectOnce} from 'react-use'
 import {useBalance as usePortalBalance} from '@cfxjs/react-hooks'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
-import {TypeConnectWallet, BigNumZero} from '../constants'
+import {TypeConnectWallet} from '../constants'
 import {getChainIdRight} from '../utils'
 import {checkCfxTokenAddress} from '../utils/address'
 
@@ -192,9 +192,4 @@ export function useContractState(tokenAddress, method, params, interval) {
   }, [...params, interval, Boolean(contract)])
 
   return data
-}
-
-export function useTokenAllowance(tokenAddress, params) {
-  const allowance = useContractState(tokenAddress, 'allowance', params, 2000)
-  return allowance || BigNumZero
 }
