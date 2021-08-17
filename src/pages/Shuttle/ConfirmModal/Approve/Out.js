@@ -170,7 +170,7 @@ function Out({
           onClick={onApprove}
           disabled={disabled}
           size="large"
-          id="approve"
+          id="approveBtn"
         >
           {isApproving && <Loading className="!w-6 !h-6" />}
           {!isApproving && t('approve', {tokenSymbol: display_symbol})}

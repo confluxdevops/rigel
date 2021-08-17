@@ -168,7 +168,7 @@ function ShuttleInButton({
           onClick={onSubmit}
           disabled={disabled}
           size="small"
-          id="shuttleIn"
+          id="sendBtn"
         >
           {t('send')}
         </Button>
