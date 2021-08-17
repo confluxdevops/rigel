@@ -8,6 +8,12 @@ import {
 } from '../../assets/svg'
 import {Close} from '../../assets/svg'
 
+const typeToIcon = {
+  success: <SuccessFilled className="w-4 h-4 mr-2" />,
+  info: <InfoFilled className="w-4 h-4 mr-2" />,
+  error: <ErrorFilled className="w-4 h-4 mr-2" />,
+  warning: <WarningFilled className="w-4 h-4 mr-2" />,
+}
 function Alert({
   type = 'success',
   icon,
@@ -20,12 +26,6 @@ function Alert({
   content,
   bordered = false,
 }) {
-  const typeToIcon = {
-    success: <SuccessFilled className="w-4 h-4 mr-2" />,
-    info: <InfoFilled className="w-4 h-4 mr-2" />,
-    error: <ErrorFilled className="w-4 h-4 mr-2" />,
-    warning: <WarningFilled className="w-4 h-4 mr-2" />,
-  }
   const IconComponent = typeToIcon[type]
 
   const style = useMemo(() => {

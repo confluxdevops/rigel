@@ -97,13 +97,14 @@ const SecondStep = ({
           <AccountStatus id="claim" chain={toChain} size="medium" />
         )}
       </div>
-      {claimStatus && claimStatus !== ClaimStatus.success && (
+      {claimStatus !== ClaimStatus.success && (
         <span className="ml-7 text-gray-40 text-xs inline-block pt-0.5">
           {claimStatus === ClaimStatus.ongoing &&
             t('confirm', {
               wallet: WalletConfig[ChainConfig[toChain].wallet].name,
             })}
-          {claimStatus === ClaimStatus.error && t('claimModal.clickClaim')}
+          {(claimStatus === ClaimStatus.error || enableClaim) &&
+            t('claimModal.clickClaim')}
         </span>
       )}
       {claimStatus && (
