@@ -60,7 +60,7 @@ export function useBalance(chain, address, tokenAddress) {
  */
 export function useIsNativeToken(chain, tokenAddress) {
   return useMemo(
-    () => ChainConfig[chain].tokenName?.toLowerCase() === tokenAddress,
+    () => ChainConfig[chain]?.tokenName?.toLowerCase() === tokenAddress,
     [chain, tokenAddress],
   )
 }
