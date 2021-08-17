@@ -113,7 +113,7 @@ function CbtcShuttleOutButton({
         onClick={onSubmit}
         disabled={disabled}
         size="large"
-        id="cBtcShuttleOut"
+        id="cBtcShuttleOutBtn"
       >
         {t('send')}
       </Button>
