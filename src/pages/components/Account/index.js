@@ -18,7 +18,7 @@ function Account({
   size = 'medium',
   ...props
 }) {
-  const walletKey = ChainConfig[chain].wallet
+  const walletKey = ChainConfig[chain]?.wallet
   const isBtcChain = useIsBtcChain(chain)
   const {toBtcAddress} = useShuttleState()
 

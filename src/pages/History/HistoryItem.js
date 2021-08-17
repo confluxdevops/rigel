@@ -77,8 +77,8 @@ function TokenInfo({toToken, fromChain, toChain}) {
         </span>
         <span className="text-gray-40 text-xs">
           {t('history.chainDescription', {
-            fromChain: ChainConfig[fromChain].shortName,
-            toChain: ChainConfig[toChain].shortName,
+            fromChain: ChainConfig[fromChain]?.shortName,
+            toChain: ChainConfig[toChain]?.shortName,
           })}
         </span>
       </div>
