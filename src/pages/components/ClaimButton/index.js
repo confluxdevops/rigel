@@ -120,12 +120,7 @@ function ShuttleClaimButton({
 
   return (
     <>
-      <Button
-        onClick={onClick}
-        size="small"
-        id="claimButton"
-        disabled={disabled}
-      >
+      <Button onClick={onClick} size="small" id="claimBtn" disabled={disabled}>
         {t('claim')}
       </Button>
       {type === ClaimButtonType.common && txModalShow && (

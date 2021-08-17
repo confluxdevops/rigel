@@ -192,7 +192,7 @@ function ShuttleOutButton({
           onClick={onSubmit}
           disabled={disabled}
           size="small"
-          id="claimBtn"
+          id="sendBtn"
         >
           {t('send')}
         </Button>
