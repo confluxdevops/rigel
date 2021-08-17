@@ -164,7 +164,7 @@ function HistoryItem({historyItemData}) {
   )
 
   const [detailShow, setDetailShow] = useState(
-    status === 'pending' ? true : false,
+    status === 'pending' || status === 'waiting' ? true : false,
   )
 
   return (
@@ -186,7 +186,7 @@ function HistoryItem({historyItemData}) {
         className={`flex flex-col w-full items-center bg-gray-10 px-6 ${
           detailShow
             ? 'animate-slice-down transition-max-height max-h-44 origin-top'
-            : 'animate-slice-up transition-max-height max-h-0 origin-bootom overflow-hidden'
+            : 'animate-slice-up transition-max-height max-h-0 origin-bottom overflow-hidden'
         }`}
       >
         <div className="flex flex-col items-start w-full">
