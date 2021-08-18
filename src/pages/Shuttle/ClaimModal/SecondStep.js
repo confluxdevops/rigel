@@ -128,7 +128,7 @@ const SecondStep = ({
           {claimStatus === ClaimStatus.error && (
             <span className="text-error">{t('rejected')}</span>
           )}
-          {sendStatus === SendStatus.success && (
+          {claimStatus === ClaimStatus.success && (
             <div
               className="flex items-center cursor-pointer mt-1 mb-4"
               aria-hidden="true"
@@ -148,7 +148,7 @@ const SecondStep = ({
               <Link>{t('viewInHistory')}</Link>
             </div>
           )}
-          {sendStatus === SendStatus.success &&
+          {claimStatus === ClaimStatus.success &&
             ChainConfig[toChain].wallet === KeyOfMetaMask &&
             !isNativeToken && (
               <Button
