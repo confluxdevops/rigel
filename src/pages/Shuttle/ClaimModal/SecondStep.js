@@ -103,7 +103,8 @@ const SecondStep = ({
             t('confirm', {
               wallet: WalletConfig[ChainConfig[toChain].wallet].name,
             })}
-          {(claimStatus === ClaimStatus.error || enableClaim) &&
+          {(claimStatus === ClaimStatus.error ||
+            (enableClaim && !claimStatus)) &&
             t('claimModal.clickClaim')}
         </span>
       )}
