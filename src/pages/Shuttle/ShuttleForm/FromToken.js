@@ -77,7 +77,7 @@ function FromToken({
                   />
                 }
               >
-                <Question className="w-3 h-3 text-gray-40" />
+                <Question className="w-3.5 h-3.5 text-gray-40" />
               </Popover>
             </div>
           )}
