@@ -90,6 +90,7 @@ const SecondStep = ({
               hash={txHash}
               type={ClaimButtonType.twoStep}
               library={library}
+              toAccountAddress={accountAddress}
               {...props}
             />
           )}

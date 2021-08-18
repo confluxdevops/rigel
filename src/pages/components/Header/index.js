@@ -8,6 +8,7 @@ import useTheme from '../../../hooks/useTheme'
 import {WalletHub, LanguageButton, ThemeButton} from '../../components'
 import './header.css'
 import {useUpdateTxs} from '../../../hooks/useTransaction'
+import {useUpdateClaimedTxs} from '../../../hooks/useClaimedTx'
 
 function Header() {
   const {t} = useTranslation()
@@ -15,10 +16,10 @@ function Header() {
   const fromChain = useSearchParam('fromChain')
   const toChain = useSearchParam('toChain')
   const fromTokenAddress = useSearchParam('fromTokenAddress')
-
   const isMobile = useIsMobile()
   const {value: isDarkMode} = useTheme()
   useUpdateTxs()
+  useUpdateClaimedTxs()
   if (pathname === '/maintenance' || pathname === '/notfound') {
     return null
   }
