@@ -40,7 +40,7 @@ const FirstStep = ({
   )
   const viewHistory = (
     <div
-      className="flex items-center cursor-pointer"
+      className="flex items-center"
       aria-hidden="true"
       id="viewHistory1"
       onClick={() => {

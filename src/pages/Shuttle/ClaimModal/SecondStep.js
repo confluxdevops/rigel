@@ -130,7 +130,7 @@ const SecondStep = ({
           )}
           {claimStatus === ClaimStatus.success && (
             <div
-              className="flex items-center cursor-pointer mt-1 mb-4"
+              className="flex items-center mt-1 mb-4"
               aria-hidden="true"
               id="viewHistory1"
               onClick={() => {
