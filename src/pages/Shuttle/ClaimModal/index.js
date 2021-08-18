@@ -4,6 +4,7 @@ import {useTranslation} from 'react-i18next'
 import {useIsMobile} from '../../../hooks'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
+import {SendStatus, ClaimStatus} from '../../../constants'
 import {Question} from '../../../assets/svg'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
@@ -23,13 +24,22 @@ function ClaimModal({
   const [claimStatus, setClaimStatus] = useState('')
   const onClickClose = () => {
     const modal = document.getElementById('claimModal')
-    modal.classList.add(
-      isMobile ? 'animate-fade-out-bottom-left' : 'animate-fade-out-top-right',
-    )
-    const closeTimer = setTimeout(() => {
-      clearTimeout(closeTimer)
+    if (
+      (sendStatus && sendStatus !== SendStatus.ongoing) ||
+      claimStatus !== ClaimStatus.success
+    ) {
+      modal.classList.add(
+        isMobile
+          ? 'animate-fade-out-bottom-left'
+          : 'animate-fade-out-top-right',
+      )
+      const closeTimer = setTimeout(() => {
+        clearTimeout(closeTimer)
+        onClose && onClose()
+      }, 500)
+    } else {
       onClose && onClose()
-    }, 500)
+    }
   }
   const content = (
     <div className="flex flex-col w-full">

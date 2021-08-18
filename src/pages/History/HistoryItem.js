@@ -53,7 +53,7 @@ function TokenInfo({toToken, fromChain, toChain}) {
             >
               <WrapIcon
                 type="circle"
-                className="ml-1 cursor-pointer"
+                className="ml-1"
                 onClick={e => onAddToken(e)}
               >
                 <BgPlus />
@@ -61,7 +61,7 @@ function TokenInfo({toToken, fromChain, toChain}) {
             </Tooltip>
           )}
           {!isNativeToken && isToChainCfx && (
-            <WrapIcon type="circle" className="ml-1 cursor-pointer relative">
+            <WrapIcon type="circle" className="ml-1 relative">
               <CopyToClipboard text={address} onCopy={() => setCopied(true)}>
                 <BgCopy />
               </CopyToClipboard>
