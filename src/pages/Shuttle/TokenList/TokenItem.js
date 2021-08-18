@@ -57,7 +57,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
           >
             <WrapIcon
               type="circle"
-              className="ml-1 cursor-pointer"
+              className="ml-1"
               onClick={e => onAddToken(e)}
             >
               <BgPlus />
@@ -67,7 +67,7 @@ function TokenItem({chain, token, selectedToken, onClick, ...props}) {
         {isCfxChain && !isNativeToken && (
           <WrapIcon
             type="circle"
-            className="ml-1 cursor-pointer relative"
+            className="ml-1 relative"
             onClick={e => e.stopPropagation()}
           >
             <CopyToClipboard text={address} onCopy={() => setCopied(true)}>
