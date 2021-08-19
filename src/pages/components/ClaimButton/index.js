@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useTranslation} from 'react-i18next'
 
@@ -15,6 +15,7 @@ import {
   ClaimStatus,
   ClaimButtonType,
   TxReceiptModalType,
+  TxStatus,
 } from '../../../constants'
 import {TransactionReceiptionModal, ClaimAddressModal} from '../../components'
 import {useWallet} from '../../../hooks/useWallet'
@@ -29,7 +30,7 @@ function ShuttleClaimButton({
   onClickClaim,
 }) {
   const {t} = useTranslation()
-  const {transactions} = useTxState()
+  const {transactions, setTx, claimedTxs} = useTxState()
   const txData = transactions?.[hash]
   const {fromChain, toChain, tx_to, tx_input, fromToken, toToken, toAddress} =
     txData || {}
@@ -39,9 +40,24 @@ function ShuttleClaimButton({
   const [txModalShow, setTxModalShow] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
   const [txHash, setTxHash] = useState('')
+  const [claimShown, setClaimShown] = useState(true)
   const [claimAddressModalShown, setClaimAddressModalShown] = useState(false)
+
+  useEffect(() => {
+    const txData = claimedTxs?.[hash]
+    if (txData) {
+      if (txData.status === TxStatus.error) {
+        setClaimShown(true)
+      } else {
+        setClaimShown(false)
+      }
+    } else {
+      setClaimShown(true)
+    }
+  }, [claimedTxs[hash]])
+
   const onClick = () => {
-    if (toAddress?.toLocaleLowerCase !== address?.toLocaleLowerCase) {
+    if (toAddress?.toLocaleLowerCase() !== address?.toLocaleLowerCase()) {
       setClaimAddressModalShown(true)
       return
     }
@@ -65,7 +81,7 @@ function ShuttleClaimButton({
           data: tx_input,
           to: tx_to,
         })
-        const hash = await window.confluxJS.sendTransaction({
+        const data = await window.confluxJS.sendTransaction({
           from: address,
           data: tx_input,
           to: tx_to,
@@ -78,7 +94,13 @@ function ShuttleClaimButton({
         setClaimStatus && setClaimStatus(ClaimStatus.success)
         type === ClaimButtonType.common &&
           setTxModalType(TxReceiptModalType.success)
-        setTxHash(hash)
+        setTxHash(data)
+        setTx(hash, {
+          wallet: KeyOfPortal,
+          status: TxStatus.submitted,
+          claimHash: data,
+          sendHash: hash,
+        })
       } catch (error) {
         setClaimStatus && setClaimStatus(ClaimStatus.error)
         type === ClaimButtonType.common &&
@@ -103,6 +125,12 @@ function ShuttleClaimButton({
         type === ClaimButtonType.common &&
           setTxModalType(TxReceiptModalType.success)
         setTxHash(data?.hash)
+        setTx(hash, {
+          wallet: KeyOfMetaMask,
+          status: TxStatus.submitted,
+          claimHash: data?.hash,
+          sendHash: hash,
+        })
       } catch (error) {
         setClaimStatus && setClaimStatus(ClaimStatus.error)
         type === ClaimButtonType.common &&
@@ -122,7 +150,13 @@ function ShuttleClaimButton({
 
   return (
     <>
-      <Button onClick={onClick} size="small" id="claimBtn" disabled={disabled}>
+      <Button
+        onClick={onClick}
+        size="small"
+        id="claimBtn"
+        disabled={disabled}
+        className={claimShown ? 'visible' : 'invisible'}
+      >
         {t('claim')}
       </Button>
       {type === ClaimButtonType.common && txModalShow && (
