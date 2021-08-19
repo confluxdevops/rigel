@@ -20,7 +20,7 @@ const useClaimNotification = () => {
   const connectObjPortal = useConnectPortal()
   const connectObjWeb3 = useConnectWeb3()
 
-  return function ({symbol, fromChain, toChain, value, hash}) {
+  return function ({symbol, fromChain, toChain, value, hash, key}) {
     let data = {}
     switch (ChainConfig[toChain]?.wallet) {
       case KeyOfMetaMask:
@@ -32,6 +32,7 @@ const useClaimNotification = () => {
     }
     const toAccountAddress = data?.address
     Notification.open({
+      key: 'claimNotification' + key,
       title: t('claimNotificationTitle'),
       icon: <Loading className="w-6 h-6" />,
       content: t('notificationDetail', {
@@ -49,9 +50,8 @@ const useClaimNotification = () => {
           type={ClaimButtonType.common}
           library={library}
           toAccountAddress={toAccountAddress}
-        >
-          {}
-        </ClaimButton>
+          onClickClaim={() => Notification.close('claimNotification' + key)}
+        />
       ),
     })
   }

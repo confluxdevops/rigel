@@ -137,7 +137,7 @@ export const useUpdateTxs = () => {
             if (list) {
               const newList = list.map(item => mapData(item, tokenList))
               const mappedData = _mapListToMap(newList)
-              pendingCommonTxs.forEach(item => {
+              pendingCommonTxs.forEach((item, index) => {
                 const {hash, amount, fromChain, toChain, fromToken, status} =
                   item
                 const {display_symbol} = fromToken
@@ -160,6 +160,7 @@ export const useUpdateTxs = () => {
                 ) {
                   //Claim Notification
                   claimNotificationShow({
+                    key: index,
                     symbol: display_symbol,
                     fromChain,
                     toChain,
