@@ -31,6 +31,17 @@ export const createStore = () =>
           trans[tx.hash] = mergeData(tx)
           set({transactions: trans})
         },
+        claimedTxs: {},
+        setClaimedTxs: claimedTxs => {
+          console.log('claimedTxs in status', claimedTxs)
+          set({claimedTxs: fromEntries(claimedTxs)})
+        },
+        setTx: (hash, value) => {
+          let trans = get().claimedTxs
+          trans[hash] = value
+          console.log('setTx in state', trans)
+          set({claimedTxs: trans})
+        },
       }),
       {
         name: 'transactions', // unique name

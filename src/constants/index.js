@@ -94,3 +94,9 @@ export const ClaimButtonType = {
   twoStep: 'twoStep',
   common: 'common',
 }
+
+export const TxStatus = {
+  submitted: 'submitted',
+  success: 'success',
+  error: 'error',
+}
