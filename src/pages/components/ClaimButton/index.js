@@ -19,7 +19,6 @@ import {
 } from '../../../constants'
 import {TransactionReceiptionModal, ClaimAddressModal} from '../../components'
 import {useWallet} from '../../../hooks/useWallet'
-import {useClaimedTxState} from '../../../state/claimedTx'
 
 function ShuttleClaimButton({
   hash,
@@ -30,8 +29,7 @@ function ShuttleClaimButton({
   toAccountAddress,
 }) {
   const {t} = useTranslation()
-  const {transactions} = useTxState()
-  const {setTx, claimedTxs} = useClaimedTxState()
+  const {transactions, setTx, claimedTxs} = useTxState()
   const txData = transactions?.[hash]
   const {fromChain, toChain, tx_to, tx_input, fromToken, toToken, toAddress} =
     txData || {}

@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect} from 'react'
-import {useClaimedTxState} from '../state/claimedTx'
+import {useTxState} from '../state/transaction'
 import {TxStatus} from '../constants'
 import {KeyOfMetaMask, KeyOfPortal} from '../constants/chainConfig'
 import {useActiveWeb3React} from './useWeb3Network'
 import {updateTx} from '../utils/index'
 
 export const useUpdateClaimedTxs = () => {
-  const {claimedTxs, setClaimedTxs} = useClaimedTxState()
+  const {claimedTxs, setClaimedTxs} = useTxState()
   const {library} = useActiveWeb3React()
   window._claimedTxs = new Map(Object.entries(claimedTxs))
   useEffect(() => {
