@@ -120,7 +120,9 @@ const FirstStep = ({
             <span className="text-gray-80">{t('waiting')}</span>
           )}
           {sendStatus === SendStatus.success && (
-            <span className="text-gray-80">{t('process')}</span>
+            <span className="text-gray-80">
+              {t('process', {formChain: ChainConfig[fromChain].shortName})}
+            </span>
           )}
           {sendStatus === SendStatus.error && (
             <span className="text-error">{t('rejected')}</span>
