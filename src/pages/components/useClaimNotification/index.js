@@ -1,4 +1,5 @@
 import {useTranslation} from 'react-i18next'
+import {useLocation} from 'react-router-dom'
 import {
   ChainConfig,
   KeyOfMetaMask,
@@ -15,6 +16,7 @@ import {useConnect as useConnectWeb3} from '../../../hooks/useWeb3Network'
 
 const useClaimNotification = () => {
   const {t} = useTranslation()
+  const {pathname} = useLocation()
   const isMobile = useIsMobile()
   const {library} = useActiveWeb3React()
   const connectObjPortal = useConnectPortal()
@@ -31,6 +33,7 @@ const useClaimNotification = () => {
         break
     }
     const toAccountAddress = data?.address
+    if (pathname === '/') return null
     Notification.open({
       key: 'claimNotification' + key,
       title: t('claimNotificationTitle'),

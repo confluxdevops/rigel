@@ -11,7 +11,7 @@ import {useIsMobile} from '../../../hooks'
 
 const useTransactionNotification = () => {
   const {t} = useTranslation()
-  const location = useLocation()
+  const {search, pathname} = useLocation()
   const history = useHistory()
   const isMobile = useIsMobile()
   const {
@@ -19,8 +19,9 @@ const useTransactionNotification = () => {
     toChain: pathToChain,
     fromTokenAddress,
     ...others
-  } = queryString.parse(location.search)
-  return ({symbol, fromChain, toChain, value}) =>
+  } = queryString.parse(search)
+  return ({symbol, fromChain, toChain, value}) => {
+    if (pathname === '/') return null
     Notification.open({
       title: t('notificationDetail', {
         value,
@@ -59,6 +60,7 @@ const useTransactionNotification = () => {
           : ''
       } h-32`,
     })
+  }
 }
 
 export default useTransactionNotification
