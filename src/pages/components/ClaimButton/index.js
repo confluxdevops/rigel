@@ -146,12 +146,15 @@ function ShuttleClaimButton({
     onSubmit && onSubmit()
   }
 
-  if (!claimShown) {
-    return null
-  }
   return (
     <>
-      <Button onClick={onClick} size="small" id="claimBtn" disabled={disabled}>
+      <Button
+        onClick={onClick}
+        size="small"
+        id="claimBtn"
+        disabled={disabled}
+        className={claimShown ? 'visible' : 'invisible'}
+      >
         {t('claim')}
       </Button>
       {type === ClaimButtonType.common && txModalShow && (
