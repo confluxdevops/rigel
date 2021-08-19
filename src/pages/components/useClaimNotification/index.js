@@ -32,6 +32,7 @@ const useClaimNotification = () => {
     }
     const toAccountAddress = data?.address
     Notification.open({
+      key: 'claimNotification',
       title: t('claimNotificationTitle'),
       icon: <Loading className="w-6 h-6" />,
       content: t('notificationDetail', {
@@ -49,9 +50,8 @@ const useClaimNotification = () => {
           type={ClaimButtonType.common}
           library={library}
           toAccountAddress={toAccountAddress}
-        >
-          {}
-        </ClaimButton>
+          onClickClaim={() => Notification.close('claimNotification')}
+        />
       ),
     })
   }

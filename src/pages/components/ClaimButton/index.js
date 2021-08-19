@@ -26,6 +26,7 @@ function ShuttleClaimButton({
   disabled,
   library,
   toAccountAddress,
+  onClickClaim,
 }) {
   const {t} = useTranslation()
   const {transactions} = useTxState()
@@ -44,6 +45,7 @@ function ShuttleClaimButton({
       setClaimAddressModalShown(true)
       return
     }
+    onClickClaim && onClickClaim()
     onSubmit && onSubmit()
   }
   const onSubmit = async () => {
@@ -156,6 +158,7 @@ ShuttleClaimButton.propTypes = {
   type: PropTypes.oneOf(Object.values(ClaimButtonType)).isRequired,
   library: PropTypes.object,
   toAccountAddress: PropTypes.string,
+  onClickClaim: PropTypes.func,
 }
 
 export default ShuttleClaimButton
