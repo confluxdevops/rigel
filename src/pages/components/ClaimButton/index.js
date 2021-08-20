@@ -61,7 +61,6 @@ function ShuttleClaimButton({
       setClaimAddressModalShown(true)
       return
     }
-    onClickClaim && onClickClaim()
     onSubmit && onSubmit()
   }
   const onSubmit = async () => {
@@ -173,6 +172,9 @@ function ShuttleClaimButton({
           library={library}
           onClose={() => {
             setTxModalShow(false)
+            if (txModalType === TxReceiptModalType.success) {
+              onClickClaim && onClickClaim()
+            }
           }}
         />
       )}
