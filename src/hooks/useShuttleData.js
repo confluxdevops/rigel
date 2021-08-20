@@ -75,10 +75,13 @@ export function useCustodianData(chainOfContract, token) {
           in_fee: Big(0), //shuttle in fee has already benn zero in new version
           out_fee: Big(0), //shuttle in fee has already benn zero in claim version
           wallet_fee: wallet_fee.div(`${dicimalsNum}`),
-          //   minimal_in_value: isCfxChain
-          //     ? minimal_burn_value.div(`${dicimalsNum}`)
-          //     : minimal_mint_value.div(`${dicimalsNum}`),
-          minimal_in_value: Big(0), // the minimal shuttle-in vlaue has already benn zero in new version
+          minimal_in_value:
+            contractAddress === KeyOfBtc
+              ? isCfxChain
+                ? minimal_burn_value.div(`${dicimalsNum}`)
+                : minimal_mint_value.div(`${dicimalsNum}`)
+              : Big(0),
+          //minimal_in_value: Big(0), // the minimal shuttle-in vlaue has already benn zero in new version
           minimal_out_value: isCfxChain
             ? minimal_mint_value.div(`${dicimalsNum}`)
             : minimal_burn_value.div(`${dicimalsNum}`),
