@@ -84,10 +84,16 @@ const FirstStep = ({
               {...props}
             />
           )}
-        {accountType !== TypeAccountStatus.success && (
-          <AccountStatus id="send" chain={fromChain} />
-        )}
-
+        <AccountStatus
+          id="send"
+          chain={fromChain}
+          className={
+            accountType !== TypeAccountStatus.success &&
+            (!sendStatus || sendStatus === SendStatus.error)
+              ? 'block'
+              : 'hidden'
+          }
+        />
         {sendStatus === SendStatus.claim && (
           <SuccessFilled className="w-6 h-6" />
         )}
