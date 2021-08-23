@@ -70,7 +70,7 @@ function FromToken({
                   <Trans
                     i18nKey="maxTipContent"
                     values={{
-                      fromChain,
+                      fromChain: ChainConfig[fromChain].shortName,
                       remainderAmount: ChainConfig[fromChain].remainderAmount,
                       tokenSymbol: ChainConfig[fromChain].tokenName,
                     }}

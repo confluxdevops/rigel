@@ -1,6 +1,6 @@
 {
   "waiting": "Confirming",
-  "process": "Conflux Processing",
+  "process": "{{fromChain}} Processing",
   "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{tokenSymbol}} to {{chain}}",
   "confirm": "Confirm the transaction in {{wallet}}",
   "submitted": "Transaction Submitted",
@@ -112,7 +112,7 @@
     "content": "Current address is not destination address.<br/>Tokens will still be sent to the destination address."
   },
   "history": {
-    "title": "Cross-Chain Records within 24 Hours",
+    "title": "Cross-Chain Records",
     "chainDescription": "From {{fromChain}} to {{toChain}}",
     "pending": "Pending",
     "waiting": "Waiting",
@@ -123,18 +123,18 @@
       "stepOne": "Initiate cross-chain",
       "stepTwo": "Confirm on {{fromChain}} {{fromChainId}}",
       "stepThreeToBtc": "Confirm on ShuttleFlow",
-      "stepThree": "Waiting for Claim",
+      "stepThree": "Claim your token and wait for processing",
       "stepFour": "Confirm on {{toChain}} {{toChainId}}"
     }
   },
   "claimModal": {
-    "title": "Two steps to claim",
-    "description": "Two steps to cross-chain",
+    "title": "Two steps to cross-chain",
+    "description": " ",
     "sendFromToken": "Send your {{fromTokenSymbol}} on {{fromChain}}",
     "claimToToken": "Claim your {{toTokenSymbol}} on {{toChain}}",
-    "claimTips": "Why need to claim? Exempt your Shuttle Fee.",
+    "claimTips": "Why need to claim your token?",
     "takeTime": "It may <strong>take a while</strong>, wait here or ",
     "clickSend": "Click Send to continue",
-    "clickClaim": "Click Claim to continue"
+    "clickClaim": "Click Claim to receive your assets"
   }
 }

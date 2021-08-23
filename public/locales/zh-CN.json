@@ -1,6 +1,6 @@
 {
   "waiting": "等待确认",
-  "process": "Conflux Processing",
+  "process": "{{fromChain}} 处理中",
   "shuttleInfo": "跨 <strong>{{value}}</strong> {{tokenSymbol}} 去 {{chain}}",
   "confirm": "在 {{wallet}} 确认这笔交易",
   "submitted": "交易已发出",
@@ -27,7 +27,7 @@
   "balance": "余额",
   "max": "最大",
   "maxTipTitle": "最大安全值",
-  "maxTipContent": "暂时没有读取实时 Gas 价格<br/>为了预留 {{fromChain}} 网络的 Gas Fee，点击全部将会预留 {{remainderAmount}} {{tokenSymbol}}",
+  "maxTipContent": "暂时没有读取实时 Gas 价格<br/>为了预留 {{fromChain}} 网络的 Gas Fee，点击最大将会预留 {{remainderAmount}} {{tokenSymbol}}",
   "receiveAs": "将收到",
   "fromChain": "从",
   "toChain": "至",
@@ -39,7 +39,7 @@
   "checkboxLabel": "我已知晓上述风险",
   "approve": "授权 {{tokenSymbol}}",
   "send": "发送",
-  "claim": "Claim",
+  "claim": "领取",
   "continue": "继续",
   "pleaseWait": "请耐心等待",
   "waitOneHour": "跨链将在比特币网络完成 6 个块确认后开始处理，至少需要 1 小时",
@@ -49,9 +49,9 @@
   "cfxAddressRecord": "只展示与 Conflux 地址相关的跨链记录。",
   "shuttleRecordItem": "{{tokenSymbol}} 从 {{fromChain}} 到 {{toChain}}",
   "approveRecordItem": "授权 {{tokenSymbol}}",
-  "viewInHistory": "View in history",
-  "notificationDetail": "{{value}} {{symbol}} from {{fromChain}} to {{toChain}}",
-  "claimNotificationTitle": "Ready to Claim",
+  "viewInHistory": "在历史记录中查看",
+  "notificationDetail": "{{value}} {{symbol}} 从 {{fromChain}} 至 {{toChain}}",
+  "claimNotificationTitle": "可以领取了",
   "testnet": "测试网",
   "mainnet": "主网",
   "error": {
@@ -108,11 +108,11 @@
     "checkboxLabel": "我已知晓"
   },
   "claimAddressModal": {
-    "title": "Cautious",
-    "content": "Current address is not destination address.<br/>Tokens will still be sent to the destination address."
+    "title": "务必知晓",
+    "content": "当前使用的钱包地址不是之前填写的目标地址<br/>代币仍然会被发送到之前的目标地址中"
   },
   "history": {
-    "title": "最近 24 小时的跨链记录",
+    "title": "跨链记录",
     "chainDescription": "从 {{fromChain}} 至 {{toChain}}",
     "pending": "处理中",
     "waiting": "等待中",
@@ -123,18 +123,18 @@
       "stepOne": "开始跨链进程",
       "stepTwo": "{{fromChain}} {{fromChainId}} 已确认",
       "stepThreeToBtc": "ShuttleFlow 已确认",
-      "stepThree": "Waiting for Claim",
+      "stepThree": "领取代币并等待处理完成",
       "stepFour": "{{toChain}} {{toChainId}} 已确认"
     }
   },
   "claimModal": {
-    "title": "Two steps to claim",
-    "description": "Two steps to cross-chain",
-    "sendFromToken": "Send your {{fromTokenSymbol}} on {{fromChain}}",
-    "claimToToken": "Claim your {{toTokenSymbol}} on {{toChain}}",
-    "claimTips": "Why need to claim? Exempt your Shuttle Fee.",
-    "takeTime": "It may <strong>take a while</strong>, wait here or ",
-    "clickSend": "Click Send to continue",
-    "clickClaim": "Click Claim to continue"
+    "title": "跨链两步操作",
+    "description": " ",
+    "sendFromToken": "发送你的 {{fromTokenSymbol}} 在 {{fromChain}} 上",
+    "claimToToken": "领取你的 {{toTokenSymbol}} 在 {{toChain}} 上",
+    "claimTips": "为什么需要领取代币？",
+    "takeTime": "需要 <strong>等待一段时间</strong>，在这里等待或",
+    "clickSend": "点击发送开始跨链",
+    "clickClaim": "点击并领取你的资产"
   }
 }
