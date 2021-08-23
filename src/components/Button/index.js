@@ -82,7 +82,6 @@ function Button({
 
   return (
     <button
-      data-testid="button-wrapper"
       onClick={e => onClick && onClick(e)}
       disabled={disabled}
       className={`
