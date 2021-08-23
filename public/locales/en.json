@@ -51,6 +51,7 @@
   "shuttleRecordItem": "{{tokenSymbol}} from {{fromChain}} to {{toChain}}",
   "approveRecordItem": "Approve {{tokenSymbol}}",
   "viewInHistory": "View in history",
+  "claimInHistory": "Claim in history",
   "notificationDetail": "{{value}} {{symbol}} from {{fromChain}} to {{toChain}}",
   "claimNotificationTitle": "Ready to Claim",
   "testnet": "Testnet",
