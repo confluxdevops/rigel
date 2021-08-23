@@ -2,6 +2,15 @@ import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {Close} from '../../assets/svg'
 
+const sizeStyleObj = {
+  small: 'text-2xs h-4 px-1',
+  medium: 'text-xs h-6 px-2',
+}
+
+const iconSizeObj = {
+  small: 'w-2 h-2',
+  medium: 'w-3 h-3',
+}
 function Tag({
   onClose,
   onClick,
@@ -32,11 +41,7 @@ function Tag({
     return ''
   }, [disabled, color])
 
-  const sizeStyle = useMemo(() => {
-    if (size === 'medium') return 'text-xs h-6 px-2'
-    if (size === 'small') return 'text-2xs h-4 px-1'
-    return ''
-  }, [size])
+  const sizeStyle = sizeStyleObj[size] || ''
 
   const iconColor = useMemo(() => {
     if (disabled) return 'text-gray-40'
@@ -44,10 +49,7 @@ function Tag({
     if (color === 'error') return 'text-error'
   }, [disabled, color])
 
-  const iconSize = useMemo(() => {
-    if (size === 'medium') return 'w-3 h-3'
-    if (size === 'small') return 'w-2 h-2'
-  }, [size])
+  const iconSize = iconSizeObj[size]
 
   const onCloseClick = e => {
     e.stopPropagation()
@@ -82,6 +84,7 @@ function Tag({
       {children}
       {closable && (
         <span
+          data-testid="close-icon-wrapper"
           aria-hidden="true"
           onClick={e => onCloseClick(e)}
           className={`ml-1`}
@@ -89,7 +92,10 @@ function Tag({
           {closeIcon ? (
             closeIconComp
           ) : (
-            <Close className={`${iconColor} ${iconSize}`} />
+            <Close
+              data-testid="close-icon"
+              className={`${iconColor} ${iconSize}`}
+            />
           )}
         </span>
       )}
