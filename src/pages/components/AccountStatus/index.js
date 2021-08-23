@@ -14,7 +14,6 @@ function AccountStatus({chain, size = 'medium', className = '', id, onClose}) {
     error,
     isChainIdRight,
   )
-  console.log(chain, accountType)
 
   return (
     <div className={`${className}`}>
