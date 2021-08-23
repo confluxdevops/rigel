@@ -203,10 +203,15 @@ function HistoryItem({historyItemData}) {
                   library={library}
                 />
               )}
-            {accountType !== TypeAccountStatus.success &&
-              status === 'waiting' && (
-                <AccountStatus id="claim" chain={toChain} />
-              )}
+            {status === 'waiting' && (
+              <AccountStatus
+                id="claim"
+                chain={toChain}
+                className={
+                  accountType !== TypeAccountStatus.success ? 'block' : 'hidden'
+                }
+              />
+            )}
           </div>
           {response && (
             <Progress
