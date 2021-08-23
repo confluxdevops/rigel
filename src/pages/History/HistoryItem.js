@@ -205,7 +205,7 @@ function HistoryItem({historyItemData}) {
               )}
             {accountType !== TypeAccountStatus.success &&
               status === 'waiting' && (
-                <AccountStatus id="claim" chain={toChain} size="medium" />
+                <AccountStatus id="claim" chain={toChain} />
               )}
           </div>
           {response && (

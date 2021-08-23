@@ -11,7 +11,8 @@ import {useUpdateTxs} from '../../../hooks/useTransaction'
 import {useUpdateClaimedTxs} from '../../../hooks/useClaimedTx'
 
 function Header() {
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
+  const {language} = i18n
   const {pathname} = useLocation()
   const fromChain = useSearchParam('fromChain')
   const toChain = useSearchParam('toChain')
@@ -50,6 +51,18 @@ function Header() {
       </div>
       {!isMobile && (
         <div className="flex items-center">
+          <a
+            className="flex items-center justify-center h-8 px-4 bg-gray-20 text-gray-100 rounded-full mr-6"
+            href={
+              language.indexOf('en') !== -1
+                ? 'https://forum.conflux.fun/t/cross-chain-tutorial-for-shuttleflow-v1-3-0/9214'
+                : 'https://forum.conflux.fun/t/shuttleflow-v1-3-0/9212'
+            }
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t('tutorial')}
+          </a>
           <WalletHub />
           <ThemeButton />
           <LanguageButton />

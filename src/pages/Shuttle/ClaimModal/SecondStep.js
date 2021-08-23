@@ -95,7 +95,7 @@ const SecondStep = ({
             />
           )}
         {accountType !== TypeAccountStatus.success && (
-          <AccountStatus id="claim" chain={toChain} size="medium" />
+          <AccountStatus id="claim" chain={toChain} />
         )}
       </div>
       {claimStatus !== ClaimStatus.success && (

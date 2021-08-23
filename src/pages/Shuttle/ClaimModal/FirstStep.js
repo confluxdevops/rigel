@@ -85,7 +85,7 @@ const FirstStep = ({
             />
           )}
         {accountType !== TypeAccountStatus.success && (
-          <AccountStatus id="send" chain={fromChain} size="medium" />
+          <AccountStatus id="send" chain={fromChain} />
         )}
 
         {sendStatus === SendStatus.claim && (
@@ -121,7 +121,7 @@ const FirstStep = ({
           )}
           {sendStatus === SendStatus.success && (
             <span className="text-gray-80">
-              {t('process', {formChain: ChainConfig[fromChain].shortName})}
+              {t('process', {fromChain: ChainConfig[fromChain].shortName})}
             </span>
           )}
           {sendStatus === SendStatus.error && (

@@ -1,4 +1,5 @@
 {
+  "tutorial": "教程",
   "waiting": "等待确认",
   "process": "{{fromChain}} 处理中",
   "shuttleInfo": "跨 <strong>{{value}}</strong> {{tokenSymbol}} 去 {{chain}}",

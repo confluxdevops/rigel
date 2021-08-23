@@ -1,4 +1,5 @@
 {
+  "tutorial": "Tutorial",
   "waiting": "Confirming",
   "process": "{{fromChain}} Processing",
   "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{tokenSymbol}} to {{chain}}",
