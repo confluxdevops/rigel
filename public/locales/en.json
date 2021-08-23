@@ -128,8 +128,8 @@
     }
   },
   "claimModal": {
-    "title": "Two steps to cross-chain",
-    "description": " ",
+    "title": "Two Steps",
+    "description": " Two steps to cross-chain",
     "sendFromToken": "Send your {{fromTokenSymbol}} on {{fromChain}}",
     "claimToToken": "Claim your {{toTokenSymbol}} on {{toChain}}",
     "claimTips": "Why need to claim your token?",

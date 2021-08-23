@@ -129,9 +129,9 @@
   },
   "claimModal": {
     "title": "跨链两步操作",
-    "description": " ",
-    "sendFromToken": "发送你的 {{fromTokenSymbol}} 在 {{fromChain}} 上",
-    "claimToToken": "领取你的 {{toTokenSymbol}} 在 {{toChain}} 上",
+    "description": " 跨链需要完成两步操作",
+    "sendFromToken": "在 {{fromChain}} 上转出 {{fromTokenSymbol}} ",
+    "claimToToken": "在 {{toChain}} 上领取 {{toTokenSymbol}}",
     "claimTips": "为什么需要领取代币？",
     "takeTime": "需要 <strong>等待一段时间</strong>，在这里等待或",
     "clickSend": "点击发送开始跨链",
