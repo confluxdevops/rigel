@@ -31,9 +31,8 @@ const useClaimNotification = () => {
         <div
           className="flex items-center"
           aria-hidden="true"
-          id="viewHistory1"
+          id="claimInHistory"
           onClick={() => {
-            Notification.close('claimNotification' + key)
             const pathWithQuery = queryString.stringifyUrl({
               url: '/history',
               query: {

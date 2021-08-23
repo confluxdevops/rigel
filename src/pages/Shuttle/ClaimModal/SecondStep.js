@@ -139,7 +139,7 @@ const SecondStep = ({
             <div
               className="flex items-center mt-1 mb-4"
               aria-hidden="true"
-              id="viewHistory1"
+              id="viewHistoryStepTwo"
               onClick={() => {
                 const pathWithQuery = queryString.stringifyUrl({
                   url: '/history',

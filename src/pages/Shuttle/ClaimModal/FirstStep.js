@@ -42,7 +42,7 @@ const FirstStep = ({
     <div
       className="flex items-center"
       aria-hidden="true"
-      id="viewHistory1"
+      id="viewHistoryStepOne"
       onClick={() => {
         const pathWithQuery = queryString.stringifyUrl({
           url: '/history',
