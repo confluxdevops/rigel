@@ -34,7 +34,7 @@ function FromToken({
           onClick={() => onChooseToken && onChooseToken()}
         />
         <div className="h-6 flex items-center">
-          <AccountStatus id="fromToken" chain={fromChain} size="medium" />
+          <AccountStatus id="fromToken" chain={fromChain} />
         </div>
       </div>
       <div className="flex justify-between items-center">

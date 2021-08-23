@@ -1,4 +1,5 @@
 {
+  "tutorial": "教程",
   "waiting": "等待确认",
   "process": "{{fromChain}} 处理中",
   "shuttleInfo": "跨 <strong>{{value}}</strong> {{tokenSymbol}} 去 {{chain}}",
@@ -62,8 +63,8 @@
     "mustLteMax": "余额不足",
     "addressInvalid": "地址无效",
     "wrongNetwork": "网络错误",
-    "unspoortedNetwork": "不支持的网络",
-    "unspoortedNetworkContent": "请在 {{ walletName }} 中将网络切换至 {{network}} ",
+    "unsupportedNetwork": "不支持的网络",
+    "unsupportedNetworkContent": "请在 {{ walletName }} 中将网络切换至 {{network}} ",
     "connecting": "连接错误",
     "connectingContent": "刷新页面重试"
   },
@@ -75,7 +76,7 @@
     "forbiddenAddressTip": "跨链手续费将会在跨链交易数量中扣减",
     "gasTip": "你需要支付 <strong>{{fromChain}}</strong> 网络的 Gas 费",
     "toBtcGasTip": "你需要支付比特币网络的矿工费",
-    "btcWaitLongTip": "跨链将在比特币网络完成 6 个块确认后开始处理，至少需要 1 小时，请耐心等待",
+    "btcWaitLongTip": "比特币网络完成 6 个块确认后，你需要来这里领取代币",
     "btcWalletTip": "请使用比特币钱包转入资金至此地址",
     "fromBtcAddressTip": "此地址仅能接收比特币",
     "fromBtcGasTip": "需要支付比特币网络矿工费",

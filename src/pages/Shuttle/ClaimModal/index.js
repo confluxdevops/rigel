@@ -5,7 +5,7 @@ import {useIsMobile} from '../../../hooks'
 import {Modal} from '../../../components'
 import {SupportedChains} from '../../../constants/chainConfig'
 import {SendStatus, ClaimStatus} from '../../../constants'
-import {Question} from '../../../assets/svg'
+import {Question, Minimize} from '../../../assets/svg'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 
@@ -25,8 +25,9 @@ function ClaimModal({
   const onClickClose = () => {
     const modal = document.getElementById('claimModal')
     if (
-      (sendStatus && sendStatus !== SendStatus.ongoing) ||
-      claimStatus !== ClaimStatus.success
+      sendStatus === SendStatus.success ||
+      sendStatus === SendStatus.error ||
+      (sendStatus === SendStatus.claim && claimStatus !== ClaimStatus.success)
     ) {
       modal.classList.add(
         isMobile
@@ -38,12 +39,17 @@ function ClaimModal({
         onClose && onClose()
       }, 500)
     } else {
+      modal.classList.remove(
+        isMobile
+          ? 'animate-fade-out-bottom-left'
+          : 'animate-fade-out-top-right',
+      )
       onClose && onClose()
     }
   }
   const content = (
     <div className="flex flex-col w-full">
-      <span className="inine-block mb-3 text-gray-60">
+      <span className="inline-block mb-3 text-gray-60">
         {t('claimModal.description')}
       </span>
       <FirstStep
@@ -82,6 +88,14 @@ function ClaimModal({
       title={t('claimModal.title')}
       content={content}
       onClose={onClickClose}
+      closeIcon={
+        sendStatus === SendStatus.success ||
+        sendStatus === SendStatus.error ||
+        (sendStatus === SendStatus.claim &&
+          claimStatus !== ClaimStatus.success) ? (
+          <Minimize className="w-6 h-6 text-gray-60" />
+        ) : null
+      }
     />
   )
 }

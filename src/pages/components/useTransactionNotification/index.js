@@ -49,7 +49,7 @@ const useTransactionNotification = () => {
           <Link className="!justify-start">{t('viewInHistory')}</Link>
         </div>
       ),
-      duration: 0,
+      duration: 10000,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
       className: `${

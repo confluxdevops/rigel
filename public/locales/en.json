@@ -1,4 +1,5 @@
 {
+  "tutorial": "Tutorial",
   "waiting": "Confirming",
   "process": "{{fromChain}} Processing",
   "shuttleInfo": "Shuttle <strong>{{value}}</strong> {{tokenSymbol}} to {{chain}}",
@@ -62,8 +63,8 @@
     "mustLteMax": "Insufficient balance",
     "addressInvalid": "Address is invalid",
     "wrongNetwork": "Wrong Network",
-    "unspoortedNetwork": "Network Unsupported",
-    "unspoortedNetworkContent": "Please switch the network to {{network}} in {{ walletName}}",
+    "unsupportedNetwork": "Network Unsupported",
+    "unsupportedNetworkContent": "Please switch the network to {{network}} in {{ walletName}}",
     "connecting": "Error Connecting",
     "connectingContent": "Try refreshing the page"
   },
@@ -75,7 +76,7 @@
     "forbiddenAddressTip": "Shuttle Fee will be deducted from the cross-chain amount.",
     "gasTip": "Gas fee will be requested by <strong>{{fromChain}}</strong> network.",
     "toBtcGasTip": "You need to pay the miner fees of the Bitcoin network.",
-    "btcWaitLongTip": "Please wait patinently Cross-Chain after 6 block confirmations in the Bitcoin network, at least 1 hour.",
+    "btcWaitLongTip": "After 6 block confirmations in the Bitcoin network, you need to claim your tokens here.",
     "btcWalletTip": "Please use BTC wallet to transfer funds to this address.",
     "fromBtcAddressTip": "This address can only receive BTC.",
     "fromBtcGasTip": "Need to pay miner fees.",

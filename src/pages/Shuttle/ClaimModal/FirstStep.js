@@ -84,17 +84,15 @@ const FirstStep = ({
               {...props}
             />
           )}
-        <AccountStatus
-          id="send"
-          chain={fromChain}
-          size="medium"
-          className={
-            accountType !== TypeAccountStatus.success &&
-            (!sendStatus || sendStatus === SendStatus.error)
-              ? 'block'
-              : 'hidden'
-          }
-        />
+        {(!sendStatus || sendStatus === SendStatus.error) && (
+          <AccountStatus
+            id="send"
+            chain={fromChain}
+            className={
+              accountType !== TypeAccountStatus.success ? 'block' : 'hidden'
+            }
+          />
+        )}
         {sendStatus === SendStatus.claim && (
           <SuccessFilled className="w-6 h-6" />
         )}
@@ -128,7 +126,7 @@ const FirstStep = ({
           )}
           {sendStatus === SendStatus.success && (
             <span className="text-gray-80">
-              {t('process', {formChain: ChainConfig[fromChain].shortName})}
+              {t('process', {fromChain: ChainConfig[fromChain].shortName})}
             </span>
           )}
           {sendStatus === SendStatus.error && (

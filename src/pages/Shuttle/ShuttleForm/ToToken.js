@@ -13,7 +13,7 @@ function ToToken({fromChain, toChain, toToken}) {
       <div className="flex justify-between items-center">
         <span className="text-gray-40 text-xs">{t('receiveAs')}</span>
         <div className="h-6 flex items-center">
-          <AccountStatus id="toToken" chain={toChain} size="medium" />
+          <AccountStatus id="toToken" chain={toChain} />
         </div>
       </div>
       <div className="flex">

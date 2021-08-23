@@ -94,8 +94,14 @@ const SecondStep = ({
               {...props}
             />
           )}
-        {accountType !== TypeAccountStatus.success && (
-          <AccountStatus id="claim" chain={toChain} size="medium" />
+        {(!claimStatus || claimStatus === ClaimStatus.error) && (
+          <AccountStatus
+            id="claim"
+            chain={toChain}
+            className={
+              accountType !== TypeAccountStatus.success ? 'block' : 'hidden'
+            }
+          />
         )}
       </div>
       {claimStatus !== ClaimStatus.success && (

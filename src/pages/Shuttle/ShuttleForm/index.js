@@ -150,11 +150,11 @@ function ShuttleForm({
     let error = null
     if (isNumber(value)) {
       const valBig = new Big(value || 0)
-      if (valBig.lt('0.000001')) {
-        // should >= 0.000001
+      if (valBig.lt('0.000001') && minimalVal === '0') {
+        // when min = 0 should >= 0.000001
         error = {str: 'error.mustGteCommonMin'}
-      } else if (valBig.lt(minimalVal)) {
-        // should >= min
+      } else if (valBig.lt(minimalVal) && minimalVal !== '0') {
+        // when min > 0 should >= min
         error = {
           str: 'error.mustGteMin',
           obj: {value: formatAmount(minimalVal)},
