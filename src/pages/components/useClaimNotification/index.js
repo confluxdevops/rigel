@@ -1,38 +1,40 @@
 import {useTranslation} from 'react-i18next'
-import {useLocation} from 'react-router-dom'
-import {
-  ChainConfig,
-  KeyOfMetaMask,
-  KeyOfPortal,
-} from '../../../constants/chainConfig'
-import {Notification, Loading} from '../../../components'
+import {useLocation, useHistory} from 'react-router-dom'
+import queryString from 'query-string'
+import {ChainConfig} from '../../../constants/chainConfig'
+import {Notification, Loading, Link} from '../../../components'
 import {useIsMobile} from '../../../hooks'
-import {ClaimButton} from '../../components'
-import {ClaimButtonType} from '../../../constants'
-import {useActiveWeb3React} from '../../../hooks/useWeb3Network'
-import {useConnect as useConnectPortal} from '../../../hooks/usePortal'
-
-import {useConnect as useConnectWeb3} from '../../../hooks/useWeb3Network'
 
 const useClaimNotification = () => {
   const {t} = useTranslation()
-  const {pathname} = useLocation()
+  const {pathname, search} = useLocation()
+  const history = useHistory()
   const isMobile = useIsMobile()
-  const {library} = useActiveWeb3React()
-  const connectObjPortal = useConnectPortal()
-  const connectObjWeb3 = useConnectWeb3()
+  const {fromChain, toChain, fromTokenAddress, ...others} =
+    queryString.parse(search)
+  const viewHistory = (
+    <div
+      className="flex items-center"
+      aria-hidden="true"
+      id="viewHistory1"
+      onClick={() => {
+        const pathWithQuery = queryString.stringifyUrl({
+          url: '/history',
+          query: {
+            fromChain,
+            toChain,
+            fromTokenAddress,
+            ...others,
+          },
+        })
+        history.push(pathWithQuery)
+      }}
+    >
+      <Link>{t('claimInHistory')}</Link>
+    </div>
+  )
 
-  return function ({symbol, fromChain, toChain, value, hash, key}) {
-    let data = {}
-    switch (ChainConfig[toChain]?.wallet) {
-      case KeyOfMetaMask:
-        data = connectObjWeb3
-        break
-      case KeyOfPortal:
-        data = connectObjPortal
-        break
-    }
-    const toAccountAddress = data?.address
+  return function ({symbol, fromChain, toChain, value, key}) {
     if (pathname === '/') return null
     Notification.open({
       key: 'claimNotification' + key,
@@ -44,18 +46,10 @@ const useClaimNotification = () => {
         fromChain: ChainConfig[fromChain].shortName,
         toChain: ChainConfig[toChain].shortName,
       }),
-      duration: 10000,
+      duration: 10,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
-      actions: (
-        <ClaimButton
-          hash={hash}
-          type={ClaimButtonType.common}
-          library={library}
-          toAccountAddress={toAccountAddress}
-          onClickClaim={() => Notification.close('claimNotification' + key)}
-        />
-      ),
+      actions: viewHistory,
     })
   }
 }

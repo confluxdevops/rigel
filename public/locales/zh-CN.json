@@ -51,6 +51,7 @@
   "shuttleRecordItem": "{{tokenSymbol}} 从 {{fromChain}} 到 {{toChain}}",
   "approveRecordItem": "授权 {{tokenSymbol}}",
   "viewInHistory": "在历史记录中查看",
+  "claimInHistory": "在历史记录中领取",
   "notificationDetail": "{{value}} {{symbol}} 从 {{fromChain}} 至 {{toChain}}",
   "claimNotificationTitle": "可以领取了",
   "testnet": "测试网",
