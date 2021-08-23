@@ -33,6 +33,7 @@ const useClaimNotification = () => {
           aria-hidden="true"
           id="viewHistory1"
           onClick={() => {
+            Notification.close('claimNotification' + key)
             const pathWithQuery = queryString.stringifyUrl({
               url: '/history',
               query: {
@@ -42,7 +43,6 @@ const useClaimNotification = () => {
               },
             })
             history.push(pathWithQuery)
-            Notification.close('claimNotification' + key)
           }}
         >
           <Link>{t('claimInHistory')}</Link>
