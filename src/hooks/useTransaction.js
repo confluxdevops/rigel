@@ -176,7 +176,9 @@ export const useUpdateTxs = () => {
           .finally(() => {})
       })
     }
-    update()
+    if (cfxAddress) {
+      update()
+    }
     let timeInterval
     if (cfxAddress) {
       timeInterval = setInterval(() => update(), 30000)
