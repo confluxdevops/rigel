@@ -52,7 +52,6 @@ function Input({
   const sizeStyle = sizeStyleObj[size] || ''
   const inputStyle = inputStyleObj[size] || ''
   const iconSize = iconSizeObj[size] || ''
-  // eslint-disable-next-line no-unused-vars
   const prefixStyle = prefixStyleObj[size] || ''
   const suffixStyle = suffixStyleObj[size] || ''
 
@@ -63,22 +62,20 @@ function Input({
   }, [bordered, errorMessage, focused])
 
   return (
-    <div className={`${width}`} data-testid="input-wrapper">
+    <div className={`${width}`}>
       <div
-        data-testid="input-container"
         className={`flex justify-between items-center rounded ${width} ${disabledStyle} ${sizeStyle} ${borderStyle} ${containerClassName}`}
       >
         {prefix && (
           <div
             aria-hidden="true"
             onClick={() => setFocused(true)}
-            className="pl-3 ${prefixStyle}"
+            className={`pl-3 ${prefixStyle}`}
           >
-            <div className="text-gray-40 ${prefixStyle}">{prefix}</div>
+            <div className={`text-gray-40 ${iconSize}`}>{prefix}</div>
           </div>
         )}
         <input
-          data-testid="input-text"
           value={value}
           onFocus={() => setFocused(true)}
           onBlur={() => {
