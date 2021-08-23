@@ -14,6 +14,13 @@ const typeToIcon = {
   error: <ErrorFilled className="w-4 h-4 mr-2" />,
   warning: <WarningFilled className="w-4 h-4 mr-2" />,
 }
+
+const contentStyleObj = {
+  info: 'text-info-dark',
+  warning: 'text-warning-dark',
+  error: 'text-error-dark',
+  success: 'text-success-dark',
+}
 function Alert({
   type = 'success',
   icon,
@@ -45,12 +52,7 @@ function Alert({
       }`
   }, [bordered, type])
 
-  const contentStyle = useMemo(() => {
-    if (type === 'info') return 'text-info-dark'
-    if (type === 'warning') return 'text-warning-dark'
-    if (type === 'error') return 'text-error-dark'
-    if (type === 'success') return 'text-success-dark'
-  }, [type])
+  const contentStyle = contentStyleObj[type]
 
   const onCloseClick = e => {
     e.stopPropagation()
@@ -69,6 +71,7 @@ function Alert({
 
   return (
     <div
+      data-testid="alert-wrapper"
       className={`flex items-center justify-between px-4 py-3 ${style} ${width} ${className}`}
     >
       <div className="flex items-center">
@@ -76,7 +79,11 @@ function Alert({
         <span className={`${contentStyle}`}>{content}</span>
       </div>
       {closable && (
-        <span aria-hidden="true" onClick={e => onCloseClick(e)}>
+        <span
+          aria-hidden="true"
+          data-testid="alert-close"
+          onClick={e => onCloseClick(e)}
+        >
           {closeIcon ? (
             closeIconComp
           ) : (
