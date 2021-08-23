@@ -10,29 +10,7 @@ const useClaimNotification = () => {
   const {pathname, search} = useLocation()
   const history = useHistory()
   const isMobile = useIsMobile()
-  const {fromChain, toChain, fromTokenAddress, ...others} =
-    queryString.parse(search)
-  const viewHistory = (
-    <div
-      className="flex items-center"
-      aria-hidden="true"
-      id="viewHistory1"
-      onClick={() => {
-        const pathWithQuery = queryString.stringifyUrl({
-          url: '/history',
-          query: {
-            fromChain,
-            toChain,
-            fromTokenAddress,
-            ...others,
-          },
-        })
-        history.push(pathWithQuery)
-      }}
-    >
-      <Link>{t('claimInHistory')}</Link>
-    </div>
-  )
+  const {fromTokenAddress} = queryString.parse(search)
 
   return function ({symbol, fromChain, toChain, value, key}) {
     if (pathname === '/') return null
@@ -49,7 +27,27 @@ const useClaimNotification = () => {
       duration: 10,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
-      actions: viewHistory,
+      actions: (
+        <div
+          className="flex items-center"
+          aria-hidden="true"
+          id="viewHistory1"
+          onClick={() => {
+            const pathWithQuery = queryString.stringifyUrl({
+              url: '/history',
+              query: {
+                fromChain,
+                toChain,
+                fromTokenAddress,
+              },
+            })
+            history.push(pathWithQuery)
+            Notification.close('claimNotification' + key)
+          }}
+        >
+          <Link>{t('claimInHistory')}</Link>
+        </div>
+      ),
     })
   }
 }
