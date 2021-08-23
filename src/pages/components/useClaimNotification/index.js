@@ -44,7 +44,7 @@ const useClaimNotification = () => {
         fromChain: ChainConfig[fromChain].shortName,
         toChain: ChainConfig[toChain].shortName,
       }),
-      duration: 0,
+      duration: 10000,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
       actions: (
