@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
+import {usePrevious} from 'react-use'
 
 import {useFromToken, useToToken} from '../../hooks/useTokenList'
 import {useAccountStatus, useWallet} from '../../hooks/useWallet'
@@ -38,11 +39,14 @@ function Shuttle() {
     error: fromChainError,
     chainId: fromChainId,
   } = useWallet(fromChain)
+  const prevFromAddress = usePrevious(fromAddress)
+
   const {
     address: toAddress,
     error: toChainError,
     chainId: toChainId,
   } = useWallet(toChain)
+  const prevToAddress = usePrevious(toAddress)
   const isFromChainIdRight = getChainIdRight(
     fromChain,
     fromChainId,
@@ -187,6 +191,22 @@ function Shuttle() {
       setConfirmModalShow(false)
     }
   }, [fromAccountType, toAccountType])
+
+  useEffect(() => {
+    if (prevFromAddress && fromAddress && prevFromAddress !== fromAddress) {
+      setTokenListShow(false)
+      setConfirmModalShow(false)
+      setClaimModalShow(false)
+    }
+  }, [prevFromAddress, fromAddress])
+
+  useEffect(() => {
+    if (prevToAddress && toAddress && prevToAddress !== toAddress) {
+      setTokenListShow(false)
+      setConfirmModalShow(false)
+      setClaimModalShow(false)
+    }
+  }, [prevToAddress, toAddress])
 
   if (!fromChain) return null
   return (

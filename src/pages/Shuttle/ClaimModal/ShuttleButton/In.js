@@ -96,25 +96,29 @@ function ShuttleInButton({
           value: convertDecimal(value, 'multiply', decimals),
         },
       ]
-      let gas = await drContract.estimateGas.deposit(
-        params[0],
-        params[1],
-        params[2],
-      )
-      drContract
-        .deposit(params[0], params[1], {
-          ...params[2],
-          gasLimit: calculateGasMargin(gas),
-        })
-        .then(data => {
-          unshiftTx(getShuttleStatusData(data?.hash))
-          fetchShuttleData(data?.hash)
-          setTxHash(data?.hash)
-          setSendStatus(SendStatus.success)
-        })
-        .catch(() => {
-          setSendStatus(SendStatus.error)
-        })
+      try {
+        let gas = await drContract.estimateGas.deposit(
+          params[0],
+          params[1],
+          params[2],
+        )
+        drContract
+          .deposit(params[0], params[1], {
+            ...params[2],
+            gasLimit: calculateGasMargin(gas),
+          })
+          .then(data => {
+            unshiftTx(getShuttleStatusData(data?.hash))
+            fetchShuttleData(data?.hash)
+            setTxHash(data?.hash)
+            setSendStatus(SendStatus.success)
+          })
+          .catch(() => {
+            setSendStatus(SendStatus.error)
+          })
+      } catch (error) {
+        setSendStatus(SendStatus.error)
+      }
     } else {
       if (!isCfxChain) {
         let params = [
@@ -126,27 +130,31 @@ function ShuttleInButton({
             value: BigNumber.from(0),
           },
         ]
-        let gasDt = await drContract.estimateGas.depositToken(
-          params[0],
-          params[1],
-          params[2],
-          params[3],
-          params[4],
-        )
-        drContract
-          .depositToken(params[0], params[1], params[2], params[3], {
-            ...params[4],
-            gasLimit: calculateGasMargin(gasDt),
-          })
-          .then(data => {
-            unshiftTx(getShuttleStatusData(data?.hash))
-            fetchShuttleData(data?.hash)
-            setTxHash(data?.hash)
-            setSendStatus(SendStatus.success)
-          })
-          .catch(() => {
-            setSendStatus(SendStatus.error)
-          })
+        try {
+          let gasDt = await drContract.estimateGas.depositToken(
+            params[0],
+            params[1],
+            params[2],
+            params[3],
+            params[4],
+          )
+          drContract
+            .depositToken(params[0], params[1], params[2], params[3], {
+              ...params[4],
+              gasLimit: calculateGasMargin(gasDt),
+            })
+            .then(data => {
+              unshiftTx(getShuttleStatusData(data?.hash))
+              fetchShuttleData(data?.hash)
+              setTxHash(data?.hash)
+              setSendStatus(SendStatus.success)
+            })
+            .catch(() => {
+              setSendStatus(SendStatus.error)
+            })
+        } catch (error) {
+          setSendStatus(SendStatus.error)
+        }
       } else {
         const amountVal = convertDecimal(value, 'multiply', decimals)
         try {
@@ -154,13 +162,19 @@ function ShuttleInButton({
             shuttleAddress,
             amountVal,
           )
-          const data = await tokenContract.transfer(shuttleAddress, amountVal, {
-            gasLimit: calculateGasMargin(gasData),
-          })
-          unshiftTx(getShuttleStatusData(data?.hash))
-          fetchShuttleData(data?.hash)
-          setTxHash(data?.hash)
-          setSendStatus(SendStatus.success)
+          tokenContract
+            .transfer(shuttleAddress, amountVal, {
+              gasLimit: calculateGasMargin(gasData),
+            })
+            .then(data => {
+              unshiftTx(getShuttleStatusData(data?.hash))
+              fetchShuttleData(data?.hash)
+              setTxHash(data?.hash)
+              setSendStatus(SendStatus.success)
+            })
+            .catch(() => {
+              setSendStatus(SendStatus.error)
+            })
         } catch {
           setSendStatus(SendStatus.error)
         }

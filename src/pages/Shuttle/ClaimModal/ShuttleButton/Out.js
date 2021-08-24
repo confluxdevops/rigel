@@ -117,7 +117,7 @@ function ShuttleOutButton({
               from: fromAddress,
               value: amountVal,
             })
-          const txHash = await drCfxContract
+          drCfxContract
             .deposit(toAddress, ZeroAddrHex)
             .sendTransaction({
               from: fromAddress,
@@ -128,10 +128,15 @@ function ShuttleOutButton({
                 0.5,
               ),
             })
-          unshiftTx(getShuttleStatusData(txHash))
-          fetchShuttleData(txHash)
-          setTxHash(txHash)
-          setSendStatus(SendStatus.success)
+            .then(txHash => {
+              unshiftTx(getShuttleStatusData(txHash))
+              fetchShuttleData(txHash)
+              setTxHash(txHash)
+              setSendStatus(SendStatus.success)
+            })
+            .catch(() => {
+              setSendStatus(SendStatus.error)
+            })
         } catch {
           setSendStatus(SendStatus.error)
         }
@@ -142,7 +147,7 @@ function ShuttleOutButton({
             .estimateGasAndCollateral({
               from: fromAddress,
             })
-          const txHash = await drCfxContract
+          drCfxContract
             .depositToken(ctoken, toAddress, ZeroAddrHex, amountVal)
             .sendTransaction({
               from: fromAddress,
@@ -152,10 +157,15 @@ function ShuttleOutButton({
                 0.5,
               ),
             })
-          unshiftTx(getShuttleStatusData(txHash))
-          fetchShuttleData(txHash)
-          setTxHash(txHash)
-          setSendStatus(SendStatus.success)
+            .then(txHash => {
+              unshiftTx(getShuttleStatusData(txHash))
+              fetchShuttleData(txHash)
+              setTxHash(txHash)
+              setSendStatus(SendStatus.success)
+            })
+            .catch(() => {
+              setSendStatus(SendStatus.error)
+            })
         } catch {
           setSendStatus(SendStatus.error)
         }
@@ -173,25 +183,31 @@ function ShuttleOutButton({
           from: fromAddress,
           to: ctoken,
         })
-        const data = await tokenBaseContract['burn'](
+        tokenBaseContract['burn'](
           fromAddress,
           amountVal,
           0,
           outAddress,
           ZeroAddrHex,
-        ).sendTransaction({
-          from: fromAddress,
-          to: ctoken,
-          gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
-          storageLimit: calculateGasMargin(
-            estimateData?.storageCollateralized,
-            0.5,
-          ),
-        })
-        unshiftTx(getShuttleStatusData(data))
-        fetchShuttleData(data)
-        setTxHash(data)
-        setSendStatus(SendStatus.success)
+        )
+          .sendTransaction({
+            from: fromAddress,
+            to: ctoken,
+            gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+            storageLimit: calculateGasMargin(
+              estimateData?.storageCollateralized,
+              0.5,
+            ),
+          })
+          .then(data => {
+            unshiftTx(getShuttleStatusData(data))
+            fetchShuttleData(data)
+            setTxHash(data)
+            setSendStatus(SendStatus.success)
+          })
+          .catch(() => {
+            setSendStatus(SendStatus.error)
+          })
       } catch {
         setSendStatus(SendStatus.error)
       }
