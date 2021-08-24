@@ -221,14 +221,13 @@ export function useContractState(tokenAddress, method, params, interval) {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    const getContractData = params => {
-      contract?.[method](...params)
-        .then(res => {
-          setData(res)
-        })
-        .catch(() => {
-          setData(null)
-        })
+    const getContractData = async params => {
+      try {
+        const res = await contract?.[method](...params)
+        setData(res)
+      } catch (error) {
+        setData(null)
+      }
     }
 
     if (interval) {
