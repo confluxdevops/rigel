@@ -1,4 +1,4 @@
-import {useTranslation} from 'react-i18next'
+import {useTranslation, Trans} from 'react-i18next'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
 import HistoryItem from './HistoryItem'
@@ -59,7 +59,9 @@ function History() {
         {historyData.length === 0 && (
           <div className="mt-20 flex flex-col items-center">
             <NoPending className="w-40 h-24 mb-4" />
-            <span className="text-xs text-gray-40">{t('noRecords')}</span>
+            <span className="text-xs text-gray-40 text-center">
+              <Trans i18nKey="noRecords" />
+            </span>
           </div>
         )}
         {historyData.map((item, index) => (
