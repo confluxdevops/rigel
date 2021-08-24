@@ -202,18 +202,9 @@ function ShuttleOutButton({
     return null
   }
   return (
-    <>
-      {
-        <Button
-          onClick={onSubmit}
-          disabled={disabled}
-          size="small"
-          id="sendBtn"
-        >
-          {t('send')}
-        </Button>
-      }
-    </>
+    <Button onClick={onSubmit} disabled={disabled} size="small" id="sendBtn">
+      {t('send')}
+    </Button>
   )
 }
 
