@@ -77,6 +77,7 @@ function ShuttleOutButton({
       toToken,
       tx_type: type,
       shuttleAddress: shuttleAddress,
+      cfxAddress: fromAddress,
     }
     return data
   }

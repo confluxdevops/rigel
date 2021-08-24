@@ -155,6 +155,7 @@ function Out({
       tx_type: type,
       shuttleAddress: shuttleAddress,
       fee,
+      cfxAddress: fromAddress,
     }
     return data
   }

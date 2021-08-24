@@ -9,15 +9,12 @@ import {
   ProxyUrlPrefix,
 } from '../constants'
 import {KeyOfCfx, KeyOfBtc} from '../constants/chainConfig'
-import {
-  requestUserOperationList,
-  requestUserOperationByHash,
-} from '../utils/api'
+import {requestUserOperationList} from '../utils/api'
 import {useTxState} from '../state/transaction'
 import {useShuttleState} from '../state'
 import {useActiveWeb3React} from './useWeb3Network'
 import {useAllTokenList, mapToken} from '../hooks/useTokenList'
-import {removeTxs, appendTxs, updateTx} from '../utils/index'
+import {appendTxs, updateTx} from '../utils/index'
 import {
   useTransactionNotification,
   useClaimNotification,
@@ -77,104 +74,65 @@ export const useUpdateTxs = () => {
       }
 
       // when tx type is common transacton
-      let proArr = []
       const commonTxs = transArr.filter(
         item => item.tx_type === TypeTransaction.transaction,
       )
-      const hashArr = []
-      commonTxs
-        .filter(
-          item =>
-            item.status === ShuttleStatus.success ||
-            item.status === ShuttleStatus.error,
-        )
-        .map(item => {
-          hashArr.push(item?.hash)
-        })
-      removeTxs(trans, hashArr)
       const pendingCommonTxs = commonTxs.filter(
         item =>
           item.status === ShuttleStatus.pending ||
           item.status === ShuttleStatus.waiting,
       )
-      const transWillRemove = [] //cfx-out btc-in
-      pendingCommonTxs.forEach(item => {
-        const {hash, in_or_out: type, fromChain, toToken} = item
-        const {origin, to_chain} = toToken
-        if (fromChain === KeyOfBtc && type === 'in') {
-          transWillRemove.push(item?.hash)
-        } else {
-          proArr.push(
-            requestUserOperationByHash(
-              ProxyUrlPrefix.shuttleflow,
-              hash,
-              type,
-              origin,
-              to_chain,
-            ),
-          )
-        }
-      })
-      removeTxs(trans, transWillRemove)
-      Promise.all(proArr).then(response => {
-        let hashArr = []
-        response.forEach((item, index) => {
-          if (item) {
-            hashArr.push(pendingCommonTxs[index]?.hash)
+      requestUserOperationList(
+        ProxyUrlPrefix.shuttleflow,
+        null,
+        cfxAddress,
+        Object.values(StatusOperation),
+        null,
+        null,
+        10000,
+      )
+        .then(list => {
+          if (list) {
+            const newList = list.map(item =>
+              mapData(item, tokenList, cfxAddress),
+            )
+            const mappedData = _mapListToMap(newList)
+            pendingCommonTxs.forEach((item, index) => {
+              const {hash, amount, fromChain, toChain, fromToken, status} = item
+              const {display_symbol} = fromToken
+              const apiData = mappedData.get(hash)
+              const {status: newStatus} = apiData || {}
+              if (newStatus === ShuttleStatus.success) {
+                //Success Notification
+                txNotificationShow({
+                  symbol: display_symbol,
+                  fromChain,
+                  toChain,
+                  value: amount,
+                })
+              }
+              if (
+                toChain !== KeyOfBtc &&
+                status === ShuttleStatus.pending &&
+                newStatus === ShuttleStatus.waiting &&
+                !txClaimModalShown
+              ) {
+                //Claim Notification
+                claimNotificationShow({
+                  key: index,
+                  symbol: display_symbol,
+                  fromChain,
+                  toChain,
+                  value: amount,
+                  hash,
+                })
+              }
+            })
+            appendTxs(trans, newList)
+            setTransactions(trans)
           }
         })
-        removeTxs(trans, hashArr)
-        requestUserOperationList(
-          ProxyUrlPrefix.shuttleflow,
-          null,
-          cfxAddress,
-          Object.values(StatusOperation),
-          null,
-          null,
-          10000,
-        )
-          .then(list => {
-            if (list) {
-              const newList = list.map(item => mapData(item, tokenList))
-              const mappedData = _mapListToMap(newList)
-              pendingCommonTxs.forEach((item, index) => {
-                const {hash, amount, fromChain, toChain, fromToken, status} =
-                  item
-                const {display_symbol} = fromToken
-                const apiData = mappedData.get(hash)
-                const {status: newStatus} = apiData || {}
-                if (newStatus === ShuttleStatus.success) {
-                  //Success Notification
-                  txNotificationShow({
-                    symbol: display_symbol,
-                    fromChain,
-                    toChain,
-                    value: amount,
-                  })
-                }
-                if (
-                  toChain !== KeyOfBtc &&
-                  status === ShuttleStatus.pending &&
-                  newStatus === ShuttleStatus.waiting &&
-                  !txClaimModalShown
-                ) {
-                  //Claim Notification
-                  claimNotificationShow({
-                    key: index,
-                    symbol: display_symbol,
-                    fromChain,
-                    toChain,
-                    value: amount,
-                    hash,
-                  })
-                }
-              })
-              appendTxs(trans, newList)
-            }
-            setTransactions(trans)
-          })
-          .finally(() => {})
-      })
+        .finally(() => {})
     }
     if (cfxAddress) {
       update()
@@ -202,7 +160,7 @@ export const useUpdateTxs = () => {
  * Get tokenInfo from tokenList by token address
  * Merge api data to local data
  */
-export function mapData(item = {}, tokenList) {
+export function mapData(item = {}, tokenList, cfxAddress) {
   const data = {}
   if (!item) return {}
   const {
@@ -274,6 +232,7 @@ export function mapData(item = {}, tokenList) {
   data.amount = convertDecimal(amount, 'divide', data.decimals)
   data.tx_to = tx_to
   data.tx_input = tx_input
+  data.cfxAddress = cfxAddress
   return data
 }
 
@@ -287,8 +246,11 @@ export const useTxData = (
   useEffect(() => {
     if (address) {
       const transArr = Object.values(transactions)
-      let filteredTxs = transArr.filter(
+      const filteredTypeTxs = transArr.filter(
         tx => transactionTypes.indexOf(tx?.tx_type) != -1,
+      )
+      const filteredTxs = filteredTypeTxs.filter(
+        tx => tx?.cfxAddress === address,
       )
       let newArr = []
       multipleOrderedStatus.forEach(status => {
