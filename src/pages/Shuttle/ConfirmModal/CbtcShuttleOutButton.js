@@ -94,24 +94,30 @@ function CbtcShuttleOutButton({
         from: fromAddress,
         to: ctoken,
       })
-      const data = await tokenBaseContract['burn'](
+      tokenBaseContract['burn'](
         fromAddress,
         amountVal,
         0,
         outAddress,
         ZeroAddrHex,
-      ).sendTransaction({
-        from: fromAddress,
-        to: ctoken,
-        gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
-        storageLimit: calculateGasMargin(
-          estimateData?.storageCollateralized,
-          0.5,
-        ),
-      })
-      unshiftTx(getShuttleStatusData(data))
-      setTxHash(data)
-      setTxModalType(TxReceiptModalType.success)
+      )
+        .sendTransaction({
+          from: fromAddress,
+          to: ctoken,
+          gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+          storageLimit: calculateGasMargin(
+            estimateData?.storageCollateralized,
+            0.5,
+          ),
+        })
+        .then(data => {
+          unshiftTx(getShuttleStatusData(data))
+          setTxHash(data)
+          setTxModalType(TxReceiptModalType.success)
+        })
+        .catch(() => {
+          setTxModalType(TxReceiptModalType.error)
+        })
     } catch {
       setTxModalType(TxReceiptModalType.error)
     }
