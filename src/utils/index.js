@@ -119,9 +119,7 @@ export function removeTxs(trans, hashs) {
 export function appendTxs(trans, txs) {
   txs.forEach(tx => {
     const hash = tx?.hash
-    if (!trans.has(hash)) {
-      trans.set(hash, tx)
-    }
+    trans.set(hash, tx)
   })
 }
 

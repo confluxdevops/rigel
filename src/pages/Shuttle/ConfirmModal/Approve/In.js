@@ -127,6 +127,7 @@ function In({
       toToken,
       tx_type: type,
       fee: '0',
+      cfxAddress: toAddress,
     }
     return data
   }
