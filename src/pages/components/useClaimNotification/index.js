@@ -42,6 +42,7 @@ const useClaimNotification = () => {
               },
             })
             history.push(pathWithQuery)
+            setTimeout(() => Notification.close('claimNotification' + key), 0)
           }}
         >
           <Link>{t('claimInHistory')}</Link>
