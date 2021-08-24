@@ -16,7 +16,7 @@ import {
   TypeTransaction,
 } from '../../../constants'
 import {useShuttleState} from '../../../state'
-import {getExponent} from '../../../utils'
+import {getExponent, calculateGasMargin} from '../../../utils'
 import {useTxState} from '../../../state/transaction'
 import {TransactionReceiptionModal} from '../../components'
 
@@ -84,6 +84,16 @@ function CbtcShuttleOutButton({
     setTxModalShow(true)
     const amountVal = Big(value).mul(getExponent(18))
     try {
+      const estimateData = await tokenBaseContract['burn'](
+        fromAddress,
+        amountVal,
+        0,
+        outAddress,
+        ZeroAddrHex,
+      ).estimateGasAndCollateral({
+        from: fromAddress,
+        to: ctoken,
+      })
       const data = await tokenBaseContract['burn'](
         fromAddress,
         amountVal,
@@ -93,6 +103,11 @@ function CbtcShuttleOutButton({
       ).sendTransaction({
         from: fromAddress,
         to: ctoken,
+        gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+        storageLimit: calculateGasMargin(
+          estimateData?.storageCollateralized,
+          0.5,
+        ),
       })
       unshiftTx(getShuttleStatusData(data))
       setTxHash(data)
