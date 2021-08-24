@@ -150,7 +150,13 @@ function ShuttleInButton({
       } else {
         const amountVal = convertDecimal(value, 'multiply', decimals)
         try {
-          const data = await tokenContract.transfer(shuttleAddress, amountVal)
+          const gasData = await tokenContract.estimateGas.transfer(
+            shuttleAddress,
+            amountVal,
+          )
+          const data = await tokenContract.transfer(shuttleAddress, amountVal, {
+            gasLimit: calculateGasMargin(gasData),
+          })
           unshiftTx(getShuttleStatusData(data?.hash))
           fetchShuttleData(data?.hash)
           setTxHash(data?.hash)

@@ -163,6 +163,16 @@ function ShuttleOutButton({
     } else {
       const amountVal = Big(value).mul(getExponent(18))
       try {
+        const estimateData = await tokenBaseContract['burn'](
+          fromAddress,
+          amountVal,
+          0,
+          outAddress,
+          ZeroAddrHex,
+        ).estimateGasAndCollateral({
+          from: fromAddress,
+          to: ctoken,
+        })
         const data = await tokenBaseContract['burn'](
           fromAddress,
           amountVal,
@@ -172,6 +182,11 @@ function ShuttleOutButton({
         ).sendTransaction({
           from: fromAddress,
           to: ctoken,
+          gas: calculateGasMargin(estimateData?.gasLimit, 0.5),
+          storageLimit: calculateGasMargin(
+            estimateData?.storageCollateralized,
+            0.5,
+          ),
         })
         unshiftTx(getShuttleStatusData(data))
         fetchShuttleData(data)
