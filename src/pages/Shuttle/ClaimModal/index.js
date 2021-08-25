@@ -18,7 +18,8 @@ function ClaimModal({
   onClose,
   ...props
 }) {
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
+  const {language} = i18n
   const isMobile = useIsMobile()
   const [sendStatus, setSendStatus] = useState('')
   const [claimStatus, setClaimStatus] = useState('')
@@ -71,8 +72,16 @@ function ClaimModal({
         setClaimStatus={setClaimStatus}
         {...props}
       />
-      {/* TODO: add url */}
-      <a href="www.baidu.com" target="_blank" className="flex items-center">
+      <a
+        href={
+          language.indexOf('zh') !== -1
+            ? 'https://forum.conflux.fun/t/topic/9895'
+            : 'https://forum.conflux.fun/t/why-do-you-need-to-claim-your-assets/9896'
+        }
+        target="_blank"
+        className="flex items-center"
+        rel="noreferrer"
+      >
         <span className="text-gray-40 text-xs">
           {t('claimModal.claimTips')}
         </span>
