@@ -54,9 +54,9 @@ function Header() {
           <a
             className="flex items-center justify-center h-8 px-4 bg-gray-20 text-gray-100 rounded-full mr-6"
             href={
-              language.indexOf('en') !== -1
-                ? 'https://forum.conflux.fun/t/cross-chain-tutorial-for-shuttleflow-v1-3-0/9214'
-                : 'https://forum.conflux.fun/t/shuttleflow-v1-3-0/9212'
+              language.indexOf('zh') !== -1
+                ? 'https://forum.conflux.fun/t/shuttleflow-v1-3-0/9212'
+                : 'https://forum.conflux.fun/t/cross-chain-tutorial-for-shuttleflow-v1-3-0/9214'
             }
             target="_blank"
             rel="noreferrer"
