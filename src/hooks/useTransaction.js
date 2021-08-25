@@ -255,15 +255,13 @@ export const useTxData = (
       let newArr = []
       multipleOrderedStatus.forEach(status => {
         let groupedArr = []
-        if (status === ShuttleStatus.success) {
-          groupedArr = filteredTxs.filter(tx => tx?.status === status)
-          if (groupedArr.length > 100) groupedArr = groupedArr.slice(0, 100) //first 100 element
-        } else {
-          groupedArr = filteredTxs.filter(tx => tx?.status === status)
-        }
+        groupedArr = filteredTxs.filter(tx => tx?.status === status)
         groupedArr.sort(function (a, b) {
           return b.timestamp - a.timestamp
         })
+        if (status === ShuttleStatus.success && groupedArr.length > 100) {
+          groupedArr = groupedArr.slice(0, 100) //first 100 element
+        }
         newArr = newArr.concat(groupedArr)
       })
       setArr(newArr)
