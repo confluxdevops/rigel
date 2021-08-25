@@ -11,8 +11,8 @@ import {TypeTransaction} from '../../constants'
 function History() {
   const historyData = useTxData(
     [
-      ShuttleStatus.pending,
       ShuttleStatus.waiting,
+      ShuttleStatus.pending,
       ShuttleStatus.success,
       ShuttleStatus.error,
     ],
