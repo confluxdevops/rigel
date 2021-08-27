@@ -55,7 +55,7 @@ function History() {
         content={t('cfxAddressRecord')}
         width="w-full"
       />
-      <div className="flex flex-col w-full overflow-y-auto">
+      <div className="flex flex-1 flex-col w-full overflow-y-auto">
         {historyData.length === 0 && (
           <div className="mt-20 flex flex-col items-center">
             <NoPending className="w-40 h-24 mb-4" />
