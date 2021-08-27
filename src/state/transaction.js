@@ -24,12 +24,34 @@ export const createStore = () =>
       (set, get) => ({
         transactions: {},
         setTransactions: transactions => {
+          console.warn(
+            'setTransactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTransactions-first', get().transactions)
           set({transactions: fromEntries(transactions)})
+          console.warn(
+            'setTransactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTransactions-last', get().transactions)
         },
         unshiftTx: tx => {
+          console.warn('unshiftTx-tx', tx)
+          console.warn('unshiftTx-tx', tx.hash)
           let trans = get().transactions
           trans[tx.hash] = mergeData(tx)
+          console.warn(
+            'unshiftTx-Transactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('unshiftTx-Transactions-first', get().transactions)
           set({transactions: trans})
+          console.warn(
+            'unshiftTx-Transactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('unshiftTx-Transactions-last', get().transactions)
         },
         claimedTxs: {},
         setClaimedTxs: claimedTxs => {
