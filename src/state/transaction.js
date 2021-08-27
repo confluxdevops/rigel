@@ -55,12 +55,33 @@ export const createStore = () =>
         },
         claimedTxs: {},
         setClaimedTxs: claimedTxs => {
+          console.warn(
+            'setClaimedTxs-Transactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setClaimedTxs-Transactions-first', get().transactions)
           set({claimedTxs: fromEntries(claimedTxs)})
+          console.warn(
+            'setClaimedTxs-Transactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setClaimedTxs-Transactions-last', get().transactions)
         },
         setTx: (hash, value) => {
+          console.warn('setTx-hash', hash)
+          console.warn(
+            'setTx-Transactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTx-Transactions-first', get().transactions)
           let trans = get().claimedTxs
           trans[hash] = value
           set({claimedTxs: trans})
+          console.warn(
+            'setTx-Transactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTx-Transactions-last', get().transactions)
         },
       }),
       {
