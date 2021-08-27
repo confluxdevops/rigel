@@ -124,5 +124,10 @@ export function appendTxs(trans, txs) {
 }
 
 export function updateTx(trans, hash, data) {
+  console.warn('updateTx-hash', hash)
+  console.warn('updateTx-Transactions-first-length', trans.size)
+  console.warn('updateTx-Transactions-first', trans)
   trans.set(hash, {...trans.get(hash), ...data})
+  console.warn('updateTx-Transactions-last-length', trans.size)
+  console.warn('updateTx-Transactions-last', trans)
 }
