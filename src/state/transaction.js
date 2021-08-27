@@ -38,7 +38,7 @@ export const createStore = () =>
         },
         unshiftTx: tx => {
           console.warn('unshiftTx-tx', tx)
-          console.warn('unshiftTx-tx', tx.hash)
+          console.warn('unshiftTx-tx-hash', tx.hash)
           let trans = get().transactions
           trans[tx.hash] = mergeData(tx)
           console.warn(
