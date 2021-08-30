@@ -52,16 +52,15 @@ export const ContractConfig = {
     wallet: KeyOfPortal,
     abi: DepositRelayer_CFX_ABI,
     address: {
-      //TODO: update the depositRelayerCfx address of prod env
       [KeyOfEth]: IS_DEV
         ? 'cfxtest:accfj95y44gfbcsa8nfk98u2dcydt5j0825cevrxv2'
-        : '',
+        : 'cfx:acesn0rpwutkb0ex9cghm91rs4dj60szk6ayzcm9aw',
       [KeyOfBsc]: IS_DEV
         ? 'cfxtest:acau4v7hac8r01h659u2m525dg5w0391pjb406f0m2'
-        : '',
+        : 'cfx:acbsxck3mt6tdcxpbnxunx3wy29fy5k5m6d5cnmpy4',
       [KeyOfOec]: IS_DEV
         ? 'cfxtest:acd2cgm2f7yph27ycsyes1zg45yysccfna5dsm18jc'
-        : '',
+        : 'cfx:acg8v55scuua60xcfheggkr5cry179kx0ef6gjcs64',
     },
   },
   [ContractType.custodianImpl]: {
@@ -97,6 +96,7 @@ export const ContractConfig = {
         : 'cfx:acf0xp9vrv55gkft3tjntkjagvwme19vcu2wsj39fz',
     },
   },
+  //actually the tokenSponsor contract is no longer usefull after claim feature,but keep it for a short time
   [ContractType.tokenSponsor]: {
     wallet: KeyOfPortal,
     abi: TokenSponsor_ABI,
@@ -115,6 +115,7 @@ export const ContractConfig = {
         : 'cfx:acc3zs32wsn06b5betf8g1g1phb7cg24xpbfjnfg7j',
     },
   },
+  //actually the tokenSponsor contract is no longer usefull after claim feature,but keep it for a short time
   [ContractType.tokenSponsorReverse]: {
     wallet: KeyOfPortal,
     abi: TokenSponsorReverse_ABI,
