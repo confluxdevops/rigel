@@ -65,7 +65,25 @@ export const createStore = () =>
             Object.values(get().claimedTxs).length,
           )
           console.info('setClaimedTxs-first', get().claimedTxs)
+          try {
+            const claimedData = JSON.parse(window.localStorage.transactions)
+            console.info(
+              'setClaimedTxs-localStorage-first-length',
+              Object.values(claimedData?.state?.claimedTxs).length,
+            )
+          } catch (error) {
+            console.error(error)
+          }
           set({claimedTxs: fromEntries(claimedTxs)})
+          try {
+            const claimedData = JSON.parse(window.localStorage.transactions)
+            console.info(
+              'setClaimedTxs-localStorage-last-length',
+              Object.values(claimedData?.state?.claimedTxs).length,
+            )
+          } catch (error) {
+            console.error(error)
+          }
           console.info(
             'setClaimedTxs-last-length',
             Object.values(get().claimedTxs).length,

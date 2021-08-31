@@ -10,6 +10,12 @@ export const useUpdateClaimedTxs = () => {
   const {claimedTxs, setClaimedTxs} = useTxState()
   const {library} = useActiveWeb3React()
   window._claimedTxs = new Map(Object.entries(claimedTxs))
+  try {
+    const claimedData = JSON.parse(window.localStorage.transactions)
+    console.info('localStorage claimedTxs init', claimedData?.state?.claimedTxs)
+  } catch (error) {
+    console.error(error)
+  }
   console.info('window._claimedTxs outside', window._claimedTxs?.size)
   useEffect(() => {
     const update = async () => {
