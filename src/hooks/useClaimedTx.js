@@ -12,7 +12,10 @@ export const useUpdateClaimedTxs = () => {
   window._claimedTxs = new Map(Object.entries(claimedTxs))
   try {
     const claimedData = JSON.parse(window.localStorage.transactions)
-    console.info('localStorage claimedTxs init', claimedData?.state?.claimedTxs)
+    console.info(
+      'localStorage claimedTxs init',
+      Object.values(claimedData?.state?.claimedTxs).length,
+    )
   } catch (error) {
     console.error(error)
   }
