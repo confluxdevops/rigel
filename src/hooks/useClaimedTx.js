@@ -10,9 +10,11 @@ export const useUpdateClaimedTxs = () => {
   const {claimedTxs, setClaimedTxs} = useTxState()
   const {library} = useActiveWeb3React()
   window._claimedTxs = new Map(Object.entries(claimedTxs))
+  console.info('window._claimedTxs outside', window._claimedTxs?.size)
   useEffect(() => {
     const update = async () => {
       let trans = new Map(window._claimedTxs)
+      console.info('window._claimedTxs inside', trans?.size)
       let transArr = [...trans.values()]
       const submittedTrans = transArr.filter(
         item => item.status === TxStatus.submitted,
