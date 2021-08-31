@@ -29,7 +29,25 @@ export const createStore = () =>
             Object.values(get().transactions).length,
           )
           console.warn('setTransactions-first', get().transactions)
+          try {
+            const txData = JSON.parse(window.localStorage.transactions)
+            console.warn(
+              'setTransactions-localStorage-first-length ',
+              Object.values(txData?.state?.transactions).length,
+            )
+          } catch (error) {
+            console.error(error)
+          }
           set({transactions: fromEntries(transactions)})
+          try {
+            const txData = JSON.parse(window.localStorage.transactions)
+            console.warn(
+              'setTransactions-localStorage-last-length ',
+              Object.values(txData?.state?.transactions).length,
+            )
+          } catch (error) {
+            console.error(error)
+          }
           console.warn(
             'setTransactions-last-length',
             Object.values(get().transactions).length,
