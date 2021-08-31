@@ -24,21 +24,64 @@ export const createStore = () =>
       (set, get) => ({
         transactions: {},
         setTransactions: transactions => {
+          console.warn(
+            'setTransactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTransactions-first', get().transactions)
           set({transactions: fromEntries(transactions)})
+          console.warn(
+            'setTransactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTransactions-last', get().transactions)
         },
         unshiftTx: tx => {
+          console.warn('unshiftTx-tx', tx)
+          console.warn('unshiftTx-tx-hash', tx.hash)
           let trans = get().transactions
           trans[tx.hash] = mergeData(tx)
+          console.warn(
+            'unshiftTx-Transactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('unshiftTx-Transactions-first', get().transactions)
           set({transactions: trans})
+          console.warn(
+            'unshiftTx-Transactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('unshiftTx-Transactions-last', get().transactions)
         },
         claimedTxs: {},
         setClaimedTxs: claimedTxs => {
+          console.warn(
+            'setClaimedTxs-Transactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setClaimedTxs-Transactions-first', get().transactions)
           set({claimedTxs: fromEntries(claimedTxs)})
+          console.warn(
+            'setClaimedTxs-Transactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setClaimedTxs-Transactions-last', get().transactions)
         },
         setTx: (hash, value) => {
+          console.warn('setTx-hash', hash)
+          console.warn(
+            'setTx-Transactions-first-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTx-Transactions-first', get().transactions)
           let trans = get().claimedTxs
           trans[hash] = value
           set({claimedTxs: trans})
+          console.warn(
+            'setTx-Transactions-last-length',
+            Object.values(get().transactions).length,
+          )
+          console.warn('setTx-Transactions-last', get().transactions)
         },
       }),
       {

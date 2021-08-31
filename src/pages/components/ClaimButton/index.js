@@ -40,7 +40,7 @@ function ShuttleClaimButton({
   const [txModalShow, setTxModalShow] = useState(false)
   const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
   const [txHash, setTxHash] = useState('')
-  const [claimShown, setClaimShown] = useState(true)
+  const [claimShown, setClaimShown] = useState(false)
   const [claimAddressModalShown, setClaimAddressModalShown] = useState(false)
 
   useEffect(() => {
