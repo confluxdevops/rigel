@@ -39,7 +39,7 @@ function Button({
   const colorStyle = useMemo(() => {
     if (disabled) return ''
     if (variant === 'text') {
-      if (danger) return 'text error bg-transparent hover:bg-error-10'
+      if (danger) return 'text-error bg-transparent hover:bg-error-10'
       if (color === 'primary')
         return 'text-gray-80 bg-transparent hover:bg-gray-10'
     } else if (variant === 'outlined') {
