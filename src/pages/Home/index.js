@@ -40,7 +40,8 @@ function Home() {
   const {i18n, t} = useTranslation()
   const {language} = i18n
   const onOpenApp = () => {
-    window.open('/shuttle')
+    // window.open('/shuttle')
+    window.open('/maintenance')
   }
   const isMobile = useIsMobile()
   const copyright = (
