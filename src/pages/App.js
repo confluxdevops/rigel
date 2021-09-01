@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {Suspense} from 'react'
 import {
   BrowserRouter as Router,
@@ -46,10 +47,12 @@ function App() {
             <Web3ReactManager>
               <Switch>
                 <Route path="/shuttle">
-                  <Shuttle />
+                  {/* <Shuttle /> */}
+                  <Maintenance />
                 </Route>
                 <Route path="/history">
-                  <History />
+                  {/* <History /> */}
+                  <Maintenance />
                 </Route>
                 <Route path="/" exact>
                   <Home />

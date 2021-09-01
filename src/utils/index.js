@@ -124,10 +124,5 @@ export function appendTxs(trans, txs) {
 }
 
 export function updateTx(trans, hash, data) {
-  console.info('updateTx-hash', hash)
-  console.info('updateTx-first-length', trans.size)
-  console.info('updateTx-first', trans)
   trans.set(hash, {...trans.get(hash), ...data})
-  console.info('updateTx-last-length', trans.size)
-  console.info('updateTx-last', trans)
 }

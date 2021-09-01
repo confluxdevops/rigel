@@ -28,15 +28,6 @@ export const useUpdateTxs = () => {
   const tokenList = useAllTokenList()
   const txNotificationShow = useTransactionNotification()
   const claimNotificationShow = useClaimNotification()
-  try {
-    const txData = JSON.parse(window.localStorage.transactions)
-    console.warn(
-      'localStorage transactions init',
-      Object.values(txData?.state?.transactions).length,
-    )
-  } catch (error) {
-    console.error(error)
-  }
   window._transactions = new Map(Object.entries(transactions))
   useEffect(() => {
     const update = () => {
