@@ -161,7 +161,7 @@ export function useNativeTokenBalance(
   address,
   delay = IntervalTime.fetchBalance,
 ) {
-  const [balance, setBalance] = useState(BigNumZero)
+  const [balance, setBalance] = useState(null)
   const {account, library} = useWeb3React()
 
   useEffect(() => {
@@ -170,7 +170,7 @@ export function useNativeTokenBalance(
         library
           .getBalance(address)
           .then(newBalance => {
-            if (!balance.eq(newBalance)) {
+            if (!balance || !balance.eq(newBalance)) {
               setBalance(new Big(newBalance.toString(10)))
             }
           })
@@ -209,11 +209,6 @@ export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useTokenAllowance(tokenAddress, params) {
-  const allowance = useContractState(tokenAddress, 'allowance', params, 2000)
-  return allowance || BigNumZero
-}
-
 /**
  * call some method from contract and get the value
  * @param {*} contract
@@ -226,14 +221,13 @@ export function useContractState(tokenAddress, method, params, interval) {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    const getContractData = params => {
-      contract?.[method](...params)
-        .then(res => {
-          setData(res)
-        })
-        .catch(() => {
-          setData(null)
-        })
+    const getContractData = async params => {
+      try {
+        const res = await contract?.[method](...params)
+        setData(res)
+      } catch (error) {
+        setData(null)
+      }
     }
 
     if (interval) {
@@ -255,12 +249,12 @@ export function useTokenBalance(tokenAddress, params) {
     params,
     IntervalTime.fetchBalance,
   )
-  return balance ? new Big(balance) : BigNumZero
+  return balance ? new Big(balance) : null
 }
 
 export function useBalance(address, tokenAddress) {
-  const tokenBalance = useTokenBalance(tokenAddress, [address]) || BigNumZero
-  const nativeTokenBalance = useNativeTokenBalance(address) || BigNumZero
+  const tokenBalance = useTokenBalance(tokenAddress, [address])
+  const nativeTokenBalance = useNativeTokenBalance(address)
   const isNativeToken = !checkHexAddress(tokenAddress)
   return isNativeToken ? nativeTokenBalance : tokenBalance
 }

@@ -1,7 +1,19 @@
 import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
 
-function CustomLink({
+const sizeStyleObj = {
+  small: 'text-xs',
+  medium: 'text-sm',
+  large: 'text-base',
+}
+
+const iconSizeObj = {
+  small: 'w-3 h-3',
+  medium: 'w-4 h-4',
+  large: 'w-5 h-5',
+}
+
+function Link({
   onClick,
   className = '',
   children,
@@ -23,23 +35,13 @@ function CustomLink({
     return 'text-primary bg-transparent hover:text-primary-dark hover:underline'
   }, [disabled])
 
-  const sizeStyle = useMemo(() => {
-    if (size === 'large') return 'text-base '
-    if (size === 'medium') return 'text-sm'
-    if (size === 'small') return 'text-xs'
-    return ''
-  }, [size])
+  const sizeStyle = sizeStyleObj[size] || ''
+  const iconSize = iconSizeObj[size] || ''
 
   const iconColor = useMemo(() => {
     if (disabled) return 'text-gray-40'
     return 'text-primary hover:text-primary-dark'
   }, [disabled])
-
-  const iconSize = useMemo(() => {
-    if (size === 'large') return 'w-5 h-5'
-    if (size === 'medium') return 'w-4 h-4'
-    if (size === 'small') return 'w-3 h-3'
-  }, [size])
 
   const startIconComp = startIcon
     ? React.cloneElement(startIcon, {
@@ -60,10 +62,9 @@ function CustomLink({
   return (
     <a
       aria-hidden="true"
-      onClick={e => onClick && onClick(e)}
-      disabled={disabled}
+      onClick={e => onClick && !disabled && onClick(e)}
       className={`
-      flex justify-center items-center focus:outline-none rounded ${disabledStyle} ${colorStyle} ${sizeStyle} ${className}`}
+      flex justify-center items-center focus:outline-none rounded cursor-pointer ${disabledStyle} ${colorStyle} ${sizeStyle} ${className}`}
       {...props}
     >
       {startIconComp}
@@ -73,7 +74,7 @@ function CustomLink({
   )
 }
 
-CustomLink.propTypes = {
+Link.propTypes = {
   className: PropTypes.string,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   disabled: PropTypes.bool,
@@ -86,4 +87,4 @@ CustomLink.propTypes = {
   endIcon: PropTypes.node,
 }
 
-export default CustomLink
+export default Link

@@ -1,6 +1,33 @@
 import {useState, useMemo} from 'react'
 import PropTypes from 'prop-types'
 
+const sizeStyleObj = {
+  small: 'h-8',
+  medium: 'h-10',
+  large: 'h-12',
+}
+
+const inputStyleObj = {
+  small: 'text-xs',
+  medium: 'text-sm',
+  large: 'text-base',
+}
+
+const iconSizeObj = {
+  small: 'w-3 h-3',
+  medium: 'w-4 h-4',
+  large: 'w-5 h-5',
+}
+const prefixStyleObj = {
+  small: '-mr-2',
+  medium: '-mr-1.5',
+  large: '-mr-1',
+}
+const suffixStyleObj = {
+  small: '-ml-2',
+  medium: '-ml-1.5',
+  large: '-ml-1',
+}
 function Input({
   prefix,
   suffix,
@@ -22,10 +49,11 @@ function Input({
     return 'bg-gray-0'
   }, [disabled])
 
-  const sizeStyle = useMemo(() => {
-    if (size === 'medium') return 'h-10'
-    if (size === 'large') return 'h-12'
-  }, [size])
+  const sizeStyle = sizeStyleObj[size] || ''
+  const inputStyle = inputStyleObj[size] || ''
+  const iconSize = iconSizeObj[size] || ''
+  const prefixStyle = prefixStyleObj[size] || ''
+  const suffixStyle = suffixStyleObj[size] || ''
 
   const borderStyle = useMemo(() => {
     if (!bordered) return 'border-0'
@@ -42,9 +70,9 @@ function Input({
           <div
             aria-hidden="true"
             onClick={() => setFocused(true)}
-            className="pl-3 -mr-2"
+            className={`pl-3 ${prefixStyle}`}
           >
-            <div className="text-gray-40 w-4 h-4">{prefix}</div>
+            <div className={`text-gray-40 ${iconSize}`}>{prefix}</div>
           </div>
         )}
         <input
@@ -55,16 +83,16 @@ function Input({
             onBlur && onBlur()
           }}
           onChange={e => onChange && onChange(e)}
-          className={`w-full h-full px-3 text-sm text-gray-80 placeholder-gray-40 border-0 rounded p-0 outline-none ${className}`}
+          className={`w-full h-full px-3 text-gray-80 placeholder-gray-40 border-0 rounded p-0 outline-none ${inputStyle} ${className}`}
           {...props}
         />
         {suffix && (
           <div
             aria-hidden="true"
             onClick={() => setFocused(true)}
-            className="pr-3 -ml-2"
+            className={`pr-3 ${suffixStyle}`}
           >
-            <div className="text-gray-40 w-4 h-4">{suffix}</div>
+            <div className={`text-gray-40 ${iconSize}`}>{suffix}</div>
           </div>
         )}
       </div>
@@ -81,7 +109,7 @@ Input.propTypes = {
   containerClassName: PropTypes.string,
   onChange: PropTypes.func,
   width: PropTypes.string,
-  size: PropTypes.oneOf(['medium', 'large']),
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   errorMessage: PropTypes.string,
   prefix: PropTypes.node,
   suffix: PropTypes.node,

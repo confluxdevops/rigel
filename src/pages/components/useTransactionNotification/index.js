@@ -1,4 +1,5 @@
 import queryString from 'query-string'
+import {useTranslation} from 'react-i18next'
 import {useHistory, useLocation} from 'react-router-dom'
 import {
   ChainConfig,
@@ -6,19 +7,28 @@ import {
   KeyOfMetaMask,
 } from '../../../constants/chainConfig'
 import {Notification, Link} from '../../../components'
+import {useIsMobile} from '../../../hooks'
 
 const useTransactionNotification = () => {
-  const location = useLocation()
+  const {t} = useTranslation()
+  const {search, pathname} = useLocation()
   const history = useHistory()
+  const isMobile = useIsMobile()
   const {
     fromChain: pathFromChain,
     toChain: pathToChain,
     fromTokenAddress,
     ...others
-  } = queryString.parse(location.search)
-  return ({symbol, fromChain, toChain, value, isMobile}) =>
+  } = queryString.parse(search)
+  return ({symbol, fromChain, toChain, value}) => {
+    if (pathname === '/') return null
     Notification.open({
-      title: `${value} ${symbol} from ${ChainConfig[fromChain].shortName} to ${ChainConfig[toChain].shortName}`,
+      title: t('notificationDetail', {
+        value,
+        symbol,
+        fromChain: ChainConfig[fromChain].shortName,
+        toChain: ChainConfig[toChain].shortName,
+      }),
       type: 'success',
       content: (
         <div
@@ -36,10 +46,10 @@ const useTransactionNotification = () => {
             history.push(pathWithQuery)
           }}
         >
-          <Link className="!justify-start">View in history</Link>
+          <Link className="!justify-start">{t('viewInHistory')}</Link>
         </div>
       ),
-      duration: 0,
+      duration: 10,
       placement: isMobile ? 'bottomRight' : 'topRight',
       bottom: isMobile ? 0 : 24,
       className: `${
@@ -50,6 +60,7 @@ const useTransactionNotification = () => {
           : ''
       } h-32`,
     })
+  }
 }
 
 export default useTransactionNotification

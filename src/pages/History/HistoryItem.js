@@ -8,7 +8,7 @@ import {SupportedChains, ChainConfig} from '../../constants/chainConfig'
 import {useIsNativeToken} from '../../hooks/useWallet'
 import useAddTokenToMetamask from '../../hooks/useAddTokenToMetamask'
 import {useIsCfxChain} from '../../hooks'
-import {WrapIcon, Toast} from '../../components'
+import {WrapIcon, Toast, Tooltip} from '../../components'
 import {
   BgPlus,
   BgCopy,
@@ -17,8 +17,17 @@ import {
   PendingFilled,
   ArrowUp,
 } from '../../assets/svg'
-import {ShuttleStatus} from '../../constants'
+import {
+  ShuttleStatus,
+  ClaimButtonType,
+  TypeAccountStatus,
+} from '../../constants'
 import Progress from './Progress'
+import {ClaimButton} from '../components'
+import {useActiveWeb3React} from '../../hooks/useWeb3Network'
+import {useWallet, useAccountStatus} from '../../hooks/useWallet'
+import {getChainIdRight} from '../../utils'
+import {AccountStatus} from '../components'
 
 function TokenInfo({toToken, fromChain, toChain}) {
   const {display_symbol, address} = toToken
@@ -27,7 +36,6 @@ function TokenInfo({toToken, fromChain, toChain}) {
   const isToChainCfx = useIsCfxChain(toChain)
   const {t} = useTranslation()
   const [copied, setCopied] = useState(false)
-
   const onAddToken = e => {
     e.stopPropagation()
     addToken()
@@ -40,16 +48,20 @@ function TokenInfo({toToken, fromChain, toChain}) {
         <span className="text-gray-100 font-medium mr-1 flex items-center">
           {display_symbol}
           {!isNativeToken && !isToChainCfx && (
-            <WrapIcon
-              type="circle"
-              className="ml-1 cursor-pointer"
-              onClick={e => onAddToken(e)}
+            <Tooltip
+              content={t('addTokenToMetaMask', {tokenSymbol: display_symbol})}
             >
-              <BgPlus />
-            </WrapIcon>
+              <WrapIcon
+                type="circle"
+                className="ml-1"
+                onClick={e => onAddToken(e)}
+              >
+                <BgPlus />
+              </WrapIcon>
+            </Tooltip>
           )}
           {!isNativeToken && isToChainCfx && (
-            <WrapIcon type="circle" className="ml-1 cursor-pointer relative">
+            <WrapIcon type="circle" className="ml-1 relative">
               <CopyToClipboard text={address} onCopy={() => setCopied(true)}>
                 <BgCopy />
               </CopyToClipboard>
@@ -65,8 +77,8 @@ function TokenInfo({toToken, fromChain, toChain}) {
         </span>
         <span className="text-gray-40 text-xs">
           {t('history.chainDescription', {
-            fromChain: ChainConfig[fromChain].shortName,
-            toChain: ChainConfig[toChain].shortName,
+            fromChain: ChainConfig[fromChain]?.shortName,
+            toChain: ChainConfig[toChain]?.shortName,
           })}
         </span>
       </div>
@@ -129,13 +141,30 @@ Status.propTypes = {
   status: PropTypes.oneOf(Object.keys(ShuttleStatus)),
 }
 function HistoryItem({historyItemData}) {
-  const {toToken, fromChain, toChain, amount, status, toAddress, response} =
-    historyItemData
+  const {
+    toToken,
+    fromChain,
+    toChain,
+    amount,
+    status,
+    toAddress,
+    response,
+    hash,
+  } = historyItemData
 
   const {t} = useTranslation()
+  const {library} = useActiveWeb3React()
+  const {address: accountAddress, error, chainId} = useWallet(toChain)
+  const isChainIdRight = getChainIdRight(toChain, chainId, accountAddress)
+  const {type: accountType} = useAccountStatus(
+    toChain,
+    accountAddress,
+    error,
+    isChainIdRight,
+  )
 
   const [detailShow, setDetailShow] = useState(
-    status === 'pending' ? true : false,
+    status === 'pending' || status === 'waiting' ? true : false,
   )
 
   return (
@@ -157,13 +186,32 @@ function HistoryItem({historyItemData}) {
         className={`flex flex-col w-full items-center bg-gray-10 px-6 ${
           detailShow
             ? 'animate-slice-down transition-max-height max-h-44 origin-top'
-            : 'animate-slice-up transition-max-height max-h-0 origin-bootom overflow-hidden'
+            : 'animate-slice-up transition-max-height max-h-0 origin-bottom overflow-hidden'
         }`}
       >
         <div className="flex flex-col items-start w-full">
-          <div className="flex items-center py-4">
-            <span className="text-gray-60 mr-2">{t('destination')}</span>
-            <Account chain={toChain} address={toAddress} size="large" />
+          <div className="flex w-full justify-between items-center">
+            <div className="flex items-center py-4">
+              <span className="text-gray-60 mr-2">{t('destination')}</span>
+              <Account chain={toChain} address={toAddress} size="large" />
+            </div>
+            {accountType === TypeAccountStatus.success &&
+              status === 'waiting' && (
+                <ClaimButton
+                  hash={hash}
+                  type={ClaimButtonType.common}
+                  library={library}
+                />
+              )}
+            {status === 'waiting' && (
+              <AccountStatus
+                id="claim"
+                chain={toChain}
+                className={
+                  accountType !== TypeAccountStatus.success ? 'block' : 'hidden'
+                }
+              />
+            )}
           </div>
           {response && (
             <Progress

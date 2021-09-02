@@ -15,6 +15,7 @@ module.exports = {
     },
     extend: {
       spacing: {
+        1.25: '0.3125rem',
         4.5: '1.125rem',
         15: '3.75rem',
         24.5: '6.125rem',
@@ -50,12 +51,12 @@ module.exports = {
       },
       backgroundImage: () => ({
         light: "url('/src/assets/svg/background.svg')",
-        home: "url('assets/img/bgHome.png')",
+        dark: "url('/src/assets/svg/background-dark.svg')",
+        home: "url('assets/img/bg-home.png')",
         metamask: "url('/src/assets/svg/metamask.svg')",
         portal: "url('/src/assets/svg/portal.svg')",
       }),
       colors: {
-        dark: '#373739',
         white: '#fff',
         black: '#000',
         primary: '#44d7b6',
@@ -98,6 +99,26 @@ module.exports = {
         ],
       },
       keyframes: {
+        'fade-out-top-right': {
+          '0%': {
+            opacity: 1,
+            transform: 'translate3d(0, 0, 0)',
+          },
+          '100%': {
+            opacity: 0,
+            transform: 'translate3d(100%, -100%, 0)',
+          },
+        },
+        'fade-out-bottom-left': {
+          '0%': {
+            opacity: 1,
+            transform: 'translate3d(0, 0, 0)',
+          },
+          '100%': {
+            opacity: 0,
+            transform: 'translate3d(-100%, 100%, 0)',
+          },
+        },
         'move-left': {
           '0%': {
             transform: 'translateX(100%)',
@@ -146,12 +167,13 @@ module.exports = {
         'slice-down': 'slice-down 0.3s ease-in 1',
         'slice-up': 'slice-up 0.3s ease-in 1',
         'pulse-fast': 'pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'fade-out-top-right': 'fade-out-top-right 0.5s ease-in-out 1',
+        'fade-out-bottom-left': 'fade-out-bottom-left 0.5s ease-in-out 1',
       },
       transitionProperty: {
         maxHeight: 'maxHeight',
       },
       inset: {
-        0.5: '0.125rem',
         30: '7.5rem',
         34: '8.5rem',
         65: '16.25rem',
@@ -170,7 +192,16 @@ module.exports = {
         302: '75.5rem',
       },
       minHeight: {
+        8: '2rem',
+        50: '12.5rem',
         220: '55rem',
+      },
+      minWidth: {
+        8: '2rem',
+        40: '10rem',
+      },
+      maxWidth: {
+        60: '15rem',
       },
     },
   },

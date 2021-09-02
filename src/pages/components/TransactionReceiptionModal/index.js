@@ -23,9 +23,11 @@ function TransactionReceiptionModal({
   toToken,
   txHash,
   onClose,
+  isClaim = false,
+  library,
 }) {
   const {t} = useTranslation()
-  const {addToken, success} = useAddTokenToMetamask(toToken)
+  const {addToken} = useAddTokenToMetamask(toToken, library)
   const isNativeToken = useIsNativeToken(toChain, toToken?.address)
   let content
   const onAddToken = () => {
@@ -36,15 +38,19 @@ function TransactionReceiptionModal({
     const chain = ChainConfig[toChain].fullName
     content = (
       <div className="flex flex-col items-center">
-        <span>
-          <Trans
-            i18nKey="shuttleInfo"
-            values={{value: formatAmount(value), tokenSymbol, chain}}
-          />
-        </span>
+        {!isClaim && (
+          <span>
+            <Trans
+              i18nKey="shuttleInfo"
+              values={{value: formatAmount(value), tokenSymbol, chain}}
+            />
+          </span>
+        )}
         <div className="bg-warning-10 text-warning-dark w-full px-6 pt-3 pb-6 mt-4 text-center">
           {t('confirm', {
-            wallet: WalletConfig[ChainConfig[fromChain].wallet].name,
+            wallet:
+              WalletConfig[ChainConfig[isClaim ? toChain : fromChain].wallet]
+                .name,
           })}
         </div>
       </div>
@@ -63,7 +69,10 @@ function TransactionReceiptionModal({
   } else if (type === 'success') {
     content = (
       <div className="flex flex-1 flex-col items-center">
-        <Link href={ChainConfig[fromChain].scanTxUrl + txHash} target="_blank">
+        <Link
+          href={ChainConfig[isClaim ? toChain : fromChain].scanTxUrl + txHash}
+          target="_blank"
+        >
           {t('viewOnScan')}
         </Link>
         {ChainConfig[toChain].wallet === KeyOfMetaMask && !isNativeToken && (
@@ -71,18 +80,13 @@ function TransactionReceiptionModal({
             variant="outlined"
             fullWidth
             className="mt-4"
-            endIcon={!success ? <MetamaskLogo alt="metamaskLogo" /> : null}
-            disabled={success}
+            endIcon={<MetamaskLogo alt="metamaskLogo" />}
             // TODO: deal with metamask is not installed
             onClick={onAddToken}
           >
-            {success
-              ? t('addedTokenToMetaMask', {
-                  tokenSymbol: toToken && toToken.display_symbol,
-                })
-              : t('addTokenToMetaMask', {
-                  tokenSymbol: toToken && toToken.display_symbol,
-                })}
+            {t('addTokenToMetaMask', {
+              tokenSymbol: toToken && toToken.display_symbol,
+            })}
           </Button>
         )}
       </div>
@@ -124,6 +128,8 @@ TransactionReceiptionModal.propTypes = {
   fromToken: PropTypes.object,
   toToken: PropTypes.object,
   txHash: PropTypes.string,
+  isClaim: PropTypes.bool,
+  library: PropTypes.object,
 }
 
 export default TransactionReceiptionModal

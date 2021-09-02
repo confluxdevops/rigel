@@ -33,7 +33,12 @@ export function shortenBtcAddress(address) {
 export function shortenCfxAddress(address, type, check = true) {
   if (check && !checkCfxTokenAddress(address, type)) return ''
   const arr = address.split(':')
-  const secondStr = getEllipsStr(arr[1], 4, 4)
+  let secondStr
+  if (IS_DEV) {
+    secondStr = getEllipsStr(arr[1], 3, 4)
+  } else {
+    secondStr = getEllipsStr(arr[1], 3, 8)
+  }
   return arr[0] + ':' + secondStr
 }
 

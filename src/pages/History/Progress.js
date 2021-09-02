@@ -40,16 +40,20 @@ JumpIcon.propTypes = {
 
 function Progress({progress, fromChain, toChain}) {
   const {t} = useTranslation()
-  const {status, nonce_or_txid, settled_tx} = progress
+  const {status, nonce_or_txid, settled_tx, tx_to, tx_input} = progress
   const isFromBtcChain = useIsBtcChain(fromChain)
   const isToBtcChain = useIsBtcChain(toChain)
 
   const progressLevel = useMemo(() => {
     if (status === 'confirming') return 0
-    if (status === 'doing' && !settled_tx) return 1
-    if (status === 'doing' && settled_tx) return 2
+    if (status === 'doing' && !tx_to && !tx_input) return 1
+    if (
+      status === 'doing' &&
+      ((settled_tx && isToBtcChain) || (!isToBtcChain && tx_to && tx_input))
+    )
+      return 2
     if (status === 'finished') return 3
-  }, [status, settled_tx])
+  }, [status, settled_tx, tx_to, tx_input, isToBtcChain])
 
   const getIsDone = index => index <= progressLevel
 
@@ -73,7 +77,7 @@ function Progress({progress, fromChain, toChain}) {
           {!isFromBtcChain && getIsDone(0) && (
             <JumpIcon
               url={
-                ChainConfig[fromChain].scanTxUrl + nonce_or_txid.split('_')[0]
+                ChainConfig[fromChain]?.scanTxUrl + nonce_or_txid.split('_')[0]
               }
             />
           )}
@@ -85,9 +89,9 @@ function Progress({progress, fromChain, toChain}) {
             }`}
           >
             {t('history.progress.stepTwo', {
-              fromChain: ChainConfig[fromChain].shortName,
+              fromChain: ChainConfig[fromChain]?.shortName,
               fromChainId:
-                ChainConfig[fromChain].supportedChainIds?.[
+                ChainConfig[fromChain]?.supportedChainIds?.[
                   IS_DEV ? Testnet : Mainnet
                 ].name,
             })}
@@ -95,25 +99,38 @@ function Progress({progress, fromChain, toChain}) {
           {!isFromBtcChain && getIsDone(1) && (
             <JumpIcon
               url={
-                ChainConfig[fromChain].scanTxUrl + nonce_or_txid.split('_')[0]
+                ChainConfig[fromChain]?.scanTxUrl + nonce_or_txid.split('_')[0]
               }
             />
           )}
         </div>
-        <div className="flex justify-between">
-          <span
-            className={`inline-block mb-2 ${
-              getIsDone(2) ? 'text-gray-100' : 'text-gray-40'
-            }`}
-          >
-            {t('history.progress.stepThree')}
-          </span>
-          {!isToBtcChain && getIsDone(2) && (
-            <JumpIcon
-              url={ChainConfig[toChain].scanTxUrl + settled_tx.split('_')[0]}
-            />
-          )}
-        </div>
+        {isToBtcChain && (
+          <div className="flex justify-between">
+            <span
+              className={`inline-block mb-2 ${
+                getIsDone(2) ? 'text-gray-100' : 'text-gray-40'
+              }`}
+            >
+              {t('history.progress.stepThreeToBtc')}
+            </span>
+            {!isToBtcChain && getIsDone(2) && (
+              <JumpIcon
+                url={ChainConfig[toChain]?.scanTxUrl + settled_tx.split('_')[0]}
+              />
+            )}
+          </div>
+        )}
+        {!isToBtcChain && (
+          <div className="flex justify-between">
+            <span
+              className={`inline-block mb-2 ${
+                getIsDone(2) ? 'text-gray-100' : 'text-gray-40'
+              }`}
+            >
+              {t('history.progress.stepThree')}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span
             className={`inline-block mb-2 ${
@@ -121,16 +138,16 @@ function Progress({progress, fromChain, toChain}) {
             }`}
           >
             {t('history.progress.stepFour', {
-              toChain: ChainConfig[toChain].shortName,
+              toChain: ChainConfig[toChain]?.shortName,
               toChainId:
-                ChainConfig[toChain].supportedChainIds?.[
+                ChainConfig[toChain]?.supportedChainIds?.[
                   IS_DEV ? Testnet : Mainnet
                 ].name,
             })}
           </span>
           {!isToBtcChain && getIsDone(3) && (
             <JumpIcon
-              url={ChainConfig[toChain].scanTxUrl + settled_tx.split('_')[0]}
+              url={ChainConfig[toChain]?.scanTxUrl + settled_tx.split('_')[0]}
             />
           )}
         </div>

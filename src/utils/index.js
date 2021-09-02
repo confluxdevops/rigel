@@ -39,9 +39,9 @@ export const getMaxAmount = (chain, amount) => {
 }
 
 // add 10%
-export function calculateGasMargin(value) {
-  return value
-    .mul(BigNumber.from(10000).add(BigNumber.from(1000)))
+export function calculateGasMargin(value, margin = 0.1) {
+  return BigNumber.from(value?.toString(10))
+    .mul(BigNumber.from(10000).add(BigNumber.from(10000 * margin)))
     .div(BigNumber.from(10000))
 }
 
@@ -119,9 +119,7 @@ export function removeTxs(trans, hashs) {
 export function appendTxs(trans, txs) {
   txs.forEach(tx => {
     const hash = tx?.hash
-    if (!trans.has(hash)) {
-      trans.set(hash, tx)
-    }
+    trans.set(hash, tx)
   })
 }
 

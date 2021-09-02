@@ -1,5 +1,6 @@
 export {default as ERC20_ABI} from './erc20.json'
 export {default as DepositRelayer_ABI} from './depositRelayer.json'
+export {default as DepositRelayer_CFX_ABI} from './depositRelayerCfx.json'
 export {default as CustodianImpl_ABI} from './custodianImpl.json'
 export {default as CustodianImplReverse_ABI} from './custodianImplReverse.json'
 export {default as TokenSponsor_ABI} from './tokenSponsor.json'

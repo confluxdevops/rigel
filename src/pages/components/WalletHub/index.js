@@ -172,7 +172,7 @@ const Popup = ({onClick, connectData, pendingTransactions, onClickHandler}) => {
         <div className="flex justify-between items-center">
           <span className="text-gray-40 text-xs">{t('shuttleRecord')}</span>
           <div
-            className="flex items-center cursor-pointer"
+            className="flex items-center"
             aria-hidden="true"
             id="all"
             onClick={() => {

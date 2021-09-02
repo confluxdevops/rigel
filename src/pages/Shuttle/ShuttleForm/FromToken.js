@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
-import {useTranslation} from 'react-i18next'
+import {useTranslation, Trans} from 'react-i18next'
 import {formatAmount} from '@cfxjs/data-format'
-import {SupportedChains} from '../../../constants/chainConfig'
-import {Input, Tag} from '../../../components'
+import {SupportedChains, ChainConfig} from '../../../constants/chainConfig'
+import {Input, Tag, Popover} from '../../../components'
 import {AccountStatus} from '../../components'
 import TokenSelect from './TokenSelect'
+import {Question} from '../../../assets/svg'
 
 function FromToken({
   fromChain,
@@ -33,7 +34,7 @@ function FromToken({
           onClick={() => onChooseToken && onChooseToken()}
         />
         <div className="h-6 flex items-center">
-          <AccountStatus id="fromToken" chain={fromChain} size="medium" />
+          <AccountStatus id="fromToken" chain={fromChain} />
         </div>
       </div>
       <div className="flex justify-between items-center">
@@ -54,12 +55,31 @@ function FromToken({
             <span
               className="text-gray-40 text-xs inline-block mb-1"
               id="balance"
-            >{`${t('balance')} ${formatAmount(balanceVal)}`}</span>
+            >{`${t('balance')} ${
+              balanceVal ? formatAmount(balanceVal) : '--'
+            }`}</span>
           )}
           {fromAddress && !errorNetwork && (
-            <Tag size="small" onClick={onMaxClick} id="max">
-              {t('max')}
-            </Tag>
+            <div className="flex items-center">
+              <Tag size="small" onClick={onMaxClick} id="max" className="mr-1">
+                {t('max')}
+              </Tag>
+              <Popover
+                title={t('maxTipTitle')}
+                content={
+                  <Trans
+                    i18nKey="maxTipContent"
+                    values={{
+                      fromChain: ChainConfig[fromChain].shortName,
+                      remainderAmount: ChainConfig[fromChain].remainderAmount,
+                      tokenSymbol: ChainConfig[fromChain].tokenName,
+                    }}
+                  />
+                }
+              >
+                <Question className="w-3.5 h-3.5 text-gray-40" />
+              </Popover>
+            </div>
           )}
         </div>
       </div>

@@ -61,7 +61,9 @@ export function useCustodianData(chainOfContract, token) {
     )
       .then(data => {
         const [
+          // eslint-disable-next-line no-unused-vars
           burn_fee,
+          // eslint-disable-next-line no-unused-vars
           mint_fee,
           wallet_fee,
           minimal_mint_value,
@@ -75,20 +77,16 @@ export function useCustodianData(chainOfContract, token) {
           //     ? burn_fee.div(`${dicimalsNum}`)
           //     : mint_fee.div(`${dicimalsNum}`),
           in_fee: Big(0), //shuttle in fee has already benn zero in new version
-          out_fee: isCfxChain
-            ? mint_fee.div(`${dicimalsNum}`)
-            : burn_fee.div(`${dicimalsNum}`),
+          out_fee: Big(0), //shuttle out fee has already benn zero in claim version
           wallet_fee: wallet_fee.div(`${dicimalsNum}`),
           minimal_in_value:
             contractAddress === KeyOfBtc
-              ? isCfxChain
-                ? minimal_burn_value.div(`${dicimalsNum}`)
-                : minimal_mint_value.div(`${dicimalsNum}`)
-              : Big(0),
-          //minimal_in_value: Big(0), // the minimal shuttle-in vlaue has already benn zero in new version
-          minimal_out_value: isCfxChain
-            ? minimal_mint_value.div(`${dicimalsNum}`)
-            : minimal_burn_value.div(`${dicimalsNum}`),
+              ? minimal_mint_value.div(`${dicimalsNum}`)
+              : Big(0), //only btc token pair have the minimal_in_value
+          minimal_out_value:
+            contractAddress === KeyOfBtc
+              ? minimal_burn_value.div(`${dicimalsNum}`)
+              : Big(0), //only btc token pair have the minimal_out_value
           minimal_sponsor_amount: minimal_sponsor_amount.div(getExponent(18)),
           safe_sponsor_amount: safe_sponsor_amount.div(getExponent(18)),
         })

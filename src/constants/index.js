@@ -38,6 +38,20 @@ export const TxReceiptModalType = {
   success: 'success',
   error: 'error',
 }
+
+export const SendStatus = {
+  ongoing: 'ongoing',
+  success: 'success',
+  error: 'error',
+  claim: 'claim',
+}
+
+export const ClaimStatus = {
+  ongoing: 'ongoing',
+  success: 'success',
+  error: 'error',
+}
+
 export const MobileBreakpoint = 768
 
 export const Decimal18 = '18'
@@ -74,4 +88,15 @@ export const StatusOperation = {
 
 export const Millisecond = {
   day: 24 * 60 * 60 * 1000,
+}
+
+export const ClaimButtonType = {
+  twoStep: 'twoStep',
+  common: 'common',
+}
+
+export const TxStatus = {
+  submitted: 'submitted',
+  success: 'success',
+  error: 'error',
 }

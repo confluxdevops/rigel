@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useMemo, useState, useCallback} from 'react'
+import {useMemo, useState, useCallback, useEffect} from 'react'
 import {useEffectOnce} from 'react-use'
 import {useBalance as usePortalBalance} from '@cfxjs/react-hooks'
 import {ERC20_ABI} from '../abi'
 import {KeyOfCfx} from '../constants/chainConfig'
-import {BigNumZero, TypeConnectWallet} from '../constants'
+import {TypeConnectWallet} from '../constants'
 import {getChainIdRight} from '../utils'
 import {checkCfxTokenAddress} from '../utils/address'
 
@@ -133,28 +133,62 @@ export function useTokenContract(tokenAddress) {
  * @returns balance of account
  */
 export function useNativeTokenBalance(address) {
-  const [balance] = usePortalBalance(address, [])
-  return balance ? balance : BigNumZero
+  // eslint-disable-next-line no-unused-vars
+  const [balance, tokenBalance, isValidating] = usePortalBalance(address, [])
+  return !isValidating ? balance : null
 }
 
 export function useTokenBalance(address, tokenAddress) {
   // eslint-disable-next-line no-unused-vars
-  const [balance, tokenBalance] = usePortalBalance(
+  const [balance, tokenBalance, isValidating] = usePortalBalance(
     address,
     tokenAddress && checkCfxTokenAddress(tokenAddress, 'contract')
       ? [tokenAddress]
       : [],
   )
-  return tokenBalance ? tokenBalance : BigNumZero
+  return !isValidating ? tokenBalance : null
 }
 
 export function useBalance(address, tokenAddress) {
   const isNativeToken = !checkCfxTokenAddress(tokenAddress, 'contract')
-  const tokenBalance = useTokenBalance(address, tokenAddress) || BigNumZero
-  const nativeTokenBalance = useNativeTokenBalance(address) || BigNumZero
+  const tokenBalance = useTokenBalance(address, tokenAddress)
+  const nativeTokenBalance = useNativeTokenBalance(address)
   return isNativeToken ? nativeTokenBalance : tokenBalance
 }
 
 export function useMultipleBalance(address, tokenAddressArr) {
   return usePortalBalance(address, tokenAddressArr)
+}
+
+/**
+ * call some method from contract and get the value
+ * @param {*} contract
+ * @param {*} method
+ * @param {*} params
+ * @returns
+ */
+export function useContractState(tokenAddress, method, params, interval) {
+  const contract = useTokenContract(tokenAddress)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const getContractData = async params => {
+      try {
+        const res = await contract?.[method](...params)
+        setData(res)
+      } catch (error) {
+        setData(null)
+      }
+    }
+
+    if (interval) {
+      getContractData(params)
+      const timeInterval = setInterval(() => getContractData(params), interval)
+      return () => clearInterval(timeInterval)
+    } else {
+      getContractData(params)
+    }
+  }, [...params, interval, Boolean(contract)])
+
+  return data
 }

@@ -1267,10 +1267,10 @@
     "@cfxjs/bytes" "0.0.2"
     bn.js "^5.2.0"
 
-"@cfxjs/react-hooks@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@cfxjs/react-hooks/-/react-hooks-2.3.2.tgz#d3ee0cf843ac85f4ed8bb82efb31e8dfbabcd77c"
-  integrity sha512-kButidtSu6sW6WlFEi0xdBVFHCM60b1TU65zy9MRe0t+NTQOwdJVVN5Lnj+nJcwVV3X6PlBoR2ydzlxiH+dWyg==
+"@cfxjs/react-hooks@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@cfxjs/react-hooks/-/react-hooks-2.4.0.tgz#b6a5e0a039d813857b2b002779d7ca6306ae3fbd"
+  integrity sha512-aiK20IYC6CGPuIWiSKeaXcXxNXxZMo/8WH1HmWXoMPY3JdgUZbpEx7+fXx8+A0GTERJWc/DlyrwVTdYJ+w8ZVw==
   dependencies:
     big.js "^6.0.1"
     react-use "^15.3.4"
@@ -10790,6 +10790,25 @@ rc-notification@4.4.0:
     classnames "2.x"
     rc-animate "3.x"
     rc-util "^5.0.1"
+
+rc-tooltip@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/rc-tooltip/-/rc-tooltip-5.1.1.tgz#94178ed162d0252bc4993b725f5dc2ac0fccf154"
+  integrity sha512-alt8eGMJulio6+4/uDm7nvV+rJq9bsfxFDCI0ljPdbuoygUscbsMYb6EQgwib/uqsXQUvzk+S7A59uYHmEgmDA==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    rc-trigger "^5.0.0"
+
+rc-trigger@^5.0.0:
+  version "5.2.9"
+  resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-5.2.9.tgz#795a787d2b038347dcde27b89a4a5cec8fc40f3e"
+  integrity sha512-0Bxsh2Xe+etejMn73am+jZBcOpsueAZiEKLiGoDfA0fvm/JHLNOiiww3zJ0qgyPOTmbYxhsxFcGOZu+VcbaZhQ==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    classnames "^2.2.6"
+    rc-align "^4.0.0"
+    rc-motion "^2.0.0"
+    rc-util "^5.5.0"
 
 rc-trigger@^5.0.4:
   version "5.2.8"

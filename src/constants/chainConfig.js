@@ -290,6 +290,9 @@ export function WalletIcon({type, className = ''}) {
     case KeyOfMetaMask:
       icon = <MetamaskLogo />
       break
+    default:
+      icon = <></>
+      break
   }
   return React.cloneElement(icon, {
     className: `${DefaultWalletIconSize} ${className}`,

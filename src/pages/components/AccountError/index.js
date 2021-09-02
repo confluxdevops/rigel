@@ -15,10 +15,10 @@ function AccountError({chain, errorType, onClose}) {
   if (isWrongNetwork) {
     //wrong network
     text = t('error.wrongNetwork')
-    notiTitle = t('error.unspoortedNetwork')
+    notiTitle = t('error.unsupportedNetwork')
     let networkContent =
       chainObject?.fullName + ' ' + t(`${!IS_DEV ? 'mainnet' : 'testnet'}`)
-    notiContent = t('error.unspoortedNetworkContent', {
+    notiContent = t('error.unsupportedNetworkContent', {
       network: networkContent,
       walletName: WalletConfig[chainObject?.wallet]?.name,
     })

@@ -1,7 +1,7 @@
-/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import {useHistory, useLocation} from 'react-router-dom'
+import {usePrevious} from 'react-use'
 
 import {useFromToken, useToToken} from '../../hooks/useTokenList'
 import {useAccountStatus, useWallet} from '../../hooks/useWallet'
@@ -15,25 +15,21 @@ import {
   KeyOfCfx,
   KeyOfBtc,
 } from '../../constants/chainConfig'
-import {
-  TxReceiptModalType,
-  TypeAccountStatus,
-  ShuttleStatus,
-} from '../../constants'
+import {TypeAccountStatus} from '../../constants'
 import ConfirmModal from './ConfirmModal'
-import {TransactionReceiptionModal} from '../components'
+import ClaimModal from './ClaimModal'
 import {useShuttleState} from '../../state'
 import {getChainIdRight} from '../../utils'
 
 function Shuttle() {
   const location = useLocation()
   const history = useHistory()
-  const {tokenFromBackend, error} = useShuttleState()
+  const {tokenFromBackend, error, setTxClaimModalShown} = useShuttleState()
   const [tokenListShow, setTokenListShow] = useState(false)
   const [confirmModalShow, setConfirmModalShow] = useState(false)
+  const [claimModalShow, setClaimModalShow] = useState(false)
   const [value, setValue] = useState('')
-  const [txModalShow, setTxModalShow] = useState(false)
-  const [txModalType, setTxModalType] = useState(TxReceiptModalType.ongoing)
+
   const [txHash, setTxHash] = useState('')
   const {fromChain, toChain, fromTokenAddress, ...others} = queryString.parse(
     location.search,
@@ -43,11 +39,14 @@ function Shuttle() {
     error: fromChainError,
     chainId: fromChainId,
   } = useWallet(fromChain)
+  const prevFromAddress = usePrevious(fromAddress)
+
   const {
     address: toAddress,
     error: toChainError,
     chainId: toChainId,
   } = useWallet(toChain)
+  const prevToAddress = usePrevious(toAddress)
   const isFromChainIdRight = getChainIdRight(
     fromChain,
     fromChainId,
@@ -75,6 +74,10 @@ function Shuttle() {
     KeyOfCfx,
     ChainConfig[KeyOfBtc]?.tokenName?.toLowerCase(),
   )
+
+  useEffect(() => {
+    setTxClaimModalShown(claimModalShow)
+  }, [claimModalShow, setTxClaimModalShown])
 
   /**
    * 1. The fromChain and toChain must be in the SupportChains list
@@ -189,6 +192,22 @@ function Shuttle() {
     }
   }, [fromAccountType, toAccountType])
 
+  useEffect(() => {
+    if (prevFromAddress && fromAddress && prevFromAddress !== fromAddress) {
+      setTokenListShow(false)
+      setConfirmModalShow(false)
+      setClaimModalShow(false)
+    }
+  }, [prevFromAddress, fromAddress])
+
+  useEffect(() => {
+    if (prevToAddress && toAddress && prevToAddress !== toAddress) {
+      setTokenListShow(false)
+      setConfirmModalShow(false)
+      setClaimModalShow(false)
+    }
+  }, [prevToAddress, toAddress])
+
   if (!fromChain) return null
   return (
     <div className="flex flex-1 justify-center px-3 md:px-0">
@@ -228,27 +247,28 @@ function Shuttle() {
           value={value}
           fromToken={fromToken}
           toToken={toToken}
-          setTxModalType={setTxModalType}
-          setTxModalShow={setTxModalShow}
           setTxHash={setTxHash}
           fromAddress={fromAddress}
           toAddress={toAddress}
+          onNextClick={() => {
+            setConfirmModalShow(false)
+            setClaimModalShow(true)
+          }}
         />
       )}
-      {txModalShow && (
-        <TransactionReceiptionModal
-          type={txModalType}
-          open={txModalShow}
+      {claimModalShow && (
+        <ClaimModal
+          open={claimModalShow}
+          onClose={() => setClaimModalShow(false)}
           fromChain={fromChain}
           toChain={toChain}
           fromToken={fromToken}
           toToken={toToken}
           value={value}
+          setTxHash={setTxHash}
           txHash={txHash}
-          onClose={() => {
-            setTxModalShow(false)
-            setValue('')
-          }}
+          fromAddress={fromAddress}
+          toAddress={toAddress}
         />
       )}
     </div>

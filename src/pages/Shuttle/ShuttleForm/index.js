@@ -10,9 +10,8 @@ import {
   DefaultFromChain,
   DefaultToChain,
   SupportedChains,
-  KeyOfBtc,
 } from '../../../constants/chainConfig'
-import {TypeAccountStatus, Decimal18} from '../../../constants'
+import {TypeAccountStatus, Decimal18, BigNumZero} from '../../../constants'
 
 import {
   useBalance,
@@ -30,7 +29,7 @@ import ChainSelect from './ChainSelect'
 import FromToken from './FromToken'
 import ToToken from './ToToken'
 import ToBtcAddress from './ToBtcAddress'
-import {useCustodianData, useSponsorData} from '../../../hooks/useShuttleData'
+import {useCustodianData} from '../../../hooks/useShuttleData'
 
 function ShuttleForm({
   fromChain,
@@ -80,17 +79,20 @@ function ShuttleForm({
   const balance = useBalance(fromChain, fromAddress, address)
   const {setFromBtcAddress, setToBtcAddress} = useShuttleState()
   const chainOfContract = isFromChainCfx ? toChain : fromChain //get the chain that is not conflux chain in the pair
-  const {minimal_in_value, minimal_out_value, safe_sponsor_amount} =
-    useCustodianData(chainOfContract, toToken)
-  const {sponsorValue} = useSponsorData(chainOfContract, toToken)
-  const balanceVal = convertDecimal(
-    balance,
-    'divide',
-    isFromChainCfx ? Decimal18 : decimals,
+  const {minimal_in_value, minimal_out_value} = useCustodianData(
+    chainOfContract,
+    toToken,
   )
+  const balanceVal = balance
+    ? convertDecimal(balance, 'divide', isFromChainCfx ? Decimal18 : decimals)
+    : null
 
   const maxAmount = (
-    isNativeToken ? getMaxAmount(fromChain, balanceVal) : balanceVal
+    balanceVal
+      ? isNativeToken
+        ? getMaxAmount(fromChain, balanceVal)
+        : balanceVal
+      : BigNumZero
   )?.toString(10)
 
   const minimalVal = isFromChainCfx
@@ -100,17 +102,6 @@ function ShuttleForm({
     : minimal_in_value
     ? minimal_in_value.toString(10)
     : '0'
-
-  const shuttlePaused = () => {
-    try {
-      return (
-        !(fromChain === KeyOfBtc || toChain === KeyOfBtc) &&
-        sponsorValue?.lte(safe_sponsor_amount)
-      )
-    } catch (error) {
-      return false
-    }
-  }
 
   const onMaxClick = () => {
     onChangeValue && onChangeValue(maxAmount)
@@ -159,22 +150,18 @@ function ShuttleForm({
     let error = null
     if (isNumber(value)) {
       const valBig = new Big(value || 0)
-      if (valBig.gte(minimalVal) && valBig.gt('0')) {
-        //must be greater than zero
-        if (!isFromChainBtc && valBig.gt(balanceVal)) {
-          //must be less than Max value
-          error = {str: 'error.mustLteMax'}
-        }
-      } else if (valBig.lte('0')) {
-        error = {
-          str: 'error.mustGtZero',
-          obj: {value: formatAmount(minimalVal)},
-        }
-      } else {
+      if (valBig.lt('0.000001') && minimalVal === '0') {
+        // when min = 0 should >= 0.000001
+        error = {str: 'error.mustGteCommonMin'}
+      } else if (valBig.lt(minimalVal) && minimalVal !== '0') {
+        // when min > 0 should >= min
         error = {
           str: 'error.mustGteMin',
           obj: {value: formatAmount(minimalVal)},
         }
+      } else if (!isFromChainBtc && balanceVal && valBig.gt(balanceVal)) {
+        // should <= balance
+        error = {str: 'error.mustLteMax'}
       }
     } else {
       //not a valid number
@@ -295,7 +282,7 @@ function ShuttleForm({
           onAddressInputChange={onAddressInputChange}
         />
       )}
-      {!shuttlePaused() && supported !== 0 && (
+      {supported !== 0 && (
         <Button
           className="mt-6"
           fullWidth
@@ -315,17 +302,6 @@ function ShuttleForm({
           </span>
           <span className="inline-block mt-1">
             {t('tips.notAvailableDescription', {fromChain, toChain})}
-          </span>
-        </div>
-      )}
-      {shuttlePaused() && (
-        <div className="flex flex-col w-full bg-warning-10 p-3 text-xs mt-6 text-warning-dark">
-          <span className="flex items-center font-medium">
-            <AlertTriangle className="mr-1 w-4 h-4" />
-            {t('tips.shuttlePaused')}
-          </span>
-          <span className="inline-block mt-1">
-            {t('tips.shuttlePausedDescription', {fromChain, toChain})}
           </span>
         </div>
       )}
