@@ -11,8 +11,7 @@ i18next
       loadPath: `./locales/{{lng}}.json`,
     },
     react: {
-      //TODO: modify useSuspense to true
-      useSuspense: false,
+      useSuspense: true,
     },
     // TODO: remove when publish
     debug: true,
