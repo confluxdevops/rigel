@@ -22,7 +22,7 @@ function MobileFooter() {
       <div className="flex items-center">
         <a
           href={
-            language.indexOf('zh') !== -1
+            language?.indexOf('zh') !== -1
               ? 'https://forum.conflux.fun/t/shuttleflow-v1-3-0/9212'
               : 'https://forum.conflux.fun/t/cross-chain-tutorial-for-shuttleflow-v1-3-0/9214'
           }
