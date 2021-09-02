@@ -5,9 +5,9 @@ function LanguageButton() {
   const {i18n} = useTranslation()
   const {language} = i18n
   const onChangeLanguage = () => {
-    if (language.indexOf('en') !== -1) {
+    if (language?.indexOf('en') !== -1) {
       i18n.changeLanguage('zh-CN')
-    } else if (language.indexOf('zh') !== -1) {
+    } else if (language?.indexOf('zh') !== -1) {
       i18n.changeLanguage('en')
     }
   }
@@ -19,7 +19,7 @@ function LanguageButton() {
       size="w-7 h-7"
       onClick={onChangeLanguage}
     >
-      {language.indexOf('en') !== -1 ? (
+      {language?.indexOf('en') !== -1 ? (
         <EnglishIcon className="text-gray-80" />
       ) : (
         <ChineseIcon className="text-gray-80" />
