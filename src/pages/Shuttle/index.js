@@ -65,9 +65,8 @@ function Shuttle() {
     toChainError,
     isToChainIdRight,
   )
-  const {address} = tokenFromBackend
   let fromToken = useFromToken(fromChain, toChain, fromTokenAddress)
-  if (address === fromTokenAddress) fromToken = tokenFromBackend
+  fromToken = Object.keys(fromToken).length === 0 ? tokenFromBackend : fromToken
   const toToken = useToToken(fromChain, toChain, fromTokenAddress)
   const btcTokenPair = useToToken(
     KeyOfBtc,
