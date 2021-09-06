@@ -19,6 +19,7 @@ import {
   useTransactionNotification,
   useClaimNotification,
 } from '../pages/components'
+import {format} from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js'
 
 export const useUpdateTxs = () => {
   const {address: cfxAddress} = useWallet(KeyOfCfx)
@@ -93,9 +94,7 @@ export const useUpdateTxs = () => {
       )
         .then(list => {
           if (list) {
-            const newList = list.map(item =>
-              mapData(item, tokenList, cfxAddress),
-            )
+            const newList = list.map(item => mapData(item, tokenList))
             const mappedData = _mapListToMap(newList)
             pendingCommonTxs.forEach((item, index) => {
               const {hash, amount, fromChain, toChain, fromToken, status} = item
@@ -160,7 +159,7 @@ export const useUpdateTxs = () => {
  * Get tokenInfo from tokenList by token address
  * Merge api data to local data
  */
-export function mapData(item = {}, tokenList, cfxAddress) {
+export function mapData(item = {}, tokenList) {
   const data = {}
   if (!item) return {}
   const {
@@ -175,6 +174,7 @@ export function mapData(item = {}, tokenList, cfxAddress) {
     amount,
     tx_to,
     tx_input,
+    user_addr,
   } = item
   const isCfxChain = from_chain === KeyOfCfx ? true : false
   const newList = tokenList
@@ -232,7 +232,7 @@ export function mapData(item = {}, tokenList, cfxAddress) {
   data.amount = convertDecimal(amount || 0, 'divide', data.decimals)
   data.tx_to = tx_to
   data.tx_input = tx_input
-  data.cfxAddress = cfxAddress
+  data.cfxAddress = user_addr
   return data
 }
 
@@ -250,7 +250,7 @@ export const useTxData = (
         tx => transactionTypes.indexOf(tx?.tx_type) != -1,
       )
       const filteredTxs = filteredTypeTxs.filter(
-        tx => tx?.cfxAddress === address,
+        tx => format.hexAddress(tx?.cfxAddress) === format.hexAddress(address),
       )
       let newArr = []
       multipleOrderedStatus.forEach(status => {
