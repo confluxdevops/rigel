@@ -210,10 +210,9 @@ export const ChainConfig = {
     scanUrl: ScanUrlHeco,
     scanTxUrl: ScanUrlHeco + '/tx/',
     scanTokenUrl: ScanUrlHeco + '/address/',
-    // TODO: commonTokens: ['ht','hCfx'],
     commonTokens: IS_DEV
       ? ['ht', '0x0D0A4732c5e3A19d912Cdbb12F57A3b185130C6D']
-      : ['ht', ''],
+      : ['ht', '0x045c4324039dA91c52C55DF5D785385Aab073DcF'],
     supportedChainIds: ChainIdsHeco,
     wallet: KeyOfMetaMask,
     remainderAmount: 0.001,
