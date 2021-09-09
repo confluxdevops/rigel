@@ -6,6 +6,7 @@ import {
   KeyOfBsc,
   KeyOfOec,
   KeyOfBtc,
+  KeyOfHeco,
   KeyOfMetaMask,
   KeyOfPortal,
 } from './chainConfig'
@@ -46,6 +47,9 @@ export const ContractConfig = {
       [KeyOfOec]: IS_DEV
         ? '0x5cF9C20DE32aE58d33Cb8C22e73d9b2B2E886AdA'
         : '0x214c2958C04150846A442A7b977F9f190B603F31',
+      [KeyOfHeco]: IS_DEV
+        ? '0x88b12D209D69B87ff762a5Bc7E9784138A825470'
+        : '0xC09b68f33e37efE8545c6C2b5F9643d78f39EDdf',
     },
   },
   [ContractType.depositRelayerCfx]: {
@@ -61,6 +65,9 @@ export const ContractConfig = {
       [KeyOfOec]: IS_DEV
         ? 'cfxtest:acd2cgm2f7yph27ycsyes1zg45yysccfna5dsm18jc'
         : 'cfx:acg8v55scuua60xcfheggkr5cry179kx0ef6gjcs64',
+      [KeyOfHeco]: IS_DEV
+        ? 'cfxtest:achnupbx4henxnyngtj9wga3jhsbycabyuh9xyzzb2'
+        : 'cfx:acbjyjn1t6hhnxs3rwhbwc357tefmvx772pyc5zk82',
     },
   },
   [ContractType.custodianImpl]: {
@@ -79,6 +86,9 @@ export const ContractConfig = {
       [KeyOfOec]: IS_DEV
         ? 'cfxtest:achs3f2knh85024646aex8j226y96ynukesc46s63h'
         : 'cfx:acfscwx5sr9yfasnypgdmujc71gt66sajpzr0mhzpz',
+      [KeyOfHeco]: IS_DEV
+        ? 'cfxtest:acf0kuzpw0tt1664nutm1kcysd817r5yk6upe0eayn'
+        : 'cfx:ace35sf1y803zm3pwypef5mjmy5hjjxbeas9ddtgad',
     },
   },
   [ContractType.custodianImplReverse]: {
@@ -94,6 +104,9 @@ export const ContractConfig = {
       [KeyOfOec]: IS_DEV
         ? 'cfxtest:acbsbs2cp9secres4kfd3zvwbp42zrr4fee3unj3bz'
         : 'cfx:acf0xp9vrv55gkft3tjntkjagvwme19vcu2wsj39fz',
+      [KeyOfHeco]: IS_DEV
+        ? 'cfxtest:acctjyr5sxgzmt3x4n620jxdffp0jz4r6e8fggvpnb'
+        : 'cfx:acaw4z5bdgd0np0rukp7wjw7kwkan9xfdaxgms0mp6',
     },
   },
   //actually the tokenSponsor contract is no longer usefull after claim feature,but keep it for a short time

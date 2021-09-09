@@ -14,6 +14,7 @@ import {
   ChainEthLogo,
   ChainCfxLogo,
   ChainOecLogo,
+  ChainHecoLogo,
   MetamaskLogo,
   PortalLogo,
 } from '../assets/svg'
@@ -77,6 +78,19 @@ export const KeyOfBtc = 'btc'
 export const ScanUrlBtc = IS_DEV
   ? 'https://blockstream.info/testnet'
   : 'https://blockstream.info'
+
+/**
+ * heco config
+ */
+
+export const KeyOfHeco = 'heco'
+export const ScanUrlHeco = IS_DEV
+  ? 'https://testnet.hecoinfo.com/'
+  : 'https://hecoinfo.com/'
+export const ChainIdsHeco = {
+  MAINNET: {id: 128, name: 'Mainnet'},
+  TESTNET: {id: 256, name: 'Testnet'},
+}
 
 export const KeyOfPortal = 'portal'
 export const KeyOfMetaMask = 'metamask'
@@ -183,6 +197,26 @@ export const ChainConfig = {
     wallet: KeyOfMetaMask,
     remainderAmount: 0.001,
   },
+  [KeyOfHeco]: {
+    key: KeyOfHeco,
+    icon(className, size) {
+      return <ChainIcon className={className} size={size} chain={KeyOfHeco} />
+    },
+    fullName: 'Huobi ECO Chain',
+    shortName: 'HECO',
+    tokenName: 'HT',
+    checkAddress: checkHexAddress,
+    displayFilter,
+    scanUrl: ScanUrlHeco,
+    scanTxUrl: ScanUrlHeco + '/tx/',
+    scanTokenUrl: ScanUrlHeco + '/address/',
+    commonTokens: IS_DEV
+      ? ['ht', '0x0D0A4732c5e3A19d912Cdbb12F57A3b185130C6D']
+      : ['ht', '0x045c4324039dA91c52C55DF5D785385Aab073DcF'],
+    supportedChainIds: ChainIdsHeco,
+    wallet: KeyOfMetaMask,
+    remainderAmount: 0.001,
+  },
   [KeyOfCfx]: {
     key: KeyOfCfx,
     icon(className) {
@@ -249,6 +283,9 @@ export const SupportedChainIdsWeb3 = [
   ...Object.values(ChainConfig[KeyOfOec].supportedChainIds).map(
     chain => chain.id,
   ),
+  ...Object.values(ChainConfig[KeyOfHeco].supportedChainIds).map(
+    chain => chain.id,
+  ),
 ]
 
 const DefaultChainIconSize = 'w-10 h-10'
@@ -269,6 +306,9 @@ export function ChainIcon({chain, className = ''}) {
       break
     case KeyOfOec:
       icon = <ChainOecLogo />
+      break
+    case KeyOfHeco:
+      icon = <ChainHecoLogo />
       break
     default:
       //TODO: maybe need to change a better default icon
