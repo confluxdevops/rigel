@@ -250,7 +250,10 @@ export const useTxData = (
         tx => transactionTypes.indexOf(tx?.tx_type) != -1,
       )
       const filteredTxs = filteredTypeTxs.filter(
-        tx => format.hexAddress(tx?.cfxAddress) === format.hexAddress(address),
+        tx =>
+          tx?.cfxAddress &&
+          address &&
+          format.hexAddress(tx?.cfxAddress) === format.hexAddress(address),
       )
       let newArr = []
       multipleOrderedStatus.forEach(status => {
