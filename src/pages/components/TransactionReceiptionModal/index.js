@@ -130,6 +130,7 @@ TransactionReceiptionModal.propTypes = {
   txHash: PropTypes.string,
   isClaim: PropTypes.bool,
   library: PropTypes.object,
+  onClose: PropTypes.func,
 }
 
 export default TransactionReceiptionModal
