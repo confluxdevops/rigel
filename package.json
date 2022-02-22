@@ -8,7 +8,7 @@
     "@cfxjs/base32-address": "^0.0.4",
     "@cfxjs/data-format": "^0.0.3",
     "@cfxjs/react-hooks": "^2.5.2",
-    "@cfxjs/use-wallet": "^0.0.5",
+    "@cfxjs/use-wallet": "^0.0.15",
     "@craco/craco": "^6.1.1",
     "@ethersproject/address": "^5.3.0",
     "@ethersproject/bignumber": "^5.3.0",

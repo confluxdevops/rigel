@@ -1288,6 +1288,11 @@
   resolved "https://registry.yarnpkg.com/@cfxjs/rlp/-/rlp-0.0.2.tgz#362dd1a155b1f9e81a861df6ae62579dfd1a7945"
   integrity sha512-INsfuuUDkg4gFVOlRhS2jbZCF0Sm1GYnFko7LAunZXpLioGLHBXElwniI0SXSJoOsSVfgPl5QmmoT2DyujKkgg==
 
+"@cfxjs/use-wallet@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@cfxjs/use-wallet/-/use-wallet-0.0.15.tgz#b5a5949d3f43e7ab54e6f986755f4b5bf25af26a"
+  integrity sha512-tFOGzGlYNfSyjyQ8UinX1xXNZt87jpThdkVLTjPWtppxpAlLjo75Q7X6+MHOTMT2sEGdcZo+Lq+Chh8hRRuXtA==
+
 "@cfxjs/utils@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@cfxjs/utils/-/utils-0.0.2.tgz#d143b1ba96b53c3f7d8569581410b596049ecb83"
