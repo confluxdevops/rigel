@@ -16,7 +16,7 @@ import {
   ChainOecLogo,
   ChainHecoLogo,
   MetamaskLogo,
-  PortalLogo,
+  FluentLogo,
 } from '../assets/svg'
 
 /**
@@ -97,8 +97,8 @@ export const KeyOfMetaMask = 'metamask'
 export const WalletConfig = {
   [KeyOfPortal]: {
     key: KeyOfPortal,
-    name: 'ConfluxPortal',
-    website: 'https://portal.confluxnetwork.org',
+    name: 'FluentWallet',
+    website: 'https://fluentwallet.com',
     icon(className) {
       return <WalletIcon className={className} type={KeyOfPortal} />
     },
@@ -325,7 +325,7 @@ export function WalletIcon({type, className = ''}) {
   let icon
   switch (type) {
     case KeyOfPortal:
-      icon = <PortalLogo />
+      icon = <FluentLogo />
       break
     case KeyOfMetaMask:
       icon = <MetamaskLogo />
