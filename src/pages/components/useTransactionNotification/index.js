@@ -54,7 +54,7 @@ const useTransactionNotification = () => {
       bottom: isMobile ? 0 : 24,
       className: `${
         ChainConfig[fromChain].wallet === KeyOfPortal
-          ? 'bg-portal'
+          ? 'bg-fluent'
           : ChainConfig[fromChain].wallet === KeyOfMetaMask
           ? 'bg-metamask'
           : ''
