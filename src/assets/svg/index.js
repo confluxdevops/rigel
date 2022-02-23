@@ -28,6 +28,7 @@ export {default as SuccessFilled} from './SuccessFilled'
 export {default as SuccessOutlined} from './SuccessOutlined'
 export {default as TokenAlert} from './TokenAlert'
 export {default as WarningFilled} from './WarningFilled'
+export {default as FluentLogo} from './FluentLogo'
 
 // need to change color to currentColor
 export {default as ArrowDownFilled} from './color/ArrowDownFilled'

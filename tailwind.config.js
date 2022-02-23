@@ -55,6 +55,7 @@ module.exports = {
         home: "url('assets/img/bg-home.png')",
         metamask: "url('/src/assets/svg/metamask.svg')",
         portal: "url('/src/assets/svg/portal.svg')",
+        fluent: "url('/src/assets/svg/fluent.svg')",
       }),
       colors: {
         white: '#fff',
