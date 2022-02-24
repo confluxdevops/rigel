@@ -67,7 +67,7 @@ export const ScanUrlCfx = IS_DEV
   ? 'https://testnet.confluxscan.io'
   : 'https://confluxscan.io'
 export const ChainIdsCfx = {
-  MAINNET: {id: 1029, name: 'Tethys'},
+  MAINNET: {id: 1029, name: 'Hydra'},
   TESTNET: {id: 1, name: 'Testnet'},
 }
 
